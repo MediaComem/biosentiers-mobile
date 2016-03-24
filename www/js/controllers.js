@@ -53,4 +53,13 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
+})
+
+.controller('AuthCtrl', function ($scope) {
+  $scope.doAccountLogin = function () {
+    console.log('Account Login');
+  }
+  $scope.doQRCodeLogin = function () {
+    console.log('QR Code Login');
+  }
 });
