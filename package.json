@@ -29,7 +29,11 @@
       "locator": "https://github.com/Tazaf/wikitude-ionic-plugin.git",
       "id": "com.wikitude.phonegap.WikitudePlugin"
     },
-    "cordova-plugin-file"
+    "cordova-plugin-file",
+    {
+      "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
+      "id": "cordova-plugin-x-toast"
+    }
   ],
   "cordovaPlatforms": [
     {
