@@ -21,3 +21,8 @@ Le plugin permettant de créer l'expérience de réalité augmentée.
 Il s'agit d'un fork du plugin de base, contenant des commentaires et des logs dans le but de corriger le comportement erroné du tracker GPS, qui continue à tracker l'utilisateur, même lorsque l'app est en arrière-plan.
 La correction est en cours, et le plugin ne réagit pas encore complètement comme il le devrait.
 Il faudra aussi corriger le comportement problématique lors de l'utilisation du bouton "BACK" sur les appareils Android.
+
+## Plateformes installées 
+
+Le projet est destiné à être utilisé sur des appareils Android et iOS. Ces deux plateformes ont dont été installées.
+IMPORTANT ! Pour que le projet se compile sur Android avec le plugin Wikitude, la version 5.0.0 (au minimum) doit être, et a été, ajoutée.
