@@ -22,6 +22,18 @@ Il s'agit d'un fork du plugin de base, contenant des commentaires et des logs da
 La correction est en cours, et le plugin ne réagit pas encore complètement comme il le devrait.
 Il faudra aussi corriger le comportement problématique lors de l'utilisation du bouton "BACK" sur les appareils Android.
 
+### Cordova File
+
+https://github.com/apache/cordova-plugin-file
+
+Ce plugin permet de sauvegarder des fichiers sur la mémoire de l'appareil.
+
+### Toast
+
+https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin
+
+Ce plugin permet d'afficher des "toasts" sur l'appareil, donnant ainsi un retour, un message ou une information à l'utilisateur.
+
 ## Plateformes installées 
 
 Le projet est destiné à être utilisé sur des appareils Android et iOS. Ces deux plateformes ont dont été installées.
