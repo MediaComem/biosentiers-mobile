@@ -2,7 +2,7 @@
 
 ## IMPORTANT !
 
-Puisque le .gitignore de ce projet ne prend pas en compte le dossier "plugins/" du projet Ionic, il fait exécuter la commande `ionic state restore` après un git clone pour qu'Ionic télécharge les plugins utilisés.
+Puisque le .gitignore de ce projet ne prend pas en compte le dossier "plugins/" du projet Ionic, il faut exécuter la commande `ionic state restore` après un git clone pour qu'Ionic télécharge les plugins utilisés.
 
 ## Plugins installés
 
