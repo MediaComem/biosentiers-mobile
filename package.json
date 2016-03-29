@@ -30,5 +30,12 @@
       "id": "com.wikitude.phonegap.WikitudePlugin"
     }
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    {
+      "platform": "android",
+      "version": "5.0.0",
+      "locator": "android@5.0.0"
+    },
+    "ios"
+  ]
 }
