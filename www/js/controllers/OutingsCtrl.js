@@ -1,8 +1,8 @@
 /**
  * Created by Mathias on 29.03.2016.
  */
-app.controller('PlaylistsCtrl', function ($scope) {
-  $scope.playlists = [
+app.controller('OutingsCtrl', function ($scope) {
+  $scope.outings = [
     {title: 'Reggae', id: 1},
     {title: 'Chill', id: 2},
     {title: 'Dubstep', id: 3},
