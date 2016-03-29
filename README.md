@@ -8,7 +8,7 @@ Puisque le .gitignore de ce projet ne prend pas en compte le dossier "plugins/" 
 
 ### BarcodeScanner
 
-[https://github.com/Tazaf/phonegap-plugin-barcodescanner]
+https://github.com/Tazaf/phonegap-plugin-barcodescanner
 Ce plugin permet d'ouvrir une vue caméra pour scanner les QR codes (et autres types de codes).
 Il s'agit d'un fork du plugin de base, corrigeant une autorisation Android qui créait un conflit avec le plugin Wikitude
  
