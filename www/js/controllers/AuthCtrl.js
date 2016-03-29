@@ -10,7 +10,7 @@ app.controller('AuthCtrl', function ($scope, $state, AR, $cordovaBarcodeScanner,
 
   $scope.validateQR = function () {
     console.log('validateQR');
-    $state.go('app.playlists');
+    $state.go('app.outings');
     $scope.modal.hide();
   };
 
@@ -21,7 +21,7 @@ app.controller('AuthCtrl', function ($scope, $state, AR, $cordovaBarcodeScanner,
   $ionicPlatform.ready(function () {
 
     $scope.doAccountLogin = function () {
-      $state.go('app.playlists');
+      $state.go('app.outings');
     };
 
     $scope.doQRCodeLogin = function () {
