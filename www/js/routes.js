@@ -35,22 +35,22 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
+    .state('app.outings', {
+      url: '/sorties',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/outings.html',
+          controller: 'OutingsCtrl'
         }
       }
     })
 
-    .state('app.single', {
-      url: '/playlists/:playlistId',
+    .state('app.outing', {
+      url: '/outings/:outingId',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlist.html',
-          controller: 'PlaylistCtrl'
+          templateUrl: 'templates/outing.html',
+          controller: 'OutingCtrl'
         }
       }
     });
