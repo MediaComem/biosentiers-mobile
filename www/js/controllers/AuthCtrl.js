@@ -2,8 +2,6 @@
  * Created by Mathias on 29.03.2016.
  */
 app.controller('AuthCtrl', function ($scope, $state, AR, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup) {
-  $scope.infos = {};
-
   $ionicPlatform.ready(function () {
 
     $scope.doAccountLogin = function () {
@@ -11,7 +9,6 @@ app.controller('AuthCtrl', function ($scope, $state, AR, $cordovaBarcodeScanner,
     };
 
     $scope.doQRCodeLogin = function () {
-
       $cordovaBarcodeScanner
         .scan()
         .then(function (data) {
@@ -21,6 +18,27 @@ app.controller('AuthCtrl', function ($scope, $state, AR, $cordovaBarcodeScanner,
         }, function (error) {
           console.log(error);
         })
+    };
+
+    $scope.doAccountLogin = function () {
+      $scope.account = {};
+      $ionicPopup.show({
+        title: "Connexion",
+        templateUrl: 'templates/popups/account-popup.html',
+        scope: $scope,
+        buttons: [{
+          text: "Annuler",
+          type: "button-assertive"
+        }, {
+          text: "Connexion",
+          type: "button-balanced",
+          onTap: function (e) {
+            console.log($scope.account);
+            $state.go('app.outings');
+            return true;
+          }
+        }]
+      });
     };
   });
 
@@ -44,5 +62,5 @@ app.controller('AuthCtrl', function ($scope, $state, AR, $cordovaBarcodeScanner,
         }
       ]
     });
-  }
+  };
 });
