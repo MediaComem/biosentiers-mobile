@@ -3,7 +3,11 @@
  * This file regroups the routes used in the app.
  */
 
-app.config(function ($stateProvider, $urlRouterProvider) {
+angular
+  .module('app.router', [])
+  .config(config);
+
+function config($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('login', {
       url: '/login',
@@ -56,4 +60,4 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
-});
+}

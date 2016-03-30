@@ -1,7 +1,11 @@
 /**
  * Created by Mathias on 29.03.2016.
  */
-app.controller('AppCtrl', function ($scope, AR) {
+angular
+  .module('app')
+  .controller('AppCtrl', AppCtrl);
+
+function AppCtrl($scope, ARService) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -13,4 +17,4 @@ app.controller('AppCtrl', function ($scope, AR) {
   $scope.launchAR = function () {
     console.log('launching AR');
   }
-});
+}

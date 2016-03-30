@@ -1,7 +1,11 @@
 /**
  * Created by Mathias on 29.03.2016.
  */
-app.controller('OutingsCtrl', function ($scope) {
+angular
+  .module('app')
+  .controller('OutingsCtrl', OutingCtrl);
+
+function OutingCtrl($scope) {
   $scope.outings = [
     {title: 'Reggae', id: 1},
     {title: 'Chill', id: 2},
@@ -10,4 +14,4 @@ app.controller('OutingsCtrl', function ($scope) {
     {title: 'Rap', id: 5},
     {title: 'Cowbell', id: 6}
   ];
-});
+}
