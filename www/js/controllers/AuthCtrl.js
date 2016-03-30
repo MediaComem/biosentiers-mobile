@@ -9,6 +9,7 @@ app.controller('AuthCtrl', function ($scope, $state, AR, $cordovaBarcodeScanner,
     };
 
     $scope.doQRCodeLogin = function () {
+      $scope.infos = {};
       $cordovaBarcodeScanner
         .scan()
         .then(function (data) {
