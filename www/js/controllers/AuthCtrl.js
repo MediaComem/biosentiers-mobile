@@ -2,7 +2,7 @@
  * Created by Mathias on 29.03.2016.
  * This controller handled all action related to either QR Code connexion or Account Connexion.
  */
-app.controller('AuthCtrl', function ($scope, $state, AR, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup) {
+app.controller('AuthCtrl', function ($scope, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup) {
   $ionicPlatform.ready(function () {
 
     /**
