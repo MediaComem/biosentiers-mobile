@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('ARModule', [])
+    .module('ARModule')
     .service('ARService', ARService);
 
   function ARService() {

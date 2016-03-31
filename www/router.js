@@ -13,14 +13,15 @@
     $stateProvider
       .state('login', {
         url: '/login',
-        templateUrl: 'templates/login.html',
-        controller: 'AuthCtrl'
+        templateUrl: 'auth-module/login.html',
+        controller: 'AuthCtrl',
+        controllerAs: 'auth'
       })
 
       .state('app', {
         url: '/app',
         abstract: true,
-        templateUrl: 'templates/menu.html',
+        templateUrl: 'menu/menu.html',
         controller: 'MenuCtrl'
       })
 
@@ -46,7 +47,7 @@
         url: '/sorties',
         views: {
           'menuContent': {
-            templateUrl: 'templates/outings.html',
+            templateUrl: 'outings/outings.html',
             controller: 'OutingsCtrl'
           }
         }
@@ -56,7 +57,7 @@
         url: '/outings/:outingId',
         views: {
           'menuContent': {
-            templateUrl: 'templates/outing.html',
+            templateUrl: 'outing/outing.html',
             controller: 'OutingCtrl'
           }
         }
