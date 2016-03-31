@@ -8,6 +8,9 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl($scope, $stateParams) {
+  function OutingCtrl(Wikitude) {
+    var outing = this;
+
+    outing.launchAR = Wikitude.result;
   }
 })();

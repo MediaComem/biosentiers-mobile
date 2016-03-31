@@ -4,5 +4,5 @@
 (function () {
   'use strict';
 
-  angular.module('ARModule', []);
+  angular.module('WikitudeModule', []);
 })();

@@ -7,7 +7,7 @@
   'use strict';
 
   angular
-    .module('app')
+    .module('AuthModule')
     .controller('AuthCtrl', AuthCtrl);
 
   /*
@@ -98,6 +98,7 @@
               AuthService.connectUser(auth.account)
                 .then(function () {
                   console.log('connection réussie !');
+                  $state.go('app.outings');
                 }, function () {
                   console.log('connection refusée');
                 });

@@ -5,7 +5,7 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform) {
+  function run($ionicPlatform, Wikitude) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -18,6 +18,7 @@
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
+      console.log(Wikitude);
     });
   }
 })();

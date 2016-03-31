@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.router', [])
+    .module('app')
     .config(router);
 
   function router($stateProvider, $urlRouterProvider) {
@@ -22,33 +22,17 @@
         url: '/app',
         abstract: true,
         templateUrl: 'menu/menu.html',
-        controller: 'MenuCtrl'
-      })
-
-      .state('app.search', {
-        url: '/search',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/search.html'
-          }
-        }
-      })
-
-      .state('app.browse', {
-        url: '/browse',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/browse.html'
-          }
-        }
+        controller: 'MenuCtrl',
+        controllerAs: 'menu'
       })
 
       .state('app.outings', {
-        url: '/sorties',
+        url: '/outings',
         views: {
           'menuContent': {
             templateUrl: 'outings/outings.html',
-            controller: 'OutingsCtrl'
+            controller: 'OutingsCtrl',
+            controllerAS: 'outings'
           }
         }
       })
@@ -58,7 +42,8 @@
         views: {
           'menuContent': {
             templateUrl: 'outing/outing.html',
-            controller: 'OutingCtrl'
+            controller: 'OutingCtrl',
+            controllerAs: 'outing'
           }
         }
       });

@@ -7,8 +7,7 @@
   angular.module('app', [
     'ionic',
     'ngCordova',
-    'app.router',
-    'ARModule',
+    'WikitudeModule',
     'AuthModule',
     'QRModule'
   ]);
