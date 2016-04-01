@@ -18,7 +18,9 @@
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
-      console.log(Wikitude);
+
+      Wikitude.init();
+      Wikitude.executeARViewCall('architectsdk://function1?{"hello":"world"}');
     });
   }
 })();

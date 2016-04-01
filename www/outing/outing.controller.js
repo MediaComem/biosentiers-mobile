@@ -11,6 +11,7 @@
   function OutingCtrl(Wikitude) {
     var outing = this;
 
-    outing.launchAR = Wikitude.result;
+    outing.launchAR = function () {
+    }
   }
 })();
