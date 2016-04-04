@@ -19,8 +19,8 @@
         StatusBar.styleDefault();
       }
 
-      Wikitude.init();
-      Wikitude.executeARViewCall('architectsdk://function1?{"hello":"world"}');
+      //Wikitude.init();
+      //Wikitude.executeARViewCall('architectsdk://function1?{"hello":"world"}');
     });
   }
 })();

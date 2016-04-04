@@ -42,6 +42,7 @@
   function ARFactory(WikitudeFunctions) {
 
     var plugin = null;
+    var protocol = 'architectsdk://';
 
     var service = {
       config: {camera_position: 'back'},
@@ -102,10 +103,8 @@
      * @param call A string starting with 'architectsdk://'.
      */
     function executeARViewCall(call) {
-      var protocol = 'architectsdk://';
       if (call.substr(0, protocol.length) === protocol) {
         var action = call.substr(protocol.length);
-        var i = action.indexOf('?');
         // When the called function has no parameter (there's no '?' in the call string)
         if (action.indexOf('?') === -1) {
           WikitudeFunctions[action]();
@@ -125,6 +124,21 @@
               throw e;
             }
           }
+        }
+      } else {
+        throw new SyntaxError('executeARViewCall() expects first parameter to be a string starting with \'architectsdk://\'.');
+      }
+    }
+
+    function parseActionUrl(url) {
+      var action = {};
+      if (url.substr(0, protocol.length) === protocol) {
+        var call = url.substr(protocol.length);
+        if (call.indexOf('?') === -1) {
+          action.fn = call;
+        } else {
+          action.function = action.substr(0, i);
+          action.parameters = angular.fromJson(action.substr(i + 1));
         }
       } else {
         throw new SyntaxError('executeARViewCall() expects first parameter to be a string starting with \'architectsdk://\'.');

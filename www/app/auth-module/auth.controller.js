@@ -45,7 +45,7 @@
     function showQRValidation() {
       $ionicPopup.show({
         title: "Validation",
-        templateUrl: 'auth-module/qr-overview.html',
+        templateUrl: 'app/auth-module/qr-overview.html',
         scope: $scope,
         buttons: [{
           text: "Pas du tout",
@@ -73,7 +73,7 @@
       auth.account = {};
       $ionicPopup.show({
         title: "Connexion",
-        templateUrl: 'auth-module/account-popup.html',
+        templateUrl: 'app/auth-module/account-popup.html',
         scope: $scope,
         buttons: [{
           text: "Annuler",
