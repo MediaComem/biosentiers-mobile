@@ -12,6 +12,11 @@
     var outing = this;
 
     outing.launchAR = function () {
+      Wikitude.launchAR().then(function (success) {
+        console.log('World loaded', success);
+      }).catch(function (error) {
+        console.log('World not loaded', error);
+      });
     }
   }
 })();

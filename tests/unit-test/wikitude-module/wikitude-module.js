@@ -2,74 +2,137 @@
  * Created by Mathias on 04.04.2016.
  */
 describe('WikitudeModule', function () {
-	describe('Wikitude service', function () {
-		var service, WikitudeFunctionsMock;
-		beforeEach(module('WikitudeModule'));
 
-		beforeEach(function () {
-			WikitudeFunctionsMock = {
-				foo: jasmine.createSpy('foo')
-			};
+  beforeEach(module('WikitudeModule'));
 
-			module(function ($provide) {
-				$provide.value('WikitudeFunctions', WikitudeFunctionsMock);
-			})
-		});
+  describe('Wikitude protocol constant', function () {
+    it('should be set to the correct value', inject(function (protocol) {
+      expect(protocol).toEqual('architectsdk://');
+    }));
+  });
 
+  describe('Wikitude plugin service', function () {
+    it('should only have one method, named \'get\'', inject(function (plugin) {
+      expect(plugin.get).toBeDefined();
+    }))
+  });
 
-		beforeEach(inject(function (Wikitude) {
-			service = Wikitude;
-		}));
+  describe('Wikitude service', function () {
+    var service, libMock;
 
-		it('should have an \'init\' property that is a method', function() {
-			expect(service.init).toBeDefined();
-			expect(service.init).toEqual(jasmine.any(Function));
-		});
+    beforeEach(function () {
+      libMock = {
+        foo: jasmine.createSpy('foo'),
+        fooBar: "",
+        barfoo: jasmine.createSpy('barfoo')
+      };
 
-		describe('parseActionUrl()', function () {
-			it('should return object with function and parameters properties from url', function () {
-				var url = 'architectsdk://foo?{"bar":"foobar"}';
-				var object = {
-					funcName: 'foo',
-					parameters: {
-						bar: 'foobar'
-					}
-				};
-				var result = service.parseActionUrl(url);
-				expect(result).toEqual(object);
-			});
+      settingsMock = {
+        deviceSupportsFeatures: true,
+        worldsFolders: {
+          foo: {}
+        }
+      };
 
-			it('should return object with function property from url', function() {
-				var url = 'architectsdk://foo';
-				var result = service.parseActionUrl(url);
-				var object = {
-					funcName: 'foo',
-					parameters: null
-				};
-				expect(result).toEqual(object);
-			});
+      pluginMock = {
+        get: function () {
+          return {
+            loadARchitectWorld: jasmine.createSpy('loadARchitectWorld')
+          }
+        }
+      };
 
-			it('should throw an error because of a bad json parameter after the \'?\'', function () {
-				var url = 'architectsdk://foo?bar';
-				expect(function(){service.parseActionUrl(url)}).toThrowError(SyntaxError);
-			});
+      module(function ($provide) {
+        $provide.value('lib', libMock);
+        $provide.value('settings', settingsMock);
+        $provide.value('plugin', pluginMock);
+      })
+    });
 
-			it('should throw an error because of a badly formed url', function () {
-				var url = 'foo';
-				expect(function(){service.parseActionUrl(url)}).toThrowError(SyntaxError);
-			})
-		});
+    beforeEach(inject(function (Wikitude) {
+      service = Wikitude;
+    }));
 
-		describe('executeActionCall()', function () {
-			it('should call the foo function', function () {
-				var url = 'architectsdk://foo';
-				service.executeActionCall(url);
-				expect(WikitudeFunctionsMock.foo).toHaveBeenCalled();
-			});
-			it('should throw an exception caused by the missing bar function', function () {
-				var url = 'architectsdk://bar';
-				expect(function(){service.executeActionCall(url)}).toThrowError(TypeError);
-			});
-		});
-	})
-});
+    it('should have an \'initService\' property that is a method', function () {
+      expect(service.initService).toBeDefined();
+      expect(service.initService).toEqual(jasmine.any(Function));
+    });
+
+    xdescribe('parseActionUrl()', function () {
+      it('should return object with function and parameters properties from url', function () {
+        var url = 'architectsdk://foo?{"bar":"foobar"}';
+        var object = {
+          funcName: 'foo',
+          parameters: {
+            bar: 'foobar'
+          }
+        };
+        var result = service.parseActionUrl(url);
+        expect(result).toEqual(object);
+      });
+
+      it('should return object with function property from url', function () {
+        var url = 'architectsdk://foo';
+        var result = service.parseActionUrl(url);
+        var object = {
+          funcName: 'foo',
+          parameters: null
+        };
+        expect(result).toEqual(object);
+      });
+
+      it('should throw an error because of a bad json parameter after the \'?\'', function () {
+        var url = 'architectsdk://foo?bar';
+        expect(function () {
+          service.parseActionUrl(url)
+        }).toThrowError(SyntaxError);
+      });
+
+      it('should throw an error because of a badly formed url', function () {
+        var url = 'foo';
+        expect(function () {
+          service.parseActionUrl(url)
+        }).toThrowError(SyntaxError);
+      })
+    });
+
+    xdescribe('executeActionCall()', function () {
+      it('should call the foo function with no parameter', function () {
+        var url = 'architectsdk://foo';
+        service.executeActionCall(url);
+        expect(libMock.foo).toHaveBeenCalledWith(null);
+      });
+      it('should call the barfoo function with a foo and a bar parameter', function () {
+        var url = 'architectsdk://barfoo?{"foo":"fooValue","bar":"barValue"}';
+        service.executeActionCall(url);
+        expect(libMock.barfoo).toHaveBeenCalledWith({foo: "fooValue", bar: "barValue"});
+      });
+      it('should throw an exception caused by the missing bar function', function () {
+        var url = 'architectsdk://bar';
+        expect(function () {
+          service.executeActionCall(url)
+        }).toThrowError(TypeError);
+      });
+      it('should thow an excpetion caused by calling an non-function property', function () {
+        var url = 'architectsdk://fooBar';
+        expect(function () {
+          service.executeActionCall(url)
+        }).toThrowError(TypeError);
+      })
+    });
+
+    describe('launchAR()', function () {
+      xit('should throw an error if the device does not support features', function () {
+        settingsMock.deviceSupportsFeatures = false;
+        expect(service.launchAR).toThrowError(UnsupportedFeatureError);
+      });
+
+      it('should throw an error if the requested World does not exists', function () {
+        expect(function(){service.launchAR('bar')}).toThrowError(SyntaxError);
+      });
+
+      //TODO : vérifier que l'appel à été fait avec le bon nom pour getWorldUrl()
+    })
+  })
+})
+;
