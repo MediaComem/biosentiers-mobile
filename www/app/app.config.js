@@ -5,7 +5,7 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform, Wikitude) {
+  function run($ionicPlatform, Ionicitude) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -18,7 +18,8 @@
         StatusBar.styleDefault();
       }
 
-      Wikitude.initService();
+      Ionicitude.init();
+      Ionicitude.registerFunction('tralala', 'blibli');
     });
   }
 })();
