@@ -19,7 +19,6 @@
       }
 
       Ionicitude.init();
-      Ionicitude.registerFunction('tralala', 'blibli');
     });
   }
 })();

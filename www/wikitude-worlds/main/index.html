@@ -7,23 +7,11 @@
 
     <title>Test AR World</title>
     <script src="architect://architect.js"></script>
-    <script src="../../lib/ionic/js/ionic.bundle.js"></script>
-
-    <link rel="stylesheet" href="../../lib/ionic/css/ionic.min.css">
+    <script src="main.js"></script>
   </head>
-  <body class="eventless" ng-app="ar">
-    <ion-pane ng-controller="baseCtrl">
-      <ion-header-bar class="bar-energized">
-        <h1 class="title">Ionic + Wikitude</h1>
-      </ion-header-bar>
-      <ion-view>
-        <ion-content>
-          <div class="padding">
-            <button class="button button-royal eventable" ng-click="closeAR()">{{buttons[0].name}}</button>
-            <button class="button button-royal eventable" ng-click="test()">{{buttons[1].name}}</button>
-          </div>
-        </ion-content>
-      </ion-view>
-    </ion-pane>
+  <body>
+    <button onclick="blabla()" style="padding: 10px;">Close</button>
+    <button onclick="foo()" style="padding: 10px;">Foo</button>
+    <button onclick="bar()" style="padding: 10px;">Bar</button>
   </body>
 </html>
