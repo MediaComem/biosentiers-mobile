@@ -9,7 +9,8 @@
     'ngCordova',
     'IonicitudeModule',
     'AuthModule',
-    'QRModule'
+    'QRModule',
+    // 'arDirectives'
   ]);
 
 })();

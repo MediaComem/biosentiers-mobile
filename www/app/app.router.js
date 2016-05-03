@@ -11,6 +11,11 @@
 
   function router($stateProvider, $urlRouterProvider) {
     $stateProvider
+
+      .state('test', {
+        url: '/test',
+        templateUrl: 'app/test.html'
+      })
       .state('login', {
         url: '/login',
         templateUrl: 'app/auth-module/login.html',
