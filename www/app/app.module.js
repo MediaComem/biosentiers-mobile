@@ -9,7 +9,9 @@
     'ngCordova',
     'IonicitudeModule',
     'AuthModule',
-    'QRModule'
+    'QRModule',
+    'starter.services' // SHC : pour le service contenant la liste des sorties
+    // 'arDirectives'
   ]);
 
 })();
