@@ -55,7 +55,8 @@
         url: '/all',
         views: {
           'outings-all': {
-            templateUrl: 'app/outings/outings-all.html'
+            templateUrl: 'app/outings/outings-all.html',
+            controller: 'OutingsAllCtrl',
           }
         }
       })
