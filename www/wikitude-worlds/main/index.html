@@ -8,13 +8,24 @@
     <title>Test AR World</title>
     <script src="architect://architect.js"></script>
     <script src="../../lib/ionic/js/ionic.bundle.min.js"></script>
-    <script src="../lib/ar-back-button-directive.js"></script>
-    <script src="../lib/do.js"></script>
+    <script src="../ar-back-button-directive.js"></script>
+    <script src="../ar-lib/ar-lib.module.js"></script>
+    <script src="../ar-lib/ar-lib.do.js"></script>
+    <script src="../ar-lib/ar-lib.markers.js"></script>
+    <script src="../ar-lib/ar-lib.poi.js"></script>
     <script src="world-module.js"></script>
     <script src="main.js"></script>
 
     <link rel="stylesheet" href="../../lib/ionic/css/ionic.min.css">
     <!--<link rel="stylesheet" href="../lib/hack.css">-->
+
+    <style>
+      #test-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+      }
+    </style>
   </head>
   <body class="eventless" ng-app="ar">
     <!--<ion-pane>-->
@@ -23,13 +34,16 @@
       <h1 class="title">Ionic + Wikitude</h1>
       <button class="button button-icon icon ion-android-options eventable" ng-click="base.showOpt()"></button>
     </ion-header-bar>
-      <!--<ion-view>-->
-        <!--<ion-content>-->
-          <!--<div class="padding">-->
-            <!--<button class="button button-royal eventable" ng-click="base.test()">{{base.buttons[1].name}}</button>-->
-          <!--</div>-->
-        <!--</ion-content>-->
-      <!--</ion-view>-->
+    <!--<ion-view>-->
+    <!--<ion-content>-->
+    <!--<div class="padding">-->
+    <div id="test-button" ng-controller="buttonCtrl as button">
+      <button class="button button-royal" ng-click="button.loadMarkers()">Load</button>
+      <button class="button button-royal" ng-click="button.debug()">Debug</button>
+    </div>
+    <!--</div>-->
+    <!--</ion-content>-->
+    <!--</ion-view>-->
     <!--</ion-pane>-->
   </body>
 </html>

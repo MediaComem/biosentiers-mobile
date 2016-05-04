@@ -10,6 +10,7 @@
     'IonicitudeModule',
     'AuthModule',
     'QRModule',
+    'POIModule',
     // 'arDirectives'
   ]);
 

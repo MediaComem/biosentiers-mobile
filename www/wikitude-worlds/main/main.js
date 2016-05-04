@@ -3,10 +3,11 @@
 angular.module('ar', [
     'ionic',
     'arDirectives',
-    'Do',
+    'ARLib',
     'World'
   ])
-  .controller('baseCtrl', baseCtrl);
+  .controller('baseCtrl', baseCtrl)
+  .controller('buttonCtrl', buttonCtrl);
 
 function baseCtrl(Do, $scope, $ionicModal) {
   var ctrl = this;
@@ -17,7 +18,6 @@ function baseCtrl(Do, $scope, $ionicModal) {
   ];
   ctrl.modal = null;
   ctrl.closeAR = closeAR;
-  ctrl.test = test;
   ctrl.showOpt = showOpt;
 
   $ionicModal.fromTemplateUrl('dev-opt.html', {
@@ -39,10 +39,6 @@ function baseCtrl(Do, $scope, $ionicModal) {
     // Execute action
   });
 
-  function test() {
-    console.log('test');
-  }
-
   function closeAR() {
     console.log('closing');
     Do.action('close');
@@ -51,4 +47,16 @@ function baseCtrl(Do, $scope, $ionicModal) {
   function showOpt() {
     ctrl.modal.show();
   }
+}
+
+function buttonCtrl(Do) {
+  var ctrl = this;
+
+  ctrl.loadMarkers = function loadMarkers() {
+    Do.action('loadMarkers');
+  };
+
+  ctrl.debug = function debug() {
+    console.log(World.markerList);
+  };
 }
