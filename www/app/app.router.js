@@ -16,6 +16,7 @@
         url: '/test',
         templateUrl: 'app/test.html'
       })
+
       .state('login', {
         url: '/login',
         templateUrl: 'app/auth-module/login.html',
@@ -31,13 +32,89 @@
         controllerAs: 'menu'
       })
 
+      .state('app.account', {
+        url: '/account',
+        views: {
+          'menuContent': {
+            templateUrl: 'app/account/account.html'
+          }
+        }
+      })
+
       .state('app.outings', {
         url: '/outings',
         views: {
           'menuContent': {
-            templateUrl: 'app/outings/outings.html',
-            controller: 'OutingsCtrl',
-            controllerAS: 'outings'
+            templateUrl: 'app/outings/outings.html'
+          }
+        }
+      })
+
+      .state('app.outings.all', {
+        url: '/all',
+        views: {
+          'outings-all': {
+            templateUrl: 'app/outings/outings-all.html',
+            controller: 'OutingsCtrl as ctrl'
+          }
+        },
+        resolve: {
+          outingsData: function (Outings) {
+            return Outings.getAll();
+          }
+        }
+      })
+
+      .state('app.outings.waiting', {
+        url: '/waiting',
+        views: {
+          'outings-waiting': {
+            templateUrl: 'app/outings/outings-all.html',
+            controller: 'OutingsCtrl as ctrl'
+          }
+        },
+        resolve: {
+          outingsData: function(Outings) {
+            return Outings.getWaiting();
+          }
+        }
+      })
+
+      .state('app.outings.ongoing', {
+        url: '/ongoing',
+        views: {
+          'outings-ongoing': {
+            templateUrl: 'app/outings/outings-all.html',
+            controller: 'OutingsCtrl as ctrl'
+          }
+        },
+        resolve: {
+          outingsData: function(Outings) {
+            return Outings.getOngoing();
+          }
+        }
+      })
+
+      .state('app.outings.over', {
+        url: '/over',
+        views: {
+          'outings-over': {
+            templateUrl: 'app/outings/outings-all.html',
+            controller: 'OutingsCtrl as ctrl'
+          }
+        },
+        resolve: {
+          outingsData: function(Outings) {
+            return Outings.getOver();
+          }
+        }
+      })
+
+      .state('app.settings', {
+        url: '/settings',
+        views: {
+          'menuContent': {
+            templateUrl: 'app/settings/settings.html'
           }
         }
       })
@@ -56,6 +133,6 @@
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/login');
     // Dev route to access directly the launchAR button
-    $urlRouterProvider.otherwise('/app/outings/1');
+    $urlRouterProvider.otherwise('/app/settings');
   }
 })();
