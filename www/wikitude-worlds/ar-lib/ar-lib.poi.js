@@ -8,8 +8,8 @@
     .module('ARLib')
     .factory('POI', fnPOI);
 
-  function fnPOI(Markers) {
-    function POI(data) {
+  function fnPOI(Do, Markers) {
+    function POI(data, clickCallback) {
       var self = this;
       self.id = data.id;
       self.coord = {lat: data.lat, lon: data.lon, alt: data.alt};
@@ -37,16 +37,16 @@
         }
       });
 
+      ////////////////////
+
       function onClick() {
         console.log('POI clicked', self);
+        Do.action('loadMarkerData', {id: self.id});
+        console.log('action executed', World);
+        clickCallback();
         return true; // Stop propagating the touch event
       }
     }
-
-    //POI.prototype.onClick = function onClick() {
-    //  console.log('POI clicked', this);
-    //  return true; // Stop propagating the touch event
-    //};
 
     return POI;
   }

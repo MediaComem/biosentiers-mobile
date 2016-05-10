@@ -5,7 +5,7 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform, Ionicitude, $cordovaToast, POIGeo) {
+  function run($ionicPlatform, Ionicitude, $cordovaToast, POIGeo, POIData) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -24,6 +24,7 @@
         .addAction(showPos)
         .addAction(fixUserAltitude)
         .addAction(loadMarkers)
+        .addAction(loadMarkerData)
         .listLibActions();
 
       ////////////////////
@@ -48,6 +49,11 @@
         pois.forEach(function (poi) {
           service.callJavaScript('World.createMarker(' + angular.toJson(poi) + ')');
         });
+      }
+
+      function loadMarkerData(service, param) {
+        console.log('get marker data');
+        service.callJavaScript('World.currentPoiData = ' + angular.toJson(POIData.getData(param.id)));
       }
 
     });

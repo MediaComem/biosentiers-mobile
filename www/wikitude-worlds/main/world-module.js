@@ -13,7 +13,7 @@ function run(Do, POI) {
     markerList: [],
     createMarker: function (poi_data) {
       console.log(poi_data);
-      this.markerList[poi_data.id] = new POI(poi_data);
+      this.markerList[poi_data.id] = new POI(poi_data, this.markerClick);
     }
   };
 

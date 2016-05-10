@@ -19,6 +19,7 @@ function baseCtrl(Do, $scope, $ionicModal) {
   ctrl.modal = null;
   ctrl.closeAR = closeAR;
   ctrl.showOpt = showOpt;
+  World.markerClick = showOpt;
 
   $ionicModal.fromTemplateUrl('dev-opt.html', {
     scope: $scope,
