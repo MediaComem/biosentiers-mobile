@@ -124,8 +124,12 @@
         views: {
           'menuContent': {
             templateUrl: 'app/outing/outing.html',
-            controller: 'OutingCtrl',
-            controllerAs: 'outing'
+            controller: 'OutingCtrl as outing'
+          }
+        },
+        resolve: {
+          outingData: function(Outings, $stateParams) {
+            return Outings.getOne($stateParams.outingId);
           }
         }
       });
@@ -133,6 +137,6 @@
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/login');
     // Dev route to access directly the launchAR button
-    $urlRouterProvider.otherwise('/app/settings');
+    $urlRouterProvider.otherwise('/app/outings/1');
   }
 })();

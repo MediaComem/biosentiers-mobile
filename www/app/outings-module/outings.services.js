@@ -56,11 +56,11 @@
 
     function getAll() {
       var outings = waiting.concat(ongoing, over);
-      outings.sort(byId);
-      return outings;
+      return outings.sort(byId);
     }
 
     function getOne(outingId) {
+      var outings = getAll();
       for (var i = 0; i < outings.length; i++) {
         if (outings[i].id === parseInt(outingId)) {
           return outings[i];
