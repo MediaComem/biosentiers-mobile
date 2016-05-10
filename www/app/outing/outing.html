@@ -1,6 +1,27 @@
-<ion-view view-title="Sortie">
+<ion-view view-title="{{outing.data.name}}">
   <ion-content>
-    <h1>Sortie</h1>
-    <button class="button button-default" on-release="outing.launchAR()">Test AR</button>
+    <div class="padding">
+      <div class="card">
+        <div class="item item-text-wrap">
+          Cette zone sera occupée par la carte Leaflet.
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-left">Créée le</div>
+        <div class="col text-right">{{outing.data.date}}</div>
+      </div>
+      <div class="row">
+        <div class="col text-left">Créée par</div>
+        <div class="col text-right">{{outing.data.creator}}</div>
+      </div>
+      <div class="row">
+        <div class="col text-left">Statut</div>
+        <div class="col text-right">{{outing.data.statut}}</div>
+      </div>
+
+      <button ng-if="outing.data.statut === 'En attente'" class="button button-balanced button-block button-outline" on-release="outing.launchAR()">Démarrer</button>
+      <button ng-if="outing.data.statut === 'En cours'" class="button button-balanced button-block button-outline" on-release="outing.launchAR()">Reprendre</button>
+      <button ng-if="outing.data.statut === 'Terminée'" class="button button-balanced button-block button-outline" on-release="outing.launchAR()">Compte-rendu</button>
+    </div>
   </ion-content>
 </ion-view>
