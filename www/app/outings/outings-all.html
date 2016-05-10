@@ -1,13 +1,11 @@
 <ion-view view-title="Mes Sorties">
   <ion-content>
-    <h1>Toutes</h1>
     <ion-list>
-      <ion-item ng-repeat="outing in outings" href="#/app/outings/{{outing.id}}">
+      <ion-item ng-repeat="outing in ctrl.outings" href="#/app/outings/{{outing.id}}">
         <h2>{{outing.name}}</h2>
         <p>{{outing.date}}</p>
         <p>Créée par {{outing.creator}}</p>
         <p>Statut de la sortie : {{outing.statut}}</p>
-        
       </ion-item>
     </ion-list>
   </ion-content>

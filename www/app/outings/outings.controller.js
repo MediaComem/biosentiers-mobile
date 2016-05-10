@@ -6,22 +6,11 @@
 
   angular
     .module('app')
-    .controller('OutingsCtrl', OutingCtrl)
-    .controller('OutingsAllCtrl', OutingsAllCtrl);
+    .controller('OutingsCtrl', OutingsCtrl)
 
-  function OutingCtrl($scope) {
-    $scope.outings = [
-      {title: 'Reggae', id: 1},
-      {title: 'Chill', id: 2},
-      {title: 'Dubstep', id: 3},
-      {title: 'Indie', id: 4},
-      {title: 'Rap', id: 5},
-      {title: 'Cowbell', id: 6}
-    ];
+  function OutingsCtrl(outingsData) {
+    var ctrl = this;
+    ctrl.outings = outingsData;
+    console.log(ctrl.outings);
   }
-  
-  function OutingsAllCtrl($scope, Outings) {
-    $scope.outings = Outings.all();
-  }
-  
 })();

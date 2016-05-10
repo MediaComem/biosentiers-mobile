@@ -10,7 +10,7 @@
     'IonicitudeModule',
     'AuthModule',
     'QRModule',
-    'starter.services' // SHC : pour le service contenant la liste des sorties
+    'OutingsModule' // SHC : pour le service contenant la liste des sorties
     // 'arDirectives'
   ]);
 
