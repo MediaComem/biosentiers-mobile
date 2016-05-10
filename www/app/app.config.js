@@ -5,7 +5,7 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform, Ionicitude) {
+  function run($ionicPlatform, Ionicitude, $cordovaToast) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -18,7 +18,23 @@
         StatusBar.styleDefault();
       }
 
-      Ionicitude.init();
+      Ionicitude
+        .init()
+        .addAction(close)
+        .addAction(showPos)
+        .listLibActions();
+
+      ////////////////////
+
+      function close(service) {
+        console.log('closing');
+        service.close();
+      }
+
+      function showPos(service, param) {
+        console.log('showing position', param.lat, param.lon);
+        $cordovaToast.showLongBottom('lat : ' + param.lat + ", lon : " + param.lon);
+      }
     });
   }
 })();

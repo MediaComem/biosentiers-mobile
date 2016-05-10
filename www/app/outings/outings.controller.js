@@ -6,7 +6,8 @@
 
   angular
     .module('app')
-    .controller('OutingsCtrl', OutingCtrl);
+    .controller('OutingsCtrl', OutingCtrl)
+    .controller('OutingsAllCtrl', OutingsAllCtrl);
 
   function OutingCtrl($scope) {
     $scope.outings = [
@@ -18,4 +19,9 @@
       {title: 'Cowbell', id: 6}
     ];
   }
+  
+  function OutingsAllCtrl($scope, Outings) {
+    $scope.outings = Outings.all();
+  }
+  
 })();
