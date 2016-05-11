@@ -1,16 +1,17 @@
 /**
  * Created by Mathias on 02.05.2016.
  */
-var World;
-
 angular
-  .module('World', ['ARLib'])
+  .module('ar')
   .run(run);
 
-function run(Do, POI) {
+function run(Do, POI, $rootScope) {
   World = {
     userCoord: {},
     markerList: [],
+    poiData: null,
+    setPoiData: setPoiData,
+    markerClick: null,
     createMarker: function (poi_data) {
       console.log(poi_data);
       this.markerList[poi_data.id] = new POI(poi_data, this.markerClick);
@@ -31,6 +32,12 @@ function run(Do, POI) {
   function onLocationChanged(lat, lon, alt, acc) {
     console.log('coord', lat, lon, alt, acc);
     World.userCoord = {lat: lat, lon: lon, alt: alt};
-    Do.action('showPos', World.userCoord);
+    //Do.action('showPos', World.userCoord);
+  }
+
+  function setPoiData(data) {
+    console.log('setting the poi data');
+    World.poiData = data;
+    $rootScope.$emit('marker:ready');
   }
 }

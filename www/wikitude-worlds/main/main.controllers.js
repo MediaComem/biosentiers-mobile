@@ -1,30 +1,20 @@
-'use strict';
-
-angular.module('ar', [
-    'ionic',
-    'arDirectives',
-    'ARLib',
-    'World'
-  ])
+angular
+  .module('ar')
   .controller('baseCtrl', baseCtrl)
   .controller('buttonCtrl', buttonCtrl);
 
-function baseCtrl(Do, $scope, $ionicModal) {
+function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
   var ctrl = this;
 
-  ctrl.modals = {};
+  ctrl.modal = null;
   ctrl.closeAR = closeAR;
-  World.markerClick = showPoiData;
+  ctrl.showOptModal = showOptModal;
+  ctrl.log = customLog;
+  World.markerClick = showPoiModal;
 
-  $ionicModal.fromTemplateUrl('dev-opt.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function (modal) {
-    ctrl.modals.opt = modal;
-  });
   // Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function () {
-    ctrl.modals.opt.remove();
+    ctrl.modal.remove();
   });
   // Execute action on hide modal
   $scope.$on('modal.hidden', function () {
@@ -37,18 +27,42 @@ function baseCtrl(Do, $scope, $ionicModal) {
     console.log('modal removed');
   });
 
+  $rootScope.$on('marker:ready', function(event) {
+    console.log('marker:ready event catched');
+    console.log(event);
+    console.log(World.poiData);
+    ctrl.poi = World.poiData;
+    showPoiModal();
+  });
+
+  ////////////////////
+
+  function customLog(data) {
+    console.log(data);
+  }
+
   function closeAR() {
     console.log('closing');
     Do.action('close');
   }
 
-  function showPoiData(data) {
-    $ionicModal.fromTemplateUrl('poi.html', {
+  function showOptModal() {
+    $ionicModal.fromTemplateUrl('modal.opt.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
-      ctrl.modals.poi = modal;
-      ctrl.modals.poi.show();
+      ctrl.modal = modal;
+      ctrl.modal.show();
+    });
+  }
+
+  function showPoiModal() {
+    $ionicModal.fromTemplateUrl('modal.poi.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function (modal) {
+      ctrl.modal = modal;
+      ctrl.modal.show();
     });
   }
 }

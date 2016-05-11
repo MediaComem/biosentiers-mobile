@@ -53,9 +53,8 @@
 
       function loadMarkerData(service, param) {
         console.log('get marker data');
-        service.callJavaScript('World.currentPoiData = ' + angular.toJson(POIData.getData(param.id)));
+        service.callJavaScript('World.setPoiData(' + angular.toJson(POIData.getData(param.id)) + ')');
       }
-
     });
   }
 })();

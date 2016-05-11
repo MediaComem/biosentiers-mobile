@@ -8,7 +8,7 @@
     .module('ARLib')
     .factory('POI', fnPOI);
 
-  function fnPOI(Do, Markers) {
+  function fnPOI(Do, Markers, $rootScope) {
     function POI(data, clickCallback) {
       var self = this;
       self.id = data.id;
@@ -42,8 +42,9 @@
       function onClick() {
         console.log('POI clicked', self);
         Do.action('loadMarkerData', {id: self.id});
-        console.log('action executed', World);
-        clickCallback(self);
+        //$rootScope.$emit('marker:clicked');
+        //console.log('action executed', World.currentPoiData);
+        //clickCallback(World.currentPoiData);
         return true; // Stop propagating the touch event
       }
     }
