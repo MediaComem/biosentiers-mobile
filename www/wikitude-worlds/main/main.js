@@ -12,32 +12,29 @@ angular.module('ar', [
 function baseCtrl(Do, $scope, $ionicModal) {
   var ctrl = this;
 
-  ctrl.buttons = [
-    {name: "Close"},
-    {name: "Test"}
-  ];
-  ctrl.modal = null;
+  ctrl.modals = {};
   ctrl.closeAR = closeAR;
-  ctrl.showOpt = showOpt;
-  World.markerClick = showOpt;
+  World.markerClick = showPoiData;
 
   $ionicModal.fromTemplateUrl('dev-opt.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function (modal) {
-    ctrl.modal = modal;
+    ctrl.modals.opt = modal;
   });
   // Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function () {
-    ctrl.modal.remove();
+    ctrl.modals.opt.remove();
   });
   // Execute action on hide modal
   $scope.$on('modal.hidden', function () {
     // Execute action
+    console.log('modal hidden');
   });
   // Execute action on remove modal
   $scope.$on('modal.removed', function () {
     // Execute action
+    console.log('modal removed');
   });
 
   function closeAR() {
@@ -45,8 +42,14 @@ function baseCtrl(Do, $scope, $ionicModal) {
     Do.action('close');
   }
 
-  function showOpt() {
-    ctrl.modal.show();
+  function showPoiData(data) {
+    $ionicModal.fromTemplateUrl('poi.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function (modal) {
+      ctrl.modals.poi = modal;
+      ctrl.modals.poi.show();
+    });
   }
 }
 

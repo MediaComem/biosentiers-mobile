@@ -31,7 +31,7 @@
     <ion-header-bar class="bar-balanced" ng-controller="baseCtrl as base">
       <button class="button button-icon icon ion-android-arrow-back eventable" ng-click="base.closeAR()"></button>
       <h1 class="title">Ionic + Wikitude</h1>
-      <button class="button button-icon icon ion-android-options eventable" ng-click="base.showOpt()"></button>
+      <button class="button button-icon icon ion-android-options eventable" ng-click="base.modals.opt.show()"></button>
     </ion-header-bar>
     <div id="test-button" ng-controller="buttonCtrl as button">
       <button class="button button-royal" ng-click="button.loadMarkers()">Load</button>
@@ -55,3 +55,20 @@
     </ion-content>
   </ion-modal-view>
 </script>
+
+<script id="poi.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-balanced">
+      <h1 class="title">{{}}</h1>
+      <button class="button button-clear button-primary" ng-click="base.modal.hide()">Cancel</button>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <a class="item" href="#">Dev opt 1</a>
+        <a class="item" href="#">Dev opt 2</a>
+        <a class="item" href="#">Dev opt 3</a>
+      </div>
+    </ion-content>
+  </ion-modal-view>
+</script>
+

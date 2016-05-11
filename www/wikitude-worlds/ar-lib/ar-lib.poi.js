@@ -43,7 +43,7 @@
         console.log('POI clicked', self);
         Do.action('loadMarkerData', {id: self.id});
         console.log('action executed', World);
-        clickCallback();
+        clickCallback(self);
         return true; // Stop propagating the touch event
       }
     }
