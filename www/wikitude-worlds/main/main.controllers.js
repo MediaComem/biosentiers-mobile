@@ -27,8 +27,8 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
     console.log('modal removed');
   });
 
-  $rootScope.$on('marker:ready', function(event) {
-    console.log('marker:ready event catched');
+  $rootScope.$on('marker:loaded', function(event) {
+    console.log('marker:loaded event catched');
     console.log(event);
     console.log(World.poiData);
     ctrl.poi = World.poiData;

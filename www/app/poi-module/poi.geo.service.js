@@ -7,9 +7,10 @@
     .module('POIModule')
     .factory('POIGeo', POIGeo);
 
-  function POIGeo() {
+  function POIGeo($http) {
     var service = {
-      getPoints: getPoints
+      getPoints: getPoints,
+      getMarks: getMarks
     };
 
     return service;
@@ -17,20 +18,34 @@
     ////////////////////
 
     function getPoints() {
+      return $http.get('data/geodata.json');
+    }
+
+    function getMarks() {
       return [{
-        lat: 46.77917,
-        lon: 6.659508,
-        alt: 449,
-        name: 'HEIG-VD, Cheseaux',
-        type: 'building',
-        id: 1
+        properties: {
+          id_poi: "HEIG-VD, Cheseaux",
+          theme_name: "default"
+        },
+        geometry: {
+          coordinates: [6.659508, 46.77917, 449]
+        }
       }, {
-        lat: 46.765427,
-        lon: 6.646264,
-        alt: 436,
-        name: 'HEIG-VD, Y-Parc',
-        type: 'building',
-        id: 2
+        properties: {
+          id_poi: "HEIG-VD, Y-Parc",
+          theme_name: "default"
+        },
+        geometry: {
+          coordinates: [6.646264, 46.765427, 436]
+        }
+      }, {
+        properties: {
+          id_poi: "HEIG-VD, St-Roch",
+          theme_name: "default"
+        },
+        geometry: {
+          coordinates: [6.647128, 46.781001, 431]
+        }
       }]
     }
   }

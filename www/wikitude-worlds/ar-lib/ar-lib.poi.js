@@ -8,21 +8,18 @@
     .module('ARLib')
     .factory('POI', fnPOI);
 
-  function fnPOI(Do, Markers, $rootScope) {
-    function POI(data, clickCallback) {
+  function fnPOI(Do, Markers) {
+    function POI(data) {
       var self = this;
-      self.id = data.id;
-      self.coord = {lat: data.lat, lon: data.lon, alt: data.alt};
+      self.id = data.properties.id_poi;
+      self.properties = data.properties;
+      self.coord = {lon: data.geometry.coordinates[0], lat: data.geometry.coordinates[1], alt: data.geometry.coordinates[2]};
 
       self.location = new AR.GeoLocation(this.coord.lat, this.coord.lon, this.coord.alt);
 
-      self.marker = new AR.ImageDrawable(Markers.default, 5, {
-        zOrder: 0,
-        opacity: 1.0,
-        onClick: onClick
-      });
+      //self.marker = marker;
 
-      self.name = new AR.Label(data.name, 1, {
+      self.name = new AR.Label(self.id, 1, {
         zOrder: 1,
         offsetY: 2,
         style: {
@@ -32,20 +29,28 @@
       });
 
       self.geoObject = new AR.GeoObject(self.location, {
+        onClick: onClick,
         drawables: {
-          cam: [self.marker, self.name]
+          cam: [Markers.get(self.properties.theme_name), self.name]
         }
       });
 
       ////////////////////
 
-      function onClick() {
+      function onClick(e) {
+        console.log('payload', e);
         console.log('POI clicked', self);
-        Do.action('loadMarkerData', {id: self.id});
+        var dist = self.location.distanceToUser();
+        console.log("distance to user ", dist);
+        if (dist <= 20) {
+          Do.action('loadMarkerData', {id: self.id});
+        } else {
+          Do.action('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
+        }
         //$rootScope.$emit('marker:clicked');
         //console.log('action executed', World.currentPoiData);
         //clickCallback(World.currentPoiData);
-        return true; // Stop propagating the touch event
+        return true; // Stop propagating the click event
       }
     }
 
