@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('ARLib', ['ionic']);
+  angular.module('ARLib', []);
 })();

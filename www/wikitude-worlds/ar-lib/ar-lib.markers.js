@@ -8,18 +8,56 @@
     .service('Markers', Markers);
 
   function Markers() {
-    this.default = new AR.ImageResource("assets/location.png");
-    this.bird = new AR.ImageResource('assets/birds.png');
-    this.butterfly = new AR.ImageResource('assets/birds.png');
-    this.flower = new AR.ImageResource('assets/flower.png');
-    this.watercourse = new AR.ImageResource('assets/watercourse.png');
-    this.territory = new AR.ImageResource('assets/territory.png');
-    this.greenRoof = new AR.ImageResource('assets/green_roof.png');
-    this.ecoArea = new AR.ImageResource('assets/eco_area.png');
-    this.wetArea = new AR.ImageResource('assets/wet_area.png');
-    this.wildlifeCorridor = new AR.ImageResource('assets/wildlife_corridor.png');
-    this.birdTerritory = new AR.ImageResource('assets/bird_territory.png');
-    this.biodivercity = new AR.ImageResource('assets/biodivercity.png');
-    this.garden = new AR.ImageResource('assets/garden.png');
+    //this.idle = idle;
+    //this.bird = bird;
+    //this.butterfly = butterfly;
+    //this.flower = flower;
+    //this.watercourse = watercourse;
+    //this.territory = territory;
+    //this.greenRoof = greenRoof;
+    //this.ecoArea = ecoArea;
+    //this.wetArea = wetArea;
+    //this.wildlifeCorridor = wildlifeCorridor;
+    //this.birdTerritory = birdTerritory;
+    //this.biodivercity = biodivercity;
+    //this.garden = garden;
+
+    this.get = getMarker;
+
+    ////////////////////
+
+    var markers = [];
+    var availableTypes = [
+      'default',
+      'bird',
+      'butterfly',
+      'flower',
+      'watercourse',
+      'territory',
+      'greenroof',
+      'ecoarea',
+      'wetarea',
+      'wildlifecorridor',
+      'birdterritory',
+      'biodivercity',
+      'garden'
+    ];
+
+    function getMarker(type) {
+      if (!markers[type]) {
+        var img = new AR.ImageResource("assets/" + type + ".png", {
+          onError: function () {
+            throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
+          }
+        });
+        markers[type] = new AR.ImageDrawable(img, 2, {
+          zOrder: 0,
+          opacity: 1.0
+        });
+      }
+      console.log("Type :", type);
+      //console.log("Marqueurs disponibles :", markers);
+      return markers[type];
+    }
   }
 })();
