@@ -8,41 +8,22 @@ angular
 function run(Do, POI, $rootScope) {
   World = {
     userCoord: {},
-    markerList: [],
+    locations: [],
     poiData: null,
     loadPoiData: loadPoiData,
     write: write,
     timer: timer,
     createMarkers: function (markers) {
-      var self = this, nbBird = 0, nbFlore = 0, nbOther = 0;
-      //console.log(markers);
+      console.log(markers);
       markers.forEach(function (marker) {
-        //switch (marker.properties.theme_name) {
-        //  case "Oiseaux":
-        //    console.log(marker.properties.theme_name);
-        //    nbBird++;
-        //    nbBird < 10 && self.markerList.push(new POI(marker)) && console.log("Oiseau");
-        //    break;
-        //  case "Flore":
-        //    console.log(marker.properties.theme_name);
-        //    nbFlore++;
-        //    nbFlore < 10 && self.markerList.push(new POI(marker)) && console.log("Flore");
-        //    break;
-        //  default:
-        //    console.log(marker.properties.theme_name);
-        //    nbOther++;
-        //    self.markerList.push(new POI(marker)) && console.log("default");
-        //}
-        self.markerList.push(new POI(marker));
+        World.locations.push(new POI(marker));
       });
-      //console.log("nbBird", nbBird);
-      //console.log("nbFlore", nbFlore);
-      //console.log("nbOther", nbOther);
+      console.log(World.locations);
     }
   };
 
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
-  AR.context.scene.cullingDistance = 250;
+  AR.context.scene.cullingDistance = 2500;
   AR.context.scene.maxScalingDistance = 250;
   AR.context.scene.minScalingDistance = 5;
   AR.context.scene.scalingFactor = 0.2;

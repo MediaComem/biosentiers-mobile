@@ -56,7 +56,6 @@
         });
       }
       console.log("Type :", type);
-      //console.log("Marqueurs disponibles :", markers);
       return markers[type];
     }
   }

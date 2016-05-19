@@ -18,7 +18,7 @@
     ////////////////////
 
     function getPoints() {
-      return $http.get('data/geodata.json');
+      return $http.get('data/flowers_birds_150m.json');
     }
 
     function getMarks() {

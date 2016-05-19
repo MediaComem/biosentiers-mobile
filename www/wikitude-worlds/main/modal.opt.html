@@ -1,13 +1,31 @@
-<ion-modal-view>
+<ion-modal-view ng-controller="OptCtrl as opt">
   <ion-header-bar class="bar bar-header bar-balanced">
     <h1 class="title">Dev Options</h1>
     <button class="button button-clear button-primary" ng-click="base.modal.hide()">Cancel</button>
   </ion-header-bar>
   <ion-content>
     <div class="list">
-      <a class="item" href="#">Dev opt 1</a>
-      <a class="item" href="#">Dev opt 2</a>
-      <a class="item" href="#">Dev opt 3</a>
+      <div class="item item-divider">
+        Position prédéfinies
+      </div>
+      <a class="item" href="#" ng-click="opt.heig()">Position : HEIG-VD, St-Roch</a>
+      <a class="item" href="#" ng-click="opt.plage()">Position : Plage d'Yverdon</a>
+      <a class="item" href="#" ng-click="opt.cheseaux()">Position : HEIG-VD, Cheseaux</a>
     </div>
+    <div class="list list-inset">
+      <div class="item item-divider">
+        Position personnalisée
+      </div>
+      <label class="item item-input">
+        <input type="text" placeholder="Latitude" ng-model="opt.position.lat">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Longitude" ng-model="opt.position.lon">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Altitude" ng-model="opt.position.alt">
+      </label>
+    </div>
+    <button class="button button-block button-assertive" ng-click="opt.custom()">Définir</button>
   </ion-content>
 </ion-modal-view>

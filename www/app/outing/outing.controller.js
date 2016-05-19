@@ -8,15 +8,20 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Ionicitude, outingData, $scope) {
+  function OutingCtrl(Ionicitude, outingData, $scope, $cordovaToast) {
     var ctrl = this;
 
     ctrl.launchAR = function () {
-      Ionicitude.launchAR().then(function (success) {
-        console.log('World loaded', success);
-      }).catch(function (error) {
-        console.log('World not loaded', error);
-      });
+      try {
+        Ionicitude.launchAR().then(function (success) {
+          console.log('World loaded', success);
+        }).catch(function (error) {
+          console.log('World not loaded', error);
+        });
+      } catch(e) {
+        console.log(e);
+        $cordovaToast.showShortBottom("Device not supported !");
+      }
     };
 
     ctrl.data = outingData;

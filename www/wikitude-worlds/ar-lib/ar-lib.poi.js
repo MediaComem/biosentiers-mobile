@@ -10,16 +10,28 @@
 
   function fnPOI(Do, Markers) {
     function POI(data) {
-      var self = this;
-      self.id = data.properties.id_poi;
-      self.properties = data.properties;
-      self.coord = {lon: data.geometry.coordinates[0], lat: data.geometry.coordinates[1], alt: data.geometry.coordinates[2]};
+      this.id = data.properties.id_poi;
+      this.properties = data.properties;
+      this.location = new AR.GeoLocation(data.geometry.coordinates[1], data.geometry.coordinates[0], data.geometry.coordinates[2]);
+      this.title = null;
+      this.geoObject = null;
+    }
 
-      self.location = new AR.GeoLocation(this.coord.lat, this.coord.lon, this.coord.alt);
+    POI.prototype.distanceToUser = distanceToUser;
+    POI.prototype.show = show;
+    POI.prototype.remove = remove;
 
-      //self.marker = marker;
+    return POI;
 
-      self.name = new AR.Label(self.id, 1, {
+    ////////////////////
+
+    function distanceToUser() {
+      console.log("distanceToUser", this);
+      return this.location.distanceToUser();
+    }
+
+    function show() {
+      this.title = new AR.Label(this.id, 1, {
         zOrder: 1,
         offsetY: 2,
         style: {
@@ -28,22 +40,31 @@
         }
       });
 
-      self.geoObject = new AR.GeoObject(self.location, {
-        onClick: onClick,
+      this.geoObject = new AR.GeoObject(this.location, {
+        onClick: getOnClick(this),
         drawables: {
-          cam: [Markers.get(self.properties.theme_name), self.name]
+          cam: [Markers.get(this.properties.theme_name), this.title]
         }
       });
+    }
 
-      ////////////////////
+    function remove() {
+      console.log("remove", this);
+      this.title.destroy();
+      console.log(this.title.destroyed);
+      this.title.destroyed && (this.title = null);
+      this.geoObject.destroy();
+      console.log(this.geoObject.destroyed);
+      this.geoObject.destroyed && (this.geoObject = null);
+    }
 
-      function onClick(e) {
-        console.log('payload', e);
-        console.log('POI clicked', self);
-        var dist = self.location.distanceToUser();
+    function getOnClick(poi) {
+      return function onClick() {
+        console.log('POI clicked', poi);
+        var dist = poi.distanceToUser();
         console.log("distance to user ", dist);
         if (dist <= 20) {
-          Do.action('loadMarkerData', {id: self.id});
+          Do.action('loadMarkerData', {id: this.id});
         } else {
           Do.action('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
         }
@@ -53,7 +74,5 @@
         return true; // Stop propagating the click event
       }
     }
-
-    return POI;
   }
 })();
