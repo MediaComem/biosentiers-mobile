@@ -82,47 +82,74 @@ function buttonCtrl(Do) {
     // Mais utiliser des chiffres comme clé de tableaux associatifs pose des problèmes pour le length du tableau
     // Il faut donc utiliser for..in pour boucler dessus et getOwnPropertiesName pour compter
     for (var id in World.pois) {
-      console.log(World.pois[id].distanceToUser());
+      //console.log(World.pois[id].distanceToUser());
     }
+    console.log(World.visible);
     World.timer(start);
   };
 
   ctrl.show = function show() {
     console.log('visible', World.visible);
-    var start = Date.now(), near = [], fresh = [], old = [];
+    var start, getting, filter_new, filter_old, delete_old, show_new, near, fresh, old;
+    near = fresh = old = [];
+
+    start = getting = Date.now();
     for (var id in World.pois) {
-      console.log(World.pois[id].distanceToUser());
-      console.log(AR.context.scene.cullingDistance);
+      //console.log(World.pois[id].distanceToUser());
+      //console.log(AR.context.scene.cullingDistance);
       if (World.pois[id].distanceToUser() <= AR.context.scene.cullingDistance) {
         near.push(id);
       }
     }
+    console.log("Getting the nearest POIs");
+    World.timer(getting);
     console.log('near', near);
+
+    filter_new = Date.now();
     fresh = near.filter(function isFresh(id) {
       return World.visible.indexOf(id) === -1;
     });
+    console.log('Filtering the new POIs');
+    World.timer(filter_new);
     console.log('fresh', fresh);
+
+    filter_old = Date.now();
     old = World.visible.filter(function isOld(id) {
       return near.indexOf(id) === -1;
     });
+    console.log('Filtering the old POIs');
+    World.timer(filter_old);
     console.log('old', old);
+
+    delete_old = Date.now();
     old.forEach(function (id) {
+      //console.log(id);
       World.pois[id].remove();
       World.visible.splice(World.visible.indexOf(id), 1);
     });
+    console.log('Deleting the old POIs');
+    World.timer(delete_old);
+
+    show_new = Date.now();
     fresh.forEach(function(id) {
+      //console.log(id);
       World.pois[id].show();
       World.visible.push(id);
     });
+    console.log('Showing the new POIs');
+    World.timer(show_new);
     console.log('visible (bis)', World.visible);
+    console.log('Total processing time');
     World.timer(start);
   };
 
   ctrl.remove = function remove() {
     var start = Date.now();
-    World.pois.forEach(function (poi) {
-      poi.remove();
+    World.visible.forEach(function(id) {
+      //console.log(id);
+      World.pois[id].remove();
     });
+    World.visible = [];
     World.timer(start);
   };
 }

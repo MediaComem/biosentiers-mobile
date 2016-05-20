@@ -36,17 +36,17 @@
         var marks = POIGeo.getMarks(),
           start = Date.now();
         service.callJavaScript('World.loadPois(' + angular.toJson(marks) + ')');
-        //POIGeo.getPoints()
-        //  .then(function (success) {
-        //    //var pois = (success.data.features).slice(0, 100);
-        //    var pois = success.data.features;
-        //    console.log(pois);
-        //    service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
-        //    service.callJavaScript('World.timer(' + start + ')');
-        //  })
-        //  .catch(function (error) {
-        //    console.log(error);
-        //  });
+        POIGeo.getPoints()
+          .then(function (success) {
+            //var pois = (success.data.features).slice(0, 100);
+            var pois = success.data.features;
+            console.log(pois);
+            service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
+            service.callJavaScript('World.timer(' + start + ')');
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       }
 
       function loadMarkerData(service, param) {

@@ -45,6 +45,9 @@
 
     function getMarker(type) {
       if (!markers[type]) {
+        console.log("---");
+        console.log("new Marker");
+        console.log("---");
         var img = new AR.ImageResource("assets/" + type + ".png", {
           onError: function () {
             throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
@@ -55,7 +58,7 @@
           opacity: 1.0
         });
       }
-      console.log("Type :", type);
+      //console.log("Type :", type);
       return markers[type];
     }
   }
