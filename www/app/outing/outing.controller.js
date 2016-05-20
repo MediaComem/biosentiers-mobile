@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Ionicitude, outingData, $scope, $cordovaToast) {
+  function OutingCtrl(Ionicitude, outingData, $cordovaToast) {
     var ctrl = this;
 
     ctrl.launchAR = function () {
@@ -25,7 +25,5 @@
     };
 
     ctrl.data = outingData;
-    console.log(ctrl);
-    console.log($scope);
   }
 })();

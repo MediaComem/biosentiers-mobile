@@ -5,7 +5,6 @@ angular
   .controller('buttonCtrl', buttonCtrl);
 
 function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
-  console.log($scope);
   var ctrl = this;
 
   ctrl.modal = null;
@@ -72,31 +71,57 @@ function buttonCtrl(Do) {
   var ctrl = this;
 
   ctrl.loadMarkers = function loadMarkers() {
-    World.locations = [];
+    World.pois = [];
     Do.action('loadMarkers');
   };
 
   ctrl.debug = function debug() {
     var start = Date.now();
-    console.log(World.locations);
-    World.locations.forEach(function (location) {
-      console.log(location.distanceToUser());
-    });
+    console.log(World.pois);
+    // World.pois.forEach ne fonctionne pas avec des "tableaux associatifs" dont la clé est une String
+    // Mais utiliser des chiffres comme clé de tableaux associatifs pose des problèmes pour le length du tableau
+    // Il faut donc utiliser for..in pour boucler dessus et getOwnPropertiesName pour compter
+    for (var id in World.pois) {
+      console.log(World.pois[id].distanceToUser());
+    }
     World.timer(start);
   };
 
   ctrl.show = function show() {
-    var start = Date.now();
-    World.locations.forEach(function (location) {
-      location.show();
+    console.log('visible', World.visible);
+    var start = Date.now(), near = [], fresh = [], old = [];
+    for (var id in World.pois) {
+      console.log(World.pois[id].distanceToUser());
+      console.log(AR.context.scene.cullingDistance);
+      if (World.pois[id].distanceToUser() <= AR.context.scene.cullingDistance) {
+        near.push(id);
+      }
+    }
+    console.log('near', near);
+    fresh = near.filter(function isFresh(id) {
+      return World.visible.indexOf(id) === -1;
     });
+    console.log('fresh', fresh);
+    old = World.visible.filter(function isOld(id) {
+      return near.indexOf(id) === -1;
+    });
+    console.log('old', old);
+    old.forEach(function (id) {
+      World.pois[id].remove();
+      World.visible.splice(World.visible.indexOf(id), 1);
+    });
+    fresh.forEach(function(id) {
+      World.pois[id].show();
+      World.visible.push(id);
+    });
+    console.log('visible (bis)', World.visible);
     World.timer(start);
   };
 
   ctrl.remove = function remove() {
     var start = Date.now();
-    World.locations.forEach(function (location) {
-      location.remove();
+    World.pois.forEach(function (poi) {
+      poi.remove();
     });
     World.timer(start);
   };

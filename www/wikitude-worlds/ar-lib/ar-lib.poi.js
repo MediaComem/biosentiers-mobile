@@ -26,7 +26,6 @@
     ////////////////////
 
     function distanceToUser() {
-      console.log("distanceToUser", this);
       return this.location.distanceToUser();
     }
 
@@ -49,12 +48,9 @@
     }
 
     function remove() {
-      console.log("remove", this);
       this.title.destroy();
-      console.log(this.title.destroyed);
       this.title.destroyed && (this.title = null);
       this.geoObject.destroy();
-      console.log(this.geoObject.destroyed);
       this.geoObject.destroyed && (this.geoObject = null);
     }
 
