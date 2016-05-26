@@ -40,7 +40,7 @@
       });
 
       this.geoObject = new AR.GeoObject(this.location, {
-        onClick: getOnClick(this),
+        onClick: onPoiClick(this),
         drawables: {
           cam: [Markers.get(this.properties.theme_name), this.title]
         }
@@ -54,7 +54,7 @@
       this.geoObject.destroyed && (this.geoObject = null);
     }
 
-    function getOnClick(poi) {
+    function onPoiClick(poi) {
       return function onClick() {
         console.log('POI clicked', poi);
         var dist = poi.distanceToUser();

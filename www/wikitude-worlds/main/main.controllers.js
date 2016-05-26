@@ -70,9 +70,9 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
 function buttonCtrl(Do) {
   var ctrl = this;
 
-  ctrl.loadMarkers = function loadMarkers() {
+  ctrl.loadPois = function loadPois() {
     World.pois = [];
-    Do.action('loadMarkers');
+    Do.action('loadPois');
   };
 
   ctrl.debug = function debug() {
@@ -85,6 +85,7 @@ function buttonCtrl(Do) {
       //console.log(World.pois[id].distanceToUser());
     }
     console.log(World.visible);
+    console.log("Nb of POIs", Object.keys(World.pois).length);
     World.timer(start);
   };
 
@@ -131,7 +132,7 @@ function buttonCtrl(Do) {
     World.timer(delete_old);
 
     show_new = Date.now();
-    fresh.forEach(function(id) {
+    fresh.forEach(function (id) {
       //console.log(id);
       World.pois[id].show();
       World.visible.push(id);
@@ -169,6 +170,11 @@ function OptCtrl(Do, $scope) {
 
   ctrl.cheseaux = function cheseaux() {
     Do.action('setPosition', {lat: 46.779043, lon: 6.659222, alt: 448});
+    $scope.base.modal.hide();
+  };
+
+  ctrl.champPittet = function champPittet() {
+    Do.action('setPosition', {lat: 46.7837611642946, lon: 6.66567090924512, alt: 436.74});
     $scope.base.modal.hide();
   };
 

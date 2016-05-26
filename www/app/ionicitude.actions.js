@@ -14,7 +14,7 @@
         .init()
         .addAction(close)
         .addAction(showPos)
-        .addAction(loadMarkers)
+        .addAction(loadPois)
         .addAction(loadMarkerData)
         .addAction(toast)
         .addAction(setPosition)
@@ -32,7 +32,7 @@
         $cordovaToast.showLongCenter('lat : ' + param.lat + ", lon : " + param.lon + ", alt :" + param.alt);
       }
 
-      function loadMarkers(service) {
+      function loadPois(service) {
         var marks = POIGeo.getMarks(),
           start = Date.now();
         service.callJavaScript('World.loadPois(' + angular.toJson(marks) + ')');

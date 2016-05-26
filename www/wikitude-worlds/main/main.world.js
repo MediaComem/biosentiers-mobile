@@ -18,7 +18,7 @@ function run(Do, POI, $rootScope) {
   };
 
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
-  AR.context.scene.cullingDistance = AR.context.scene.maxScalingDistance = 150;
+  AR.context.scene.cullingDistance = AR.context.scene.maxScalingDistance = 250;
   AR.context.scene.minScalingDistance = 5;
   AR.context.scene.scalingFactor = 0.2;
   AR.context.onScreenClick = onScreenClick;
