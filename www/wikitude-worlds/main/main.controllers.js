@@ -67,7 +67,7 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
   }
 }
 
-function buttonCtrl(Do) {
+function buttonCtrl(Do, Beacon) {
   var ctrl = this;
 
   ctrl.loadPois = function loadPois() {
@@ -144,14 +144,11 @@ function buttonCtrl(Do) {
     World.timer(start);
   };
 
-  ctrl.remove = function remove() {
+  ctrl.nearestBeacon = function nearestBeacon() {
     var start = Date.now();
-    World.visible.forEach(function(id) {
-      //console.log(id);
-      World.pois[id].remove();
-    });
-    World.visible = [];
+    var beacon = Beacon.getNearest(World.beacons);
     World.timer(start);
+    console.log(beacon, beacon.distanceToUser());
   };
 }
 

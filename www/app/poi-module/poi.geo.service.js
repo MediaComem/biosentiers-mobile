@@ -10,7 +10,8 @@
   function POIGeo($http) {
     var service = {
       getPoints: getPoints,
-      getMarks: getMarks
+      getMarks: getMarks,
+      getBeacons: getBeacons
     };
 
     return service;
@@ -19,6 +20,10 @@
 
     function getPoints() {
       return $http.get('data/flowers_birds_150m.json');
+    }
+
+    function getBeacons() {
+      return $http.get('data/beacons.json');
     }
 
     function getMarks() {

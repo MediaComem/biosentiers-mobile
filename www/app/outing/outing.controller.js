@@ -8,22 +8,30 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Ionicitude, outingData, $cordovaToast) {
+  function OutingCtrl(Ionicitude, outingData, $cordovaToast, POIGeo) {
     var ctrl = this;
 
     ctrl.launchAR = function () {
       try {
-        Ionicitude.launchAR().then(function (success) {
-          console.log('World loaded', success);
-        }).catch(function (error) {
-          console.log('World not loaded', error);
-        });
-      } catch(e) {
+        Ionicitude.launchAR()
+          .then(POIGeo.getBeacons)
+          .then(worldLoaded)
+          .catch(handleError);
+      } catch (e) {
         console.log(e);
         $cordovaToast.showShortBottom("Device not supported !");
       }
     };
 
     ctrl.data = outingData;
+
+    function handleError(error) {
+      console.log('World not loaded', error);
+    }
+
+    function worldLoaded(success) {
+      console.log('World loaded', success);
+      Ionicitude.callJavaScript('World.loadBeacons(' + angular.toJson(success.data.features) + ')');
+    }
   }
 })();

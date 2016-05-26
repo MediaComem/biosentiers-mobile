@@ -5,16 +5,18 @@ angular
   .module('ar')
   .run(run);
 
-function run(Do, POI, $rootScope) {
+function run(Do, POI, Beacon, $rootScope) {
   World = {
     userCoord: {},
     pois: {},
     visible: [],
+    beacons: [],
     poiData: null,
     loadPoiData: loadPoiData,
     write: write,
     timer: timer,
-    loadPois: loadPois
+    loadPois: loadPois,
+    loadBeacons: loadBeacons
   };
 
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
@@ -57,5 +59,14 @@ function run(Do, POI, $rootScope) {
       World.pois[poi.id] = poi;
     });
     console.log(World.pois);
+  }
+
+  function loadBeacons(beacons) {
+    var start = Date.now();
+    beacons.forEach(function (data) {
+      World.beacons.push(new Beacon(data));
+    });
+    World.timer(start);
+    console.log(World.beacons);
   }
 }
