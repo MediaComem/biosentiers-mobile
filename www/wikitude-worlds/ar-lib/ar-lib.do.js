@@ -10,7 +10,7 @@
 
   function executer() {
     this.action = function (name, opt) {
-      console.log('Do action :', name, 'with opt :', opt);
+      name !== 'showPos' && console.log('Do action :', name, 'with opt :', opt);
       var dest = "architectsdk://" + name;
       document.location = opt ? dest + "?" + angular.toJson(opt) : dest;
     }

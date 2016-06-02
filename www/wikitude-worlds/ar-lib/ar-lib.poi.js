@@ -9,14 +9,28 @@
     .factory('POI', fnPOI);
 
   function fnPOI(Do, Markers) {
+
+	  /**
+     * @param data
+     * @constructor
+     */
     function POI(data) {
       this.id = data.properties.id_poi;
       this.properties = data.properties;
       this.location = new AR.GeoLocation(data.geometry.coordinates[1], data.geometry.coordinates[0], data.geometry.coordinates[2]);
       this.title = null;
       this.geoObject = null;
+      // Temporairement : fait appel à la méthode show pour charger le reste du point.
+      this.show();
     }
 
+    // Static
+    POI.loadStock = loadStock;
+    POI.active = null;
+    POI.stock = {};
+    POI.visible = [];
+
+    // Methods
     POI.prototype.distanceToUser = distanceToUser;
     POI.prototype.show = show;
     POI.prototype.remove = remove;
@@ -24,6 +38,14 @@
     return POI;
 
     ////////////////////
+
+    function loadStock(poisDataArray) {
+      POI.stock = {};
+      poisDataArray.forEach(function (poiData) {
+        var poi = new POI(poiData);
+        POI.stock[poi.id] = poi;
+      });
+    }
 
     function distanceToUser() {
       return this.location.distanceToUser();

@@ -8,8 +8,8 @@
     .module('ARLib')
     .factory('Beacon', fnBeacon);
 
-  function fnBeacon() {
-	  /**
+  function fnBeacon(Do) {
+    /**
      * @param data
      * @constructor
      */
@@ -21,18 +21,24 @@
 
     // Static
     Beacon.getNearest = getNearest;
+    Beacon.loadStock = loadStock;
+    Beacon.activateNearest = activateNearest;
+    Beacon.nearest = null;
+    Beacon.stock = [];
 
     // Methods
     Beacon.prototype.distanceToUser = distanceToUser;
     Beacon.prototype.activate = activate;
+    Beacon.prototype.deactivate = deactivate;
+    Beacon.prototype.canDetectUser = canDetectUser;
 
     return Beacon;
 
     ////////////////////
 
-    function getNearest(beacons) {
+    function getNearest() {
       var nearest = null, distance;
-      beacons.forEach(function (beacon) {
+      Beacon.stock.forEach(function (beacon) {
         if (!nearest) {
           nearest = beacon;
           distance = nearest.distanceToUser();
@@ -47,6 +53,22 @@
       return nearest;
     }
 
+    function loadStock(beaconDataArray) {
+      beaconDataArray.forEach(function(beaconData) {
+        Beacon.stock.push(new Beacon(beaconData));
+      });
+    }
+
+    function activateNearest() {
+      Beacon.nearest = Beacon.getNearest();
+      if (Beacon.nearest) {
+        console.log(Beacon.nearest);
+        Beacon.nearest.activate();
+        console.log('Loading the beacon\'s points');
+        Do.action('loadPois', {beacon: Beacon.nearest.id});
+      }
+    }
+
     function distanceToUser() {
       return this.location.distanceToUser();
     }
@@ -54,8 +76,13 @@
     function activate() {
       this.area = new AR.ActionRange(this.location, 150, {
         onEnter: onBeaconEnter(this),
-        onExit: onBeaconExit(this)
+        onExit : onBeaconExit(this)
       });
+    }
+
+    function deactivate() {
+      this.area.destroy();
+      this.area = null;
     }
 
     function onBeaconEnter(beacon) {
@@ -71,6 +98,13 @@
         // si this est la plus proche, rien
         // si une autre que this est la plus proche, alors on load les POIs de la beacon
       }
+    }
+
+    function canDetectUser(position) {
+      if (this.area) {
+        return this.area.isInArea(new AR.GeoLocation(position.lat, position.lon, position.alt));
+      }
+      throw new ReferenceError("Nearest beacon has not been activated and, thus, do not have any ActionRange. Please call the activate() method of this beacon and try again.");
     }
   }
 })();

@@ -14,10 +14,11 @@
         .init()
         .addAction(close)
         .addAction(showPos)
-        .addAction(loadPois)
+        .addAction(loadTestPois)
         .addAction(loadMarkerData)
         .addAction(toast)
         .addAction(setPosition)
+        .addAction(loadPois)
         .listLibActions();
 
       ////////////////////
@@ -32,9 +33,9 @@
         $cordovaToast.showLongCenter('lat : ' + param.lat + ", lon : " + param.lon + ", alt :" + param.alt);
       }
 
-      function loadPois(service) {
-        var marks = POIGeo.getMarks(),
-          start = Date.now();
+      function loadTestPois(service) {
+        var marks = POIGeo.getMarks();
+        service.callJavaScript('World.timer.start("loadtestpois")');
         service.callJavaScript('World.loadPois(' + angular.toJson(marks) + ')');
         POIGeo.getPoints()
           .then(function (success) {
@@ -42,7 +43,7 @@
             var pois = success.data.features;
             console.log(pois);
             service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
-            service.callJavaScript('World.timer(' + start + ')');
+            service.callJavaScript('World.timer.loadtestpois.stop()');
           })
           .catch(function (error) {
             console.log(error);
@@ -61,6 +62,22 @@
       function setPosition(service, param) {
         console.log('setting position :', param);
         service.setLocation(param.lat, param.lon, param.alt, 1);
+      }
+
+      function loadPois(service, param) {
+        service.callJavaScript('World.timer.start("loadbeaconpois")');
+        console.log('beacon_id', param.beacon);
+        POIGeo.getPoints(param.beacon)
+          .then(function (success) {
+            var pois = success.data.features;
+            console.log(pois);
+            service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
+            service.callJavaScript('World.timer.loadbeaconpois.stop("Loading beacons\'s points")');
+          })
+          .catch(function (error) {
+            console.log(error);
+            $cordovaToast.showLongTop("Une erreur est survenue lors du chargement des points d'intérêts.");
+          })
       }
     });
   }

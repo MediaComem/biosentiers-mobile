@@ -10,7 +10,6 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
   ctrl.modal = null;
   ctrl.closeAR = closeAR;
   ctrl.showOptModal = showOptModal;
-  ctrl.log = customLog;
 
   // Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function () {
@@ -37,10 +36,6 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
 
   ////////////////////
 
-  function customLog(data) {
-    console.log(data);
-  }
-
   function closeAR() {
     console.log('closing');
     Do.action('close');
@@ -48,7 +43,7 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
 
   function showOptModal() {
     $ionicModal.fromTemplateUrl('modal.opt.html', {
-      scope: $scope,
+      scope    : $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
       ctrl.modal = modal;
@@ -58,7 +53,7 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
 
   function showPoiModal() {
     $ionicModal.fromTemplateUrl('modal.poi.html', {
-      scope: $scope,
+      scope    : $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
       ctrl.modal = modal;
@@ -67,26 +62,24 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
   }
 }
 
-function buttonCtrl(Do, Beacon) {
+function buttonCtrl(Do, Beacon, POI) {
   var ctrl = this;
 
-  ctrl.loadPois = function loadPois() {
-    World.pois = [];
-    Do.action('loadPois');
+  ctrl.loadTestPois = function loadTestPois() {
+    Do.action('loadTestPois');
   };
 
   ctrl.debug = function debug() {
-    var start = Date.now();
-    console.log(World.pois);
-    // World.pois.forEach ne fonctionne pas avec des "tableaux associatifs" dont la clé est une String
-    // Mais utiliser des chiffres comme clé de tableaux associatifs pose des problèmes pour le length du tableau
-    // Il faut donc utiliser for..in pour boucler dessus et getOwnPropertiesName pour compter
-    for (var id in World.pois) {
-      //console.log(World.pois[id].distanceToUser());
+    World.timer.start('debug');
+    console.log(POI.stock);
+    for (var id in POI.stock) {
+      console.log(POI.stock[id].distanceToUser());
     }
-    console.log(World.visible);
-    console.log("Nb of POIs", Object.keys(World.pois).length);
-    World.timer(start);
+    console.log(POI.visible);
+    console.log("Nb of POIs", Object.keys(POI.stock).length);
+    console.log(Beacon.stock);
+    console.log(Beacon.stock.length);
+    World.timer.stop("Debug process time");
   };
 
   ctrl.show = function show() {
@@ -94,60 +87,52 @@ function buttonCtrl(Do, Beacon) {
     var start, getting, filter_new, filter_old, delete_old, show_new, near, fresh, old;
     near = fresh = old = [];
 
-    start = getting = Date.now();
+    World.timer.start('start');
+    World.timer.start('getting');
     for (var id in World.pois) {
-      //console.log(World.pois[id].distanceToUser());
-      //console.log(AR.context.scene.cullingDistance);
-      if (World.pois[id].distanceToUser() <= AR.context.scene.cullingDistance) {
-        near.push(id);
-      }
+      World.pois[id].distanceToUser() <= AR.context.scene.cullingDistance
+      && near.push(id);
     }
-    console.log("Getting the nearest POIs");
-    World.timer(getting);
+    World.timer.getting.stop("Getting the nearest POIs");
     console.log('near', near);
 
-    filter_new = Date.now();
+    World.timer.start('filter_new');
     fresh = near.filter(function isFresh(id) {
       return World.visible.indexOf(id) === -1;
     });
-    console.log('Filtering the new POIs');
-    World.timer(filter_new);
+    World.timer.filter_new.stop('Filtering the new POIs');
     console.log('fresh', fresh);
 
-    filter_old = Date.now();
+    World.timer.start('filter_old');
     old = World.visible.filter(function isOld(id) {
       return near.indexOf(id) === -1;
     });
-    console.log('Filtering the old POIs');
-    World.timer(filter_old);
+    World.timer.filter_old.stop('Filtering the old POIs');
     console.log('old', old);
 
-    delete_old = Date.now();
+    World.timer.start('delete_old');
     old.forEach(function (id) {
       //console.log(id);
       World.pois[id].remove();
       World.visible.splice(World.visible.indexOf(id), 1);
     });
-    console.log('Deleting the old POIs');
-    World.timer(delete_old);
+    World.timer.delete_old.stop('Deleting the old POIs');
 
-    show_new = Date.now();
+    World.timer.start('show_new');
     fresh.forEach(function (id) {
       //console.log(id);
       World.pois[id].show();
       World.visible.push(id);
     });
-    console.log('Showing the new POIs');
-    World.timer(show_new);
+    World.timer.show_new.stop('Showing the new POIs');
     console.log('visible (bis)', World.visible);
-    console.log('Total processing time');
-    World.timer(start);
+    World.timer.start.stop('Total processing time');
   };
 
   ctrl.nearestBeacon = function nearestBeacon() {
-    var start = Date.now();
-    var beacon = Beacon.getNearest(World.beacons);
-    World.timer(start);
+    World.timer.start('nearest');
+    var beacon = Beacon.getNearest();
+    World.timer.nearest.stop('nearest Beacon');
     console.log(beacon, beacon.distanceToUser());
   };
 }

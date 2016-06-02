@@ -5,18 +5,21 @@ angular
   .module('ar')
   .run(run);
 
-function run(Do, POI, Beacon, $rootScope) {
+function run(Do, POI, Beacon, $rootScope, $ionicLoading) {
+  var tStart, tStop;
+
   World = {
-    userCoord: {},
-    pois: {},
-    visible: [],
-    beacons: [],
-    poiData: null,
+    userCoord  : null,
+    poiData    : null,
+    timer      : {
+      start: start
+    },
     loadPoiData: loadPoiData,
-    write: write,
-    timer: timer,
-    loadPois: loadPois,
-    loadBeacons: loadBeacons
+    write      : write,
+    loadBeacons: loadBeacons,
+    loadPois   : loadPois,
+    showLoading: showLoading,
+    hideLoading: $ionicLoading.hide
   };
 
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
@@ -32,10 +35,17 @@ function run(Do, POI, Beacon, $rootScope) {
     console.log('screen clicked', World);
   }
 
-  function onLocationChanged(lat, lon, alt, acc) {
-    console.log('coord', lat, lon, alt, acc);
+  function onLocationChanged(lat, lon, alt) {
+    World.hideLoading();
+    //console.log('coord', lat, lon, alt, acc);
     World.userCoord = {lat: lat, lon: lon, alt: alt};
     Do.action('showPos', World.userCoord);
+    console.log('onLoactionChanged');
+    // Devrait ne s'exécuter qu'une fois au lancement de la vue AR, lorsqu'aucune balise n'est active.
+    World.timer.start('getnearest');
+    if (!Beacon.nearest && Beacon.stock.length > 0) Beacon.activateNearest();
+    World.timer.getnearest.stop("Getting the nearest beacon");
+    console.log('Is user in the beacon\'s area ?', Beacon.nearest.canDetectUser(World.userCoord));
   }
 
   function loadPoiData(data) {
@@ -48,25 +58,34 @@ function run(Do, POI, Beacon, $rootScope) {
     console.log("World writes", message);
   }
 
-  function timer(start) {
-    var stop = Date.now();
-    console.log("Process time", (stop - start) / 1000);
+  function loadBeacons(beacons) {
+    World.timer.start('loadbeacons');
+    Beacon.loadStock(beacons);
+    World.timer.loadbeacons.stop("Loading Beacons");
+    console.log(Beacon.stock, Beacon.nearest);
   }
 
   function loadPois(pois) {
-    pois.forEach(function (data) {
-      var poi = new POI(data);
-      World.pois[poi.id] = poi;
-    });
-    console.log(World.pois);
+    World.timer.start('loadpois');
+    POI.loadStock(pois);
+    World.timer.loadpois.stop();
+    console.log(POI.stock);
   }
 
-  function loadBeacons(beacons) {
-    var start = Date.now();
-    beacons.forEach(function (data) {
-      World.beacons.push(new Beacon(data));
-    });
-    World.timer(start);
-    console.log(World.beacons);
+  function showLoading(message) {
+    return $ionicLoading.show({template: message});
+  }
+
+  function start(name) {
+    World.timer[name] = {
+      name : name,
+      value: Date.now(),
+      stop : function stop(message) {
+        console.log(this);
+        tStop = Date.now();
+        console.log(message ? message : "Process time", (tStop - this.value) / 1000);
+        delete World.timer[this.name];
+      }
+    };
   }
 }

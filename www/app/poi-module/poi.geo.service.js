@@ -9,8 +9,8 @@
 
   function POIGeo($http) {
     var service = {
-      getPoints: getPoints,
-      getMarks: getMarks,
+      getPoints : getPoints,
+      getMarks  : getMarks,
       getBeacons: getBeacons
     };
 
@@ -18,8 +18,12 @@
 
     ////////////////////
 
-    function getPoints() {
-      return $http.get('data/flowers_birds_150m.json');
+    function getPoints(beacon_id) {
+      if (beacon_id) {
+        return $http.get('data/beacons/' + beacon_id + '.json');
+      } else {
+        return $http.get('data/flowers_birds_150m.json');
+      }
     }
 
     function getBeacons() {
@@ -29,29 +33,29 @@
     function getMarks() {
       return [{
         properties: {
-          id_poi: 1111,
-          theme_name: "default",
+          id_poi     : 1111,
+          theme_name : "default",
           common_name: "HEIG-VD, Cheseaux"
         },
-        geometry: {
+        geometry  : {
           coordinates: [6.659508, 46.77917, 449]
         }
       }, {
         properties: {
-          id_poi: 2222,
-          theme_name: "default",
+          id_poi     : 2222,
+          theme_name : "default",
           common_name: "HEIG-VD, Y-Parc"
         },
-        geometry: {
+        geometry  : {
           coordinates: [6.646264, 46.765427, 436]
         }
       }, {
         properties: {
-          id_poi: 3333,
-          theme_name: "default",
+          id_poi     : 3333,
+          theme_name : "default",
           common_name: "HEIG-VD, St-Roch"
         },
-        geometry: {
+        geometry  : {
           coordinates: [6.647128, 46.781001, 431]
         }
       }]
