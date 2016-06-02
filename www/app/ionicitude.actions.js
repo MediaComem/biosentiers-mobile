@@ -43,7 +43,7 @@
             var pois = success.data.features;
             console.log(pois);
             service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
-            service.callJavaScript('World.timer.loadtestpois.stop()');
+            service.callJavaScript('World.timer.loadtestpois.stop(null, "ionicitude.action.js", 46)');
           })
           .catch(function (error) {
             console.log(error);
@@ -52,7 +52,7 @@
 
       function loadMarkerData(service, param) {
         console.log('get marker data');
-        service.callJavaScript('World.loadPoiData(' + angular.toJson(POIData.getData(param.id)) + ')');
+        service.callJavaScript('World.loadPoiData(' + angular.toJson(POIData.getData(param.id)) + ', ' + angular.toJson(param.properties) + ')');
       }
 
       function toast(service, param) {
@@ -72,7 +72,7 @@
             var pois = success.data.features;
             console.log(pois);
             service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
-            service.callJavaScript('World.timer.loadbeaconpois.stop("Loading beacons\'s points")');
+            service.callJavaScript('World.timer.loadbeaconpois.stop("Loading beacons\'s points", "ionicitude.action.js", 75)');
           })
           .catch(function (error) {
             console.log(error);

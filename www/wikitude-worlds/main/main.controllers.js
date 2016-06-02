@@ -26,12 +26,13 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
     console.log('modal removed');
   });
 
-  $rootScope.$on('marker:loaded', function (event) {
+  $rootScope.$on('marker:loaded', function (event, properties) {
     console.log('marker:loaded event catched');
     console.log(event);
     console.log(World.poiData);
     ctrl.poi = World.poiData;
-    showPoiModal();
+    ctrl.properties = properties;
+    showPoiModal(ctrl.properties.theme_name);
   });
 
   ////////////////////
@@ -51,8 +52,8 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
     });
   }
 
-  function showPoiModal() {
-    $ionicModal.fromTemplateUrl('modal.poi.html', {
+  function showPoiModal(type) {
+    $ionicModal.fromTemplateUrl(type + '.poi.html', {
       scope    : $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
@@ -79,7 +80,7 @@ function buttonCtrl(Do, Beacon, POI) {
     console.log("Nb of POIs", Object.keys(POI.stock).length);
     console.log(Beacon.stock);
     console.log(Beacon.stock.length);
-    World.timer.stop("Debug process time");
+    World.timer.debug.stop("Debug process time", 'main.controller.js', 82);
   };
 
   ctrl.show = function show() {
@@ -93,21 +94,21 @@ function buttonCtrl(Do, Beacon, POI) {
       World.pois[id].distanceToUser() <= AR.context.scene.cullingDistance
       && near.push(id);
     }
-    World.timer.getting.stop("Getting the nearest POIs");
+    World.timer.getting.stop("Getting the nearest POIs", 'main.controller.js', 96);
     console.log('near', near);
 
     World.timer.start('filter_new');
     fresh = near.filter(function isFresh(id) {
       return World.visible.indexOf(id) === -1;
     });
-    World.timer.filter_new.stop('Filtering the new POIs');
+    World.timer.filter_new.stop('Filtering the new POIs', 'main.controller.js', 103);
     console.log('fresh', fresh);
 
     World.timer.start('filter_old');
     old = World.visible.filter(function isOld(id) {
       return near.indexOf(id) === -1;
     });
-    World.timer.filter_old.stop('Filtering the old POIs');
+    World.timer.filter_old.stop('Filtering the old POIs', 'main.controller.js', 110);
     console.log('old', old);
 
     World.timer.start('delete_old');
@@ -132,32 +133,37 @@ function buttonCtrl(Do, Beacon, POI) {
   ctrl.nearestBeacon = function nearestBeacon() {
     World.timer.start('nearest');
     var beacon = Beacon.getNearest();
-    World.timer.nearest.stop('nearest Beacon');
+    World.timer.nearest.stop('nearest Beacon', 'main.controller.js', 135);
     console.log(beacon, beacon.distanceToUser());
   };
 }
 
-function OptCtrl(Do, $scope) {
+function OptCtrl(Do, $scope, LocationMock) {
   var ctrl = this;
 
-  ctrl.heig = function heig() {
-    Do.action('setPosition', {lat: 46.781058, lon: 6.647179, alt: 431});
+  ctrl.stRoch = function stRoch() {
     $scope.base.modal.hide();
+    Do.action('setPosition', LocationMock.stRoch);
   };
 
   ctrl.plage = function plage() {
-    Do.action('setPosition', {lat: 46.784083, lon: 6.652281, alt: 431});
     $scope.base.modal.hide();
+    Do.action('setPosition', LocationMock.plageYverdon);
   };
 
   ctrl.cheseaux = function cheseaux() {
-    Do.action('setPosition', {lat: 46.779043, lon: 6.659222, alt: 448});
     $scope.base.modal.hide();
+    Do.action('setPosition', LocationMock.cheseaux);
   };
 
-  ctrl.champPittet = function champPittet() {
-    Do.action('setPosition', {lat: 46.7837611642946, lon: 6.66567090924512, alt: 436.74});
+  ctrl.sentierFin = function sentierFin() {
     $scope.base.modal.hide();
+    Do.action('setPosition', LocationMock.sentierFin);
+  };
+
+  ctrl.sentierDebut = function sentierDebut() {
+    $scope.base.modal.hide();
+    Do.action('setPosition', LocationMock.sentierDebut);
   };
 
   ctrl.position = {};
@@ -165,8 +171,8 @@ function OptCtrl(Do, $scope) {
   ctrl.custom = function custom() {
     console.log(ctrl.position);
     if (ctrl.position.hasOwnProperty('lat') && ctrl.position.hasOwnProperty('lon') && ctrl.position.hasOwnProperty('alt')) {
-      Do.action('setPosition', {lat: ctrl.position.lat, lon: ctrl.position.lon, alt: ctrl.position.alt});
       $scope.base.modal.hide();
+      Do.action('setPosition', {lat: ctrl.position.lat, lon: ctrl.position.lon, alt: ctrl.position.alt});
     } else {
       Do.action('toast', {message: "Des champs ne sont pas remplis"});
     }

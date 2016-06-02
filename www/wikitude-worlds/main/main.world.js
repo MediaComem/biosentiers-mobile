@@ -5,9 +5,7 @@ angular
   .module('ar')
   .run(run);
 
-function run(Do, POI, Beacon, $rootScope, $ionicLoading) {
-  var tStart, tStop;
-
+function run(Do, POI, Beacon, $rootScope, $ionicLoading, LocationMock) {
   World = {
     userCoord  : null,
     poiData    : null,
@@ -43,15 +41,16 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading) {
     console.log('onLoactionChanged');
     // Devrait ne s'exécuter qu'une fois au lancement de la vue AR, lorsqu'aucune balise n'est active.
     World.timer.start('getnearest');
-    if (!Beacon.nearest && Beacon.stock.length > 0) Beacon.activateNearest();
-    World.timer.getnearest.stop("Getting the nearest beacon");
+    Beacon.activateNearest();
+    World.timer.getnearest.stop("Getting the nearest beacon", 'main.world.js', 45);
     console.log('Is user in the beacon\'s area ?', Beacon.nearest.canDetectUser(World.userCoord));
   }
 
-  function loadPoiData(data) {
+  function loadPoiData(data, properties) {
     console.log('setting the poi data');
     World.poiData = data;
-    $rootScope.$emit('marker:loaded');
+    // Event targeted to baseCtrl
+    $rootScope.$emit('marker:loaded', properties);
   }
 
   function write(message) {
@@ -61,15 +60,15 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading) {
   function loadBeacons(beacons) {
     World.timer.start('loadbeacons');
     Beacon.loadStock(beacons);
-    World.timer.loadbeacons.stop("Loading Beacons");
+    World.timer.loadbeacons.stop("Loading Beacons", 'main.world.js', 62);
     console.log(Beacon.stock, Beacon.nearest);
+    Do.action('setPosition', LocationMock.sentierDebut)
   }
 
   function loadPois(pois) {
     World.timer.start('loadpois');
     POI.loadStock(pois);
-    World.timer.loadpois.stop();
-    console.log(POI.stock);
+    World.timer.loadpois.stop(null, 'main.world.js', 70);
   }
 
   function showLoading(message) {
@@ -80,10 +79,10 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading) {
     World.timer[name] = {
       name : name,
       value: Date.now(),
-      stop : function stop(message) {
-        console.log(this);
-        tStop = Date.now();
-        console.log(message ? message : "Process time", (tStop - this.value) / 1000);
+      stop : function stop(message, file, line) {
+        line = line !== null ? line : '?';
+        file = file !== null ? file : 'unknown';
+        console.log(file + ":" + line + " -> " + (message ? message : "Process time"), (Date.now() - this.value) / 1000);
         delete World.timer[this.name];
       }
     };

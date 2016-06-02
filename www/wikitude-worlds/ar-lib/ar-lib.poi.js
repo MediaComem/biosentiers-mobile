@@ -26,6 +26,7 @@
 
     // Static
     POI.loadStock = loadStock;
+    POI.removeAll = removeAll;
     POI.active = null;
     POI.stock = {};
     POI.visible = [];
@@ -40,11 +41,22 @@
     ////////////////////
 
     function loadStock(poisDataArray) {
+      //AR.context.destroyAll();
+      console.log('removing previously loaded pois');
+      POI.removeAll();
+      //console.log(POI.stock);
+      console.log('loading new points');
       POI.stock = {};
       poisDataArray.forEach(function (poiData) {
         var poi = new POI(poiData);
         POI.stock[poi.id] = poi;
       });
+    }
+
+    function removeAll() {
+      for (var poi in POI.stock) {
+        POI.stock.hasOwnProperty(poi) && POI.stock[poi].remove();
+      }
     }
 
     function distanceToUser() {
@@ -71,9 +83,11 @@
 
     function remove() {
       this.title.destroy();
-      this.title.destroyed && (this.title = null);
+      //this.title.destroyed && (this.title = null);
+      this.location.destroy();
+      //this.location.destroyed && (this.location = null);
       this.geoObject.destroy();
-      this.geoObject.destroyed && (this.geoObject = null);
+      //this.geoObject.destroyed && (this.geoObject = null);
     }
 
     function onPoiClick(poi) {
@@ -81,11 +95,11 @@
         console.log('POI clicked', poi);
         var dist = poi.distanceToUser();
         console.log("distance to user ", dist);
-        if (dist <= 20) {
-          Do.action('loadMarkerData', {id: this.id});
-        } else {
-          Do.action('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
-        }
+        //if (dist <= 20) {
+          Do.action('loadMarkerData', {id: poi.id, properties: poi.properties});
+        //} else {
+        //  Do.action('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
+        //}
         //$rootScope.$emit('marker:clicked');
         //console.log('action executed', World.currentPoiData);
         //clickCallback(World.currentPoiData);

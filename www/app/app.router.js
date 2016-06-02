@@ -135,8 +135,8 @@
       });
 
     // if none of the above states are matched, use this as the fallback
-    //$urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/login');
     // Dev route to access directly the launchAR button
-    $urlRouterProvider.otherwise('/app/outings/1');
+    //$urlRouterProvider.otherwise('/app/outings/1');
   }
 })();

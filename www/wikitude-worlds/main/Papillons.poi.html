@@ -1,0 +1,16 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-balanced">
+    <h1 class="title">{{base.properties.common_name}}</h1>
+    <button class="button button-clear button-primary" ng-click="base.modal.hide()">Cancel</button>
+  </ion-header-bar>
+  <ion-header-bar class="bar bar-subheader bat-stable">
+    <h2 class="title">Papillon</h2>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <a class="item" href="#" ng-click="base.log(base)">Dev opt 1</a>
+      <a class="item" href="#" ng-click="base.log(base.poi)">Dev opt 2</a>
+      <a class="item" href="#" ng-click="base.log(base.poi.name)">Dev opt 3</a>
+    </div>
+  </ion-content>
+</ion-modal-view>

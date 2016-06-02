@@ -31,7 +31,6 @@
 
     function worldLoaded(success) {
       console.log('World loaded', success);
-      Ionicitude.callJavaScript('World.showLoading("Locating...")');
       Ionicitude.callJavaScript('World.loadBeacons(' + angular.toJson(success.data.features) + ')');
     }
   }
