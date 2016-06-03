@@ -5,21 +5,21 @@ angular
   .module('ar')
   .run(run);
 
-function run(Do, POI, Beacon, $rootScope, $ionicLoading) {
+function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf) {
   var tStart, tStop;
 
   World = {
-    userCoord  : null,
-    poiData    : null,
-    timer      : {
+    userLocation: null,
+    poiData     : null,
+    timer       : {
       start: start
     },
-    loadPoiData: loadPoiData,
-    write      : write,
-    loadBeacons: loadBeacons,
-    loadPois   : loadPois,
-    showLoading: showLoading,
-    hideLoading: $ionicLoading.hide
+    loadPoiData : loadPoiData,
+    write       : write,
+    loadBeacons : loadBeacons,
+    loadPoints  : loadPoints,
+    showLoading : showLoading,
+    hideLoading : $ionicLoading.hide
   };
 
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
@@ -38,14 +38,8 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading) {
   function onLocationChanged(lat, lon, alt) {
     World.hideLoading();
     //console.log('coord', lat, lon, alt, acc);
-    World.userCoord = {lat: lat, lon: lon, alt: alt};
-    Do.action('showPos', World.userCoord);
-    console.log('onLoactionChanged');
-    // Devrait ne s'exécuter qu'une fois au lancement de la vue AR, lorsqu'aucune balise n'est active.
-    World.timer.start('getnearest');
-    if (!Beacon.nearest && Beacon.stock.length > 0) Beacon.activateNearest();
-    World.timer.getnearest.stop("Getting the nearest beacon");
-    console.log('Is user in the beacon\'s area ?', Beacon.nearest.canDetectUser(World.userCoord));
+    World.userLocation = turf.point([lon, lat, alt]);
+    console.log(World.userLocation);
   }
 
   function loadPoiData(data) {
@@ -65,9 +59,9 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading) {
     console.log(Beacon.stock, Beacon.nearest);
   }
 
-  function loadPois(pois) {
+  function loadPoints(points) {
     World.timer.start('loadpois');
-    POI.loadStock(pois);
+    POI.loadStock(points);
     World.timer.loadpois.stop();
     console.log(POI.stock);
   }

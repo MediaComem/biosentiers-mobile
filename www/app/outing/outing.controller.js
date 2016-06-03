@@ -14,7 +14,7 @@
     ctrl.launchAR = function () {
       try {
         Ionicitude.launchAR()
-          .then(POIGeo.getBeacons) // Il faudra rajouter un moyen d'identifier quel fichier de balise charger
+          .then(POIGeo.getMarks)
           .then(worldLoaded)
           .catch(handleError);
       } catch (e) {
@@ -31,8 +31,7 @@
 
     function worldLoaded(success) {
       console.log('World loaded', success);
-      Ionicitude.callJavaScript('World.showLoading("Locating...")');
-      Ionicitude.callJavaScript('World.loadBeacons(' + angular.toJson(success.data.features) + ')');
+      Ionicitude.callJavaScript('World.loadPoints(' + angular.toJson(success.data) + ')');
     }
   }
 })();

@@ -27,7 +27,7 @@
     // Static
     POI.loadStock = loadStock;
     POI.active = null;
-    POI.stock = {};
+    POI.stock = null;
     POI.visible = [];
 
     // Methods
@@ -39,12 +39,9 @@
 
     ////////////////////
 
-    function loadStock(poisDataArray) {
-      POI.stock = {};
-      poisDataArray.forEach(function (poiData) {
-        var poi = new POI(poiData);
-        POI.stock[poi.id] = poi;
-      });
+    function loadStock(stock) {
+      console.log(stock);
+      POI.stock = stock;
     }
 
     function distanceToUser() {
