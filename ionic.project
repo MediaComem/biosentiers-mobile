@@ -1,6 +1,6 @@
 {
   "name": "BioSentiers",
-  "app_id": "com.biosentiers.app",
+  "app_id": "demo.biosentiers.app",
   "gulpStartupTasks": [
     "sass",
     "watch"

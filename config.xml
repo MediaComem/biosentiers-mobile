@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.biosentiers.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>BioSentiers</name>
+<widget id="demo.biosentiers.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>BioSentiers - Démo</name>
   <description>
-        An Ionic Framework and Cordova project.
+      Démonstration de l'application BioSentiers
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+  <author email="obersonmathias@gmail.com" href="http://github.com/tazaf/">
+      Mathias Oberson
     </author>
   <content src="index.html"/>
   <access origin="*"/>
