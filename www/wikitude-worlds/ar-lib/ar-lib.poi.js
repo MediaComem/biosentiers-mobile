@@ -18,7 +18,7 @@
       this.id = data.properties.id_poi;
       this.properties = data.properties;
       this.location = new AR.GeoLocation(data.geometry.coordinates[1], data.geometry.coordinates[0], data.geometry.coordinates[2]);
-      this.title = null;
+      //this.title = null;
       this.geoObject = null;
       // Temporairement : fait appel à la méthode show pour charger le reste du point.
       this.show();
@@ -64,25 +64,25 @@
     }
 
     function show() {
-      this.title = new AR.Label(this.id, 1, {
-        zOrder: 1,
-        offsetY: 2,
-        style: {
-          textColor: '#FFFFFF',
-          fontStyle: AR.CONST.FONT_STYLE.BOLD
-        }
-      });
+      //this.title = new AR.Label(this.id, 1, {
+      //  zOrder: 1,
+      //  offsetY: 2,
+      //  style: {
+      //    textColor: '#FFFFFF',
+      //    fontStyle: AR.CONST.FONT_STYLE.BOLD
+      //  }
+      //});
 
       this.geoObject = new AR.GeoObject(this.location, {
         onClick: onPoiClick(this),
         drawables: {
-          cam: [Markers.get(this.properties.theme_name), this.title]
+          cam: [Markers.get(this.properties.theme_name)] //, this.title]
         }
       });
     }
 
     function remove() {
-      this.title.destroy();
+      //this.title.destroy();
       //this.title.destroyed && (this.title = null);
       this.location.destroy();
       //this.location.destroyed && (this.location = null);

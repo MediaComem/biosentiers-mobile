@@ -7,10 +7,26 @@
     <h2 class="title">Oiseau</h2>
   </ion-header-bar>
   <ion-content>
-    <div class="list">
-      <a class="item" href="#" ng-click="base.log(base)">Dev opt 1</a>
-      <a class="item" href="#" ng-click="base.log(base.poi)">Dev opt 2</a>
-      <a class="item" href="#" ng-click="base.log(base.poi.name)">Dev opt 3</a>
+    <img src="./assets/img/oiseaux.jpg" alt="oiseaux" style="width: 100%; height: auto">
+    <div class="list card">
+      <div class="item">Nom Commun<span style="float: right">{{base.properties.common_name}}</span></div>
+      <div class="item">Nom Scientifique<span style="float: right">{{base.properties.name}}</span></div>
+      <div class="item">Observé le<span style="float: right">06 juillet 2015</span></div>
+      <div class="item item-body">
+        <h3>Informations fournies par :</h3>
+        <p>{{base.properties.owner_name}}</p>
+      </div>
+      <div class="item item-body">
+        <h2>Description</h2>
+        <p>Aliquam quis eros eu mauris ullamcorper bibendum id vel tellus. Nam consectetur ligula id ligula consequat
+          posuere ac non tortor. Nullam dictum pharetra mi, eget dapibus elit. Etiam eleifend lectus dictum, luctus nibh
+          sit amet, volutpat arcu. Pellentesque ornare elementum risus at semper. Ut est lectus, commodo nec sagittis
+          sed, rutrum nec tortor. Sed tempor porttitor malesuada. Sed tincidunt tortor non diam sagittis dictum. Aliquam
+          sed odio pretium, elementum nibh eget, pretium orci. In facilisis dictum maximus. Donec sodales dui diam, non
+          egestas nisl ullamcorper in. Sed iaculis tincidunt tortor eu eleifend. Etiam eget lobortis lorem. Nulla lacus
+          tortor, accumsan aliquam bibendum non, ultricies vitae ante.
+        </p>
+      </div>
     </div>
   </ion-content>
 </ion-modal-view>
