@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('ARLib', []);
+  angular.module('ARLib', ['TurfModule']);
 })();

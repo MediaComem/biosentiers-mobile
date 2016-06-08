@@ -22,7 +22,8 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
   };
 
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
-  AR.context.scene.cullingDistance = AR.context.scene.maxScalingDistance = 250;
+  AR.context.scene.cullingDistance = 250;
+  AR.context.scene.maxScalingDistance = 500;
   AR.context.scene.minScalingDistance = 5;
   AR.context.scene.scalingFactor = 0.2;
   AR.context.onScreenClick = onScreenClick;
@@ -36,9 +37,14 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
 
   function onLocationChanged(lat, lon, alt) {
     World.hideLoading();
+    World.timer.start('update');
+    World.timer.start('stockpoi');
     UserLocation.update(lon, lat, alt);
-    Do.action('toast', {message: 'lon: ' + UserLocation.lon + ', lat: ' + UserLocation.lat + ', alt: ' + UserLocation.alt});
-    console.log(UserLocation);
+    World.timer.update.stop();
+    Do.action('toast', {message: UserLocation.current.literal()});
+    POI.loadStock(UserLocation.current);
+    World.timer.stockpoi.stop();
+    console.log(UserLocation.current, UserLocation.last);
   }
 
   function loadPoiData(data) {
@@ -61,9 +67,9 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
   function loadPoints(points) {
     console.log(points);
     World.timer.start('loadpois');
-    POI.loadStock(points);
+    POI.setRawStock(points);
     World.timer.loadpois.stop();
-    console.log(POI.stock);
+    console.log(POI.stock.raw);
   }
 
   function showLoading(message) {
