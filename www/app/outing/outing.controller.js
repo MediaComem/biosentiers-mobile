@@ -14,7 +14,7 @@
     ctrl.launchAR = function () {
       try {
         Ionicitude.launchAR()
-          .then(POIGeo.getMarks)
+          .then(POIGeo.getPoints)
           .then(worldLoaded)
           .catch(handleError);
       } catch (e) {

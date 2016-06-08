@@ -12,6 +12,13 @@
   function router($stateProvider, $urlRouterProvider) {
     $stateProvider
 
+      .state('idle', {
+        url: '/idle',
+        templateUrl: 'app/_idle.tests/idle.html',
+        controller: 'IdleController',
+        controllserAs: 'idle'
+      })
+
       .state('login', {
         url: '/login',
         templateUrl: 'app/auth-module/login.html',

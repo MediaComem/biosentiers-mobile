@@ -7,23 +7,20 @@
     .module('POIModule')
     .factory('POIGeo', POIGeo);
 
-  function POIGeo($http) {
+  function POIGeo($http, turf) {
     var service = {
-      getPoints : getPoints,
-      getMarks  : getMarks,
-      getBeacons: getBeacons
+      getPoints  : getPoints,
+      getMarks   : getMarks,
+      getBeacons : getBeacons,
+      getGeoMarks: getGeoMarks
     };
 
     return service;
 
     ////////////////////
 
-    function getPoints(beacon_id) {
-      if (beacon_id) {
-        return $http.get('data/beacons/' + beacon_id + '.json');
-      } else {
-        return $http.get('data/flowers_birds_150m.json');
-      }
+    function getPoints() {
+      return $http.get('data/flowers_birds_150m.json');
     }
 
     function getBeacons() {
@@ -59,6 +56,14 @@
           coordinates: [6.647128, 46.781001, 431]
         }
       }]
+    }
+
+    function getGeoMarks() {
+      var points = getMarks(), geo = [];
+      points.forEach(function (point) {
+        geo.push(turf.point(point.geometry.coordinates, point.properties));
+      });
+      return turf.featureCollection(geo);
     }
   }
 })();

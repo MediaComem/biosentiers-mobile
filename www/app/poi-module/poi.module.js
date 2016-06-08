@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('POIModule', []);
+  angular.module('POIModule', ['TurfModule']);
 })();

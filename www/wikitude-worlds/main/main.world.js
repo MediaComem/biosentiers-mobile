@@ -5,11 +5,10 @@ angular
   .module('ar')
   .run(run);
 
-function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf) {
-  var tStart, tStop;
+function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
+  var tStop;
 
   World = {
-    userLocation: null,
     poiData     : null,
     timer       : {
       start: start
@@ -37,9 +36,9 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf) {
 
   function onLocationChanged(lat, lon, alt) {
     World.hideLoading();
-    //console.log('coord', lat, lon, alt, acc);
-    World.userLocation = turf.point([lon, lat, alt]);
-    console.log(World.userLocation);
+    UserLocation.update(lon, lat, alt);
+    Do.action('toast', {message: 'lon: ' + UserLocation.lon + ', lat: ' + UserLocation.lat + ', alt: ' + UserLocation.alt});
+    console.log(UserLocation);
   }
 
   function loadPoiData(data) {
@@ -60,6 +59,7 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf) {
   }
 
   function loadPoints(points) {
+    console.log(points);
     World.timer.start('loadpois');
     POI.loadStock(points);
     World.timer.loadpois.stop();
@@ -75,7 +75,6 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf) {
       name : name,
       value: Date.now(),
       stop : function stop(message) {
-        console.log(this);
         tStop = Date.now();
         console.log(message ? message : "Process time", (tStop - this.value) / 1000);
         delete World.timer[this.name];
