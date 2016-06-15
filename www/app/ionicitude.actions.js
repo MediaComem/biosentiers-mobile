@@ -12,13 +12,16 @@
     $ionicPlatform.ready(function () {
       Ionicitude
         .init()
-        .addAction(close)
-        .addAction(showPos)
-        .addAction(fixUserAltitude)
-        .addAction(loadMarkers)
-        .addAction(loadMarkerData)
-        .addAction(toast)
-        .listLibActions();
+        .then(function() {
+          Ionicitude
+            .addAction(close)
+            .addAction(showPos)
+            .addAction(loadMarkers)
+            .addAction(loadMarkerData)
+            .addAction(toast)
+            .listLibActions();
+        });
+      
 
       ////////////////////
 
@@ -30,11 +33,6 @@
       function showPos(service, param) {
         console.log('showing position', param);
         $cordovaToast.showLongCenter('lat : ' + param.lat + ", lon : " + param.lon + ", alt :" + param.alt);
-      }
-
-      function fixUserAltitude(service, param) {
-        if (param.alt < 0) param.alt = 0;
-        service.setLocation(param.lat, param.lon, param.alt, param.acc);
       }
 
       function loadMarkers(service) {
