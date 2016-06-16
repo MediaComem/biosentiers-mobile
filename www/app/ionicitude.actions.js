@@ -10,18 +10,17 @@
 
   function ionicitude($ionicPlatform, Ionicitude, $cordovaToast, POIGeo, POIData) {
     $ionicPlatform.ready(function () {
+      Ionicitude.init()
+        .then(function (success) { console.log(success); })
+        .catch(function (error) { console.log(error); });
+        
       Ionicitude
-        .init()
-        .then(function() {
-          Ionicitude
-            .addAction(close)
-            .addAction(showPos)
-            .addAction(loadMarkers)
-            .addAction(loadMarkerData)
-            .addAction(toast)
-            .listLibActions();
-        });
-      
+        .addAction(close)
+        .addAction(showPos)
+        .addAction(loadMarkers)
+        .addAction(loadMarkerData)
+        .addAction(toast)
+        .listLibActions();
 
       ////////////////////
 
