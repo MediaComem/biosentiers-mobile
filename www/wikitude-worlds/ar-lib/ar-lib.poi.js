@@ -68,21 +68,18 @@
         var pois = POI.stock.raw.features, nbPoi = POI.stock.raw.features.length;
         World.timer.start('firstloop');
         for (var i = 0; i < nbPoi; i++) {
-
           // Ajouter l'identifiant du point dans la liste des points proches
           if (isInReach(pois[i])) {
-            console.log(turf.distance(UserLocation.current, pois[i]) * 1000);
-            near.push(pois[i].properties.id_poi);
+            var id = pois[i].properties.id_poi;
             // Ajouter l'identifiant du point dans la liste des points à ajouter
+            near.push(id);
             // Ajouter l'identifiant du point comme propriété de la liste des objets à ajouter
             if (!isVisible(pois[i])) {
-              toAdd.ids.push(pois[i].properties.id_poi);
-              toAdd[pois[i].properties.id_poi] = pois[i];
+              toAdd.ids.push(id);
+              toAdd[id] = pois[i];
             }
           }
         }
-        console.log(toAdd);
-        console.log(near);
         // toAdd.ids contient les IDs des GeoObjets à ajouter
         // toAdd contient les GeoObjects à ajouter
         // near contient les IDs des GeoObjets à portée
@@ -92,20 +89,19 @@
         var nbDeleted = 0;
         for (var j = 0; j < POI.stock.visible.length; j++) {
           var id = POI.stock.visible[j];
-          console.log(near, id);
           if (near.indexOf(id) === -1) {
-            console.log('removing point :', id);
             POI.stock.active[id].remove();
             nbDeleted++;
           }
         }
+        World.timer.secondloop.stop('Second loop - Removing farest points');
+        World.timer.start('thirdloop');
         // Ajouter les nouveaux points
         for (var k = 0; k < toAdd.ids.length; k++) {
           var id = toAdd.ids[k];
-          console.log(id, toAdd[id]);
           POI.stock.active[id] = new POI(toAdd[id]);
         }
-        World.timer.secondloop.stop("Second loop");
+        World.timer.thirdloop.stop("Third loop - Adding closest points");
         POI.stock.visible = near;
         POI.stock.activeCount = Object.keys(POI.stock.active).length;
         World.timer.loadstock.stop('Load Stock total :');

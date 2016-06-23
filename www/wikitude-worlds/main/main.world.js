@@ -9,16 +9,17 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
   var tStop;
 
   World = {
-    poiData     : null,
-    timer       : {
+    startup    : true,
+    poiData    : null,
+    timer      : {
       start: start
     },
-    loadPoiData : loadPoiData,
-    write       : write,
+    loadPoiData: loadPoiData,
+    write      : write,
     //loadBeacons : loadBeacons,
-    loadPoints  : POI.setRawStock,
-    showLoading : showLoading,
-    hideLoading : $ionicLoading.hide
+    loadPoints : POI.setRawStock,
+    showLoading: showLoading,
+    hideLoading: $ionicLoading.hide
   };
 
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
@@ -36,13 +37,13 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
   }
 
   function onLocationChanged(lat, lon, alt) {
-    // L'app doit charger les points si c'est la première mise à jour de position
-    // Regarder aussi pourquoi elle ne charge pas les points quand on passe de Balise 2 à Balise 1
     UserLocation.update(lon, lat, alt);
-    Do.action('toast', {message: UserLocation.current.literal()});
-    console.log(UserLocation.movingDistance());
-    if (UserLocation.movingDistance() > 20) POI.loadStock() && UserLocation.updateLast();
-    console.log(UserLocation.current, UserLocation.last);
+    if (World.startup || UserLocation.movingDistance() > 20) {
+      UserLocation.backupCurrent();
+      POI.loadStock();
+      World.startup = false;
+    }
+    console.log(UserLocation);
   }
 
   function loadPoiData(data) {
@@ -62,13 +63,13 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
   //  console.log(Beacon.stock, Beacon.nearest);
   //}
 
-  function loadPoints(points) {
-    console.log(points);
-    World.timer.start('loadpois');
-    POI.setRawStock(points);
-    World.timer.loadpois.stop();
-    console.log(POI.stock.raw);
-  }
+  //function loadPoints(points) {
+  //  console.log(points);
+  //  World.timer.start('loadpois');
+  //  POI.setRawStock(points);
+  //  World.timer.loadpois.stop();
+  //  console.log(POI.stock.raw);
+  //}
 
   function showLoading(message) {
     return $ionicLoading.show({template: message});

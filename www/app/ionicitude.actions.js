@@ -32,7 +32,6 @@
       }
 
       function showPos(service, param) {
-        console.log('showing position', param);
         $cordovaToast.showLongCenter('lat : ' + param.lat + ", lon : " + param.lon + ", alt :" + param.alt);
       }
 

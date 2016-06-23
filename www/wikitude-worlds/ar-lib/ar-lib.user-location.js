@@ -28,7 +28,7 @@
     UserLocation.current = null;
     UserLocation.last = null;
     UserLocation.update = update;
-    UserLocation.updateLast = updateLast;
+    UserLocation.backupCurrent = backupCurrent;
     UserLocation.movingDistance = movingDistance;
 
     //Method
@@ -42,18 +42,17 @@
     ////////////////////
 
     function update(lon, lat, alt) {
-      console.log('setting new current position');
       UserLocation.current = new UserLocation(lon, lat, alt);
-      UserLocation.last === null && updateLast();
     }
 
-    function updateLast() {
-      console.log('setting last position');
+    function backupCurrent() {
       UserLocation.last = UserLocation.current;
     }
 
     function movingDistance() {
-      return turf.distance(UserLocation.current, UserLocation.last) * 1000;
+      var distance = turf.distance(UserLocation.current, UserLocation.last) * 1000;
+      console.log('distance parcourue', distance);
+      return distance;
     }
 
     function lon() {
@@ -71,6 +70,5 @@
     function literal() {
       return 'lon: ' + this.lon() + ', lat: ' + this.lat() + ', alt: ' + this.alt();
     }
-
   }
 })();
