@@ -66,7 +66,6 @@
         var near = getNearest(pois);
         var toAdd = getNewest(pois, near);
         var nbDeleted = removeFarest(near);
-        // Ajouter les nouveaux points
         showClosest(toAdd);
         POI.stock.visible = near;
         POI.stock.activeCount = Object.keys(POI.stock.active).length;
@@ -80,10 +79,8 @@
       World.timer.start('getnearest');
       var nbPoi = pois.length, res = [];
       for (var i = 0; i < nbPoi; i++) {
-        // Ajouter l'identifiant du point dans la liste des points proches
         if (isInReach(pois[i])) {
           var id = pois[i].properties.id_poi;
-          // Ajouter l'identifiant du point dans la liste des points à ajouter
           res.push(id);
         }
       }
