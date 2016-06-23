@@ -10,10 +10,14 @@
 
   function ionicitude($ionicPlatform, Ionicitude, $cordovaToast, POIGeo, POIData) {
     $ionicPlatform.ready(function () {
+      Ionicitude.init()
+        .then(function (success) { console.log(success); })
+        .catch(function (error) { console.log(error); });
+
       Ionicitude
-        .init()
         .addAction(close)
         .addAction(showPos)
+        .addAction(loadMarkers)
         .addAction(loadPois)
         .addAction(loadMarkerData)
         .addAction(toast)
@@ -32,35 +36,37 @@
         $cordovaToast.showLongCenter('lat : ' + param.lat + ", lon : " + param.lon + ", alt :" + param.alt);
       }
 
-      function loadPois(service) {
-        var marks = POIGeo.getMarks(),
-          start = Date.now();
-        service.callJavaScript('World.loadPois(' + angular.toJson(marks) + ')');
-        POIGeo.getPoints()
-          .then(function (success) {
-            //var pois = (success.data.features).slice(0, 100);
-            var pois = success.data.features;
-            console.log(pois);
-            service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
-            service.callJavaScript('World.timer(' + start + ')');
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
+      function loadMarkers(service) {
+        function loadPois(service) {
+          var marks = POIGeo.getMarks(),
+              start = Date.now();
+          service.callJavaScript('World.loadPois(' + angular.toJson(marks) + ')');
+          POIGeo.getPoints()
+            .then(function (success) {
+              //var pois = (success.data.features).slice(0, 100);
+              var pois = success.data.features;
+              console.log(pois);
+              service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
+              service.callJavaScript('World.timer(' + start + ')');
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
 
-      function loadMarkerData(service, param) {
-        console.log('get marker data');
-        service.callJavaScript('World.loadPoiData(' + angular.toJson(POIData.getData(param.id)) + ')');
-      }
+        function loadMarkerData(service, param) {
+          console.log('get marker data');
+          service.callJavaScript('World.loadPoiData(' + angular.toJson(POIData.getData(param.id)) + ')');
+        }
 
-      function toast(service, param) {
-        $cordovaToast.showLongCenter(param.message);
-      }
+        function toast(service, param) {
+          $cordovaToast.showLongCenter(param.message);
+        }
 
-      function setPosition(service, param) {
-        console.log('setting position :', param);
-        service.setLocation(param.lat, param.lon, param.alt, 1);
+        function setPosition(service, param) {
+          console.log('setting position :', param);
+          service.setLocation(param.lat, param.lon, param.alt, 1);
+        }
       }
     });
   }
