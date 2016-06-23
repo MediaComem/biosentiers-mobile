@@ -79,53 +79,6 @@ function buttonCtrl(Do, Beacon, POI, UserLocation) {
     //}
   };
 
-  ctrl.show = function show() {
-    console.log('visible', World.visible);
-    var start, getting, filter_new, filter_old, delete_old, show_new, near, fresh, old;
-    near = fresh = old = [];
-
-    World.timer.start('start');
-    World.timer.start('getting');
-    for (var id in World.pois) {
-      World.pois[id].distanceToUser() <= AR.context.scene.cullingDistance
-      && near.push(id);
-    }
-    World.timer.getting.stop("Getting the nearest POIs");
-    console.log('near', near);
-
-    World.timer.start('filter_new');
-    fresh = near.filter(function isFresh(id) {
-      return World.visible.indexOf(id) === -1;
-    });
-    World.timer.filter_new.stop('Filtering the new POIs');
-    console.log('fresh', fresh);
-
-    World.timer.start('filter_old');
-    old = World.visible.filter(function isOld(id) {
-      return near.indexOf(id) === -1;
-    });
-    World.timer.filter_old.stop('Filtering the old POIs');
-    console.log('old', old);
-
-    World.timer.start('delete_old');
-    old.forEach(function (id) {
-      //console.log(id);
-      World.pois[id].remove();
-      World.visible.splice(World.visible.indexOf(id), 1);
-    });
-    World.timer.delete_old.stop('Deleting the old POIs');
-
-    World.timer.start('show_new');
-    fresh.forEach(function (id) {
-      //console.log(id);
-      World.pois[id].show();
-      World.visible.push(id);
-    });
-    World.timer.show_new.stop('Showing the new POIs');
-    console.log('visible (bis)', World.visible);
-    World.timer.start.stop('Total processing time');
-  };
-
   ctrl.nearestBeacon = function nearestBeacon() {
     World.timer.start('nearest');
     var beacon = Beacon.getNearest();
