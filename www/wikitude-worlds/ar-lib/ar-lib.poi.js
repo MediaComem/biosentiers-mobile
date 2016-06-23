@@ -153,7 +153,7 @@
         var dist = poi.distanceToUser();
         console.log("distance to user ", dist);
         if (dist <= 20) {
-          Do.action('loadMarkerData', {id: this.id});
+          Do.action('loadMarkerData', {id: poi.id, properties: poi.properties});
         } else {
           Do.action('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
         }

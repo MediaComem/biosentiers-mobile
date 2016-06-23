@@ -54,7 +54,7 @@
 
       function loadMarkerData(service, param) {
         console.log('get marker data');
-        service.callJavaScript('World.loadPoiData(' + angular.toJson(POIData.getData(param.id)) + ')');
+        service.callJavaScript('World.loadPoiData(' + angular.toJson(POIData.getData(param.id)) + ', ' + angular.toJson(param.properties) + ')');
       }
 
       function toast(service, param) {

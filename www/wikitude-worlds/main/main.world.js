@@ -46,10 +46,10 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
     console.log(UserLocation);
   }
 
-  function loadPoiData(data) {
+  function loadPoiData(data, properties) {
     console.log('setting the poi data');
     World.poiData = data;
-    $rootScope.$emit('marker:loaded');
+    $rootScope.$emit('marker:loaded', properties);
   }
 
   function write(message) {

@@ -26,12 +26,13 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
     console.log('modal removed');
   });
 
-  $rootScope.$on('marker:loaded', function (event) {
+  $rootScope.$on('marker:loaded', function (event, properties) {
     console.log('marker:loaded event catched');
     console.log(event);
     console.log(World.poiData);
     ctrl.poi = World.poiData;
-    showPoiModal();
+    ctrl.properties = properties;
+    showPoiModal(ctrl.properties.theme_name);
   });
 
   ////////////////////
@@ -51,8 +52,8 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
     });
   }
 
-  function showPoiModal() {
-    $ionicModal.fromTemplateUrl('modal.poi.html', {
+  function showPoiModal(type) {
+    $ionicModal.fromTemplateUrl(type + '.poi.html', {
       scope    : $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
