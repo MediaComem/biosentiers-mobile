@@ -62,7 +62,7 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
   }
 }
 
-function buttonCtrl(Do, Beacon, POI) {
+function buttonCtrl(Do, Beacon, POI, UserLocation) {
   var ctrl = this;
 
   ctrl.loadTestPois = function loadTestPois() {
@@ -70,16 +70,13 @@ function buttonCtrl(Do, Beacon, POI) {
   };
 
   ctrl.debug = function debug() {
-    World.timer.start('debug');
-    console.log(POI.stock);
-    for (var id in POI.stock) {
-      console.log(POI.stock[id].distanceToUser());
-    }
-    console.log(POI.visible);
-    console.log("Nb of POIs", Object.keys(POI.stock).length);
-    console.log(Beacon.stock);
-    console.log(Beacon.stock.length);
-    World.timer.stop("Debug process time");
+    console.log(POI.stock.visible);
+    console.log(POI.stock.active);
+    console.log(POI.stock.activeCount);
+    console.log(UserLocation);
+    //for (var id in POI.stock.active) {
+    //  console.log(POI.stock.active[id].distanceToUser());
+    //}
   };
 
   ctrl.show = function show() {
@@ -139,6 +136,20 @@ function buttonCtrl(Do, Beacon, POI) {
 
 function OptCtrl(Do, $scope) {
   var ctrl = this;
+
+  ctrl.balises = function balises(num) {
+    switch (num) {
+      case 1:
+        Do.action('setPosition', {lat: 46.781025850072695, lon: 6.641159078988079, alt: 431});
+        break;
+      case 2:
+        Do.action('setPosition', {lat: 46.780397285829991, lon: 6.643032521127623, alt: 431});
+        break;
+      default:
+        throw new TypeError('Numéro inconnu');
+    }
+    $scope.base.modal.hide();
+  };
 
   ctrl.heig = function heig() {
     Do.action('setPosition', {lat: 46.781058, lon: 6.647179, alt: 431});

@@ -21,12 +21,13 @@
     //this.birdTerritory = birdTerritory;
     //this.biodivercity = biodivercity;
     //this.garden = garden;
+    var markers = [];
 
     this.get = getMarker;
+    this.markers = markers;
 
     ////////////////////
 
-    var markers = [];
     var availableTypes = [
       'default',
       'bird',
@@ -44,7 +45,7 @@
     ];
 
     function getMarker(type) {
-      if (!markers[type]) {
+      if (!markers[type] || markers[type].destroyed) {
         console.log("---");
         console.log("new Marker");
         console.log("---");

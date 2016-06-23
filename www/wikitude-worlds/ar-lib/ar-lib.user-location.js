@@ -7,7 +7,7 @@
     .module('ARLib')
     .factory('UserLocation', fnUserLocation);
 
-  function fnUserLocation() {
+  function fnUserLocation(turf) {
 
     /**
      * @param lon
@@ -28,6 +28,8 @@
     UserLocation.current = null;
     UserLocation.last = null;
     UserLocation.update = update;
+    UserLocation.updateLast = updateLast;
+    UserLocation.movingDistance = movingDistance;
 
     //Method
     UserLocation.prototype.lon = lon;
@@ -40,8 +42,18 @@
     ////////////////////
 
     function update(lon, lat, alt) {
-      UserLocation.last = UserLocation.current;
+      console.log('setting new current position');
       UserLocation.current = new UserLocation(lon, lat, alt);
+      UserLocation.last === null && updateLast();
+    }
+
+    function updateLast() {
+      console.log('setting last position');
+      UserLocation.last = UserLocation.current;
+    }
+
+    function movingDistance() {
+      return turf.distance(UserLocation.current, UserLocation.last) * 1000;
     }
 
     function lon() {

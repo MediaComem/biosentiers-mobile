@@ -15,8 +15,8 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
     },
     loadPoiData : loadPoiData,
     write       : write,
-    loadBeacons : loadBeacons,
-    loadPoints  : loadPoints,
+    //loadBeacons : loadBeacons,
+    loadPoints  : POI.setRawStock,
     showLoading : showLoading,
     hideLoading : $ionicLoading.hide
   };
@@ -36,14 +36,12 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
   }
 
   function onLocationChanged(lat, lon, alt) {
-    World.hideLoading();
-    World.timer.start('update');
-    World.timer.start('stockpoi');
+    // L'app doit charger les points si c'est la première mise à jour de position
+    // Regarder aussi pourquoi elle ne charge pas les points quand on passe de Balise 2 à Balise 1
     UserLocation.update(lon, lat, alt);
-    World.timer.update.stop();
     Do.action('toast', {message: UserLocation.current.literal()});
-    POI.loadStock(UserLocation.current);
-    World.timer.stockpoi.stop();
+    console.log(UserLocation.movingDistance());
+    if (UserLocation.movingDistance() > 20) POI.loadStock() && UserLocation.updateLast();
     console.log(UserLocation.current, UserLocation.last);
   }
 
@@ -57,12 +55,12 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
     console.log("World writes", message);
   }
 
-  function loadBeacons(beacons) {
-    World.timer.start('loadbeacons');
-    Beacon.loadStock(beacons);
-    World.timer.loadbeacons.stop("Loading Beacons");
-    console.log(Beacon.stock, Beacon.nearest);
-  }
+  //function loadBeacons(beacons) {
+  //  World.timer.start('loadbeacons');
+  //  Beacon.loadStock(beacons);
+  //  World.timer.loadbeacons.stop("Loading Beacons");
+  //  console.log(Beacon.stock, Beacon.nearest);
+  //}
 
   function loadPoints(points) {
     console.log(points);
