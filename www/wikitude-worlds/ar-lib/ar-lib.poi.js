@@ -62,46 +62,12 @@
     function loadStock() {
       if (POI.stock.raw) { // S'assurer que les données des points sont effectivement chargés.
         World.timer.start('loadstock');
-        var near = [], toAdd = {ids: []};
-        // removeCurrentStock();
-        // Récupérer tous les points proches
-        var pois = POI.stock.raw.features, nbPoi = POI.stock.raw.features.length;
-        World.timer.start('firstloop');
-        for (var i = 0; i < nbPoi; i++) {
-          // Ajouter l'identifiant du point dans la liste des points proches
-          if (isInReach(pois[i])) {
-            var id = pois[i].properties.id_poi;
-            // Ajouter l'identifiant du point dans la liste des points à ajouter
-            near.push(id);
-            // Ajouter l'identifiant du point comme propriété de la liste des objets à ajouter
-            if (!isVisible(pois[i])) {
-              toAdd.ids.push(id);
-              toAdd[id] = pois[i];
-            }
-          }
-        }
-        // toAdd.ids contient les IDs des GeoObjets à ajouter
-        // toAdd contient les GeoObjects à ajouter
-        // near contient les IDs des GeoObjets à portée
-        World.timer.firstloop.stop("First loop - iterating over every raw GeoObject :");
-        World.timer.start('secondloop');
-        // Supprimer les points hors de portée
-        var nbDeleted = 0;
-        for (var j = 0; j < POI.stock.visible.length; j++) {
-          var id = POI.stock.visible[j];
-          if (near.indexOf(id) === -1) {
-            POI.stock.active[id].remove();
-            nbDeleted++;
-          }
-        }
-        World.timer.secondloop.stop('Second loop - Removing farest points');
-        World.timer.start('thirdloop');
+        var pois = POI.stock.raw.features;
+        var near = getNearest(pois);
+        var toAdd = getNewest(pois, near);
+        var nbDeleted = removeFarest(near);
         // Ajouter les nouveaux points
-        for (var k = 0; k < toAdd.ids.length; k++) {
-          var id = toAdd.ids[k];
-          POI.stock.active[id] = new POI(toAdd[id]);
-        }
-        World.timer.thirdloop.stop("Third loop - Adding closest points");
+        showClosest(toAdd);
         POI.stock.visible = near;
         POI.stock.activeCount = Object.keys(POI.stock.active).length;
         World.timer.loadstock.stop('Load Stock total :');
@@ -110,13 +76,57 @@
       }
     }
 
-    //function removeCurrentStock() {
-    //  AR.context.destroyAll();
-    //  POI.stock.active = {};
-    //  POI.stock.visible = [];
-    //  POI.stock.activeCount = 0;
-    //  console.log(Markers);
-    //}
+    function getNearest(pois) {
+      World.timer.start('getnearest');
+      var nbPoi = pois.length, res = [];
+      for (var i = 0; i < nbPoi; i++) {
+        // Ajouter l'identifiant du point dans la liste des points proches
+        if (isInReach(pois[i])) {
+          var id = pois[i].properties.id_poi;
+          // Ajouter l'identifiant du point dans la liste des points à ajouter
+          res.push(id);
+        }
+      }
+      World.timer.getnearest.stop('get nearest');
+      return res;
+    }
+
+    function getNewest(pois, near) {
+      World.timer.start('getnewest');
+      var nbPoi = pois.length, res = {ids: []};
+      for (var i = 0; i < nbPoi; i++) {
+        var id = pois[i].properties.id_poi;
+        if (near.indexOf(id) !== -1 && !isVisible(pois[i])) {
+          res.ids.push(id);
+          res[id] = pois[i];
+        }
+      }
+      World.timer.getnewest.stop('get newest');
+      return res;
+    }
+
+    function removeFarest(near) {
+      World.timer.start('removefarest');
+      var res = 0;
+      for (var j = 0; j < POI.stock.visible.length; j++) {
+        var id = POI.stock.visible[j];
+        if (near.indexOf(id) === -1) {
+          POI.stock.active[id].remove();
+          res++;
+        }
+      }
+      World.timer.removefarest.stop('remove farest');
+      return res;
+    }
+
+    function showClosest(toAdd) {
+      World.timer.start('showclosest');
+      for (var k = 0; k < toAdd.ids.length; k++) {
+        var id = toAdd.ids[k];
+        POI.stock.active[id] = new POI(toAdd[id]);
+      }
+      World.timer.showclosest.stop('show closest');
+    }
 
     function isInReach(poi) {
       return turf.distance(UserLocation.current, poi) * 1000 < POI.reachLimit;
