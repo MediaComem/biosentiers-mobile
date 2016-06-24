@@ -43,7 +43,7 @@ function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
       POI.loadStock();
       World.startup = false;
     }
-    console.log(UserLocation);
+    console.log(UserLocation.debug());
   }
 
   function loadPoiData(data, properties) {

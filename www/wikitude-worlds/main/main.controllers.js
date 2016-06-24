@@ -74,7 +74,7 @@ function buttonCtrl(Do, Beacon, POI, UserLocation) {
     console.log(POI.stock.visible);
     console.log(POI.stock.active);
     console.log(POI.stock.activeCount);
-    console.log(UserLocation);
+    console.log(UserLocation.debug());
     //for (var id in POI.stock.active) {
     //  console.log(POI.stock.active[id].distanceToUser());
     //}

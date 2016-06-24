@@ -30,6 +30,7 @@
     UserLocation.update = update;
     UserLocation.backupCurrent = backupCurrent;
     UserLocation.movingDistance = movingDistance;
+    UserLocation.debug = debug;
 
     //Method
     UserLocation.prototype.lon = lon;
@@ -53,6 +54,13 @@
       var distance = turf.distance(UserLocation.current, UserLocation.last) * 1000;
       console.log('distance parcourue', distance);
       return distance;
+    }
+
+    function debug() {
+      return {
+        current: UserLocation.current,
+        last: UserLocation.last
+      };
     }
 
     function lon() {
