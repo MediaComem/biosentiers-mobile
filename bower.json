@@ -6,6 +6,8 @@
     "angular-mocks": "1.4.3"
   },
   "dependencies": {
-    "ionicitude": "tazaf/ionicitude#^0.2.0-alpha"
+    "ionicitude": "tazaf/ionicitude#^0.2.0-alpha",
+    "angular-leaflet-directive": "tombatossals/angular-leaflet-directive#^0.10.0",
+    "leaflet": "^0.7.7"
   }
 }
