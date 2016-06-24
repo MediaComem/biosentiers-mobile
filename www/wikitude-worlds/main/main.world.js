@@ -5,7 +5,7 @@ angular
   .module('ar')
   .run(run);
 
-function run(Do, POI, Beacon, $rootScope, $ionicLoading, turf, UserLocation) {
+function run(POI, $rootScope, $ionicLoading, UserLocation) {
   var tStop;
 
   World = {

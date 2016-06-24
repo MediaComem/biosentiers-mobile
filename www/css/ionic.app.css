@@ -9738,3 +9738,9 @@ a.button {
   align-items: center; }
   #login-buttons .wrapper {
     width: 90%; }
+
+.leaflet-container {
+  height: 200px; }
+
+.leaflet-control-container {
+  display: none; }

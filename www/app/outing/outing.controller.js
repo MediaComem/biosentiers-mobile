@@ -8,8 +8,42 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Ionicitude, outingData, $cordovaToast, POIGeo) {
+  function OutingCtrl($scope, Ionicitude, outingData, $cordovaToast, POIGeo, leafletData) {
     var ctrl = this;
+
+    var bounds = {
+      northEast: {
+        lat: 46.776593276526796,
+        lng: 6.6319531547147532
+      },
+      southWest: {
+        lat: 46.789845089288413,
+        lng: 6.6803974239963217
+      }
+    };
+
+    leafletData.getMap('map')
+      .then(function (map) {
+        console.log(map);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    angular.extend($scope, {
+      maxbounds: bounds,
+      tiles    : {
+        url    : 'data/Tiles/{z}/{x}/{y}.png',
+        options: {
+          errorTileUrl: 'data/Tiles/error.png'
+        }
+      },
+      defaults : {
+        scrollWheelZoom   : true,
+        maxZoom           : 18,
+        attributionControl: false
+      }
+    });
 
     ctrl.launchAR = function () {
       try {

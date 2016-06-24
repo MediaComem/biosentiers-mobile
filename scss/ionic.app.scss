@@ -30,3 +30,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     width: 90%;
   }
 }
+
+.leaflet-container {
+  height: 200px;
+}
+
+.leaflet-control-container {
+  display: none;
+}
