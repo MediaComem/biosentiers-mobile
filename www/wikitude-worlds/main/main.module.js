@@ -5,5 +5,7 @@ angular.module('ar', [
   'ionic',
   'arDirectives',
   'ARLib',
-  'TurfModule'
+  'TurfModule',
+  'leaflet-directive',
+  'ngCordova'
 ]);

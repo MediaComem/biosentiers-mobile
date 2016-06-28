@@ -7,12 +7,12 @@
     .module('POIModule')
     .factory('POIGeo', POIGeo);
 
-  function POIGeo($http, turf) {
+  function POIGeo($http) {
     var service = {
       getPoints  : getPoints,
       getMarks   : getMarks,
-      getBeacons : getBeacons,
-      getGeoMarks: getGeoMarks
+      getBeacons : getBeacons
+      //getGeoMarks: getGeoMarks
     };
 
     return service;
@@ -58,12 +58,12 @@
       }]
     }
 
-    function getGeoMarks() {
-      var points = getMarks(), geo = [];
-      points.forEach(function (point) {
-        geo.push(turf.point(point.geometry.coordinates, point.properties));
-      });
-      return turf.featureCollection(geo);
-    }
+    //function getGeoMarks() {
+    //  var points = getMarks(), geo = [];
+    //  points.forEach(function (point) {
+    //    geo.push(turf.point(point.geometry.coordinates, point.properties));
+    //  });
+    //  return turf.featureCollection(geo);
+    //}
   }
 })();

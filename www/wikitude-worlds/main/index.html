@@ -7,13 +7,22 @@
 
     <title>Sortie - AR View</title>
 
+
     <!-- Ionic -->
     <script src="architect://architect.js"></script>
     <script src="../../lib/ionic/js/ionic.bundle.min.js"></script>
 
+    <script src="../../lib/ngCordova/dist/ng-cordova.min.js"></script>
+
     <!-- Turf -->
     <script src="../../lib/turf/turf.min.js"></script>
     <script src="../../lib/angular-turf-module/angular-turf-module.js"></script>
+
+    <!-- Leaflet -->
+    <script src="../../lib/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="../../lib/leaflet/dist/leaflet.css">
+    <script src="../../lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+
 
     <script src="../ar-back-button-directive.js"></script>
 
@@ -40,6 +49,57 @@
         width: 100%;
         text-align: right;
       }
+
+      .mini-map {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+      }
+
+      .mini-map .leaflet-container {
+        height: 100px;
+        width: 100px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        -webkit-mask-image: url(../../img/mask.svg);
+      }
+
+      .mini-map .leaflet-control-container {
+        display: none;
+      }
+
+      #radarContainer {
+        position: absolute;
+        right: 140px;
+        bottom: 20px;
+        width: 100px;
+        height: 100px;
+      }
+
+      .stats {
+        position: absolute;
+        top: 44px;
+        left: 0;
+        right: 0;
+        background-color: white;
+      }
+
+      .stats span {
+        text-align: center;
+      }
+
+      .stats .plus {
+        color: green;
+      }
+
+      .stats .moins {
+        color: red;
+      }
+
+      .stats .total {
+        color: blue;
+      }
     </style>
   </head>
   <body ng-app="ar">
@@ -52,11 +112,21 @@
         <i class="icon ion-android-options"></i>
       </button>
     </ion-header-bar>
-    <div id="test-button" ng-controller="buttonCtrl as button">
-      <button class="button button-royal" on-release="button.loadTestPois()">Load</button>
-      <!--<button class="button button-royal" on-release="button.show()">Show</button>-->
-      <button class="button button-royal" on-release="button.nearestBeacon()">Scan</button>
-      <button class="button button-royal" on-release="button.debug()">Debug</button>
+    <div id="radarContainer"></div>
+    <!--<div id="test-button" ng-controller="buttonCtrl as button">-->
+    <!--<button class="button button-royal" on-release="button.loadTestPois()">Load</button>-->
+    <!--&lt;!&ndash;<button class="button button-royal" on-release="button.show()">Show</button>&ndash;&gt;-->
+    <!--<button class="button button-royal" on-release="button.nearestBeacon()">Scan</button>-->
+    <!--<button class="button button-royal" on-release="button.debug()">Debug</button>-->
+    <!--</div>-->
+    <div class="mini-map" ng-controller="MapCtrl as map"
+         ng-style="{'transform': map.mapOrientation, '-webkit-transform': map.mapOrientation, '-ms-transform': map.mapOrientation}">
+      <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
+               geojson="map.spec.path"></leaflet>
+    </div>
+    <div class="stats row" ng-controller="StatsCtrl as stats">
+      <span class="plus col">+ {{stats.plus}}</span><span class="moins col">- {{stats.moins}}</span><span
+      class="total col">Tot: {{stats.total}}</span>
     </div>
   </body>
 </html>

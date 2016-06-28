@@ -8,7 +8,7 @@
     .module('ARLib')
     .factory('POI', fnPOI);
 
-  function fnPOI(Do, Markers, turf, UserLocation) {
+  function fnPOI(Do, Markers, turf, UserLocation, $rootScope) {
 
     // Static
     POI.setRawStock = setRawStock;
@@ -41,7 +41,8 @@
       this.geoObject = new AR.GeoObject(this.location, {
         onClick  : onPoiClick(this),
         drawables: {
-          cam: [Markers.get(this.properties.theme_name), this.title]
+          cam  : [Markers.get(this.properties.theme_name)], //, this.title],
+          radar: new AR.Circle(0.05, {style: {fillColor: '#83ff7b'}})
         }
       });
     }
@@ -71,7 +72,8 @@
         POI.stock.activeCount = Object.keys(POI.stock.active).length;
         World.timer.loadstock.stop('Load Stock total :');
         console.log('loaded', POI.stock);
-        Do.action('toast', {message: toAdd.ids.length + " points en plus, " + nbDeleted + " points en moins"});
+        $rootScope.$emit('stats:update', toAdd.ids.length, nbDeleted, POI.stock.activeCount);
+        //Do.action('toast', {message: toAdd.ids.length + " points en plus, " + nbDeleted + " points en moins"});
       }
     }
 

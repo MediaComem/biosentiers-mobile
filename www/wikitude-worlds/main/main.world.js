@@ -5,9 +5,7 @@ angular
   .module('ar')
   .run(run);
 
-function run(POI, $rootScope, $ionicLoading, UserLocation) {
-  var tStop;
-
+function run(Do, POI, $rootScope, $ionicLoading, UserLocation) {
   World = {
     startup    : true,
     poiData    : null,
@@ -30,6 +28,19 @@ function run(POI, $rootScope, $ionicLoading, UserLocation) {
   AR.context.onScreenClick = onScreenClick;
   AR.context.onLocationChanged = onLocationChanged;
 
+  AR.radar.container = document.getElementById("radarContainer");
+  // set the back-ground image for the radar
+  AR.radar.background = new AR.ImageResource("assets/radar_bg_transparent.png");
+  // set the north-indicator image for the radar (not necessary if you don't want to display a north-indicator)
+  AR.radar.northIndicator.image = new AR.ImageResource("assets/radar_north.png");
+  // center of north indicator and radar-points in the radar asset, usually center of radar is in the exact middle of the bakground, meaning 50% X and 50% Y axis --> 0.5 for centerX/centerY
+  AR.radar.centerX = 0.5;
+  AR.radar.centerY = 0.5;
+  AR.radar.radius = 0.3;
+  AR.radar.northIndicator.radius = 0.0;
+  AR.radar.maxDistance = 50;
+  AR.radar.enabled = true;
+
   ////////////////////
 
   function onScreenClick() {
@@ -37,12 +48,18 @@ function run(POI, $rootScope, $ionicLoading, UserLocation) {
   }
 
   function onLocationChanged(lat, lon, alt) {
+    console.log('located ?', !World.startup);
+    if (World.startup) {
+      Do.action('toast', {message: 'Localisé !'});
+    }
     UserLocation.update(lon, lat, alt);
     if (World.startup || UserLocation.movingDistance() > 20) {
       UserLocation.backupCurrent();
       POI.loadStock();
       World.startup = false;
+      console.log(UserLocation.debug());
     }
+    $rootScope.$emit('user:located');
     console.log(UserLocation.debug());
   }
 
@@ -80,7 +97,7 @@ function run(POI, $rootScope, $ionicLoading, UserLocation) {
       name : name,
       value: Date.now(),
       stop : function stop(message) {
-        tStop = Date.now();
+        var tStop = Date.now();
         console.log(message ? message : "Process time", (tStop - this.value) / 1000);
         delete World.timer[this.name];
       }

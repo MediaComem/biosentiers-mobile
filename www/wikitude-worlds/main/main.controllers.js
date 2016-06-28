@@ -2,7 +2,91 @@ angular
   .module('ar')
   .controller('baseCtrl', baseCtrl)
   .controller('OptCtrl', OptCtrl)
+  .controller('MapCtrl', MapCtrl)
+  .controller('StatsCtrl', StatsCtrl)
   .controller('buttonCtrl', buttonCtrl);
+
+function StatsCtrl($scope, $rootScope) {
+  var ctrl = this;
+
+  ctrl.plus = 0;
+  ctrl.moins = 0;
+  ctrl.total = 0;
+
+  $rootScope.$on('stats:update', function (event, plus, moins, total) {
+    console.log('updating stats', event, plus, moins, total);
+    ctrl.plus = plus;
+    ctrl.moins = moins;
+    ctrl.total = total;
+    $scope.$apply();
+  });
+}
+
+function MapCtrl($scope, $http, $rootScope, UserLocation) {
+  var ctrl = this, zoom = 17;
+
+  ctrl.mapOrientation = 'rotate(0deg)';
+
+  ctrl.spec = {
+    tiles   : {
+      url    : '../../data/Tiles/{z}/{x}/{y}.png',
+      options: {
+        errorTileUrl: '../../data/Tiles/error.png'
+      }
+    },
+    defaults: {
+      scrollWheelZoom   : false,
+      maxZoom           : zoom,
+      minZoom           : zoom,
+      attributionControl: false
+    },
+    center  : {
+      lat : 46.781001,
+      lng : 6.647128,
+      zoom: zoom
+    },
+    markers : {
+      user: {
+        lat : 46.781001,
+        lng : 6.647128,
+        icon: {
+          iconUrl   : '../../img/icons/user.png',
+          iconSize  : [14, 14], // size of the icon
+          iconAnchor: [7, 7] // point of the icon which will correspond to marker's location
+        }
+      }
+    }
+  };
+
+  $http.get('../../data/path.json').then(function (success) {
+      console.log(success.data);
+      ctrl.spec.path = {
+        data : success.data,
+        style: {
+          color : 'red',
+          weigth: 6
+        }
+      }
+    }, function (error) {
+      console.log(error);
+    }
+  );
+
+  $rootScope.$on('user:located', function () {
+    console.log('updated map according to UserLocation');
+    if (ctrl.spec.hasOwnProperty('center')) {
+      console.log('updating the center');
+      ctrl.spec.center.lat = UserLocation.current.lat();
+      ctrl.spec.center.lng = UserLocation.current.lon();
+    }
+    if (ctrl.spec.markers.hasOwnProperty('user')) {
+      console.log('updating the marker');
+      ctrl.spec.markers.user.lat = UserLocation.current.lat();
+      ctrl.spec.markers.user.lng = UserLocation.current.lon();
+    }
+    $scope.$apply();
+  });
+}
 
 function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
   var ctrl = this;

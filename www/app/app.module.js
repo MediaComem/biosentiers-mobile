@@ -12,7 +12,6 @@
     'QRModule',
     'OutingsModule', // SHC : pour le service contenant la liste des sorties
     'POIModule',
-    'TurfModule',
     'leaflet-directive'
     // 'arDirectives'
   ]);
