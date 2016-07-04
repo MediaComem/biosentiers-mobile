@@ -1,9 +1,9 @@
 <ion-view view-title="Mes Sorties">
-  <ion-content>
+  <ion-content on-swipe-right="goBack()" on-swipe-left="goForward()">
     <ion-list>
       <ion-item ng-repeat="outing in ctrl.outings" href="#/app/outings/{{outing.id}}">
         <h2>{{outing.name}}</h2>
-        <p>{{outing.date}}</p>
+        <p>Date : {{outing.date}}</p>
         <p>Créée par {{outing.creator}}</p>
         <p>Statut : {{outing.statut}}</p>
       </ion-item>
