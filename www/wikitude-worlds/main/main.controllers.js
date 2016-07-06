@@ -36,8 +36,10 @@ function MapCtrl($scope, $http, $rootScope, UserLocation) {
     },
     defaults: {
       scrollWheelZoom   : false,
-      maxZoom           : zoom,
-      minZoom           : zoom,
+      touchZoom         : false, 
+      dragging          : false, 
+/*    maxZoom           : zoom,
+      minZoom           : zoom, */
       attributionControl: false
     },
     center  : {
