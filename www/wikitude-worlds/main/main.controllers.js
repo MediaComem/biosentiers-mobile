@@ -37,6 +37,7 @@ function MapCtrl($scope, $http, $rootScope, UserLocation) {
     defaults: {
       scrollWheelZoom   : false,
       touchZoom         : false, 
+      doubleClickZoom   : false,      
       dragging          : false, 
 /*    maxZoom           : zoom,
       minZoom           : zoom, */
@@ -57,8 +58,19 @@ function MapCtrl($scope, $http, $rootScope, UserLocation) {
           iconAnchor: [7, 7] // point of the icon which will correspond to marker's location
         }
       }
+    },
+    events : {
+      map: {
+        enable: ['click'],
+        logic: 'emit'
+      }
     }
   };
+  
+  $scope.$on('leafletDirectiveMap.click', function(event){
+    // $scope.eventDetected = "Click";
+    console.log('C\'est cliqué!');
+  });
 
   $http.get('../../data/path.json').then(function (success) {
       console.log(success.data);

@@ -119,10 +119,10 @@
     <!--<button class="button button-royal" on-release="button.nearestBeacon()">Scan</button>-->
     <!--<button class="button button-royal" on-release="button.debug()">Debug</button>-->
     <!--</div>-->
-    <div class="mini-map" ng-controller="MapCtrl as map"
+    <div class="mini-map" ng-controller="MapCtrl as map" data-tap-disabled="true" 
          ng-style="{'transform': map.mapOrientation, '-webkit-transform': map.mapOrientation, '-ms-transform': map.mapOrientation}">
       <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
-               geojson="map.spec.path"></leaflet>
+               geojson="map.spec.path" event-broadcast="map.spec.events"></leaflet>
     </div>
     <div class="stats row" ng-controller="StatsCtrl as stats">
       <span class="plus col">+ {{stats.plus}}</span><span class="moins col">- {{stats.moins}}</span><span
