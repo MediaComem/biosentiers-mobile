@@ -22,7 +22,7 @@ function StatsCtrl($scope, $rootScope) {
   });
 }
 
-function MapCtrl($scope, $http, $rootScope, UserLocation) {
+function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
   var ctrl = this, zoom = 17;
 
   ctrl.mapOrientation = 'rotate(0deg)';
@@ -36,9 +36,9 @@ function MapCtrl($scope, $http, $rootScope, UserLocation) {
     },
     defaults: {
       scrollWheelZoom   : false,
-      touchZoom         : false, 
-      doubleClickZoom   : false,      
-      dragging          : false, 
+      touchZoom         : false,
+      doubleClickZoom   : false,
+      dragging          : false,
 /*    maxZoom           : zoom,
       minZoom           : zoom, */
       attributionControl: false
@@ -66,10 +66,25 @@ function MapCtrl($scope, $http, $rootScope, UserLocation) {
       }
     }
   };
-  
+
+  // Modal - Big Map
+  $ionicModal.fromTemplateUrl('modal.big.map.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    ctrl.modal = modal;
+  });
+
+  $scope.closeModal = function() {
+    ctrl.modal.hide();
+    console.log('modal hidden');
+  };
+
   $scope.$on('leafletDirectiveMap.click', function(event){
-    // $scope.eventDetected = "Click";
     console.log('C\'est cliqué!');
+
+    ctrl.modal.show();
+    console.log('modal showed');
   });
 
   $http.get('../../data/path.json').then(function (success) {

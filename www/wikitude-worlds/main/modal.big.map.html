@@ -1,0 +1,51 @@
+<style>
+
+  .modal{
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+  }
+
+  .big-map {
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .big-map .leaflet-container {
+    height: 100%;
+    width: 100%;
+  }
+
+  .big-map .leaflet-control-container {
+    display: none;
+  }
+
+  .buttons {
+    margin: auto;
+  }
+
+</style>
+
+<ion-modal-view class="modal"> <!-- controller: MapCtrl as map -->
+
+  <ion-header-bar class="bar bar-header bar-energized">
+    <h1 class="title">Carte</h1>
+  </ion-header-bar>
+
+  <ion-content class="has-header has-footer">
+    <div class="big-map">
+      <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers"
+               center="map.spec.center" geojson="map.spec.path" event-broadcast="map.spec.events"></leaflet>
+    </div>
+  </ion-content>
+
+  <ion-footer-bar class="bar bar-footer bar-energized">
+    <div class="buttons" ng-click="closeModal()">
+      <button class="button button-stable">Retour à la réalité augmentée</button>
+    </div>
+  </ion-footer-bar>
+
+</ion-modal-view>
