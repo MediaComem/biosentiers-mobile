@@ -13,7 +13,7 @@
     <!-- Ionic -->
     <script src="architect://architect.js"></script>
     <script src="../../lib/ionic/js/ionic.bundle.min.js"></script>
-
+    <link rel="stylesheet" href="../../lib/ionic/css/ionic.min.css">
     <script src="../../lib/ngCordova/dist/ng-cordova.min.js"></script>
 
     <!-- Turf -->
@@ -24,7 +24,6 @@
     <script src="../../lib/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="../../lib/leaflet/dist/leaflet.css">
     <script src="../../lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-
 
     <script src="../ar-back-button-directive.js"></script>
 
@@ -40,8 +39,8 @@
     <script src="main.module.js"></script>
     <script src="main.world.js"></script>
     <script src="main.controllers.js"></script>
-
-    <link rel="stylesheet" href="../../lib/ionic/css/ionic.min.css">
+    <script src="filters.controller.js"></script>
+    <script src="filters.service.js"></script>
 
     <style>
       #test-button {
@@ -50,6 +49,30 @@
         right: 20px;
         width: 100%;
         text-align: right;
+      }
+
+      option.placeholder {
+        color: #c0c0c0;
+      }
+
+      .filters {
+        position: fixed;
+        bottom: 30px;
+        left: 20px;
+      }
+
+      .filters a {
+        display: block;
+        width: 80px;
+        height: 80px;
+        font-size: 70px;
+        padding: 5px;
+        text-align: center;
+        -webkit-border-radius: 80px;
+        -moz-border-radius: 80px;
+        border-radius: 80px;
+        background-color: red;
+        color: white;
       }
 
       .mini-map {
@@ -104,8 +127,8 @@
       }
     </style>
   </head>
-  <body ng-app="ar">
-    <ion-header-bar class="bar-balanced" ng-controller="baseCtrl as base">
+  <body ng-app="ar" ng-controller="baseCtrl as base">
+    <ion-header-bar class="bar-balanced">
       <button class="button back-button button-icon" ng-click="base.closeAR()">
         <i class="icon ion-android-arrow-back"></i>
       </button>
@@ -121,6 +144,9 @@
     <!--<button class="button button-royal" on-release="button.nearestBeacon()">Scan</button>-->
     <!--<button class="button button-royal" on-release="button.debug()">Debug</button>-->
     <!--</div>-->
+    <div class="filters" data-tap-disabled="true">
+      <a class="icon ion-gear-a" href="#" ng-click="base.showFiltersModal()"></a>
+    </div>
     <div class="mini-map" ng-controller="MapCtrl as map" data-tap-disabled="true" 
          ng-style="{'transform': map.mapOrientation, '-webkit-transform': map.mapOrientation, '-ms-transform': map.mapOrientation}">
       <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"

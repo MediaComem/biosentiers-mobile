@@ -5,7 +5,7 @@ angular
   .module('ar')
   .run(run);
 
-function run(Do, POI, $rootScope, $ionicLoading, UserLocation) {
+function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
   World = {
     startup    : true,
     poiData    : null,
@@ -15,7 +15,7 @@ function run(Do, POI, $rootScope, $ionicLoading, UserLocation) {
     loadPoiData: loadPoiData,
     write      : write,
     //loadBeacons : loadBeacons,
-    loadPoints : POI.setRawStock,
+    loadPoints : POIData.setData,
     showLoading: showLoading,
     hideLoading: $ionicLoading.hide
   };
@@ -41,6 +41,8 @@ function run(Do, POI, $rootScope, $ionicLoading, UserLocation) {
   AR.radar.maxDistance = 50;
   AR.radar.enabled = true;
 
+  $rootScope.$on('filters:changed', onFiltersChanged);
+
   ////////////////////
 
   function onScreenClick() {
@@ -61,6 +63,10 @@ function run(Do, POI, $rootScope, $ionicLoading, UserLocation) {
     }
     $rootScope.$emit('user:located');
     console.log(UserLocation.debug());
+  }
+
+  function onFiltersChanged() {
+    POI.loadStock();
   }
 
   function loadPoiData(data, properties) {

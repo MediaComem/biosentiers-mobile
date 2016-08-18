@@ -6,16 +6,44 @@
 
   angular
     .module('ARLib')
-    .factory('POI', fnPOI);
+    .factory('POI', POIService)
+    .factory('POIData', POIDataService);
 
-  function fnPOI(Do, Markers, turf, UserLocation, $rootScope) {
+  function POIDataService($rootScope) {
+
+    var service = {
+      data: null,
+
+      hasData: function() {
+        return !!service.data;
+      },
+
+      setData: function(data) {
+        service.data = data;
+
+        if (data) {
+          $rootScope.$emit('poiData:changed');
+        }
+      },
+
+      getPois: function() {
+        return service.data ? service.data.features : [];
+      },
+
+      getThemes: function() {
+        return service.data ? _.compact(_.uniq(_.map(service.data.features, 'properties.theme_name'))).sort() : [];
+      }
+    };
+
+    return service;
+  }
+
+  function POIService(Do, Filters, Markers, POIData, $rootScope, turf, UserLocation) {
 
     // Static
-    POI.setRawStock = setRawStock;
     POI.loadStock = loadStock;
     POI.reachLimit = 250;
     POI.stock = {
-      raw        : null,
       active     : {}, // Stocke les objets de POI actuellement affichés (une propriété pour chaque objet)
       visible    : [], // Stocke les ids des POI actuellement affichés
       activeCount: 0
@@ -55,22 +83,26 @@
 
     ////////////////////
 
-    function setRawStock(stock) {
-      console.log(stock);
-      POI.stock.raw = stock;
-    }
-
     function loadStock() {
-      if (POI.stock.raw) { // S'assurer que les données des points sont effectivement chargés.
+      if (POIData.hasData()) { // S'assurer que les données des points sont effectivement chargés.
         World.timer.start('loadstock');
-        var pois = POI.stock.raw.features;
-        var near = getNearest(pois);
-        var toAdd = getNewest(pois, near);
-        var nbDeleted = removeFarest(near);
+
+        var pois = POIData.getPois();
+        var nearest = getNearest(pois);
+
+        var filtered = Filters.filterPois(nearest);
+
+        var poiIds = _.map(filtered, 'properties.id_poi');
+
+        var toAdd = getNewest(pois, poiIds);
+        var nbDeleted = removeFarthest(poiIds);
+
         showClosest(toAdd);
-        POI.stock.visible = near;
+        POI.stock.visible = poiIds;
         POI.stock.activeCount = Object.keys(POI.stock.active).length;
+
         World.timer.loadstock.stop('Load Stock total :');
+
         console.log('loaded', POI.stock);
         $rootScope.$emit('stats:update', toAdd.ids.length, nbDeleted, POI.stock.activeCount);
         //Do.action('toast', {message: toAdd.ids.length + " points en plus, " + nbDeleted + " points en moins"});
@@ -79,15 +111,9 @@
 
     function getNearest(pois) {
       World.timer.start('getnearest');
-      var nbPoi = pois.length, res = [];
-      for (var i = 0; i < nbPoi; i++) {
-        if (isInReach(pois[i])) {
-          var id = pois[i].properties.id_poi;
-          res.push(id);
-        }
-      }
+      var nearest = _.filter(pois, isInReach);
       World.timer.getnearest.stop('get nearest');
-      return res;
+      return nearest;
     }
 
     function getNewest(pois, near) {
@@ -104,17 +130,18 @@
       return res;
     }
 
-    function removeFarest(near) {
-      World.timer.start('removefarest');
+    function removeFarthest(near) {
+      World.timer.start('removefarthest');
       var res = 0;
-      for (var j = 0; j < POI.stock.visible.length; j++) {
+      var n = POI.stock.visible.length;
+      for (var j = 0; j < n; j++) {
         var id = POI.stock.visible[j];
         if (near.indexOf(id) === -1) {
           POI.stock.active[id].remove();
           res++;
         }
       }
-      World.timer.removefarest.stop('remove farest');
+      World.timer.removefarthest.stop('remove farthest');
       return res;
     }
 

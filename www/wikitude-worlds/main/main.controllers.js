@@ -6,7 +6,7 @@ angular
   .controller('StatsCtrl', StatsCtrl)
   .controller('buttonCtrl', buttonCtrl);
 
-function StatsCtrl($scope, $rootScope) {
+function StatsCtrl($rootScope, $scope) {
   var ctrl = this;
 
   ctrl.plus = 0;
@@ -18,7 +18,6 @@ function StatsCtrl($scope, $rootScope) {
     ctrl.plus = plus;
     ctrl.moins = moins;
     ctrl.total = total;
-    $scope.$apply();
   });
 }
 
@@ -113,20 +112,22 @@ function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
       ctrl.spec.markers.user.lat = UserLocation.current.lat();
       ctrl.spec.markers.user.lng = UserLocation.current.lon();
     }
-    $scope.$apply();
   });
 }
 
-function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
+function baseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {
   var ctrl = this;
 
   ctrl.modal = null;
   ctrl.closeAR = closeAR;
   ctrl.showOptModal = showOptModal;
+  ctrl.showFiltersModal = showFiltersModal;
 
   // Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function () {
-    ctrl.modal.remove();
+    if (ctrl.modal) {
+      ctrl.modal.remove();
+    }
   });
   // Execute action on hide modal
   $scope.$on('modal.hidden', function () {
@@ -157,7 +158,7 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
 
   function showOptModal() {
     $ionicModal.fromTemplateUrl('modal.opt.html', {
-      scope    : $scope,
+      scope: $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
       ctrl.modal = modal;
@@ -167,9 +168,16 @@ function baseCtrl(Do, $scope, $ionicModal, $rootScope) {
 
   function showPoiModal(type) {
     $ionicModal.fromTemplateUrl(type + '.poi.html', {
-      scope    : $scope,
+      scope: $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
+      ctrl.modal = modal;
+      ctrl.modal.show();
+    });
+  }
+
+  function showFiltersModal() {
+    Filters.showModal($scope).then(function(modal) {
       ctrl.modal = modal;
       ctrl.modal.show();
     });

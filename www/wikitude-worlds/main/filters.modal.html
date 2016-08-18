@@ -1,0 +1,21 @@
+<ion-modal-view ng-controller="FiltersCtrl as filters">
+  <ion-header-bar class="bar bar-header bar-balanced">
+    <h1 class="title">Filters</h1>
+    <button class="button button-clear button-primary" ng-click="base.modal.hide()">Cancel</button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Thème
+        </div>
+        <select ng-model="filters.selected.theme">
+          <option class="placeholder" value="">Tous</option>
+          <option ng-repeat="theme in filters.themes">{{ theme }}</option>
+        </select>
+      </label>
+
+    </div>
+  </ion-content>
+</ion-modal-view>
