@@ -1,8 +1,24 @@
 # BioSentiers
 
-## IMPORTANT !
 
-Puisque le .gitignore de ce projet ne prend pas en compte le dossier "plugins/" du projet Ionic, il faut exécuter la commande `ionic state restore` après un git clone pour qu'Ionic télécharge les plugins utilisés.
+
+## Installation
+
+* Cloner le repository.
+* Installer les dépendances:
+  * `npm install -g ionic ios-deploy`
+  * `cd /path/to/project`
+  * `npm install`
+  * `ionic hooks add`
+  * `ionic resources`
+* **Important**: puisque le .gitignore de ce projet ne prend pas en compte le dossier "plugins/" du projet Ionic, il faut exécuter la commande suivante après un git clone pour qu'Ionic télécharge les plugins utilisés:
+  * `ionic state restore`
+* Ajouter la clé de license du plugin Wikitude:
+  * Changer `this._sdkKey` dans `/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js`.
+  * Changer `this._sdkKey` dans `/platforms/android/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` pour Android.
+  * Changer `this._sdkKey` dans `/platforms/ios/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` pour iOS.
+
+
 
 ## Plugins installés
 
@@ -12,7 +28,7 @@ https://github.com/Tazaf/phonegap-plugin-barcodescanner
 
 Ce plugin permet d'ouvrir une vue caméra pour scanner les QR codes (et autres types de codes).
 Il s'agit d'un fork du plugin de base, corrigeant une autorisation Android qui créait un conflit avec le plugin Wikitude
- 
+
 ### Wikitude
 
 https://github.com/Tazaf/wikitude-ionic-plugin
@@ -34,7 +50,9 @@ https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin
 
 Ce plugin permet d'afficher des "toasts" sur l'appareil, donnant ainsi un retour, un message ou une information à l'utilisateur.
 
-## Plateformes installées 
+
+
+## Plateformes installées
 
 Le projet est destiné à être utilisé sur des appareils Android et iOS. Ces deux plateformes ont dont été installées.
 IMPORTANT ! Pour que le projet se compile sur Android avec le plugin Wikitude, la version 5.0.0 (au minimum) doit être, et a été, ajoutée.
