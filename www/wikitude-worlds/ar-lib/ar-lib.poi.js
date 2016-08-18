@@ -38,15 +38,14 @@
     return service;
   }
 
-  function POIService(Do, Filters, Markers, POIData, $rootScope, turf, UserLocation) {
+  function POIService(Do, Filters, Markers, POIData, $rootScope, Timers, turf, UserLocation) {
 
     // Static
     POI.loadStock = loadStock;
     POI.reachLimit = 250;
     POI.stock = {
-      active     : {}, // Stocke les objets de POI actuellement affichés (une propriété pour chaque objet)
-      visible    : [], // Stocke les ids des POI actuellement affichés
-      activeCount: 0
+      visible: {}, // Stocke les objets de POI actuellement affichés (une propriété pour chaque objet)
+      visibleIds: [] // Stocke les ids des POI actuellement affichés
     };
 
     /**
@@ -54,7 +53,7 @@
      * @constructor
      */
     function POI(data) {
-      this.id = data.properties.id_poi;
+      this.id = getPoiId(data);
       this.properties = data.properties;
       this.location = new AR.GeoLocation(data.geometry.coordinates[1], data.geometry.coordinates[0], data.geometry.coordinates[2]);
       this.title = new AR.Label(this.id, 1, {
@@ -87,71 +86,62 @@
       if (POIData.hasData()) { // S'assurer que les données des points sont effectivement chargés.
         World.timer.start('loadstock');
 
-        var pois = POIData.getPois();
-        var nearest = getNearest(pois);
+        var allPois = POIData.getPois();
+        var nearestPois = getNearestPois(allPois);
+        var filteredPois = Filters.filterPois(nearestPois);
 
-        var filtered = Filters.filterPois(nearest);
+        var newVisibleIds = _.map(filteredPois, getPoiId);
 
-        var poiIds = _.map(filtered, 'properties.id_poi');
+        var toAdd = getNewVisiblePois(allPois, newVisibleIds);
+        var nbDeleted = removeNoLongerVisiblePois(newVisibleIds);
 
-        var toAdd = getNewest(pois, poiIds);
-        var nbDeleted = removeFarthest(poiIds);
-
-        showClosest(toAdd);
-        POI.stock.visible = poiIds;
-        POI.stock.activeCount = Object.keys(POI.stock.active).length;
+        addNewVisiblePois(toAdd);
+        POI.stock.visibleIds = newVisibleIds;
 
         World.timer.loadstock.stop('Load Stock total :');
 
         console.log('loaded', POI.stock);
-        $rootScope.$emit('stats:update', toAdd.ids.length, nbDeleted, POI.stock.activeCount);
-        //Do.action('toast', {message: toAdd.ids.length + " points en plus, " + nbDeleted + " points en moins"});
+        $rootScope.$emit('stats:update', toAdd.length, nbDeleted, POI.stock.visibleIds.length);
+        //Do.action('toast', {message: toAdd.length + " points en plus, " + nbDeleted + " points en moins"});
       }
     }
 
-    function getNearest(pois) {
-      World.timer.start('getnearest');
-      var nearest = _.filter(pois, isInReach);
-      World.timer.getnearest.stop('get nearest');
-      return nearest;
+    function getNearestPois(pois) {
+      return Timers.time('get nearest pois', function() {
+        return _.filter(pois, isInReach);
+      });
     }
 
-    function getNewest(pois, near) {
-      World.timer.start('getnewest');
-      var nbPoi = pois.length, res = {ids: []};
-      for (var i = 0; i < nbPoi; i++) {
-        var id = pois[i].properties.id_poi;
-        if (near.indexOf(id) !== -1 && !isVisible(pois[i])) {
-          res.ids.push(id);
-          res[id] = pois[i];
-        }
-      }
-      World.timer.getnewest.stop('get newest');
-      return res;
+    function getNewVisiblePois(pois, visibleIds) {
+      return Timers.time('get new visible pois', function() {
+        return _.filter(pois, function(poi) {
+          return _.includes(visibleIds, getPoiId(poi)) && !isVisible(poi);
+        });
+      });
     }
 
-    function removeFarthest(near) {
-      World.timer.start('removefarthest');
-      var res = 0;
-      var n = POI.stock.visible.length;
-      for (var j = 0; j < n; j++) {
-        var id = POI.stock.visible[j];
-        if (near.indexOf(id) === -1) {
-          POI.stock.active[id].remove();
-          res++;
-        }
-      }
-      World.timer.removefarthest.stop('remove farthest');
-      return res;
+    function removeNoLongerVisiblePois(visibleIds) {
+      return Timers.time('remove no longer visible pois', function() {
+
+        var removedCount = 0;
+
+        _.each(POI.stock.visibleIds, function(id) {
+          if (!_.includes(visibleIds, id)) {
+            POI.stock.visible['' + id].remove();
+            removedCount++;
+          }
+        });
+
+        return removedCount;
+      });
     }
 
-    function showClosest(toAdd) {
-      World.timer.start('showclosest');
-      for (var k = 0; k < toAdd.ids.length; k++) {
-        var id = toAdd.ids[k];
-        POI.stock.active[id] = new POI(toAdd[id]);
-      }
-      World.timer.showclosest.stop('show closest');
+    function addNewVisiblePois(pois) {
+      return Timers.time('add new visible pois', function() {
+        _.each(pois, function(poi) {
+          POI.stock.visible['' + getPoiId(poi)] = new POI(poi);
+        });
+      });
     }
 
     function isInReach(poi) {
@@ -159,7 +149,7 @@
     }
 
     function isVisible(poi) {
-      return POI.stock.visible.indexOf(poi.properties.id_poi) !== -1;
+      return POI.stock.visibleIds.indexOf(getPoiId(poi)) !== -1;
     }
 
     function distanceToUser() {
@@ -173,7 +163,7 @@
       this.location.destroyed && (this.location = null);
       this.geoObject.destroy();
       this.geoObject.destroyed && (this.geoObject = null);
-      delete POI.stock.active[this.id];
+      delete POI.stock.visible['' + this.id];
     }
 
     function onPoiClick(poi) {
@@ -188,6 +178,10 @@
         }
         return true; // Stop propagating the click event
       }
+    }
+
+    function getPoiId(poi) {
+      return poi.properties.id_poi;
     }
   }
 })();

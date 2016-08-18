@@ -192,12 +192,12 @@ function buttonCtrl(Do, Beacon, POI, UserLocation) {
   };
 
   ctrl.debug = function debug() {
+    console.log(POI.stock.visibleIds);
     console.log(POI.stock.visible);
-    console.log(POI.stock.active);
-    console.log(POI.stock.activeCount);
+    console.log(POI.stock.visibleIds.length);
     console.log(UserLocation.debug());
-    //for (var id in POI.stock.active) {
-    //  console.log(POI.stock.active[id].distanceToUser());
+    //for (var id in POI.stock.visible) {
+    //  console.log(POI.stock.visible[id].distanceToUser());
     //}
   };
 
