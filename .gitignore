@@ -12,6 +12,8 @@ www/css/ionic.app.min.css
 node_modules/
 platforms/
 plugins/
+resources/android/
+resources/ios/
 
 # Created by https://www.gitignore.io/api/osx,windows,webstorm,sublimetext
 

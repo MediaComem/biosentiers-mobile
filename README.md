@@ -10,8 +10,8 @@
   * `cd /path/to/project`
   * `npm install`
   * `ionic hooks add`
+* **Important**: le .gitignore de ce projet ne prend pas en compte plusieurs dossiers comme "plugins/" ou "resources/android/", il faut exécuter les commandes suivantes après un git clone pour qu'Ionic télécharge et génère les fichiers manquants:
   * `ionic resources`
-* **Important**: puisque le .gitignore de ce projet ne prend pas en compte le dossier "plugins/" du projet Ionic, il faut exécuter la commande suivante après un git clone pour qu'Ionic télécharge les plugins utilisés:
   * `ionic state restore`
 * Ajouter la clé de license du plugin Wikitude:
   * Changer `this._sdkKey` dans `/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js`.
