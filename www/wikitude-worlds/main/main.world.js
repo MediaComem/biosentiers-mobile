@@ -54,7 +54,7 @@ function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
     UserLocation.update(lon, lat, alt);
     if (World.startup || UserLocation.movingDistance() > 20) {
       UserLocation.backupCurrent();
-      POI.loadStock();
+      POI.updateAr();
       World.startup = false;
       console.log(UserLocation.debug());
     }
@@ -63,7 +63,7 @@ function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
   }
 
   function onFiltersChanged() {
-    POI.loadStock();
+    POI.updateAr();
   }
 
   function loadPoiData(data, properties) {

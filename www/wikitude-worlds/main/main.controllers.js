@@ -14,9 +14,9 @@ function StatsCtrl($log, $rootScope, $scope) {
   ctrl.total = 0;
 
   $rootScope.$on('pois:changed', function (event, changes) {
-    $log.debug('updating stats', changes.added.length, changes.removed.length, changes.visible.length);
-    ctrl.plus = changes.added.length;
-    ctrl.moins = changes.removed.length;
+    $log.debug('Updating stats', changes.shown.length, changes.hidden.length, changes.visible.length);
+    ctrl.plus = changes.shown.length;
+    ctrl.moins = changes.hidden.length;
     ctrl.total = changes.visible.length;
   });
 }

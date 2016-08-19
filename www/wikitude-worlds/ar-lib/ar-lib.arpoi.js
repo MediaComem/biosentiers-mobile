@@ -7,7 +7,7 @@
 
   function ARPOIClass(Markers) {
 
-      function ARPOI(poi, onClick) {
+      function ARPOI(poi, enabled, onClick) {
 
         this.poi = poi;
         this.id = poi.properties.id_poi;
@@ -25,6 +25,7 @@
         });
 
         this.geoObject = new AR.GeoObject(this.location, {
+          enabled: enabled,
           onClick: onClick(this),
           drawables: {
             cam: [ Markers.get(this.properties.theme_name) ], //, this.title],

@@ -14,17 +14,17 @@
         var startDate = new Date();
 
         return {
-          stop: function(message) {
+          stop: function(action) {
             var duration = new Date().getTime() - startDate.getTime();
-            $log.debug(message ? message : "Processing time", (duration / 1000) + 's');
+            $log.debug('Time' + (action ? ' to ' + action : '') + ':', (duration / 1000) + 's');
           }
         };
       },
 
-      time: function(message, func) {
+      time: function(action, func) {
         var timer = service.start();
         var result = func();
-        timer.stop(message);
+        timer.stop(action);
         return result;
       }
     };

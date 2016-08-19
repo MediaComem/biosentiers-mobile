@@ -8,7 +8,7 @@
   function FiltersCtrl(Filters, $scope) {
     var ctrl = this;
 
-    // Data
+    // Public data
     ctrl.themes = Filters.themes;
 
     ctrl.selected = {
@@ -19,22 +19,14 @@
     ctrl.getThemeImageUrl = getThemeImageUrl;
 
     // Events
-    $scope.$watch('filters.selected.themes', updateThemeFilters, true);
+    var debouncedUpdateFilters = _.debounce(updateFilters, 650);
+    $scope.$watch('filters.selected.themes', debouncedUpdateFilters, true);
 
     ////////////////////
 
-    function updateThemeFilters(checkedThemes) {
-
-      var selectedThemes = _.reduce(selectedThemes, function(memo, selected, theme) {
-        if (selected) {
-          memo.push(theme);
-        }
-
-        return memo;
-      }, []);
-
+    function updateFilters() {
       Filters.updateSelected({
-        themes: checkedThemesObjectToThemesArray(checkedThemes)
+        themes: checkedThemesObjectToThemesArray(ctrl.selected.themes)
       });
     }
 
