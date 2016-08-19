@@ -7,5 +7,6 @@ angular.module('ar', [
   'ARLib',
   'TurfModule',
   'leaflet-directive',
-  'ngCordova'
+  'ngCordova',
+  'utils'
 ]);

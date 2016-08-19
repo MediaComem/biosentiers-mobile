@@ -84,7 +84,7 @@
 
     function loadStock() {
       if (POIData.hasData()) { // S'assurer que les données des points sont effectivement chargés.
-        World.timer.start('loadstock');
+        var timer = Timers.start();
 
         var allPois = POIData.getPois();
         var nearestPois = getNearestPois(allPois);
@@ -98,7 +98,7 @@
         addNewVisiblePois(toAdd);
         POI.stock.visibleIds = newVisibleIds;
 
-        World.timer.loadstock.stop('Load Stock total :');
+        timer.stop('load stock total');
 
         console.log('loaded', POI.stock);
         $rootScope.$emit('stats:update', toAdd.length, nbDeleted, POI.stock.visibleIds.length);

@@ -1,6 +1,9 @@
 (function() {
+
+  angular.module('utils', []);
+
   angular
-    .module('ar')
+    .module('utils')
     .factory('Timers', TimersService);
 
   function TimersService($log) {

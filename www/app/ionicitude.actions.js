@@ -8,7 +8,7 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude($ionicPlatform, Ionicitude, $cordovaToast, POIGeo, POIData) {
+  function ionicitude($ionicPlatform, Ionicitude, $cordovaToast, POIGeo, POIData, Timers) {
     $ionicPlatform.ready(function () {
       Ionicitude.init()
         .then(function (success) { console.log(success); })
@@ -37,7 +37,7 @@
 
       function loadTestPois(service) {
         var marks = POIGeo.getMarks();
-        service.callJavaScript('World.timer.start("loadtestpois")');
+        var timer = Timers.start();
         service.callJavaScript('World.loadPois(' + angular.toJson(marks) + ')');
         POIGeo.getPoints()
           .then(function (success) {
@@ -45,7 +45,7 @@
             var pois = success.data.features;
             console.log(pois);
             service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
-            service.callJavaScript('World.timer.loadtestpois.stop()');
+            timer.stop('load test pois');
           })
           .catch(function (error) {
             console.log(error);
@@ -67,14 +67,14 @@
       }
 
       function loadPois(service, param) {
-        service.callJavaScript('World.timer.start("loadbeaconpois")');
+        var timer = Timers.start();
         console.log('beacon_id', param.beacon);
         POIGeo.getPoints(param.beacon)
           .then(function (success) {
             var pois = success.data.features;
             console.log(pois);
             service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
-            service.callJavaScript('World.timer.loadbeaconpois.stop("Loading beacons\'s points")');
+            timer.stop('load beacon\'s points');
           })
           .catch(function (error) {
             console.log(error);

@@ -9,9 +9,6 @@ function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
   World = {
     startup    : true,
     poiData    : null,
-    timer      : {
-      start: start
-    },
     loadPoiData: loadPoiData,
     write      : write,
     //loadBeacons : loadBeacons,
@@ -96,17 +93,5 @@ function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
 
   function showLoading(message) {
     return $ionicLoading.show({template: message});
-  }
-
-  function start(name) {
-    World.timer[name] = {
-      name : name,
-      value: Date.now(),
-      stop : function stop(message) {
-        var tStop = Date.now();
-        console.log(message ? message : "Process time", (tStop - this.value) / 1000);
-        delete World.timer[this.name];
-      }
-    };
   }
 }

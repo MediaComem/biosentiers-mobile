@@ -12,7 +12,8 @@
     'QRModule',
     'OutingsModule', // SHC : pour le service contenant la liste des sorties
     'POIModule',
-    'leaflet-directive'
+    'leaflet-directive',
+    'utils'
     // 'arDirectives'
   ]);
 
