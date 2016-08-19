@@ -44,8 +44,10 @@
     <script src="main.module.js"></script>
     <script src="main.world.js"></script>
     <script src="main.controllers.js"></script>
+    <script src="device-orientation.service.js"></script>
     <script src="filters.controller.js"></script>
     <script src="filters.service.js"></script>
+    <script src="map-orientation.directive.js"></script>
     <link rel="stylesheet" href="filters.style.css">
 
     <style>
@@ -85,6 +87,7 @@
         position: fixed;
         bottom: 20px;
         right: 20px;
+        z-index: 2;
       }
 
       .mini-map .leaflet-container {
@@ -98,6 +101,20 @@
 
       .mini-map .leaflet-control-container {
         display: none;
+      }
+
+      .mini-map-direction {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 140px;
+        height: 140px;
+        z-index: 1;
+      }
+
+      .mini-map-direction img {
+        width: 140px;
+        height: 140px;
       }
 
       #radarContainer {
@@ -158,6 +175,7 @@
       <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
                geojson="map.spec.path" event-broadcast="map.spec.events"></leaflet>
     </div>
+    <map-orientation></map-orientation>
     <div class="stats row" ng-controller="StatsCtrl as stats">
       <span class="plus col">+ {{stats.plus}}</span><span class="moins col">- {{stats.moins}}</span><span
       class="total col">Tot: {{stats.total}}</span>

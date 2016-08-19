@@ -14,7 +14,10 @@ function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
     //loadBeacons : loadBeacons,
     loadPoints : POIData.setData,
     showLoading: showLoading,
-    hideLoading: $ionicLoading.hide
+    hideLoading: $ionicLoading.hide,
+    updateDeviceOrientation: function(updates) {
+      $rootScope.$emit('orientation:changed', updates);
+    }
   };
 
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
@@ -39,6 +42,8 @@ function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
   AR.radar.enabled = true;
 
   $rootScope.$on('filters:changed', onFiltersChanged);
+
+  //Do.action('open');
 
   ////////////////////
 

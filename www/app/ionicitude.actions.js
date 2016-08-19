@@ -8,13 +8,14 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude($ionicPlatform, Ionicitude, $cordovaToast, POIGeo, POIData, Timers) {
+  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, POIGeo, POIData, Timers) {
     $ionicPlatform.ready(function () {
       Ionicitude.init()
         .then(function (success) { console.log(success); })
         .catch(function (error) { console.log(error); });
 
       Ionicitude
+        .addAction(open)
         .addAction(close)
         .addAction(showPos)
         .addAction(loadTestPois)
@@ -26,8 +27,25 @@
 
       ////////////////////
 
+      var deviceOrientationWatch;
+
+      function open(service) {
+        $log.debug('World opened');
+
+        /*deviceOrientationWatch = $cordovaDeviceOrientation.watchHeading({ frequency: 250 }).then(null, function(err) {
+          $log.error(err);
+        }, function(update) {
+          Ionicitude.callJavaScript('World.updateDeviceOrientation(' + angular.toJson(update) + ')');
+        });*/
+      }
+
       function close(service) {
-        console.log('closing');
+        $log.debug('World closing');
+
+        if (deviceOrientationWatch) {
+          $cordovaDeviceOrientation.clearWatch(watch);
+        }
+
         service.close();
       }
 

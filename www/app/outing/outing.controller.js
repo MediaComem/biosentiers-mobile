@@ -8,26 +8,8 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Ionicitude, outingData, $cordovaToast, POIGeo, leafletData, $http, $cordovaDeviceOrientation, $ionicPlatform) {
+  function OutingCtrl(Ionicitude, outingData, $cordovaToast, POIGeo, leafletData, $http, $ionicPlatform, $scope) {
     var ctrl = this;
-
-    ctrl.mapOrientation = 'rotate(0deg)';
-
-    $ionicPlatform.ready(function () {
-      //var options = {frequency: 100};
-      //var watch = $cordovaDeviceOrientation.watchHeading(options);
-      //watch.then(null, onCompassError, onCompassSuccess);
-    });
-
-    function onCompassSuccess(result) {
-      //$scope.data = result;
-      ctrl.mapOrientation = 'rotate(-' + Math.floor(result.magneticHeading) + 'deg)';
-      console.log(result);
-    }
-
-    function onCompassError(error) {
-      console.log(error);
-    }
 
     var UserPosition = {
       lat: 46.781001,
