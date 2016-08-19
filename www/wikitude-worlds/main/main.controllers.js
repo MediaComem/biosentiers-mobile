@@ -6,18 +6,18 @@ angular
   .controller('StatsCtrl', StatsCtrl)
   .controller('buttonCtrl', buttonCtrl);
 
-function StatsCtrl($rootScope, $scope) {
+function StatsCtrl($log, $rootScope, $scope) {
   var ctrl = this;
 
   ctrl.plus = 0;
   ctrl.moins = 0;
   ctrl.total = 0;
 
-  $rootScope.$on('stats:update', function (event, plus, moins, total) {
-    console.log('updating stats', event, plus, moins, total);
-    ctrl.plus = plus;
-    ctrl.moins = moins;
-    ctrl.total = total;
+  $rootScope.$on('pois:changed', function (event, changes) {
+    $log.debug('updating stats', changes.added.length, changes.removed.length, changes.visible.length);
+    ctrl.plus = changes.added.length;
+    ctrl.moins = changes.removed.length;
+    ctrl.total = changes.visible.length;
   });
 }
 

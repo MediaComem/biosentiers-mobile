@@ -3,24 +3,12 @@
  */
 (function () {
   'use strict';
+
   angular
     .module('ARLib')
     .service('Markers', Markers);
 
   function Markers() {
-    //this.idle = idle;
-    //this.bird = bird;
-    //this.butterfly = butterfly;
-    //this.flower = flower;
-    //this.watercourse = watercourse;
-    //this.territory = territory;
-    //this.greenRoof = greenRoof;
-    //this.ecoArea = ecoArea;
-    //this.wetArea = wetArea;
-    //this.wildlifeCorridor = wildlifeCorridor;
-    //this.birdTerritory = birdTerritory;
-    //this.biodivercity = biodivercity;
-    //this.garden = garden;
     var markers = [];
 
     this.get = getMarker;
