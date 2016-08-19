@@ -10,7 +10,7 @@
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
     var selected = {
-      theme: null
+      themes: []
     };
 
     var service = {
@@ -29,8 +29,20 @@
       //       theme: 'Some theme'
       //     });
       updateSelected: function(changes) {
-        _.extend(selected, _.pick(changes || {}, 'theme'));
-        $rootScope.$emit('filters:changed', selected);
+
+        var changed = false;
+
+        _.each(changes, function(value, key) {
+          var currentValue = selected[key];
+          if (!_.isEqual(value, currentValue)) {
+            selected[key] = value;
+            changed = true;
+          }
+        });
+
+        if (changed) {
+          $rootScope.$emit('filters:changed', selected);
+        }
       },
 
       // Filters points of interest using the currently selected filters.
@@ -38,8 +50,8 @@
 
         var n = pois.length;
 
-        if (selected.theme) {
-          pois = _.filter(pois, matchBySelectedTheme);
+        if (selected.themes.length < service.themes.length) {
+          pois = _.filter(pois, matchBySelectedThemes);
         }
 
         $log.debug('Filters: ' + n + ' points of interest filtered to ' + pois.length + ' matching points with criteria ' + JSON.stringify(selected));
@@ -60,11 +72,12 @@
     // Update available chocies when the data changes.
     $rootScope.$on('poiData:changed', function() {
       service.themes = POIData.getThemes();
+      selected.themes = service.themes.slice();
       $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
     });
 
-    function matchBySelectedTheme(poi) {
-      return _.isObject(poi.properties) && poi.properties.theme_name == selected.theme;
+    function matchBySelectedThemes(poi) {
+      return _.isObject(poi.properties) && _.includes(selected.themes, poi.properties.theme_name);
     }
 
     return service;

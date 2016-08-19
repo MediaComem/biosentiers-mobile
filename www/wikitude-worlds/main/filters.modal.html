@@ -1,21 +1,20 @@
-<ion-modal-view ng-controller="FiltersCtrl as filters">
+<ion-modal-view id="poi-filters" ng-controller="FiltersCtrl as filters">
   <ion-header-bar class="bar bar-header bar-balanced">
     <h1 class="title">Filters</h1>
     <button class="button button-clear button-primary" ng-click="base.modal.hide()">Close</button>
   </ion-header-bar>
   <ion-content>
-    <div class="list">
+    <ion-list>
 
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Thème
-        </div>
-        <select ng-model="filters.selected.theme">
-          <option class="placeholder" value="">Tous</option>
-          <option ng-repeat="theme in filters.themes">{{ theme }}</option>
-        </select>
-      </label>
+      <!-- Theme filters -->
+      <div class="item item-divider">
+        Thème
+      </div>
+      <ion-checkbox class="poi-theme" ng-repeat="theme in filters.themes" ng-model="filters.selected.themes[theme]">
+        {{ theme }}
+        <img ng-src="{{ filters.getThemeImageUrl(theme) }}" />
+      </ion-checkbox>
 
-    </div>
+    </ion-list>
   </ion-content>
 </ion-modal-view>
