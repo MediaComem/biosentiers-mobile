@@ -8,7 +8,7 @@
     .module('ARLib')
     .factory('POI', POIService);
 
-  function POIService(ARPOI, Do, Filters, Markers, POIData, $rootScope, Timers, $timeout, turf, UserLocation) {
+  function POIService(ARPOI, Do, Filters, $log, Markers, POIData, $rootScope, Timers, $timeout, turf, UserLocation) {
 
     var POI = {};
 
@@ -46,9 +46,10 @@
 
         // Retrieve all available points.
         var allPois = POIData.getPois();
+        $log.debug(allPois.length + ' points in total');
 
         // Determine the nearest points; those are the only points that should be in the AR.
-        var nearestPois = getNearestPois(POIData.getPois());
+        var nearestPois = getNearestPois(allPois);
 
         // Determine the visible points based on user-selected filters.
         // (Some of the nearest points might not be visible if they do not match the selected filters.)
