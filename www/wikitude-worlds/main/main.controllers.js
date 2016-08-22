@@ -115,11 +115,11 @@ function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
     console.log('modal showed');
   });
 
-  /*$http.get('../../data/path.json').success(function(data, status) {
+  $http.get('../../data/path.json').success(function(data, status) {
     console.log('Chargement GeoJSON 1 OK');
     console.log(status); // 200 --> request successful
     console.log(data); // the GeoJSON data
-    angular.extend($scope.layers.overlays, {
+    angular.extend(ctrl.spec.layers.overlays, {
       single: {
         name: 'Chemin',
         type: 'geoJSONShape',
@@ -131,7 +131,7 @@ function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
         }
       }
     });
-  });*/
+  });
 
   /*
   $http.get('../../data/path.json').then(function (success, data) {
