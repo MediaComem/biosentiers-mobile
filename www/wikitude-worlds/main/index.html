@@ -121,7 +121,7 @@
     <!--</div>-->
     <div class="mini-map" ng-controller="MapCtrl as map" data-tap-disabled="true" 
          ng-style="{'transform': map.mapOrientation, '-webkit-transform': map.mapOrientation, '-ms-transform': map.mapOrientation}">
-      <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
+      <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" layers="map.spec.layers" center="map.spec.center"
                geojson="map.spec.path" event-broadcast="map.spec.events"></leaflet>
     </div>
     <div class="stats row" ng-controller="StatsCtrl as stats">

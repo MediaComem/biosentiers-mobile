@@ -28,20 +28,27 @@ function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
   ctrl.mapOrientation = 'rotate(0deg)';
 
   ctrl.spec = {
-    tiles   : {
+    /*tiles   : {
       url    : '../../data/Tiles/{z}/{x}/{y}.png',
       options: {
         errorTileUrl: '../../data/Tiles/error.png'
       }
-    },
+    },*/
     defaults: {
-      scrollWheelZoom   : false,
-      touchZoom         : false,
-      doubleClickZoom   : false,
+      keyboard          : false,
       dragging          : false,
+      zoomControl       : false,
+      doubleClickZoom   : false,
+      scrollWheelZoom   : false,
+      tap               : false,
+      attributionControl: false,
+      zoomAnimation     : false,
+      fadeAnimation     : false,
+      markerZoomAnimation: false,
+      worldCopyJump     : false,
+      touchZoom         : false
 /*    maxZoom           : zoom,
       minZoom           : zoom, */
-      attributionControl: false
     },
     center  : {
       lat : 46.781001,
@@ -63,6 +70,27 @@ function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
       map: {
         enable: ['click'],
         logic: 'emit'
+      }
+    },
+    layers: {
+      baselayers: {
+        osm: {
+          name    : 'OpenStreetMap',
+          url     : '../../data/Tiles/{z}/{x}/{y}.png',
+          type    : 'xyz'
+        }
+      },
+      overlays: {
+        path: {
+          name:'path',
+          type: 'geoJSON',
+          visible: true,
+          url: '../../data/path.json',
+          layerOptions: {
+            showOnSelector: false
+          }
+        }
+        // https://github.com/tombatossals/angular-leaflet-directive/blob/master/examples/0603-mixed-layers-overlays-geojson-example.html
       }
     }
   };
@@ -87,19 +115,79 @@ function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
     console.log('modal showed');
   });
 
+  /*$http.get('../../data/path.json').success(function(data, status) {
+    console.log('Chargement GeoJSON 1 OK');
+    console.log(status); // 200 --> request successful
+    console.log(data); // the GeoJSON data
+    angular.extend($scope.layers.overlays, {
+      single: {
+        name: 'Chemin',
+        type: 'geoJSONShape',
+        data: data,
+        visible: true,
+        layerOptions: {
+          color : 'blue',
+          weight: 6
+        }
+      }
+    });
+  });*/
+
+  /*
+  $http.get('../../data/path.json').then(function (success, data) {
+    $scope.layers.overlays = {
+      heat: {
+        name: 'chemin',
+        type: 'geoJSONShape',
+        data: data,
+        layerOptions: {
+          color : 'blue',
+          weight: 6
+        },
+        visible: true
+      }
+    };
+  }, function (error) {
+    console.log(error);
+  });*/
+
+  /*
   $http.get('../../data/path.json').then(function (success) {
+   console.log(success.data);
+    var path = {
+      path: {
+        name: 'path',
+        type: 'group',
+        visible: true
+      }
+    };
+    angular.extend($scope.layers.overlays['path']);
+
+  }, function (error) {
+   console.log(error);
+  });
+  // console.log($scope.layers.overlays);
+  // https://github.com/tombatossals/angular-leaflet-directive/issues/767
+
+*/
+
+
+
+
+
+  /*$http.get('../../data/path.json').then(function (success) {
       console.log(success.data);
       ctrl.spec.path = {
         data : success.data,
         style: {
           color : 'red',
-          weigth: 6
+          weight: 6
         }
       }
     }, function (error) {
       console.log(error);
     }
-  );
+  );*/
 
   $rootScope.$on('user:located', function () {
     console.log('updated map according to UserLocation');
