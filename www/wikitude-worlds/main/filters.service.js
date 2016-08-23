@@ -69,7 +69,7 @@
       }
     };
 
-    // Update available chocies when the data changes.
+    // Update available choices when the data changes.
     $rootScope.$on('poiData:changed', function() {
       service.themes = POIData.getThemes();
       selected.themes = service.themes.slice();

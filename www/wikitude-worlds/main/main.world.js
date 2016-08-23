@@ -20,6 +20,9 @@ function run(Do, $ionicLoading, $log, POI, POIData, $rootScope, UserLocation) {
     }
   };
 
+  /*
+   * AR context configuration
+   */
   AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
   AR.context.scene.cullingDistance = 250;
   AR.context.scene.maxScalingDistance = 500;
@@ -28,6 +31,9 @@ function run(Do, $ionicLoading, $log, POI, POIData, $rootScope, UserLocation) {
   AR.context.onScreenClick = onScreenClick;
   AR.context.onLocationChanged = onLocationChanged;
 
+  /*
+   * Radar configuration
+   */
   AR.radar.container = document.getElementById("radarContainer");
   // set the back-ground image for the radar
   AR.radar.background = new AR.ImageResource("assets/radar_bg_transparent.png");
@@ -79,7 +85,7 @@ function run(Do, $ionicLoading, $log, POI, POIData, $rootScope, UserLocation) {
   }
 
   function write(message) {
-    console.log("World writes", message);
+    $log.debug("World writes", message);
   }
 
   //function loadBeacons(beacons) {

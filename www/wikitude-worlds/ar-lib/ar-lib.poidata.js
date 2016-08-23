@@ -8,30 +8,36 @@
   function POIDataService($log, $rootScope) {
 
     var service = {
-      data: null,
-
-      hasData: function() {
-        return !!service.data;
-      },
-
-      setData: function(data) {
-        service.data = data;
-
-        if (data) {
-          $log.debug('POI data changed');
-          $rootScope.$emit('poiData:changed');
-        }
-      },
-
-      getPois: function() {
-        return service.data ? service.data.features : [];
-      },
-
-      getThemes: function() {
-        return service.data ? _.compact(_.uniq(_.map(service.data.features, 'properties.theme_name'))).sort() : [];
-      }
+      data     : null,
+      hasData  : hasData,
+      setData  : setData,
+      getPois  : getPois,
+      getThemes: getThemes
     };
 
     return service;
+
+    ////////////////////
+
+    function hasData() {
+      return !!service.data;
+    }
+
+    function setData(data) {
+      service.data = data;
+
+      if (data) {
+        $log.debug('POI data changed');
+        $rootScope.$emit('poiData:changed');
+      }
+    }
+
+    function getPois() {
+      return service.data ? service.data.features : [];
+    }
+
+    function getThemes() {
+      return service.data ? _.compact(_.uniq(_.map(service.data.features, 'properties.theme_name'))).sort() : [];
+    }
   }
 })();

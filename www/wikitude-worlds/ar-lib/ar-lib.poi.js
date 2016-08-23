@@ -8,16 +8,15 @@
     .module('ARLib')
     .factory('POI', POIService);
 
-  function POIService(ARPOI, Do, Filters, $log, Markers, POIData, $rootScope, Timers, $timeout, turf, UserLocation) {
+  function POIService(ARPOI, Do, Filters, $log, POIData, $rootScope, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
         reachLimit = 250;
 
-    var POI = {};
-
-    // Public functions
-    POI.updateAr = updateAr;
+    var POI = {
+      updateAr: updateAr
+    };
 
     return POI;
 
@@ -41,7 +40,7 @@
      * so we avoid that by simply showing/hiding them when the user changes filters but does not move.
      */
     function updateAr() {
-      if (POIData.hasData()) { // S'assurer que les données des points sont effectivement chargés.
+      if (POIData.hasData()) { // Check if the data is actually lodaded.
         var timer = Timers.start();
 
         // Retrieve all available points.
