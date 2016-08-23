@@ -10,6 +10,10 @@
 
   function POIService(ARPOI, Do, Filters, $log, Markers, POIData, $rootScope, Timers, $timeout, turf, UserLocation) {
 
+    // Private data
+    var arPointsById = {},
+        reachLimit = 250;
+
     var POI = {};
 
     // Public functions
@@ -18,10 +22,6 @@
     return POI;
 
     ////////////////////
-
-    // Private data
-    var reachLimit = 250,
-        arPointsById = {};
 
     /**
      * Updates the POIs in the AR.
@@ -168,7 +168,8 @@
     }
 
     function isInReach(poi) {
-      return turf.distance(UserLocation.current, poi) * 1000 < POI.reachLimit;
+      var distance = turf.distance(UserLocation.current, poi);
+      return turf.distance(UserLocation.current, poi) * 1000 < reachLimit;
     }
 
     function isInAr(poi) {

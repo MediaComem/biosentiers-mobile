@@ -5,7 +5,7 @@ angular
   .module('ar')
   .run(run);
 
-function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
+function run(Do, $ionicLoading, $log, POI, POIData, $rootScope, UserLocation) {
   World = {
     startup    : true,
     poiData    : null,
@@ -58,6 +58,7 @@ function run(Do, $ionicLoading, POI, POIData, $rootScope, UserLocation) {
     }
     UserLocation.update(lon, lat, alt);
     if (World.startup || UserLocation.movingDistance() > 20) {
+      $log.debug('First user location detected');
       UserLocation.backupCurrent();
       POI.updateAr();
       World.startup = false;

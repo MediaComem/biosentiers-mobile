@@ -32,7 +32,7 @@
       function open(service) {
         $log.debug('World opened');
 
-        /*deviceOrientationWatch = $cordovaDeviceOrientation.watchHeading({ frequency: 250 }).then(null, function(err) {
+        /*deviceOrientationWatch = $cordovaDeviceOrientation.watchHeading({ frequency: 1000 }).then(null, function(err) {
           $log.error(err);
         }, function(update) {
           Ionicitude.callJavaScript('World.updateDeviceOrientation(' + angular.toJson(update) + ')');

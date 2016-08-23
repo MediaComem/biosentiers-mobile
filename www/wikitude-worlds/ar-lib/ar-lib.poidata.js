@@ -5,7 +5,7 @@
     .module('ARLib')
     .factory('POIData', POIDataService);
 
-  function POIDataService($rootScope) {
+  function POIDataService($log, $rootScope) {
 
     var service = {
       data: null,
@@ -18,6 +18,7 @@
         service.data = data;
 
         if (data) {
+          $log.debug('POI data changed');
           $rootScope.$emit('poiData:changed');
         }
       },
