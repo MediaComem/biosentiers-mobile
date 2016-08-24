@@ -6,15 +6,13 @@
 
   angular
     .module('ARLib')
-    .service('Markers', Markers);
+    .factory('Markers', Markers);
 
   function Markers() {
-    var markers = [];
 
-    this.get = getMarker;
-    this.markers = markers;
-
-    ////////////////////
+    var service = {
+      get: getMarker
+    };
 
     var availableTypes = [
       'default',
@@ -32,6 +30,11 @@
       'garden'
     ];
 
+    var markers = [];
+
+    return service;
+    ////////////////////
+
     function getMarker(type) {
       if (!markers[type] || markers[type].destroyed) {
         var img = new AR.ImageResource("assets/" + type + ".png", {
@@ -40,7 +43,7 @@
           }
         });
         markers[type] = new AR.ImageDrawable(img, 2, {
-          zOrder: 0,
+          zOrder : 0,
           opacity: 1.0
         });
       }
