@@ -49,7 +49,7 @@ function run(Do, $ionicLoading, $log, POI, POIData, $rootScope, UserLocation) {
 
   $rootScope.$on('filters:changed', onFiltersChanged);
 
-  //Do.action('open');
+  Do.action('open');
 
   ////////////////////
 

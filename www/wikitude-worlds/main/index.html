@@ -10,6 +10,9 @@
     <!-- Lodash -->
     <script src="../../lib/lodash/dist/lodash.min.js"></script>
 
+    <!-- jQuery -->
+    <script src="../../lib/jquery/dist/jquery.js"></script>
+
     <!-- Ionic -->
     <script src="architect://architect.js"></script>
     <script src="../../lib/ionic/js/ionic.bundle.min.js"></script>
@@ -47,9 +50,10 @@
     <script src="device-orientation.service.js"></script>
     <script src="filters.controller.js"></script>
     <script src="filters.service.js"></script>
-    <script src="map-orientation.directive.js"></script>
+    <script src="mini-map-orientation.directive.js"></script>
     <script src="modals.service.js"></script>
     <link rel="stylesheet" href="filters.style.css">
+    <link rel="stylesheet" href="mini-map-orientation.css">
 
     <style>
       #test-button {
@@ -104,20 +108,6 @@
         display: none;
       }
 
-      .mini-map-direction {
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 140px;
-        height: 140px;
-        z-index: 1;
-      }
-
-      .mini-map-direction img {
-        width: 140px;
-        height: 140px;
-      }
-
       #radarContainer {
         position: absolute;
         right: 140px;
@@ -170,7 +160,7 @@
       <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
                geojson="map.spec.geojson" geojson-nested="true" event-broadcast="map.spec.events"></leaflet>
     </div>
-    <map-orientation></map-orientation>
+    <mini-map-orientation></mini-map-orientation>
     <div class="stats row" ng-controller="StatsCtrl as stats">
       <span class="plus col">+ {{stats.plus}}</span><span class="moins col">- {{stats.moins}}</span><span
       class="total col">Tot: {{stats.total}}</span>

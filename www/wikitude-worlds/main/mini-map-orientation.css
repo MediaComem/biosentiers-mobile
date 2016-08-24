@@ -1,0 +1,13 @@
+#mini-map-orientation {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 140px;
+  height: 140px;
+  z-index: 1;
+}
+
+#mini-map-orientation img {
+  width: 140px;
+  height: 140px;
+}
