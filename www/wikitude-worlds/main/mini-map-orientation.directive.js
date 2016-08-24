@@ -36,6 +36,8 @@
 
     scope.setOrientation = setOrientation;
 
+    ////////////////////
+
     /**
      * Rotates the directive element to the specified orientation.
      *
