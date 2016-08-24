@@ -28,8 +28,7 @@
           enabled: enabled,
           onClick: onClick(this),
           drawables: {
-            cam: [ Markers.get(this.properties.theme_name) ], //, this.title],
-            radar: new AR.Circle(0.05, { style: { fillColor: '#83ff7b' } })
+            cam: [ Markers.get(this.properties.theme_name) ]
           }
         });
       }
