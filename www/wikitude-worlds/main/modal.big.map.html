@@ -1,6 +1,6 @@
 <style>
 
-  .modal{
+  .modal {
     width: 100%;
     height: 100%;
     top: 0px;
@@ -29,23 +29,17 @@
 
 </style>
 
-<ion-modal-view class="modal"> <!-- controller: MapCtrl as map -->
+<ion-modal-view class="modal" ng-controller="BigMapCtrl as bigmap"> <!-- controller: MiniMapCtrl as map -->
 
-  <ion-header-bar class="bar bar-header bar-energized">
-    <h1 class="title">Carte</h1>
+  <ion-header-bar class="bar bar-header bar-balanced">
+    <h1 class="title">Carte des environs</h1>
+    <button class="button button-clear button-primary" ng-click="bigmap.close()">Fermer</button>
   </ion-header-bar>
 
-  <ion-content class="has-header has-footer">
+  <ion-content class="has-header">
     <div class="big-map">
-      <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers"
-               center="map.spec.center" geojson="map.spec.path" event-broadcast="map.spec.events"></leaflet>
+      <leaflet tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center" geojson="map.spec.geojson"
+               geojson-nested="true"></leaflet>
     </div>
   </ion-content>
-
-  <ion-footer-bar class="bar bar-footer bar-energized">
-    <div class="buttons" ng-click="closeModal()">
-      <button class="button button-stable">Retour à la réalité augmentée</button>
-    </div>
-  </ion-footer-bar>
-
 </ion-modal-view>

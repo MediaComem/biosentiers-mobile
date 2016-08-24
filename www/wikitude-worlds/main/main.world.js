@@ -58,19 +58,17 @@ function run(Do, $ionicLoading, $log, POI, POIData, $rootScope, UserLocation) {
   }
 
   function onLocationChanged(lat, lon, alt) {
-    console.log('located ?', !World.startup);
     if (World.startup) {
       Do.action('toast', {message: 'Localisé !'});
     }
     UserLocation.update(lon, lat, alt);
+    $rootScope.$emit('user:located');
     if (World.startup || UserLocation.movingDistance() > 20) {
-      $log.debug('First user location detected');
+      $log.debug('New user location detected');
       UserLocation.backupCurrent();
       POI.updateAr();
       World.startup = false;
-      console.log(UserLocation.debug());
     }
-    $rootScope.$emit('user:located');
     console.log(UserLocation.debug());
   }
 

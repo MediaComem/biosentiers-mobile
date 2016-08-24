@@ -2,11 +2,11 @@ angular
   .module('ar')
   .controller('baseCtrl', baseCtrl)
   .controller('OptCtrl', OptCtrl)
-  .controller('MapCtrl', MapCtrl)
-  .controller('StatsCtrl', StatsCtrl)
-  .controller('buttonCtrl', buttonCtrl);
+  .controller('MiniMapCtrl', MiniMapCtrl)
+  .controller('BigMapCtrl', BigMapCtrl)
+  .controller('StatsCtrl', StatsCtrl);
 
-function StatsCtrl($log, $rootScope, $scope) {
+function StatsCtrl($log, $rootScope) {
   var ctrl = this;
 
   ctrl.plus = 0;
@@ -21,10 +21,9 @@ function StatsCtrl($log, $rootScope, $scope) {
   });
 }
 
-function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
-  var ctrl = this, zoom = 17;
-
-  ctrl.mapOrientation = 'rotate(0deg)';
+function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
+  var ctrl = this,
+      zoom = 17;
 
   ctrl.spec = {
     tiles   : {
@@ -38,8 +37,6 @@ function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
       touchZoom         : false,
       doubleClickZoom   : false,
       dragging          : false,
-/*    maxZoom           : zoom,
-      minZoom           : zoom, */
       attributionControl: false
     },
     center  : {
@@ -58,61 +55,92 @@ function MapCtrl($scope, $http, $rootScope, $ionicModal, UserLocation) {
         }
       }
     },
-    events : {
+    events  : {
       map: {
         enable: ['click'],
-        logic: 'emit'
+        logic : 'emit'
       }
-    }
+    },
+    geojson : {}
   };
 
-  // Modal - Big Map
-  $ionicModal.fromTemplateUrl('modal.big.map.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    ctrl.modal = modal;
-  });
-
-  $scope.closeModal = function() {
-    ctrl.modal.hide();
-    console.log('modal hidden');
-  };
-
-  $scope.$on('leafletDirectiveMap.click', function(event){
-    console.log('C\'est cliqué!');
-
-    ctrl.modal.show();
-    console.log('modal showed');
+  $scope.$on('leafletDirectiveMap.click', function () {
+    Modals.showBigMapModal($scope);
   });
 
   $http.get('../../data/path.json').then(function (success) {
-      console.log(success.data);
-      ctrl.spec.path = {
-        data : success.data,
-        style: {
-          color : 'red',
-          weigth: 6
+    ctrl.spec.geojson.path = {
+      data : success.data,
+      style: {
+        color : 'red',
+        weigth: 6
+      }
+    }
+  }, function (error) {
+    $log.error(error);
+  });
+
+  $rootScope.$on('user:located', centerMiniMap);
+
+  $rootScope.$on('pois:changed', function (event, changes) {
+    console.log(changes);
+    var icon = {
+      iconUrl   : '../../img/icons/user.png',
+      iconSize  : [14, 14], // size of the icon
+      iconAnchor: [7, 7] // point of the icon which will correspond to marker's location
+    };
+    var points = {
+      name    : "visiblePoints",
+      type    : "FeatureCollection",
+      features: changes.visible
+    };
+    ctrl.spec.geojson.points = {
+      data : points,
+      style: {
+        pointToLayer: function (feature, latlng) {
+          return new L.marker(latlng, {icon: L.icon(icon)});
         }
       }
-    }, function (error) {
-      console.log(error);
-    }
-  );
+    };
+    $log.log(ctrl.spec);
+  });
 
-  $rootScope.$on('user:located', function () {
-    console.log('updated map according to UserLocation');
+// Execute action on hide modal
+  $scope.$on('modal.hidden', function () {
+    // Execute action
+    console.log('modal hidden');
+  });
+// Execute action on remove modal
+  $scope.$on('modal.removed', function () {
+    // Execute action
+    console.log('modal removed');
+  });
+
+////////////////////
+
+  function resetMiniMap() {
+    centerMiniMap();
+  }
+
+  function centerMiniMap() {
     if (ctrl.spec.hasOwnProperty('center')) {
-      console.log('updating the center');
+      $log.debug('Updating the minimap center');
       ctrl.spec.center.lat = UserLocation.current.lat();
       ctrl.spec.center.lng = UserLocation.current.lon();
     }
     if (ctrl.spec.markers.hasOwnProperty('user')) {
-      console.log('updating the marker');
+      $log.debug('Updating the minimap marker');
       ctrl.spec.markers.user.lat = UserLocation.current.lat();
       ctrl.spec.markers.user.lng = UserLocation.current.lon();
     }
-  });
+  }
+}
+
+function BigMapCtrl(Modals, POIData) {
+  var ctrl = this;
+
+  ctrl.close = Modals.closeCurrent;
+  console.log(POIData.data);
 }
 
 function baseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {
@@ -141,9 +169,6 @@ function baseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {
   });
 
   $rootScope.$on('marker:loaded', function (event, properties) {
-    console.log('marker:loaded event catched');
-    console.log(event);
-    console.log(World.poiData);
     ctrl.poi = World.poiData;
     ctrl.properties = properties;
     showPoiModal(ctrl.properties.theme_name);
@@ -152,13 +177,13 @@ function baseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {
   ////////////////////
 
   function closeAR() {
-    console.log('closing');
+    $log.debug('Closing the AR');
     Do.action('close');
   }
 
   function showOptModal() {
     $ionicModal.fromTemplateUrl('modal.opt.html', {
-      scope: $scope,
+      scope    : $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
       ctrl.modal = modal;
@@ -168,7 +193,7 @@ function baseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {
 
   function showPoiModal(type) {
     $ionicModal.fromTemplateUrl(type + '.poi.html', {
-      scope: $scope,
+      scope    : $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
       ctrl.modal = modal;
@@ -177,36 +202,11 @@ function baseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {
   }
 
   function showFiltersModal() {
-    Filters.showModal($scope).then(function(modal) {
+    Filters.showModal($scope).then(function (modal) {
       ctrl.modal = modal;
       ctrl.modal.show();
     });
   }
-}
-
-function buttonCtrl(Do, Beacon, POI, Timers, UserLocation) {
-  var ctrl = this;
-
-  ctrl.loadTestPois = function loadTestPois() {
-    Do.action('loadTestPois');
-  };
-
-  ctrl.debug = function debug() {
-    console.log(POI.stock.visibleIds);
-    console.log(POI.stock.visible);
-    console.log(POI.stock.visibleIds.length);
-    console.log(UserLocation.debug());
-    //for (var id in POI.stock.visible) {
-    //  console.log(POI.stock.visible[id].distanceToUser());
-    //}
-  };
-
-  ctrl.nearestBeacon = function nearestBeacon() {
-    var timer = Timers.start();
-    var beacon = Beacon.getNearest();
-    timer.stop('nearest beacon');
-    console.log(beacon, beacon.distanceToUser());
-  };
 }
 
 function OptCtrl(Do, $scope) {

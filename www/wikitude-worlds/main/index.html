@@ -48,6 +48,7 @@
     <script src="filters.controller.js"></script>
     <script src="filters.service.js"></script>
     <script src="map-orientation.directive.js"></script>
+    <script src="modals.service.js"></script>
     <link rel="stylesheet" href="filters.style.css">
 
     <style>
@@ -161,19 +162,13 @@
       </button>
     </ion-header-bar>
     <div id="radarContainer"></div>
-    <!--<div id="test-button" ng-controller="buttonCtrl as button">-->
-    <!--<button class="button button-royal" on-release="button.loadTestPois()">Load</button>-->
-    <!--&lt;!&ndash;<button class="button button-royal" on-release="button.show()">Show</button>&ndash;&gt;-->
-    <!--<button class="button button-royal" on-release="button.nearestBeacon()">Scan</button>-->
-    <!--<button class="button button-royal" on-release="button.debug()">Debug</button>-->
-    <!--</div>-->
     <div class="filters" data-tap-disabled="true">
       <a class="icon ion-gear-a" href="#" ng-click="base.showFiltersModal()"></a>
     </div>
-    <div class="mini-map" ng-controller="MapCtrl as map" data-tap-disabled="true" 
+    <div class="mini-map" ng-controller="MiniMapCtrl as map" data-tap-disabled="true"
          ng-style="{'transform': map.mapOrientation, '-webkit-transform': map.mapOrientation, '-ms-transform': map.mapOrientation}">
       <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
-               geojson="map.spec.path" event-broadcast="map.spec.events"></leaflet>
+               geojson="map.spec.geojson" geojson-nested="true" event-broadcast="map.spec.events"></leaflet>
     </div>
     <map-orientation></map-orientation>
     <div class="stats row" ng-controller="StatsCtrl as stats">
