@@ -10,7 +10,9 @@
 
   function MarkersService() {
 
-    var markers = [];
+    var service = {
+      get: getMarker
+    };
 
     var availableTypes = [
       'default',
@@ -28,13 +30,9 @@
       'garden'
     ];
 
-    var service = {};
-
-    service.get = getMarker;
-    service.markers = markers;
+    var markers = [];
 
     return service;
-
     ////////////////////
 
     function getMarker(type) {
@@ -45,7 +43,7 @@
           }
         });
         markers[type] = new AR.ImageDrawable(img, 2, {
-          zOrder: 0,
+          zOrder : 0,
           opacity: 1.0
         });
       }

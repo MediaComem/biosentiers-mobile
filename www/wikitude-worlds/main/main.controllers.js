@@ -25,6 +25,26 @@ function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
   var ctrl = this,
       zoom = 17;
 
+  var icons = {
+    Oiseaux: {
+      type      : 'div',
+      iconSize  : [10, 10],
+      className : 'blue',
+      iconAnchor: [5, 5]
+    },
+    Flore  : {
+      type      : 'div',
+      iconSize  : [10, 10],
+      className : 'red',
+      iconAnchor: [5, 5]
+    },
+    user   : {
+      iconUrl   : '../../img/icons/user.png',
+      iconSize  : [14, 14], // size of the icon
+      iconAnchor: [7, 7] // point of the icon which will correspond to marker's location
+    }
+  };
+
   ctrl.spec = {
     tiles   : {
       url    : '../../data/Tiles/{z}/{x}/{y}.png',
@@ -48,11 +68,7 @@ function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
       user: {
         lat : 46.781001,
         lng : 6.647128,
-        icon: {
-          iconUrl   : '../../img/icons/user.png',
-          iconSize  : [14, 14], // size of the icon
-          iconAnchor: [7, 7] // point of the icon which will correspond to marker's location
-        }
+        icon: icons.user
       }
     },
     events  : {
@@ -83,25 +99,17 @@ function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
   $rootScope.$on('user:located', centerMiniMap);
 
   $rootScope.$on('pois:changed', function (event, changes) {
-    console.log(changes);
-    var icon = {
-      iconUrl   : '../../img/icons/user.png',
-      iconSize  : [14, 14], // size of the icon
-      iconAnchor: [7, 7] // point of the icon which will correspond to marker's location
-    };
-    var points = {
-      name    : "visiblePoints",
-      type    : "FeatureCollection",
-      features: changes.visible
-    };
-    ctrl.spec.geojson.points = {
-      data : points,
-      style: {
-        pointToLayer: function (feature, latlng) {
-          return new L.marker(latlng, {icon: L.icon(icon)});
-        }
+    $log.log(changes);
+    _.each(changes.removed, function (point) {
+      delete ctrl.spec.markers[point.properties.id_poi];
+    });
+    _.each(changes.added, function (point) {
+      ctrl.spec.markers[point.properties.id_poi] = {
+        lat : point.geometry.coordinates[1],
+        lng : point.geometry.coordinates[0],
+        icon: icons[point.properties.theme_name]
       }
-    };
+    });
     $log.log(ctrl.spec);
   });
 
@@ -133,14 +141,28 @@ function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
       ctrl.spec.markers.user.lat = UserLocation.current.lat();
       ctrl.spec.markers.user.lng = UserLocation.current.lon();
     }
+    $scope.$apply();
   }
 }
 
-function BigMapCtrl(Modals, POIData) {
+function BigMapCtrl(leafletData, Modals, POIData, turf, UserLocation) {
   var ctrl = this;
 
+  // If the controller is active, that means that it's the BigMapModal that's loaded.
+  // So, the Modals.closeCurrent closes the BigMap Modal.
   ctrl.close = Modals.closeCurrent;
+  ctrl.spec = {
+    center: {
+      lat: UserLocation.current.lat(),
+      lng: UserLocation.current.lon(),
+      zoom: 17
+    }
+  };
   console.log(POIData.data);
+  leafletData.getMap().then(function (map) {
+    console.log(map);
+    console.log(map.getBounds());
+  })
 }
 
 function baseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {

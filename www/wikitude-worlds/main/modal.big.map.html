@@ -27,6 +27,17 @@
     margin: auto;
   }
 
+  .red {
+    border-radius: 120px;
+    opacity: .75;
+    background-color: #FF0000;
+  }
+
+  .blue {
+    border-radius: 120px;
+    opacity: .75;
+    background-color: #0000FF;
+  }
 </style>
 
 <ion-modal-view class="modal" ng-controller="BigMapCtrl as bigmap"> <!-- controller: MiniMapCtrl as map -->
@@ -38,7 +49,7 @@
 
   <ion-content class="has-header">
     <div class="big-map">
-      <leaflet tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center" geojson="map.spec.geojson"
+      <leaflet tiles="map.spec.tiles" markers="map.spec.markers" center="bigmap.spec.center" geojson="map.spec.geojson"
                geojson-nested="true"></leaflet>
     </div>
   </ion-content>
