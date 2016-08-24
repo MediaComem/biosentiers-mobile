@@ -145,7 +145,7 @@ function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
   }
 }
 
-function BigMapCtrl(leafletData, Modals, POIData, Turf, UserLocation) {
+function BigMapCtrl(leafletData, Modals, POIData, turf, UserLocation) {
   var ctrl = this;
 
   // If the controller is active, that means that it's the BigMapModal that's loaded.
