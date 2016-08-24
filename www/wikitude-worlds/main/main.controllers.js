@@ -144,13 +144,24 @@ function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
   }
 }
 
-function BigMapCtrl(Modals, POIData) {
+function BigMapCtrl(leafletData, Modals, POIData, Turf, UserLocation) {
   var ctrl = this;
 
   // If the controller is active, that means that it's the BigMapModal that's loaded.
   // So, the Modals.closeCurrent closes the BigMap Modal.
   ctrl.close = Modals.closeCurrent;
+  ctrl.spec = {
+    center: {
+      lat: UserLocation.current.lat(),
+      lng: UserLocation.current.lon(),
+      zoom: 17
+    }
+  };
   console.log(POIData.data);
+  leafletData.getMap().then(function (map) {
+    console.log(map);
+    console.log(map.getBounds());
+  })
 }
 
 function baseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {

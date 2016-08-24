@@ -47,7 +47,7 @@
     }
 
     function backupCurrent() {
-      UserLocation.last = UserLocation.current;
+      UserLocation.last = angular.copy(UserLocation.current);
     }
 
     function movingDistance() {
