@@ -141,6 +141,7 @@ function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
       ctrl.spec.markers.user.lat = UserLocation.current.lat();
       ctrl.spec.markers.user.lng = UserLocation.current.lon();
     }
+    $scope.$apply();
   }
 }
 
