@@ -9,8 +9,8 @@
     .factory('Modals', Modals);
 
   function Modals($ionicModal) {
+    var current;
     var modals = {
-      current        : null,
       showBigMapModal: showBigMapModal,
       closeCurrent   : closeCurrent
     };
@@ -23,14 +23,16 @@
       $ionicModal.fromTemplateUrl('modal.big.map.html', {
         scope    : $scope,
         animation: 'slide-in-up'
-      }).then(function (modal) {
-        modals.current = modal;
-        modals.current.show();
-      });
+      }).then(modalLoaded);
     }
 
     function closeCurrent() {
-      modals.current.hide();
+      current.hide();
+    }
+
+    function modalLoaded(modal) {
+      current = modal;
+      current.show();
     }
   }
 })();
