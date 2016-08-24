@@ -6,15 +6,11 @@
 
   angular
     .module('ARLib')
-    .service('Markers', Markers);
+    .factory('Markers', MarkersService);
 
-  function Markers() {
+  function MarkersService() {
+
     var markers = [];
-
-    this.get = getMarker;
-    this.markers = markers;
-
-    ////////////////////
 
     var availableTypes = [
       'default',
@@ -31,6 +27,15 @@
       'biodivercity',
       'garden'
     ];
+
+    var service = {};
+
+    service.get = getMarker;
+    service.markers = markers;
+
+    return service;
+
+    ////////////////////
 
     function getMarker(type) {
       if (!markers[type] || markers[type].destroyed) {
