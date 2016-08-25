@@ -23,25 +23,23 @@ function StatsCtrl($log, $rootScope) {
 
 function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
   var ctrl = this,
-      zoom = 17;
+      zoom = 14;
 
   var icons = {
     Oiseaux: {
-      type      : 'div',
-      iconSize  : [10, 10],
-      className : 'blue',
-      iconAnchor: [5, 5]
+      iconUrl   : '../../img/icons/Oiseaux.png',
+      iconSize  : [16, 16],
+      iconAnchor: [8, 8]
     },
     Flore  : {
-      type      : 'div',
-      iconSize  : [10, 10],
-      className : 'red',
-      iconAnchor: [5, 5]
+      iconUrl   : '../../img/icons/Flore.png',
+      iconSize  : [16, 16],
+      iconAnchor: [8, 8]
     },
     user   : {
       iconUrl   : '../../img/icons/user.png',
-      iconSize  : [14, 14], // size of the icon
-      iconAnchor: [7, 7] // point of the icon which will correspond to marker's location
+      iconSize  : [20, 20], // size of the icon
+      iconAnchor: [10, 10] // point of the icon which will correspond to marker's location
     }
   };
 
@@ -99,19 +97,18 @@ function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
   $rootScope.$on('user:located', centerMiniMap);
 
   $rootScope.$on('pois:changed', function (event, changes) {
-    $log.log(changes);
-    _.each(changes.removed, function (point) {
-      delete ctrl.spec.markers[point.properties.id_poi];
-    });
-    _.each(changes.added, function (point) {
-      ctrl.spec.markers[point.properties.id_poi] = {
-        lat : point.geometry.coordinates[1],
-        lng : point.geometry.coordinates[0],
-        icon: icons[point.properties.theme_name]
-      }
-    });
-    $log.log(ctrl.spec);
-  });
+      _.each(changes.removed, function (point) {
+        delete ctrl.spec.markers[point.properties.id_poi];
+      });
+      _.each(changes.added, function (point) {
+        ctrl.spec.markers[point.properties.id_poi] = {
+          lat : point.geometry.coordinates[1],
+          lng : point.geometry.coordinates[0],
+          icon: icons[point.properties.theme_name]
+        };
+      });
+    }
+  );
 
 // Execute action on hide modal
   $scope.$on('modal.hidden', function () {
@@ -153,8 +150,8 @@ function BigMapCtrl(leafletData, Modals, POIData, turf, UserLocation) {
   ctrl.close = Modals.closeCurrent;
   ctrl.spec = {
     center: {
-      lat: UserLocation.current.lat(),
-      lng: UserLocation.current.lon(),
+      lat : UserLocation.current.lat(),
+      lng : UserLocation.current.lon(),
       zoom: 17
     }
   };
