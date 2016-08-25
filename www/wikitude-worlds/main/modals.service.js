@@ -9,11 +9,12 @@
     .factory('Modals', Modals);
 
   function Modals($ionicModal) {
-    var current;
     var modals = {
       showBigMapModal: showBigMapModal,
       closeCurrent   : closeCurrent
     };
+
+    var current;
 
     return modals;
 

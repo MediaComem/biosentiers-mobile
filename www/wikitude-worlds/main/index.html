@@ -32,8 +32,8 @@
     <script src="../../utils/utils.module.js"></script>
 
     <!-- inject:css -->
-    <link rel="stylesheet" href="filters.style.css">
-    <link rel="stylesheet" href="mini-map-orientation.css">
+    <link rel="stylesheet" href="filters/filters.style.css">
+    <link rel="stylesheet" href="mini-map-orientation/mini-map-orientation.css">
     <!-- endinject -->
 
     <!-- inject:js -->
@@ -46,13 +46,25 @@
     <script src="../ar-lib/ar-lib.poi.js"></script>
     <script src="../ar-lib/ar-lib.poidata.js"></script>
     <script src="../ar-lib/ar-lib.user-location.js"></script>
+    <script src="ar-config/ar-config.module.js"></script>
+    <script src="ar-config/ar-config.service.js"></script>
+    <script src="big-map/big-map.module.js"></script>
+    <script src="big-map/big-map.controller.js"></script>
+    <script src="debug-position/debug-position.module.js"></script>
+    <script src="debug-position/debug-position.controller.js"></script>
+    <script src="debug-stats/debug-stats.module.js"></script>
+    <script src="debug-stats/debug-stats.controller.js"></script>
+    <script src="filters/filters.module.js"></script>
+    <script src="filters/filters.controller.js"></script>
+    <script src="filters/filters.service.js"></script>
     <script src="main.module.js"></script>
-    <script src="filters.controller.js"></script>
-    <script src="filters.service.js"></script>
     <script src="main.controllers.js"></script>
-    <script src="main.world.js"></script>
-    <script src="mini-map-orientation.directive.js"></script>
+    <script src="main.run.js"></script>
+    <script src="mini-map-orientation/mini-map-orientation.module.js"></script>
+    <script src="mini-map-orientation/mini-map-orientation.directive.js"></script>
     <script src="modals.service.js"></script>
+    <script src="world/world.module.js"></script>
+    <script src="world/world.service.js"></script>
     <!-- endinject -->
 
     <style>
@@ -139,7 +151,7 @@
         <i class="icon ion-android-arrow-back"></i>
       </button>
       <h1 class="title">Ionic + Wikitude</h1>
-      <button class="button button-icon" ng-click="base.showOptModal()">
+      <button class="button button-icon" ng-click="base.showDebugModal()">
         <i class="icon ion-android-options"></i>
       </button>
     </ion-header-bar>

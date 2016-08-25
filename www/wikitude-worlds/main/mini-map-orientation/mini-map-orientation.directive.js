@@ -6,7 +6,7 @@
    * the heading arrow around the minimap.
    */
   angular
-    .module('ar')
+    .module('mini-map-orientation')
     .directive('miniMapOrientation', MiniMapOrientationDirective)
     .controller('MiniMapOrientationCtrl', MiniMapOrientationCtrl);
 
@@ -15,7 +15,7 @@
       restrict: 'E',
       replace: true,
       controller: 'MiniMapOrientationCtrl',
-      templateUrl: 'mini-map-orientation.html',
+      templateUrl: 'mini-map-orientation/mini-map-orientation.html',
       link: linkMiniMapOrientationDirective
     };
   }
