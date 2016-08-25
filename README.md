@@ -33,7 +33,7 @@
 Des tâches [Gulp](http://gulpjs.com) sont fournies pour simplifier le développement.
 
 La tâche par défaut, lancée en tapant `gulp` dans le terminal depuis le dossier du projet,
-permet d'exécuter en une fois toutes la plupart des tâches utiles pour le développement.
+permet d'exécuter en une fois la plupart des tâches utiles pour le développement.
 Elle exécute les tâches `compile`, `inject` et `watch` qui sont décrites ci-dessous.
 
 ### Tâches de compilation
@@ -48,7 +48,7 @@ et JS de l'application dans les pages HTML.
 
 **Note:** ceci concerne uniquement les fichiers écrits par les développeurs,
 et pas les fichiers des librairies externes ajoutées au projet (par exemple Lodash, Turf ou Leaflet).
-Ces dernières doivent toujours être ajoutées manuellement.
+Ces derniers doivent toujours être ajoutées manuellement.
 
 * `gulp inject:app` - Liste les fichiers CSS et JS dans le dossier `www/app` et injecte automatiquement les balises `<link>` et `<script>`
   nécessaires dans le fichier `www/index.html`, là où se trouvent les commentaires `<!-- inject:css -->` et `<!-- inject:js -->`.
