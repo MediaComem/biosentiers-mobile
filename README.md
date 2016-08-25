@@ -11,8 +11,9 @@
 ## Installation
 
 * Cloner le repository.
+* Installer les outils:
+  * `npm install -g ionic ios-deploy gulp-cli`
 * Installer les dépendances:
-  * `npm install -g ionic ios-deploy`
   * `cd /path/to/project`
   * `npm install`
   * `ionic hooks add`
@@ -29,26 +30,35 @@
 <a name="development"></a>
 ## Développement
 
-Des tâches [Gulp](http://gulpjs.com) sont fournies pour simplifier le développement:
-Les commandes suivantes peuvent être exécutées dans le terminal dans le dossier du projet.
+Des tâches [Gulp](http://gulpjs.com) sont fournies pour simplifier le développement.
 
-**Compilation**
+La tâche par défaut, lancée en tapant `gulp` dans le terminal depuis le dossier du projet,
+permet d'exécuter en une fois toutes la plupart des tâches utiles pour le développement.
+Elle exécute les tâches `compile`, `inject` et `watch` qui sont décrites ci-dessous.
+
+### Tâches de compilation
 
 * `gulp sass` - Compile les fichiers [Sass](http://sass-lang.com) présents dans le dossier `scss` et les sauve dans le dossier `www/css`.
 * `gulp compile` - Alias de la tâche ci-dessus.
 
-**Injection**
+### Tâches d'injection
 
-Le plugin [gulp-inject](https://www.npmjs.com/package/gulp-inject) est utilisé pour automatiquement tenir à jour
-la liste des fichiers CSS et JS de l'application.
+Le plugin [gulp-inject](https://www.npmjs.com/package/gulp-inject) est utilisé pour automatiquement inclure les fichiers CSS
+et JS de l'application dans les pages HTML.
+
+**Note:** ceci concerne uniquement les fichiers écrits par les développeurs,
+et pas les fichiers des librairies externes ajoutées au projet (par exemple Lodash, Turf ou Leaflet).
+Ces dernières doivent toujours être ajoutées manuellement.
 
 * `gulp inject:app` - Liste les fichiers CSS et JS dans le dossier `www/app` et injecte automatiquement les balises `<link>` et `<script>`
-  nécessaires dans le fichier `www/index.html`.
+  nécessaires dans le fichier `www/index.html`, là où se trouvent les commentaires `<!-- inject:css -->` et `<!-- inject:js -->`.
 * `gulp inject:wikitude` - Liste les fichiers CSS et JS dans le dossier `www/wikitude-worlds` et injecte automatiquement les balises `<link>` et `<script>`
-  nécessaires dans le fichier `www/wikitude-worlds/main/index.html`.
+  nécessaires dans le fichier `www/wikitude-worlds/main/index.html`, là où se trouvent les commentaires `<!-- inject:css -->` et `<!-- inject:js -->`..
 * `gulp inject` - Exécute les deux tâches ci-dessus.
 
-**Auto compilation et injection**
+[Voici un exemple du résultat.](https://github.com/MediaComem/biosentiers/blob/182665209fe0fa219fa8a3191a4bf6efa8ab6740/www/wikitude-worlds/main/index.html#L34-L61)
+
+### Tâches automatiques
 
 Pour ne pas avoir à manuellement lancer les commandes précédentes à chaque ajout, modification ou suppression de fichier, les tâches suivantes sont disponibles.
 
