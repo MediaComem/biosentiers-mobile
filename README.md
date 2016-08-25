@@ -1,7 +1,13 @@
 # BioSentiers
 
+* [Installation](#installation)
+* [Développement](#development)
+* [Plugins Cordova installés](#cordova-plugins)
+* [Plateformes Ionic installées](#ionic-platforms)
 
 
+
+<a name="installation"></a>
 ## Installation
 
 * Cloner le repository.
@@ -20,7 +26,45 @@
 
 
 
-## Plugins installés
+<a name="development"></a>
+## Développement
+
+Des tâches [Gulp](http://gulpjs.com) sont fournies pour simplifier le développement:
+Les commandes suivantes peuvent être exécutées dans le terminal dans le dossier du projet.
+
+**Compilation**
+
+* `gulp sass` - Compile les fichiers [Sass](http://sass-lang.com) présents dans le dossier `scss` et les sauve dans le dossier `www/css`.
+* `gulp compile` - Alias de la tâche ci-dessus.
+
+**Injection**
+
+Le plugin [gulp-inject](https://www.npmjs.com/package/gulp-inject) est utilisé pour automatiquement tenir à jour
+la liste des fichiers CSS et JS de l'application.
+
+* `gulp inject:app` - Liste les fichiers CSS et JS dans le dossier `www/app` et injecte automatiquement les balises `<link>` et `<script>`
+  nécessaires dans le fichier `www/index.html`.
+* `gulp inject:wikitude` - Liste les fichiers CSS et JS dans le dossier `www/wikitude-worlds` et injecte automatiquement les balises `<link>` et `<script>`
+  nécessaires dans le fichier `www/wikitude-worlds/main/index.html`.
+* `gulp inject` - Exécute les deux tâches ci-dessus.
+
+**Auto compilation et injection**
+
+Pour ne pas avoir à manuellement lancer les commandes précédentes à chaque ajout, modification ou suppression de fichier, les tâches suivantes sont disponibles.
+
+**Note:** ces tâches continuent à s'exécuter tant qu'elles ne sont pas stoppées avec Ctrl-C.
+
+* `gulp watch:app` - Observe les ajouts et suppressions de fichiers CSS et JS dans le dossier `www/app`
+  et met à jour les injections du fichier `www/index.html` en temps réel.
+* `gulp watch:wikitude` - Observe les ajouts et suppressions de fichiers CSS et JS dans le dossier `www/wikitude-worlds`
+  et met à jour les injections du fichier `www/wikitude-worlds/main/index.html` en temps réel.
+* `gulp watch:sass` - Observe les fichiers Sass dans le dossier `scss` et les compile automatiquement dans le dossier `www/css` en temps réel.
+* `gulp watch` - Exécute les trois tâches ci-dessus en parallèle.
+
+
+
+<a name="cordova-plugins"></a>
+## Plugins Cordova installés
 
 ### BarcodeScanner
 
@@ -52,7 +96,8 @@ Ce plugin permet d'afficher des "toasts" sur l'appareil, donnant ainsi un retour
 
 
 
-## Plateformes installées
+<a name="ionic-platforms"></a>
+## Plateformes Ionic installées
 
 Le projet est destiné à être utilisé sur des appareils Android et iOS. Ces deux plateformes ont dont été installées.
 IMPORTANT ! Pour que le projet se compile sur Android avec le plugin Wikitude, la version 5.0.0 (au minimum) doit être, et a été, ajoutée.
