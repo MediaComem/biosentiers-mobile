@@ -9,6 +9,10 @@
     .run(ionicitude);
 
   function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, POIGeo, POIData, Timers) {
+
+    var deviceOrientationWatch,
+        deviceOrientationUpdatesInterval = 250;
+
     $ionicPlatform.ready(function () {
       Ionicitude.init()
         .then(function (success) { console.log(success); })
@@ -27,23 +31,29 @@
 
       ////////////////////
 
-      var deviceOrientationWatch;
-
       function open(service) {
         $log.debug('World opened');
 
-        /*deviceOrientationWatch = $cordovaDeviceOrientation.watchHeading({ frequency: 1000 }).then(null, function(err) {
+        $log.debug('Starting device orientation updates every ' + deviceOrientationUpdatesInterval + 'ms');
+        deviceOrientationWatch = $cordovaDeviceOrientation.watchHeading({
+          frequency: deviceOrientationUpdatesInterval
+        });
+
+        deviceOrientationWatch.then(null, function(err) {
           $log.error(err);
         }, function(update) {
           Ionicitude.callJavaScript('World.updateDeviceOrientation(' + angular.toJson(update) + ')');
-        });*/
+        });
       }
 
       function close(service) {
         $log.debug('World closing');
 
         if (deviceOrientationWatch) {
-          $cordovaDeviceOrientation.clearWatch(watch);
+          $log.debug('Stopping device orientation updates');
+          deviceOrientationWatch.clearWatch();
+        } else {
+          $log.warn('No devices orientation updates to stop');
         }
 
         service.close();

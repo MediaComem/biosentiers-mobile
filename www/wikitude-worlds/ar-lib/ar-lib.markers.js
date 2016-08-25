@@ -6,9 +6,11 @@
 
   angular
     .module('ARLib')
-    .factory('Markers', Markers);
+    .factory('Markers', MarkersService);
 
-  function Markers() {
+  function MarkersService() {
+
+    var markers = [];
 
     var service = {
       get: getMarker

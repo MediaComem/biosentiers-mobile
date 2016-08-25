@@ -6,9 +6,12 @@
 
   angular
     .module('QRModule')
-    .service('QRService', QRService);
+    .factory('QRService', QRService);
 
   function QRService() {
 
+    var service = {};
+
+    return service;
   }
 })();

@@ -6,10 +6,15 @@
 
   angular
     .module('AuthModule')
-    .service('AuthService', AuthService);
+    .factory('AuthService', AuthService);
 
   function AuthService($q) {
-    this.connectUser = connectUser;
+
+    var service = {};
+
+    service.connectUser = connectUser;
+
+    return service;
 
     ////////////////////
 
