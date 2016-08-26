@@ -111,12 +111,41 @@ The critical elements are:
 ### Style guide
 
 * All Angular components (controllers, services, directives, etc) should be wrapped in
-  an [Immediately-Invoked Function Expression (IIFE)](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression) to avoid polluting the global scope:
+  an [Immediately-Invoked Function Expression (IIFE)](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression) to avoid polluting the global scope.
+  You should also add `'use strict';` at the beginning of this function:
 
   ```js
   (function() {
+    'use strict';
+
     // Angular module, controller, service or directive here...
   })();
+  ```
+
+* All Angular components should be defined in a named function, not an anonymous function:
+
+  ```js
+  angular
+    .module('my-module')
+    .controller(MyCtrl);
+
+  function MyCtrl($scope) {
+    // ...
+  }
+  ```
+
+* All Angular components should have at least a comment on their main function definition to explain their purpose:
+
+  ```js
+  /**
+   * This controller manages the filters modal dialog.
+   *
+   * It communicates with the Filters service to retrieve available choices,
+   * and to update the currently selected filters in response to user changes.
+   */
+  function FiltersModalCtrl(Filters, $scope) {
+    // ...
+  }
   ```
 
 * Angular components should be named as follows:
@@ -135,17 +164,10 @@ The critical elements are:
     .directive('miniMapOrientation', MiniMapOrientationDirective)
     ```
 
-* All Angular components should be defined in a named function, not an anonymous function:
-
-  ```js
-  angular
-    .module('my-module')
-    .controller(MyCtrl);
-
-  function MyCtrl($scope) {
-    // ...
-  }
-  ```
+* TODO: comments
+* TODO: controller syntax
+* TODO: no anonymous functions for events
+* TODO: anonymous functions may be used if there are not too many
 
 * Angular services should be defined as follows:
 
