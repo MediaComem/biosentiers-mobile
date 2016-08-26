@@ -3,6 +3,7 @@
  */
 (function () {
   'use strict';
+
   angular
     .module('ar-config')
     .factory('ArConfig', ArConfig);

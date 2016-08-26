@@ -1,23 +1,27 @@
 /**
  * Created by Mathias on 02.05.2016.
  */
-angular
-  .module('ar')
-  .run(run);
+(function () {
+  'use strict';
 
-function run(ArConfig, Do, POI, $rootScope, $window, World) {
+  angular
+    .module('ar')
+    .run(run);
 
-  ArConfig.init();
+  function run(ArConfig, Do, POI, $rootScope, $window, World) {
 
-  $window.World = World;
+    ArConfig.init();
 
-  $rootScope.$on('filters:changed', onFiltersChanged);
+    $window.World = World;
 
-  Do.action('open');
+    $rootScope.$on('filters:changed', onFiltersChanged);
 
-  ////////////////////
+    Do.action('open');
 
-  function onFiltersChanged() {
-    POI.updateAr();
+    ////////////////////
+
+    function onFiltersChanged() {
+      POI.updateAr();
+    }
   }
-}
+})();
