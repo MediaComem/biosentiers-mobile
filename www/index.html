@@ -5,7 +5,6 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
 
-
     <!-- compiled css output -->
     <link href="css/ionic.app.css" rel="stylesheet">
 
@@ -15,13 +14,6 @@
     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-
-    <!-- your app's js -->
-    <script src="app/app.module.js"></script>
-    <script src="app/app.config.js"></script>
-    <script src="app/ionicitude.actions.js"></script>
-    <script src="wikitude-worlds/ar-back-button-directive.js"></script>
-    <script src="app/app.router.js"></script>
 
     <!-- Leaflet -->
     <script src="lib/leaflet/dist/leaflet.js"></script>
@@ -36,35 +28,39 @@
     <!--<script src="lib/angular-turf-module/angular-turf-module.js"></script>-->
     <!--<script src="app/_idle.tests/idle.controller.js"></script>-->
 
-    <!-- Outings Module -->
-    <script src="app/outings-module/outings.module.js"></script>
-    <script src="app/outings-module/outings.services.js"></script>
-
     <!-- AR Module -->
     <script src="lib/ionicitude/dist/ionicitude.js"></script>
 
-    <!-- POI Module -->
-    <script src="app/poi-module/poi.module.js"></script>
-    <script src="app/poi-module/poi.geo.service.js"></script>
-    <script src="app/poi-module/poi.data.service.js"></script>
+    <!--
+      ATTENTION: the inject:css and inject:js sections are automatically filled
+      by the gulp-inject plugin. DO NOT EDIT THEM YOURSELF. See the README.
+    -->
 
-    <!-- Paths Module -->
+    <!-- inject:css -->
+    <!-- endinject -->
+
+    <!-- inject:js -->
+    <script src="app/app.module.js"></script>
+    <script src="app/app.config.js"></script>
+    <script src="app/app.router.js"></script>
+    <script src="app/auth-module/auth.module.js"></script>
+    <script src="app/auth-module/auth.controller.js"></script>
+    <script src="app/auth-module/auth.service.js"></script>
+    <script src="app/idle.tests/idle.controller.js"></script>
+    <script src="app/ionicitude.actions.js"></script>
+    <script src="app/menu/menu.controller.js"></script>
+    <script src="app/outing/outing.controller.js"></script>
+    <script src="app/outings-module/outings.module.js"></script>
+    <script src="app/outings-module/outings.services.js"></script>
+    <script src="app/outings/outings.controller.js"></script>
     <script src="app/paths-module/paths.module.js"></script>
     <script src="app/paths-module/paths.service.js"></script>
-
-    <!-- QR Code Module -->
+    <script src="app/poi-module/poi.module.js"></script>
+    <script src="app/poi-module/poi.data.service.js"></script>
+    <script src="app/poi-module/poi.geo.service.js"></script>
     <script src="app/qr-module/qr.module.js"></script>
     <script src="app/qr-module/qr.service.js"></script>
-
-    <!-- Auth Module -->
-    <script src="app/auth-module/auth.module.js"></script>
-    <script src="app/auth-module/auth.service.js"></script>
-
-    <!-- Controllers -->
-    <script src="app/menu/menu.controller.js"></script>
-    <script src="app/outings/outings.controller.js"></script>
-    <script src="app/outing/outing.controller.js"></script>
-    <script src="app/auth-module/auth.controller.js"></script>
+    <!-- endinject -->
   </head>
 
   <body ng-app="app">

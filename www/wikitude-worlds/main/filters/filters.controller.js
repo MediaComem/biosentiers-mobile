@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('ar')
+    .module('filters')
     .controller('FiltersCtrl', FiltersCtrl)
 
   function FiltersCtrl(Filters, $scope) {

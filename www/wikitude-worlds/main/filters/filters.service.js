@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('ar')
+    .module('filters')
     .factory('Filters', FiltersService);
 
   function FiltersService($ionicModal, $log, POIData, $rootScope) {
@@ -84,7 +84,7 @@
      */
     function showModal($scope) {
       $log.debug('Showing filters modal');
-      return $ionicModal.fromTemplateUrl('filters.modal.html', {
+      return $ionicModal.fromTemplateUrl('filters/filters.modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
       });

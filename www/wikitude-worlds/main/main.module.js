@@ -8,5 +8,12 @@ angular.module('ar', [
   'TurfModule',
   'leaflet-directive',
   'ngCordova',
-  'utils'
+  'utils',
+  'debug-position',
+  'debug-stats',
+  'filters',
+  'mini-map-orientation',
+  'world',
+  'big-map',
+  'ar-config'
 ]);
