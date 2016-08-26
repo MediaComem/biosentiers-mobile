@@ -14,7 +14,7 @@
 
       .state('idle', {
         url: '/idle',
-        templateUrl: 'app/_idle.tests/idle.html',
+        templateUrl: 'app/idle.tests/idle.html',
         controller: 'IdleController',
         controllserAs: 'idle'
       })

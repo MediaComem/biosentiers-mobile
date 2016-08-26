@@ -14,6 +14,6 @@ angular.module('ar', [
   'filters',
   'mini-map-orientation',
   'world',
-  'big-map',
+  'big-map-modal',
   'ar-config'
 ]);

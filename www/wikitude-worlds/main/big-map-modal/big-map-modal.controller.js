@@ -4,7 +4,7 @@
 (function () {
   'use strict';
   angular
-    .module('big-map')
+    .module('big-map-modal')
     .controller('BigMapCtrl', BigMapCtrl);
 
   function BigMapCtrl(leafletData, Modals, POIData, turf, UserLocation) {
