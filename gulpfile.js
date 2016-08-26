@@ -25,6 +25,7 @@ var paths = {
 };
 
 gulp.task('default', [ 'compile', 'inject', 'watch' ]);
+
 gulp.task('compile', [ 'sass' ]);
 gulp.task('inject', [ 'inject:app', 'inject:wikitude' ]);
 gulp.task('watch', [ 'watch:app', 'watch:sass', 'watch:wikitude' ]);
