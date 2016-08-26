@@ -113,69 +113,79 @@ The critical elements are:
 * All Angular components (controllers, services, directives, etc) should be wrapped in
   an [Immediately-Invoked Function Expression (IIFE)](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression) to avoid polluting the global scope:
 
-      (function() {
-        // Angular module, controller, service or directive here...
-      })();
+  ```js
+  (function() {
+    // Angular module, controller, service or directive here...
+  })();
+  ```
 
 * Angular components should be named as follows:
 
   * Controllers should end with `Ctrl`:
 
-        .controller('MapCtrl', MapCtrl)
-        .controller('FiltersModalCtrl', FiltersModalCtrl)
+    ```js
+    .controller('MapCtrl', MapCtrl)
+    .controller('FiltersModalCtrl', FiltersModalCtrl)
+    ```
   * Directives and services should have no suffix, although their definition function can:
 
-        .factory('Filters', FiltersService)
-        .factory('Map', MapService)
-        .directive('miniMapOrientation', MiniMapOrientationDirective)
+    ```js
+    .factory('Filters', FiltersService)
+    .factory('Map', MapService)
+    .directive('miniMapOrientation', MiniMapOrientationDirective)
+    ```
 
 * All Angular components should be defined in a named function, not an anonymous function:
 
-      angular
-        .module('my-module')
-        .controller(MyCtrl);
+  ```js
+  angular
+    .module('my-module')
+    .controller(MyCtrl);
 
-      function MyCtrl($scope) {
-        // ...
-      }
+  function MyCtrl($scope) {
+    // ...
+  }
+  ```
 
 * Angular services should be defined as follows:
 
-      function SomeService($rootScope) {
+  ```js
+  function SomeService($rootScope) {
 
-        // Place private values here at the beginning of the service definition.
-        // These values cannot be accessed outside this service.
-        var value = 20;
+    // Place private values here at the beginning of the service definition.
+    // These values cannot be accessed outside this service.
+    var value = 20;
 
-        // Define the service structure next, with all public values and functions.
-        var service = {
-          publicValue: 30,
-          doSomething: doSomething,
-          doSomethingElse: doSomethingElse
-        };
+    // Define the service structure next, with all public values and functions.
+    var service = {
+      publicValue: 30,
+      doSomething: doSomething,
+      doSomethingElse: doSomethingElse
+    };
 
-        // Plug into events here.
-        $rootScope.$on('someEvent', function() {
-          // ...
-        });
+    // Plug into events here.
+    $rootScope.$on('someEvent', function() {
+      // ...
+    });
 
-        // Return the service.
-        return service;
+    // Return the service.
+    return service;
 
-        // Define private and public service functions below.
+    // Define private and public service functions below.
 
-        function doSomething() {
-          return privateFunction();
-        }
+    function doSomething() {
+      return privateFunction();
+    }
 
-        function doSomethingElse(arg) {
-          // ...
-        }
+    function doSomethingElse(arg) {
+      // ...
+    }
 
-        function privateFunction() {
-          // ...
-        }
-      }
+    function privateFunction() {
+      // ...
+    }
+  }
+  ```
 
 
 
