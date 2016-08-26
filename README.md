@@ -2,6 +2,7 @@
 
 * [Installation](#installation)
 * [Développement](#development)
+* [Structure de fichiers](#structure)
 * [Plugins Cordova installés](#cordova-plugins)
 * [Plateformes Ionic installées](#ionic-platforms)
 
@@ -70,6 +71,37 @@ Pour ne pas avoir à manuellement lancer les commandes précédentes à chaque a
   et met à jour les injections du fichier `www/wikitude-worlds/main/index.html` en temps réel.
 * `gulp watch:sass` - Observe les fichiers Sass dans le dossier `scss` et les compile automatiquement dans le dossier `www/css` en temps réel.
 * `gulp watch` - Exécute les trois tâches ci-dessus en parallèle.
+
+
+
+<a name="structure"></a>
+## Structure de fichiers
+
+Ce projet contient 2 applications Angular, une dans `www/app` et l'autre dans `www/wikitude-worlds/main`.
+Dans chacune de ces applications, la structure de fichiers devrait être la suivante:
+
+* `index.html`
+* `main.module.js`
+* `about-page` (page example)
+  * `about-page.module.js`
+  * `about-page.controller.js`
+  * `about-page.html`
+  * `about-page.css`
+* `mini-map-orientation` (directive example)
+  * `my-directive.module.js`
+  * `my-directive.directive.js`
+  * `my-directive.template`
+* `filters-modal` (modal example)
+  * `filters-modal.module.js`
+  * `filters-modal.controller.js`
+  * `filters-modal.html`
+  * `filters-modal.css`
+
+The critical elements are:
+
+* Each component of the application (page, directive, modal, etc) should be isolated in a **separate directory**.
+* Each of those directories should define an **Angular module**, saved in a file with a name that ends with `.module.js`.
+  This module should be added to the dependencies of the other modules that need it, or to your main application module.
 
 
 
