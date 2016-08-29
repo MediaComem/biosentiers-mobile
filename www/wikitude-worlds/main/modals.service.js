@@ -9,18 +9,19 @@
     .factory('Modals', Modals);
 
   function Modals($ionicModal) {
-    var current;
     var modals = {
       showBigMapModal: showBigMapModal,
       closeCurrent   : closeCurrent
     };
+
+    var current;
 
     return modals;
 
     ////////////////////
 
     function showBigMapModal($scope) {
-      $ionicModal.fromTemplateUrl('modal.big.map.html', {
+      $ionicModal.fromTemplateUrl('big-map-modal/big-map-modal.html', {
         scope    : $scope,
         animation: 'slide-in-up'
       }).then(modalLoaded);

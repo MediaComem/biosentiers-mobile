@@ -10,8 +10,6 @@
 
   function MarkersService() {
 
-    var markers = [];
-
     var service = {
       get: getMarker
     };

@@ -25,6 +25,7 @@ var paths = {
 };
 
 gulp.task('default', [ 'compile', 'inject', 'watch' ]);
+
 gulp.task('compile', [ 'sass' ]);
 gulp.task('inject', [ 'inject:app', 'inject:wikitude' ]);
 gulp.task('watch', [ 'watch:app', 'watch:sass', 'watch:wikitude' ]);
@@ -154,7 +155,13 @@ function compareAngularFiles(f1, f2) {
       f2Dir = path.dirname(f2.path),
       f2Module = isAngularModule(f2);
 
-  if (f1Dir != f2Dir || f1Module == f2Module) {
+  if (f1Dir.indexOf(f2Dir + path.sep) === 0) {
+    // If f1 is in a subdirectory of f2's directory, place f1 last.
+    return 1;
+  } else if (f2Dir.indexOf(f1Dir + path.sep) === 0) {
+    // If f2 is in a subdirectory of f1's directory, place f1 first.
+    return -1;
+  } else if (f1Dir != f2Dir || f1Module == f2Module) {
     // Perform a standard comparison if the files are not in the same directory,
     // if both are Angular modules, or if both are not Angular modules.
     return f1.path.localeCompare(f2.path);
@@ -168,9 +175,9 @@ function compareAngularFiles(f1, f2) {
 }
 
 function isJs(file) {
-  return file.path.match(/\.js$/);
+  return !!file.path.match(/\.js$/);
 }
 
 function isAngularModule(file) {
-  return file.path.match(/\.module\.js$/);
+  return !!file.path.match(/\.module\.js$/);
 }
