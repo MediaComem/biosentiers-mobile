@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('debug-position', []);
+  angular.module('debug-position-modal', []);
 })();

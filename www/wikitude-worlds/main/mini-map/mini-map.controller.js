@@ -1,11 +1,11 @@
 (function() {
   'use strict';
-  
+
   angular
     .module('mini-map')
     .controller('MiniMapCtrl', MiniMapCtrl);
-  
-  function MiniMapCtrl($http, Modals, $log, $rootScope, $scope, UserLocation) {
+
+  function MiniMapCtrl($http, BigMapModal, $log, $rootScope, $scope, UserLocation) {
     var ctrl = this,
         zoom = 17;
 
@@ -65,7 +65,7 @@
     };
 
     $scope.$on('leafletDirectiveMap.click', function () {
-      Modals.showBigMapModal($scope);
+      BigMapModal.open($scope);
     });
 
     $http.get('../../data/path.json').then(function (success) {

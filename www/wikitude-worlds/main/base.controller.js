@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {
+  function BaseCtrl(DebugPositionModal, Do, Filters, $ionicModal, $log, $rootScope, $scope) {
     var ctrl = this;
 
     ctrl.modal = null;
@@ -42,13 +42,7 @@
     }
 
     function showDebugModal() {
-      $ionicModal.fromTemplateUrl('debug-position/debug-position.modal.html', {
-        scope    : $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        ctrl.modal = modal;
-        ctrl.modal.show();
-      });
+      DebugPositionModal.open($scope);
     }
 
     function showPoiModal(type) {
