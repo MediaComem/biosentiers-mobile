@@ -5,29 +5,9 @@
     .module('mini-map')
     .controller('MiniMapCtrl', MiniMapCtrl);
 
-  function MiniMapCtrl($http, BigMapModal, $log, $rootScope, $scope, UserLocation) {
+  function MiniMapCtrl(Icons, $http, BigMapModal, $log, $rootScope, $scope, UserLocation) {
     var ctrl = this,
         zoom = 17;
-
-    var icons = {
-      Oiseaux: {
-        type      : 'div',
-        iconSize  : [10, 10],
-        className : 'blue',
-        iconAnchor: [5, 5]
-      },
-      Flore  : {
-        type      : 'div',
-        iconSize  : [10, 10],
-        className : 'red',
-        iconAnchor: [5, 5]
-      },
-      user   : {
-        iconUrl   : '../../img/icons/user.png',
-        iconSize  : [14, 14], // size of the icon
-        iconAnchor: [7, 7] // point of the icon which will correspond to marker's location
-      }
-    };
 
     ctrl.spec = {
       tiles   : {
@@ -52,7 +32,7 @@
         user: {
           lat : 46.781001,
           lng : 6.647128,
-          icon: icons.user
+          icon: Icons.user()
         }
       },
       events  : {
@@ -91,7 +71,7 @@
         ctrl.spec.markers[point.properties.id_poi] = {
           lat : point.geometry.coordinates[1],
           lng : point.geometry.coordinates[0],
-          icon: icons[point.properties.theme_name]
+          icon: Icons.get(point.properties.theme_name)
         }
       });
       $log.log(ctrl.spec);

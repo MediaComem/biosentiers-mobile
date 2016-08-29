@@ -7,7 +7,7 @@
     .module('big-map-modal')
     .controller('BigMapCtrl', BigMapCtrl);
 
-  function BigMapCtrl(leafletData, BigMapModal, POIData, turf, UserLocation, $scope) {
+  function BigMapCtrl(Icons, leafletData, BigMapModal, POIData, turf, UserLocation, $scope) {
     var ctrl = this, map = null;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
@@ -65,7 +65,7 @@
         ctrl.spec.markers[point.properties.id_poi] = {
           lat : point.geometry.coordinates[1],
           lng : point.geometry.coordinates[0],
-          icon: icons[point.properties.theme_name]
+          icon: Icons.get(point.properties.theme_name)
         };
       })
     }

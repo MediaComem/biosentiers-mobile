@@ -12,7 +12,7 @@
     'TurfModule',
     'leaflet-directive',
     'ngCordova',
-    'utils',
+    'timers',
     'debug-position-modal',
     'debug-stats',
     'filters',
@@ -20,6 +20,7 @@
     'mini-map-orientation',
     'world',
     'big-map-modal',
-    'ar-config'
+    'ar-config',
+    'icons'
   ]);
 })();
