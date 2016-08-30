@@ -1,9 +1,19 @@
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('mini-map')
+    .directive('miniMap', MiniMapDirective)
     .controller('MiniMapCtrl', MiniMapCtrl);
+
+  function MiniMapDirective() {
+    return {
+      restrict   : 'E',
+      replace    : true,
+      controller : 'MiniMapCtrl',
+      templateUrl: 'mini-map/mini-map.html'
+    };
+  }
 
   function MiniMapCtrl(Icons, $http, BigMapModal, $log, $rootScope, $scope, UserLocation) {
     var ctrl = this,
@@ -78,18 +88,18 @@
       $log.log(ctrl.spec);
     });
 
-  // Execute action on hide modal
+    // Execute action on hide modal
     $scope.$on('modal.hidden', function () {
       // Execute action
       console.log('modal hidden');
     });
-  // Execute action on remove modal
+    // Execute action on remove modal
     $scope.$on('modal.removed', function () {
       // Execute action
       console.log('modal removed');
     });
 
-  ////////////////////
+    ////////////////////
 
     function resetMiniMap() {
       centerMiniMap();
