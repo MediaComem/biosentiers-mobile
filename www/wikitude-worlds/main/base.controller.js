@@ -1,9 +1,9 @@
-(function() {
+(function () {
   angular
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(DebugPositionModal, Do, Filters, $ionicModal, $log, $rootScope, $scope) {
+  function BaseCtrl(DebugPositionModal, Do, FiltersModal, $ionicModal, $log, $rootScope, $scope) {
     var ctrl = this;
 
     ctrl.modal = null;
@@ -56,7 +56,7 @@
     }
 
     function showFiltersModal() {
-      Filters.showModal($scope).then(function (modal) {
+      FiltersModal.showModal($scope).then(function (modal) {
         ctrl.modal = modal;
         ctrl.modal.show();
       });

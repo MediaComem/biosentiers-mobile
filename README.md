@@ -19,10 +19,9 @@
 * Install dependencies:
   * `cd /path/to/project`
   * `npm install`
-  * `ionic hooks add`
 * **Important**: several directories like `plugins` or `resources/android` are ignored. You must execute the following commands after a `git clone` to generate or download the missing files:
-  * `ionic resources`
   * `ionic state restore`
+  * `ionic resources`
 * Add the Wikitude plugin's license key:
   * Change `this._sdkKey` in `/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js`.
   * Change `this._sdkKey` in `/platforms/android/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` for Android.

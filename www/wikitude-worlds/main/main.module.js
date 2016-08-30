@@ -6,21 +6,23 @@
   'use strict';
 
   angular.module('ar', [
+    // Third-party modules.
     'ionic',
-    'arDirectives',
-    'ARLib',
     'TurfModule',
     'leaflet-directive',
     'ngCordova',
-    'timers',
+    // Application modules.
+    'ar-config',
+    'arDirectives',
+    'ARLib',
+    'big-map-modal',
     'debug-position-modal',
     'debug-stats',
-    'filters',
+    'filters-modal',
+    'icons',
     'mini-map',
     'mini-map-orientation',
-    'world',
-    'big-map-modal',
-    'ar-config',
-    'icons'
+    'timers',
+    'world'
   ]);
 })();

@@ -5,7 +5,7 @@
     .module('filters')
     .factory('Filters', FiltersService);
 
-  function FiltersService($ionicModal, $log, POIData, $rootScope) {
+  function FiltersService($log, POIData, $rootScope) {
 
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
@@ -17,8 +17,7 @@
       themes        : [], // Available choices to use for filtering.
       getSelected   : getSelected,
       updateSelected: updateSelected,
-      filterPois    : filterPois,
-      showModal     : showModal
+      filterPois    : filterPois
     };
 
     // Update available choices when the data changes.
@@ -77,17 +76,6 @@
       $log.debug('Filters: ' + n + ' points of interest filtered to ' + pois.length + ' matching points with criteria ' + JSON.stringify(selected));
 
       return pois;
-    }
-
-    /**
-     * Shows a modal dialog to configure filters.
-     */
-    function showModal($scope) {
-      $log.debug('Showing filters modal');
-      return $ionicModal.fromTemplateUrl('filters/filters.modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      });
     }
 
     function matchBySelectedThemes(poi) {

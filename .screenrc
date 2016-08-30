@@ -1,7 +1,7 @@
 source $HOME/.screenrc
 
-screen -t spec 0
-stuff "gulp"
+screen -t gulp 0
+stuff "gulp\012"
 screen -t vim 1
 stuff "\${PROJECT_EDITOR-\$EDITOR}\012"
 screen -t zsh 2
