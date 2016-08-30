@@ -12,6 +12,7 @@ angular.module('ar', [
   'debug-position',
   'debug-stats',
   'filters',
+  'mini-map',
   'mini-map-orientation',
   'world',
   'big-map-modal',
