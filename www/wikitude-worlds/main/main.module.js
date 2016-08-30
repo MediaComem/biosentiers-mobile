@@ -2,19 +2,21 @@
 var World;
 
 angular.module('ar', [
+  // Third-party modules.
   'ionic',
-  'arDirectives',
-  'ARLib',
   'TurfModule',
   'leaflet-directive',
   'ngCordova',
-  'utils',
+  // Application modules.
+  'ar-config',
+  'arDirectives',
+  'ARLib',
+  'big-map-modal',
   'debug-position',
   'debug-stats',
-  'filters',
+  'filters-modal',
   'mini-map',
   'mini-map-orientation',
-  'world',
-  'big-map-modal',
-  'ar-config'
+  'utils',
+  'world'
 ]);

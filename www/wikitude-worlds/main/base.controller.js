@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(Do, Filters, $ionicModal, $log, $rootScope, $scope) {
+  function BaseCtrl(Do, FiltersModal, $ionicModal, $log, $rootScope, $scope) {
     var ctrl = this;
 
     ctrl.modal = null;
@@ -62,7 +62,7 @@
     }
 
     function showFiltersModal() {
-      Filters.showModal($scope).then(function (modal) {
+      FiltersModal.showModal($scope).then(function (modal) {
         ctrl.modal = modal;
         ctrl.modal.show();
       });

@@ -2,10 +2,10 @@
   'use strict';
 
   angular
-    .module('filters')
-    .controller('FiltersCtrl', FiltersCtrl)
+    .module('filters-modal')
+    .controller('FiltersModalCtrl', FiltersModalCtrl)
 
-  function FiltersCtrl(Filters, $scope) {
+  function FiltersModalCtrl(Filters, $scope) {
     var ctrl = this;
 
     // Public data
