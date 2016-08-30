@@ -5,7 +5,10 @@
     .module('ARLib')
     .factory('POIData', POIDataService);
 
-  function POIDataService($log, $rootScope) {
+  function POIDataService($log, $rootScope, rx) {
+    console.log(rx.Observable);
+    console.log(rx.Subject);
+    console.log(rx.BehaviorSubject);
 
     var service = {
       data     : null,
