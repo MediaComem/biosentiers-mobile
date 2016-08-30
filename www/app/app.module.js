@@ -13,7 +13,8 @@
     'OutingsModule', // SHC : pour le service contenant la liste des sorties
     'POIModule',
     'leaflet-directive',
-    'timers'
+    'timers',
+    'icons'
     // 'arDirectives'
   ]);
 

@@ -1,6 +1,6 @@
 <ion-view view-title="{{outing.data.name}}">
   <ion-content>
-    <div ng-style="{'transform': outing.mapOrientation, '-webkit-transform': outing.mapOrientation, '-ms-transform': outing.mapOrientation}">
+    <div>
       <leaflet id="map" maxbounds="outing.map.maxbounds" defaults="outing.map.defaults" tiles="outing.map.tiles"
                center="outing.map.center" geojson="outing.map.path" markers="outing.map.markers"></leaflet>
     </div>

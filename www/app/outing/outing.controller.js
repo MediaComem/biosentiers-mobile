@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Ionicitude, outingData, $cordovaToast, POIGeo, leafletData, $http, $ionicPlatform, $scope) {
+  function OutingCtrl(Icons, Ionicitude, outingData, $cordovaToast, POIGeo, leafletData, $http, $ionicPlatform, $scope) {
     var ctrl = this;
 
     var UserPosition = {
@@ -48,11 +48,7 @@
         user: {
           lat : UserPosition.lat,
           lng : UserPosition.lng,
-          icon: {
-            iconUrl   : 'img/icons/user.png',
-            iconSize  : [16, 16], // size of the icon
-            iconAnchor: [8, 8] // point of the icon which will correspond to marker's location
-          }
+          icon: Icons.user()
         }
       }
     };

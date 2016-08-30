@@ -7,7 +7,7 @@
 
   function MiniMapCtrl(Icons, $http, BigMapModal, $log, $rootScope, $scope, UserLocation) {
     var ctrl = this,
-        zoom = 17;
+        zoom = 16;
 
     ctrl.spec = {
       tiles   : {
@@ -44,7 +44,7 @@
       geojson : {}
     };
 
-    $scope.$on('leafletDirectiveMap.click', function () {
+    $scope.$on('leafletDirectiveMap.minimap.click', function () {
       BigMapModal.open($scope);
     });
 
@@ -55,7 +55,8 @@
           color : 'red',
           weigth: 6
         }
-      }
+      };
+      console.log(ctrl.spec);
     }, function (error) {
       $log.error(error);
     });

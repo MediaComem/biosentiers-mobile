@@ -1,5 +1,7 @@
 /**
  * Created by Mathias on 25.08.2016.
+ * This is the controller for the Big Map modal.
+ * It handles showing the points, and further interaction with the bigmap.
  */
 (function () {
   'use strict';
@@ -7,7 +9,7 @@
     .module('big-map-modal')
     .controller('BigMapCtrl', BigMapCtrl);
 
-  function BigMapCtrl(Icons, leafletData, BigMapModal, POIData, turf, UserLocation, $scope) {
+  function BigMapCtrl(Icons, $log, leafletData, BigMapModal, POIData, turf, UserLocation, $scope) {
     var ctrl = this, map = null;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
@@ -19,25 +21,38 @@
         lng : UserLocation.current.lon(),
         zoom: 17
       },
-      markers: {}
+      markers: {},
+      geojson: {}
     };
 
-    leafletData.getMap().then(function (result) {
+    leafletData.getMap('bigmap').then(function (result) {
       map = result;
       updateVisiblePoints();
-      $scope.$on('leafletDirectiveMap.moveend', updateVisiblePoints);
+      $scope.$on('leafletDirectiveMap.bigmap.moveend', updateVisiblePoints);
+    }).catch(function (error) {
+      $log.error(error);
     });
 
     ////////////////////
 
     function updateVisiblePoints() {
       var screen = getScreenPolygon(map.getBounds());
-      var poiToShow = getPointsToShow(screen);
-      console.log(poiToShow.length);
-      updateMarkers(poiToShow);
+      console.log(screen);
+      debugScreenPoly(screen);
+      // var poiToShow = getPointsToShow(screen);
+      // console.log(poiToShow.length);
+      // updateMarkers(poiToShow);
+    }
+
+    function debugScreenPoly(screen) {
+      ctrl.spec.geojson.poly = {
+        data: screen
+      };
+      console.log(ctrl.spec);
     }
 
     function getScreenPolygon(bounds) {
+      console.log(bounds);
       var NE = bounds._northEast;
       var SW = bounds._southWest;
       return turf.helpers.polygon([[
@@ -52,8 +67,10 @@
     function getPointsToShow(poly) {
       var toShow = [];
       var points = POIData.getPois();
+      console.log(points);
       _.each(points, function (point) {
         if (turf.inside(point, poly)) {
+          $log.info('is in screen visibility');
           toShow.push(point);
         }
       });

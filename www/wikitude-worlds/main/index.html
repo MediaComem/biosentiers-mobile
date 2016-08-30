@@ -159,7 +159,7 @@
       <button class="button back-button button-icon" ng-click="base.closeAR()">
         <i class="icon ion-android-arrow-back"></i>
       </button>
-      <h1 class="title">Ionic + Wikitude</h1>
+      <h1 class="title">Réalité augmentée</h1>
       <button class="button button-icon" ng-click="base.showDebugModal()">
         <i class="icon ion-android-options"></i>
       </button>
@@ -169,7 +169,7 @@
     </div>
     <div class="mini-map" ng-controller="MiniMapCtrl as map" data-tap-disabled="true"
          ng-style="{'transform': map.mapOrientation, '-webkit-transform': map.mapOrientation, '-ms-transform': map.mapOrientation}">
-      <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
+      <leaflet id="minimap" defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
                geojson="map.spec.geojson" geojson-nested="true" event-broadcast="map.spec.events"></leaflet>
     </div>
     <mini-map-orientation></mini-map-orientation>
