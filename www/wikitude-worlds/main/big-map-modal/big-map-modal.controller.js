@@ -10,12 +10,12 @@
     .controller('BigMapCtrl', BigMapCtrl);
 
   function BigMapCtrl(Icons, $log, leafletData, BigMapModal, POIData, turf, UserLocation, $scope) {
-    var ctrl = this, map = null;
+    var bigmap = this, map = null;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
     // So, the Modals.closeCurrent closes the BigMap Modal.
-    ctrl.close = BigMapModal.close;
-    ctrl.spec = {
+    bigmap.close = BigMapModal.close;
+    bigmap.config = {
       center : {
         lat : UserLocation.current.lat(),
         lng : UserLocation.current.lon(),
@@ -45,10 +45,10 @@
     }
 
     function debugScreenPoly(screen) {
-      ctrl.spec.geojson.poly = {
+      bigmap.config.geojson.poly = {
         data: screen
       };
-      console.log(ctrl.spec);
+      console.log(bigmap.config);
     }
 
     function getScreenPolygon(bounds) {
@@ -79,7 +79,7 @@
 
     function updateMarkers(pointsArray) {
       _.each(pointsArray, function (point) {
-        ctrl.spec.markers[point.properties.id_poi] = {
+        bigmap.config.markers[point.properties.id_poi] = {
           lat : point.geometry.coordinates[1],
           lng : point.geometry.coordinates[0],
           icon: Icons.get(point.properties.theme_name)

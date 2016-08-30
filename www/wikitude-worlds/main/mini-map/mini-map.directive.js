@@ -16,10 +16,10 @@
   }
 
   function MiniMapCtrl(Icons, $http, BigMapModal, $log, $rootScope, $scope, UserLocation) {
-    var ctrl = this,
+    var minimap = this,
         zoom = 16;
 
-    ctrl.spec = {
+    minimap.config = {
       tiles   : {
         url    : '../../data/Tiles/{z}/{x}/{y}.png',
         options: {
@@ -59,14 +59,14 @@
     });
 
     $http.get('../../data/path.json').then(function (success) {
-      ctrl.spec.geojson.path = {
+      minimap.config.geojson.path = {
         data : success.data,
         style: {
           color : 'red',
           weigth: 6
         }
       };
-      console.log(ctrl.spec);
+      console.log(minimap.config);
     }, function (error) {
       $log.error(error);
     });
@@ -76,16 +76,16 @@
     $rootScope.$on('pois:changed', function (event, changes) {
       $log.log(changes);
       _.each(changes.removed, function (point) {
-        delete ctrl.spec.markers[point.properties.id_poi];
+        delete minimap.config.markers[point.properties.id_poi];
       });
       _.each(changes.added, function (point) {
-        ctrl.spec.markers[point.properties.id_poi] = {
+        minimap.config.markers[point.properties.id_poi] = {
           lat : point.geometry.coordinates[1],
           lng : point.geometry.coordinates[0],
           icon: Icons.get(point.properties.theme_name)
         }
       });
-      $log.log(ctrl.spec);
+      $log.log(minimap.config);
     });
 
     // Execute action on hide modal
@@ -106,15 +106,15 @@
     }
 
     function centerMiniMap() {
-      if (ctrl.spec.hasOwnProperty('center')) {
+      if (minimap.config.hasOwnProperty('center')) {
         $log.debug('Updating the minimap center');
-        ctrl.spec.center.lat = UserLocation.current.lat();
-        ctrl.spec.center.lng = UserLocation.current.lon();
+        minimap.config.center.lat = UserLocation.current.lat();
+        minimap.config.center.lng = UserLocation.current.lon();
       }
-      if (ctrl.spec.markers.hasOwnProperty('user')) {
+      if (minimap.config.markers.hasOwnProperty('user')) {
         $log.debug('Updating the minimap marker');
-        ctrl.spec.markers.user.lat = UserLocation.current.lat();
-        ctrl.spec.markers.user.lng = UserLocation.current.lon();
+        minimap.config.markers.user.lat = UserLocation.current.lat();
+        minimap.config.markers.user.lng = UserLocation.current.lon();
       }
       $scope.$apply();
     }
