@@ -1,4 +1,4 @@
-<div class="mini-map" ng-controller="MiniMapCtrl as map" data-tap-disabled="true">
-  <leaflet defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
+<div class="mini-map" controllerAs="map" data-tap-disabled="true">
+  <leaflet id="minimap" defaults="map.spec.defaults" tiles="map.spec.tiles" markers="map.spec.markers" center="map.spec.center"
            geojson="map.spec.geojson" geojson-nested="true" event-broadcast="map.spec.events"></leaflet>
 </div>
