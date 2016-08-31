@@ -6,7 +6,18 @@
 
   angular
     .module('debug-stats')
+    .directive('debugStats', DebugStatsDirective)
     .controller('StatsCtrl', StatsCtrl);
+
+  function DebugStatsDirective() {
+    return {
+      restrict    : 'E',
+      replace     : true,
+      controller  : 'StatsCtrl',
+      controllerAs: 'stats',
+      templateUrl : 'debug-stats/debug-stats.html'
+    };
+  }
 
   function StatsCtrl($log, $rootScope) {
     var ctrl = this;

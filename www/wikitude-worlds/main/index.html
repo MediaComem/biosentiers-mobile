@@ -39,7 +39,9 @@
 
     <!-- inject:css -->
     <link rel="stylesheet" href="big-map-modal/big-map-modal.css">
+    <link rel="stylesheet" href="debug-stats/debug-stats.css">
     <link rel="stylesheet" href="filters-modal/filters-modal.css">
+    <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="mini-map-orientation/mini-map-orientation.css">
     <link rel="stylesheet" href="mini-map/mini-map.css">
     <!-- endinject -->
@@ -66,7 +68,7 @@
     <script src="debug-position-modal/debug-position-modal.controller.js"></script>
     <script src="debug-position-modal/debug-position-modal.service.js"></script>
     <script src="debug-stats/debug-stats.module.js"></script>
-    <script src="debug-stats/debug-stats.controller.js"></script>
+    <script src="debug-stats/debug-stats.directive.js"></script>
     <script src="filters-modal/filters-modal.module.js"></script>
     <script src="filters-modal/filters-modal.controller.js"></script>
     <script src="filters-modal/filters-modal.service.js"></script>
@@ -81,71 +83,6 @@
     <script src="world/world.module.js"></script>
     <script src="world/world.service.js"></script>
     <!-- endinject -->
-
-    <style>
-      #test-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 100%;
-        text-align: right;
-      }
-
-      option.placeholder {
-        color: #c0c0c0;
-      }
-
-      .filters {
-        position: fixed;
-        bottom: 30px;
-        left: 20px;
-      }
-
-      .filters a {
-        display: block;
-        width: 80px;
-        height: 80px;
-        font-size: 70px;
-        padding: 5px;
-        text-align: center;
-        -webkit-border-radius: 80px;
-        -moz-border-radius: 80px;
-        border-radius: 80px;
-        background-color: #c0c0c0;
-        color: #ffffff;
-      }
-
-      .minimap-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 2;
-      }
-
-      .stats {
-        position: absolute;
-        top: 44px;
-        left: 0;
-        right: 0;
-        background-color: white;
-      }
-
-      .stats span {
-        text-align: center;
-      }
-
-      .stats .plus {
-        color: green;
-      }
-
-      .stats .moins {
-        color: red;
-      }
-
-      .stats .total {
-        color: blue;
-      }
-    </style>
   </head>
   <body ng-app="ar" ng-controller="BaseCtrl as base">
     <ion-header-bar class="bar-balanced">
@@ -162,9 +99,6 @@
     </div>
     <mini-map></mini-map>
     <mini-map-orientation></mini-map-orientation>
-    <div class="stats row" ng-controller="StatsCtrl as stats">
-      <span class="plus col">+ {{stats.plus}}</span><span class="moins col">- {{stats.moins}}</span><span
-      class="total col">Tot: {{stats.total}}</span>
-    </div>
+    <debug-stats class="stats row"></debug-stats>
   </body>
 </html>
