@@ -1,0 +1,12 @@
+.minimap-container .leaflet-container {
+  height: 100px;
+  width: 100px;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  -webkit-mask-image: url(../assets/mask.svg);
+}
+
+.minimap-container .leaflet-control-container {
+  display: none;
+}

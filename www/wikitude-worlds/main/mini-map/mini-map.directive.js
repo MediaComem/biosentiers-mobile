@@ -8,10 +8,11 @@
 
   function MiniMapDirective() {
     return {
-      restrict   : 'E',
-      replace    : true,
-      controller : 'MiniMapCtrl',
-      templateUrl: 'mini-map/mini-map.html'
+      restrict    : 'E',
+      replace     : true,
+      controller  : 'MiniMapCtrl',
+      controllerAs: "minimap",
+      templateUrl : 'mini-map/mini-map.html'
     };
   }
 
@@ -55,7 +56,7 @@
     };
 
     $scope.$on('leafletDirectiveMap.minimap.click', function () {
-      BigMapModal.open($scope);
+      BigMapModal.show($scope);
     });
 
     $http.get('../../data/path.json').then(function (success) {

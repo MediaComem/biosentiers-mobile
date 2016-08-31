@@ -14,7 +14,7 @@
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
     // So, the Modals.closeCurrent closes the BigMap Modal.
-    bigmap.close = BigMapModal.close;
+    bigmap.remove = BigMapModal.remove;
     bigmap.config = {
       center : {
         lat : UserLocation.current.lat(),

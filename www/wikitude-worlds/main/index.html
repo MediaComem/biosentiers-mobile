@@ -38,8 +38,10 @@
     -->
 
     <!-- inject:css -->
+    <link rel="stylesheet" href="big-map-modal/big-map-modal.css">
     <link rel="stylesheet" href="filters-modal/filters-modal.css">
     <link rel="stylesheet" href="mini-map-orientation/mini-map-orientation.css">
+    <link rel="stylesheet" href="mini-map/mini-map.css">
     <!-- endinject -->
 
     <!-- inject:js -->
@@ -74,6 +76,8 @@
     <script src="mini-map-orientation/mini-map-orientation.directive.js"></script>
     <script src="mini-map/mini-map.module.js"></script>
     <script src="mini-map/mini-map.directive.js"></script>
+    <script src="modals/modals.module.js"></script>
+    <script src="modals/modals.service.js"></script>
     <script src="world/world.module.js"></script>
     <script src="world/world.service.js"></script>
     <!-- endinject -->
@@ -111,24 +115,11 @@
         color: #ffffff;
       }
 
-      .mini-map {
+      .minimap-container {
         position: fixed;
         bottom: 20px;
         right: 20px;
         z-index: 2;
-      }
-
-      .mini-map .leaflet-container {
-        height: 100px;
-        width: 100px;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-        -webkit-mask-image: url(../../img/mask.svg);
-      }
-
-      .mini-map .leaflet-control-container {
-        display: none;
       }
 
       .stats {
