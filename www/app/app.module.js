@@ -11,7 +11,7 @@
     'AuthModule',
     'QRModule',
     'OutingsModule', // SHC : pour le service contenant la liste des sorties
-    'POIModule',
+    'poi',
     'leaflet-directive',
     'timers',
     'icons'

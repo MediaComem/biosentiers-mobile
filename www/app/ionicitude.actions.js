@@ -8,7 +8,7 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, POIGeo, POIData, Timers) {
+  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, Timers) {
 
     var deviceOrientationWatch,
         deviceOrientationUpdatesInterval = 250;
@@ -64,10 +64,10 @@
       }
 
       function loadTestPois(service) {
-        var marks = POIGeo.getMarks();
+        var marks = PoiGeo.getMarks();
         var timer = Timers.start();
         service.callJavaScript('World.loadPois(' + angular.toJson(marks) + ')');
-        POIGeo.getPoints()
+        PoiGeo.getPoints()
           .then(function (success) {
             //var pois = (success.data.features).slice(0, 100);
             var pois = success.data.features;
@@ -82,7 +82,7 @@
 
       function loadMarkerData(service, param) {
         console.log('get marker data');
-        service.callJavaScript('World.loadPoiData(' + angular.toJson(POIData.getData(param.id)) + ', ' + angular.toJson(param.properties) + ')');
+        service.callJavaScript('World.loadPoiData(' + angular.toJson(PoiContent.getData(param.id)) + ', ' + angular.toJson(param.properties) + ')');
       }
 
       function toast(service, param) {
@@ -97,7 +97,7 @@
       function loadPois(service, param) {
         var timer = Timers.start();
         console.log('beacon_id', param.beacon);
-        POIGeo.getPoints(param.beacon)
+        PoiGeo.getPoints(param.beacon)
           .then(function (success) {
             var pois = success.data.features;
             console.log(pois);

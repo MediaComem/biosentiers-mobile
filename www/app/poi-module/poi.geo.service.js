@@ -3,11 +3,13 @@
  */
 (function () {
   'use strict';
-  angular
-    .module('POIModule')
-    .factory('POIGeo', POIGeo);
 
-  function POIGeo($http) {
+  angular
+    .module('poi')
+    .factory('PoiGeo', PoiGeoService);
+
+  function PoiGeoService($http) {
+
     var service = {
       getPoints  : getPoints,
       getMarks   : getMarks,

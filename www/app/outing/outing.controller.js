@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Icons, Ionicitude, outingData, $cordovaToast, POIGeo, leafletData, $http, $ionicPlatform, $scope) {
+  function OutingCtrl(Icons, Ionicitude, outingData, $cordovaToast, PoiGeo, leafletData, $http, $ionicPlatform, $scope) {
     var ctrl = this;
 
     var UserPosition = {
@@ -78,7 +78,7 @@
     ctrl.launchAR = function () {
       try {
         Ionicitude.launchAR()
-          .then(POIGeo.getPoints)
+          .then(PoiGeo.getPoints)
           .then(worldLoaded)
           .catch(handleError);
       } catch (e) {
