@@ -2,10 +2,10 @@
   'use strict';
 
   angular
-    .module('ARLib')
-    .factory('POIData', POIDataService);
+    .module('poi')
+    .factory('Poi', PoiService);
 
-  function POIDataService($log, $rootScope, rx) {
+  function PoiService($log, $rootScope, rx) {
 
     var dataSubject = new rx.BehaviorSubject({
       pois: [],

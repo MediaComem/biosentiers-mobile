@@ -8,13 +8,13 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(DeviceOrientation, $ionicLoading, $log, POIData, $rootScope) {
+  function WorldService(DeviceOrientation, $ionicLoading, $log, Poi, $rootScope) {
     var service = {
       startup                : true,
       poiData                : null,
       loadPoiData            : loadPoiData,
       write                  : write,
-      loadPoints             : POIData.setData,
+      loadPoints             : Poi.setData,
       showLoading            : showLoading,
       hideLoading            : $ionicLoading.hide,
       updateDeviceOrientation: updateDeviceOrientation

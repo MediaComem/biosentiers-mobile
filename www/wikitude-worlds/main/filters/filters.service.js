@@ -5,7 +5,7 @@
     .module('filters')
     .factory('Filters', FiltersService);
 
-  function FiltersService($log, POIData, rx) {
+  function FiltersService($log, Poi, rx) {
 
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
@@ -24,7 +24,7 @@
     };
 
     // Update available choices when the data changes.
-    POIData.dataChangeObs.subscribe(function(data) {
+    Poi.dataChangeObs.subscribe(function(data) {
       if (data.themes.length) {
         service.themes = data.themes;
         selected.themes = data.themes.slice();

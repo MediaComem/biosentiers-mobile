@@ -22,6 +22,7 @@
     'icons',
     'mini-map',
     'mini-map-orientation',
+    'poi',
     'timers',
     'world'
   ]);

@@ -8,7 +8,7 @@
     .module('ARLib')
     .factory('POI', POIService);
 
-  function POIService(ARPOI, Do, Filters, $log, POIData, rx, Timers, turf, UserLocation) {
+  function POIService(ARPOI, Do, Filters, $log, Poi, rx, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
@@ -44,11 +44,11 @@
      * so we avoid that by simply showing/hiding them when the user changes filters but does not move.
      */
     function updateAr() {
-      if (POIData.hasData()) { // Check if the data is actually lodaded.
+      if (Poi.hasData()) { // Check if the data is actually lodaded.
         var timer = Timers.start();
 
         // Retrieve all available points.
-        var allPois = POIData.getPois();
+        var allPois = Poi.getPois();
         $log.debug(allPois.length + ' points in total');
 
         // Determine the nearest points; those are the only points that should be in the AR.

@@ -9,6 +9,7 @@
     .factory('ArConfig', ArConfig);
 
   function ArConfig(Do, $log, POI, $rootScope, UserLocation, World) {
+
     var service = {
       init: init
     };
