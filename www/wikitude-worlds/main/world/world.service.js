@@ -8,7 +8,7 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService($ionicLoading, $log, POIData, $rootScope) {
+  function WorldService(DeviceOrientation, $ionicLoading, $log, POIData, $rootScope) {
     var service = {
       startup                : true,
       poiData                : null,
@@ -24,8 +24,8 @@
 
     ////////////////////
 
-    function updateDeviceOrientation(updates) {
-      $rootScope.$emit('orientation:changed', updates);
+    function updateDeviceOrientation(data) {
+      DeviceOrientation.updateOrientation(data);
     }
 
     function loadPoiData(data, properties) {

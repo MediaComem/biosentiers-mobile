@@ -20,13 +20,13 @@
     };
   }
 
-  function MiniMapOrientationCtrl($log, $rootScope, $scope) {
+  function MiniMapOrientationCtrl(DeviceOrientation, $log, $scope) {
 
-    var unbind = $rootScope.$on('orientation:changed', function(event, updates) {
-      $scope.setOrientation(updates.trueHeading);
+    var subscription = DeviceOrientation.orientationChangeObs.subscribe(function(data) {
+      $scope.setOrientation(data.trueHeading);
     });
 
-    $scope.$on('$destroy', unbind);
+    $scope.$on('$destroy', subscription.dispose);
   }
 
   function linkMiniMapOrientationDirective(scope, elem, attrs) {
