@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('world', []);
+  angular.module('world', [ 'device-orientation' ]);
 })();

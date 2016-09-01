@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('mini-map-orientation', []);
+  angular.module('mini-map-orientation', [ 'device-orientation' ]);
 })();

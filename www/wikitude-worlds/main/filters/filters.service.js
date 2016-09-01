@@ -5,7 +5,7 @@
     .module('filters')
     .factory('Filters', FiltersService);
 
-  function FiltersService($log, POIData, $rootScope) {
+  function FiltersService($log, POIData, rx) {
 
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
@@ -13,18 +13,23 @@
       themes: []
     };
 
+    var filtersChangeSubject = new rx.BehaviorSubject(selected);
+
     var service = {
-      themes        : [], // Available choices to use for filtering.
-      getSelected   : getSelected,
-      updateSelected: updateSelected,
-      filterPois    : filterPois
+      themes          : [], // Available choices to use for filtering.
+      getSelected     : getSelected,
+      updateSelected  : updateSelected,
+      filterPois      : filterPois,
+      filtersChangeObs: filtersChangeSubject.asObservable()
     };
 
     // Update available choices when the data changes.
-    $rootScope.$on('poiData:changed', function() {
-      service.themes = POIData.getThemes();
-      selected.themes = service.themes.slice();
-      $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
+    POIData.dataChangeObs.subscribe(function(data) {
+      if (data.themes.length) {
+        service.themes = data.themes;
+        selected.themes = data.themes.slice();
+        $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
+      }
     });
 
     return service;
@@ -58,7 +63,7 @@
       });
 
       if (changed) {
-        $rootScope.$emit('filters:changed', selected);
+        filtersChangeSubject.onNext(selected);
       }
     }
 

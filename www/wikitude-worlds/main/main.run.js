@@ -8,20 +8,12 @@
     .module('ar')
     .run(run);
 
-  function run(ArConfig, Do, POI, $rootScope, $window, World) {
+  function run(ArConfig, Do, $window, World) {
 
     ArConfig.init();
 
     $window.World = World;
 
-    $rootScope.$on('filters:changed', onFiltersChanged);
-
     Do.action('open');
-
-    ////////////////////
-
-    function onFiltersChanged() {
-      POI.updateAr();
-    }
   }
 })();

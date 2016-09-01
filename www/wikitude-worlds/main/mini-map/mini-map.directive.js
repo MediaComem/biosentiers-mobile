@@ -16,8 +16,8 @@
     };
   }
 
-  function MiniMapCtrl(Icons, $http, BigMapModal, $log, $rootScope, $scope, UserLocation) {
-    var minimap = this,
+  function MiniMapCtrl(Icons, $http, BigMapModal, $log, POI, $scope, UserLocation) {
+      var minimap = this,
         zoom = 16;
 
     minimap.config = {
@@ -72,9 +72,9 @@
       $log.error(error);
     });
 
-    $rootScope.$on('user:located', centerMiniMap);
+    UserLocation.currentObs.subscribe(centerMiniMap);
 
-    $rootScope.$on('pois:changed', function (event, changes) {
+    POI.poisChangeObs.subscribe(function(changes) {
       $log.log(changes);
       _.each(changes.removed, function (point) {
         delete minimap.config.markers[point.properties.id_poi];
