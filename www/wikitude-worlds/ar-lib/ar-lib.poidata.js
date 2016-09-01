@@ -6,16 +6,18 @@
     .factory('POIData', POIDataService);
 
   function POIDataService($log, $rootScope, rx) {
-    console.log(rx.Observable);
-    console.log(rx.Subject);
-    console.log(rx.BehaviorSubject);
+
+    var dataSubject = new rx.BehaviorSubject({
+      pois: [],
+      themes: []
+    });
 
     var service = {
-      data     : null,
-      hasData  : hasData,
-      setData  : setData,
-      getPois  : getPois,
-      getThemes: getThemes
+      hasData   : hasData,
+      setData   : setData,
+      getPois   : getPois,
+      getThemes : getThemes,
+      observable: dataSubject.asObservable()
     };
 
     return service;
@@ -23,24 +25,25 @@
     ////////////////////
 
     function hasData() {
-      return !!service.data;
+      return getPois().length >= 1;
     }
 
     function setData(data) {
-      service.data = data;
-
       if (data) {
         $log.debug('POI data changed');
-        $rootScope.$emit('poiData:changed');
+        dataSubject.onNext({
+          pois: data.features,
+          themes: _.compact(_.uniq(_.map(data.features, 'properties.theme_name'))).sort()
+        });
       }
     }
 
     function getPois() {
-      return service.data ? service.data.features : [];
+      return dataSubject.getValue().pois;
     }
 
     function getThemes() {
-      return service.data ? _.compact(_.uniq(_.map(service.data.features, 'properties.theme_name'))).sort() : [];
+      return dataSubject.getValue().themes;
     }
   }
 })();

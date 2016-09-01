@@ -8,14 +8,16 @@
     .module('ARLib')
     .factory('POI', POIService);
 
-  function POIService(ARPOI, Do, Filters, $log, POIData, $rootScope, Timers, turf, UserLocation) {
+  function POIService(ARPOI, Do, Filters, $log, POIData, rx, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
-        reachLimit = 250;
+        reachLimit = 250,
+        changesSubject = new rx.Subject();
 
     var POI = {
-      updateAr: updateAr
+      updateAr: updateAr,
+      changesObservable: changesSubject.asObservable()
     };
 
     return POI;
@@ -84,8 +86,8 @@
 
         timer.stop('load ' + newPoiIds.length + ' points in AR (' + newVisiblePoiIds.length + ' visible)');
 
-        // Notify listeners of changes.
-        $rootScope.$emit('pois:changed', changes);
+        // Notify observers of changes.
+        changesSubject.onNext(changes);
 
         //Do.action('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
       }

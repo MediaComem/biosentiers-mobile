@@ -21,10 +21,12 @@
     };
 
     // Update available choices when the data changes.
-    $rootScope.$on('poiData:changed', function() {
-      service.themes = POIData.getThemes();
-      selected.themes = service.themes.slice();
-      $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
+    POIData.observable.subscribe(function(data) {
+      if (data.themes.length) {
+        service.themes = data.themes;
+        selected.themes = data.themes.slice();
+        $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
+      }
     });
 
     return service;

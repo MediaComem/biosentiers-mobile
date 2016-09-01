@@ -8,14 +8,15 @@
 
   function MiniMapDirective() {
     return {
-      restrict   : 'E',
-      replace    : true,
-      controller : 'MiniMapCtrl',
-      templateUrl: 'mini-map/mini-map.html'
+      restrict    : 'E',
+      replace     : true,
+      controller  : 'MiniMapCtrl',
+      controllerAs: 'map',
+      templateUrl : 'mini-map/mini-map.html'
     };
   }
 
-  function MiniMapCtrl(Icons, $http, BigMapModal, $log, $rootScope, $scope, UserLocation) {
+  function MiniMapCtrl(Icons, $http, BigMapModal, $log, POI, $rootScope, $scope, UserLocation) {
     var ctrl = this,
         zoom = 16;
 
@@ -73,7 +74,7 @@
 
     $rootScope.$on('user:located', centerMiniMap);
 
-    $rootScope.$on('pois:changed', function (event, changes) {
+    POI.changesObservable.subscribe(function(changes) {
       $log.log(changes);
       _.each(changes.removed, function (point) {
         delete ctrl.spec.markers[point.properties.id_poi];
