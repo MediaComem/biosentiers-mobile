@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Icons, Ionicitude, outingData, $cordovaToast, PoiGeo, leafletData, $http, $ionicPlatform, $scope) {
+  function OutingCtrl(Icons, Ionicitude, outingData, $cordovaToast, PoiGeo, leafletData, $http, $ionicPlatform, $scope, WorldActions) {
     var ctrl = this;
 
     var UserPosition = {
@@ -95,7 +95,7 @@
 
     function worldLoaded(success) {
       console.log('World loaded', success);
-      Ionicitude.callJavaScript('World.loadPoints(' + angular.toJson(success.data) + ')');
+      WorldActions.execute('loadPoints', success.data);
     }
   }
 })();

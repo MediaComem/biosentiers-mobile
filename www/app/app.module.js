@@ -14,7 +14,8 @@
     'poi',
     'leaflet-directive',
     'timers',
-    'icons'
+    'icons',
+    'world-actions'
     // 'arDirectives'
   ]);
 

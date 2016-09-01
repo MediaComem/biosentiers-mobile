@@ -8,7 +8,7 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, Timers) {
+  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, Timers, WorldActions) {
 
     var deviceOrientationWatch,
         deviceOrientationUpdatesInterval = 250;
@@ -42,7 +42,7 @@
         deviceOrientationWatch.then(null, function(err) {
           $log.error(err);
         }, function(update) {
-          Ionicitude.callJavaScript('World.updateDeviceOrientation(' + angular.toJson(update) + ')');
+          WorldActions.execute('updateDeviceOrientation', update);
         });
       }
 
@@ -66,13 +66,13 @@
       function loadTestPois(service) {
         var marks = PoiGeo.getMarks();
         var timer = Timers.start();
-        service.callJavaScript('World.loadPois(' + angular.toJson(marks) + ')');
+        WorldActions.execute('loadPois', marks);
         PoiGeo.getPoints()
           .then(function (success) {
             //var pois = (success.data.features).slice(0, 100);
             var pois = success.data.features;
             console.log(pois);
-            service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
+            WorldActions.execute('loadPois', pois);
             timer.stop('load test pois');
           })
           .catch(function (error) {
@@ -82,7 +82,7 @@
 
       function loadMarkerData(service, param) {
         console.log('get marker data');
-        service.callJavaScript('World.loadPoiData(' + angular.toJson(PoiContent.getData(param.id)) + ', ' + angular.toJson(param.properties) + ')');
+        WorldActions.execute('loadPoiData', PoiContent.getData(param.id), param.properties);
       }
 
       function toast(service, param) {
@@ -101,7 +101,7 @@
           .then(function (success) {
             var pois = success.data.features;
             console.log(pois);
-            service.callJavaScript('World.loadPois(' + angular.toJson(pois) + ')');
+            WorldActions.execute('loadPois', pois);
             timer.stop('load beacon\'s points');
           })
           .catch(function (error) {
