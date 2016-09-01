@@ -8,7 +8,7 @@
     .module('ar-config')
     .factory('ArConfig', ArConfig);
 
-  function ArConfig(Do, $log, POI, $rootScope, UserLocation, World) {
+  function ArConfig(ArView, Do, $log, $rootScope, UserLocation, World) {
 
     var service = {
       init: init
@@ -40,7 +40,7 @@
       if (World.startup || UserLocation.movingDistance() > 20) {
         $log.debug('New user location detected');
         UserLocation.backupCurrent();
-        POI.updateAr();
+        ArView.updateAr();
         World.startup = false;
       }
       console.log(UserLocation.debug());

@@ -8,14 +8,14 @@
     .module('debug-stats')
     .controller('StatsCtrl', StatsCtrl);
 
-  function StatsCtrl($log, POI) {
+  function StatsCtrl(ArView, $log) {
     var ctrl = this;
 
     ctrl.plus = 0;
     ctrl.moins = 0;
     ctrl.total = 0;
 
-    POI.poisChangeObs.subscribe(function(changes) {
+    ArView.poisChangeObs.subscribe(function(changes) {
       $log.debug('Updating stats', changes.shown.length, changes.hidden.length, changes.visible.length);
       ctrl.plus = changes.shown.length;
       ctrl.moins = changes.hidden.length;

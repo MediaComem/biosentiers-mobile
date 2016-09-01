@@ -16,7 +16,7 @@
     };
   }
 
-  function MiniMapCtrl(Icons, $http, BigMapModal, $log, POI, $scope, UserLocation) {
+  function MiniMapCtrl(ArView, Icons, $http, BigMapModal, $log, $scope, UserLocation) {
     var ctrl = this,
         zoom = 16;
 
@@ -74,7 +74,7 @@
 
     UserLocation.currentObs.subscribe(centerMiniMap);
 
-    POI.poisChangeObs.subscribe(function(changes) {
+    ArView.poisChangeObs.subscribe(function(changes) {
       $log.log(changes);
       _.each(changes.removed, function (point) {
         delete ctrl.spec.markers[point.properties.id_poi];

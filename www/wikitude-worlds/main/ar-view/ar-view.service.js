@@ -6,23 +6,23 @@
 
   angular
     .module('ar-view')
-    .factory('POI', POIService);
+    .factory('ArView', ArViewService);
 
-  function POIService(ARPOI, Do, Filters, $log, Poi, rx, Timers, turf, UserLocation) {
+  function ArViewService(ArMarker, Do, Filters, $log, Poi, rx, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
         reachLimit = 250,
         poisChangeSubject = new rx.Subject();
 
-    var POI = {
+    var service = {
       updateAr: updateAr,
       poisChangeObs: poisChangeSubject.asObservable()
     };
 
     Filters.filtersChangeObs.subscribe(updateAr);
 
-    return POI;
+    return service;
 
     ////////////////////
 
@@ -203,7 +203,7 @@
     }
 
     function addArPoi(poi, enabled) {
-      var arPoi = new ARPOI(poi, enabled, onArPoiClick);
+      var arPoi = new ArMarker(poi, enabled, onArPoiClick);
       arPointsById[getPoiId(poi)] = arPoi;
       return arPoi;
     }
@@ -212,7 +212,7 @@
 
       var arPoi = arPointsById[id];
       if (!arPoi) {
-        $log.warn('Could not find ARPOI to remove with id ' + JSON.stringify(id));
+        $log.warn('Could not find ArMarker to remove with id ' + JSON.stringify(id));
         return;
       }
 
