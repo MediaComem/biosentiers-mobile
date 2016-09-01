@@ -16,7 +16,7 @@
     };
   }
 
-  function MiniMapCtrl(Icons, $http, BigMapModal, $log, POI, $rootScope, $scope, UserLocation) {
+  function MiniMapCtrl(Icons, $http, BigMapModal, $log, POI, $scope, UserLocation) {
     var ctrl = this,
         zoom = 16;
 
@@ -72,9 +72,9 @@
       $log.error(error);
     });
 
-    $rootScope.$on('user:located', centerMiniMap);
+    UserLocation.currentObs.subscribe(centerMiniMap);
 
-    POI.changesObservable.subscribe(function(changes) {
+    POI.poisChangeObs.subscribe(function(changes) {
       $log.log(changes);
       _.each(changes.removed, function (point) {
         delete ctrl.spec.markers[point.properties.id_poi];

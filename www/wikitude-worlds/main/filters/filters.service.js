@@ -21,7 +21,7 @@
     };
 
     // Update available choices when the data changes.
-    POIData.observable.subscribe(function(data) {
+    POIData.dataChangeObs.subscribe(function(data) {
       if (data.themes.length) {
         service.themes = data.themes;
         selected.themes = data.themes.slice();

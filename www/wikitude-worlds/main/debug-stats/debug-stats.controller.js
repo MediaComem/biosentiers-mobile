@@ -15,7 +15,7 @@
     ctrl.moins = 0;
     ctrl.total = 0;
 
-    POI.changesObservable.subscribe(function(changes) {
+    POI.poisChangeObs.subscribe(function(changes) {
       $log.debug('Updating stats', changes.shown.length, changes.hidden.length, changes.visible.length);
       ctrl.plus = changes.shown.length;
       ctrl.moins = changes.hidden.length;

@@ -13,11 +13,11 @@
     });
 
     var service = {
-      hasData   : hasData,
-      setData   : setData,
-      getPois   : getPois,
-      getThemes : getThemes,
-      observable: dataSubject.asObservable()
+      hasData      : hasData,
+      setData      : setData,
+      getPois      : getPois,
+      getThemes    : getThemes,
+      dataChangeObs: dataSubject.asObservable()
     };
 
     return service;

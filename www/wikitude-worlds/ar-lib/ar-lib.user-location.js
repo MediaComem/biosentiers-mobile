@@ -5,9 +5,11 @@
   'use strict';
   angular
     .module('ARLib')
-    .factory('UserLocation', fnUserLocation);
+    .factory('UserLocation', UserLocationService);
 
-  function fnUserLocation(turf) {
+  function UserLocationService(rx, turf) {
+
+    var currentLocationSubject = new rx.ReplaySubject(1);
 
     /**
      * @param lon
@@ -26,6 +28,7 @@
 
     // Static
     UserLocation.current = null;
+    UserLocation.currentObs = currentLocationSubject.asObservable();
     UserLocation.last = null;
     UserLocation.update = update;
     UserLocation.backupCurrent = backupCurrent;
@@ -44,6 +47,7 @@
 
     function update(lon, lat, alt) {
       UserLocation.current = new UserLocation(lon, lat, alt);
+      currentLocationSubject.onNext(UserLocation.current);
     }
 
     function backupCurrent() {

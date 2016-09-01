@@ -13,11 +13,11 @@
     // Private data
     var arPointsById = {},
         reachLimit = 250,
-        changesSubject = new rx.Subject();
+        poisChangeSubject = new rx.Subject();
 
     var POI = {
       updateAr: updateAr,
-      changesObservable: changesSubject.asObservable()
+      poisChangeObs: poisChangeSubject.asObservable()
     };
 
     return POI;
@@ -87,7 +87,7 @@
         timer.stop('load ' + newPoiIds.length + ' points in AR (' + newVisiblePoiIds.length + ' visible)');
 
         // Notify observers of changes.
-        changesSubject.onNext(changes);
+        poisChangeSubject.onNext(changes);
 
         //Do.action('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
       }
