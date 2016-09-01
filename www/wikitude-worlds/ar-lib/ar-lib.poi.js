@@ -20,6 +20,8 @@
       poisChangeObs: poisChangeSubject.asObservable()
     };
 
+    Filters.filtersChangeObs.subscribe(updateAr);
+
     return POI;
 
     ////////////////////
