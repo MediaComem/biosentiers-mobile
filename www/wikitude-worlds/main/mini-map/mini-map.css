@@ -1,3 +1,10 @@
+.minimap-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2;
+}
+
 .minimap-container .leaflet-container {
   height: 100px;
   width: 100px;

@@ -43,7 +43,7 @@
         user: {
           lat : 46.781001,
           lng : 6.647128,
-          icon: Icons.user()
+          icon: Icons.user
         }
       },
       events  : {
@@ -109,13 +109,13 @@
     function centerMiniMap() {
       if (minimap.config.hasOwnProperty('center')) {
         $log.debug('Updating the minimap center');
-        minimap.config.center.lat = UserLocation.current.lat();
-        minimap.config.center.lng = UserLocation.current.lon();
+        minimap.config.center.lat = UserLocation.current.lat;
+        minimap.config.center.lng = UserLocation.current.lon;
       }
       if (minimap.config.markers.hasOwnProperty('user')) {
         $log.debug('Updating the minimap marker');
-        minimap.config.markers.user.lat = UserLocation.current.lat();
-        minimap.config.markers.user.lng = UserLocation.current.lon();
+        minimap.config.markers.user.lat = UserLocation.current.lat;
+        minimap.config.markers.user.lng = UserLocation.current.lon;
       }
       $scope.$apply();
     }

@@ -18,6 +18,9 @@
         .then(function (success) { console.log(success); })
         .catch(function (error) { console.log(error); });
 
+      /**
+       * Registering Ionicitude Actions
+       */
       Ionicitude
         .addAction(open)
         .addAction(close)
@@ -31,6 +34,10 @@
 
       ////////////////////
 
+      /**
+       * Starts to watch the device's orientation and send the data to the AR View.
+       * @param service The Ionicitude service
+       */
       function open(service) {
         $log.debug('World opened');
 
@@ -46,6 +53,10 @@
         });
       }
 
+      /**
+       * Closes the AR View, and stops the device's orientation watcher, if it exists.
+       * @param service The Ionicitude service
+       */
       function close(service) {
         $log.debug('World closing');
 
@@ -59,6 +70,11 @@
         service.close();
       }
 
+      /**
+       * Show the user position in a toast, using the data provded by param
+       * @param service The Ionicitude service
+       * @param param An Object containing lat, lon and alt
+       */
       function showPos(service, param) {
         $cordovaToast.showLongCenter('lat : ' + param.lat + ", lon : " + param.lon + ", alt :" + param.alt);
       }

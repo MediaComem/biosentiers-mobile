@@ -36,6 +36,8 @@
         Do.action('toast', {message: 'Localisé !'});
       }
       UserLocation.update(lon, lat, alt);
+      console.log(UserLocation.current);
+      $rootScope.$emit('user:located');
       if (World.startup || UserLocation.movingDistance() > 20) {
         $log.debug('New user location detected');
         UserLocation.backupCurrent();

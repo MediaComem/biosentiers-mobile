@@ -9,82 +9,22 @@
     .module('big-map-modal')
     .controller('BigMapCtrl', BigMapCtrl);
 
-  function BigMapCtrl(Icons, $log, leafletData, BigMapModal, POIData, turf, UserLocation, $scope) {
-    var bigmap = this, map = null;
+  function BigMapCtrl($log, leafletData, BigMap, BigMapModal, $scope) {
+    var bigmap = this;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
     // So, the Modals.closeCurrent closes the BigMap Modal.
     bigmap.remove = BigMapModal.remove;
-    bigmap.config = {
-      center : {
-        lat : UserLocation.current.lat(),
-        lng : UserLocation.current.lon(),
-        zoom: 17
-      },
-      markers: {},
-      geojson: {}
-    };
+    bigmap.config = BigMap.config;
+
+    // var debouncedUpdatePoints = _.debounce(BigMap.updateVisiblePoints, 500);
 
     leafletData.getMap('bigmap').then(function (result) {
-      map = result;
-      updateVisiblePoints();
-      $scope.$on('leafletDirectiveMap.bigmap.moveend', updateVisiblePoints);
+      BigMap.setMap(result);
+      BigMap.updateVisiblePoints();
+      $scope.$on('leafletDirectiveMap.bigmap.moveend', BigMap.updateVisiblePoints);
     }).catch(function (error) {
       $log.error(error);
     });
-
-    ////////////////////
-
-    function updateVisiblePoints() {
-      var screen = getScreenPolygon(map.getBounds());
-      console.log(screen);
-      debugScreenPoly(screen);
-      // var poiToShow = getPointsToShow(screen);
-      // console.log(poiToShow.length);
-      // updateMarkers(poiToShow);
-    }
-
-    function debugScreenPoly(screen) {
-      bigmap.config.geojson.poly = {
-        data: screen
-      };
-      console.log(bigmap.config);
-    }
-
-    function getScreenPolygon(bounds) {
-      console.log(bounds);
-      var NE = bounds._northEast;
-      var SW = bounds._southWest;
-      return turf.helpers.polygon([[
-        [NE.lng, NE.lat],
-        [NE.lng, SW.lat],
-        [SW.lng, SW.lat],
-        [SW.lng, NE.lat],
-        [NE.lng, NE.lat]
-      ]]);
-    }
-
-    function getPointsToShow(poly) {
-      var toShow = [];
-      var points = POIData.getPois();
-      console.log(points);
-      _.each(points, function (point) {
-        if (turf.inside(point, poly)) {
-          $log.info('is in screen visibility');
-          toShow.push(point);
-        }
-      });
-      return toShow;
-    }
-
-    function updateMarkers(pointsArray) {
-      _.each(pointsArray, function (point) {
-        bigmap.config.markers[point.properties.id_poi] = {
-          lat : point.geometry.coordinates[1],
-          lng : point.geometry.coordinates[0],
-          icon: Icons.get(point.properties.theme_name)
-        };
-      })
-    }
   }
 })();
