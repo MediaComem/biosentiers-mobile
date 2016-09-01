@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('ARLib')
+    .module('ar-view')
     .factory('ARPOI', ARPOIClass);
 
   function ARPOIClass(Markers) {

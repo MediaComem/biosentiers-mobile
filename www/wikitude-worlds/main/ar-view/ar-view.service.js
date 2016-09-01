@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('ARLib')
+    .module('ar-view')
     .factory('POI', POIService);
 
   function POIService(ARPOI, Do, Filters, $log, Poi, rx, Timers, turf, UserLocation) {

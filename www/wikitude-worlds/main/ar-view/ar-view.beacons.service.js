@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('ARLib')
+    .module('ar-view')
     .factory('Beacon', fnBeacon);
 
   function fnBeacon(Do) {

@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('ARLib')
+    .module('ar-view')
     .factory('Markers', MarkersService);
 
   function MarkersService() {

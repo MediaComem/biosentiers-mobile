@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(DebugPositionModal, Do, FiltersModal, $ionicModal, $log, $rootScope, $scope) {
+  function BaseCtrl(DebugPositionModal, Do, FiltersModal, $ionicModal, $log, $rootScope, $scope, World) {
     var ctrl = this;
 
     ctrl.modal = null;
