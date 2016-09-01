@@ -10,7 +10,7 @@
     .module('debug-position-modal')
     .controller('DebugCtrl', DebugCtrl);
 
-  function DebugCtrl(DebugPositionModal, Do, $log) {
+  function DebugCtrl(AppActions, DebugPositionModal, $log) {
     var ctrl = this;
 
     ctrl.position = {};
@@ -59,7 +59,7 @@
       if (ctrl.position.hasOwnProperty('lat') && ctrl.position.hasOwnProperty('lon') && ctrl.position.hasOwnProperty('alt')) {
         setPosition(ctrl.position.lat, ctrl.position.lon, ctrl.position.alt)
       } else {
-        Do.action('toast', {message: "Des champs ne sont pas remplis"});
+        AppActions.execute('toast', {message: "Des champs ne sont pas remplis"});
       }
     }
 
@@ -91,7 +91,7 @@
     function setPosition(lat, lon, alt) {
       DebugPositionModal.close().then(function (success) {
         $log.debug(success);
-        Do.action('setPosition', {lat: lat, lon: lon, alt: alt});
+        AppActions.execute('setPosition', {lat: lat, lon: lon, alt: alt});
       }).catch(function (error) {
         $log.error(error);
       });

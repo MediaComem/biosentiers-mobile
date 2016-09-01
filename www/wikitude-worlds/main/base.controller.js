@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(DebugPositionModal, Do, FiltersModal, $ionicModal, $log, $rootScope, $scope, World) {
+  function BaseCtrl(AppActions, DebugPositionModal, FiltersModal, $ionicModal, $log, $rootScope, $scope, World) {
     var ctrl = this;
 
     ctrl.modal = null;
@@ -38,7 +38,7 @@
 
     function closeAR() {
       $log.debug('Closing the AR');
-      Do.action('close');
+      AppActions.execute('close');
     }
 
     function showDebugModal() {

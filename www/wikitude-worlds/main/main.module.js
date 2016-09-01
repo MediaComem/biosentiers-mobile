@@ -12,6 +12,7 @@
     'leaflet-directive',
     'ngCordova',
     // Application modules.
+    'app-actions',
     'ar-config',
     'ar-view',
     'arDirectives',

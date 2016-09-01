@@ -8,7 +8,7 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(ArMarker, Do, Filters, $log, Poi, rx, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArMarker, Filters, $log, Poi, rx, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
@@ -91,7 +91,7 @@
         // Notify observers of changes.
         poisChangeSubject.onNext(changes);
 
-        //Do.action('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
+        //AppActions.execute('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
       }
     }
 
@@ -194,9 +194,9 @@
         var dist = arPoi.distanceToUser();
         console.log("distance to user ", dist);
         if (dist <= 20) {
-          Do.action('loadMarkerData', { id: arPoi.id, properties: arPoi.properties });
+          AppActions.execute('loadMarkerData', { id: arPoi.id, properties: arPoi.properties });
         } else {
-          Do.action('toast', { message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt." });
+          AppActions.execute('toast', { message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt." });
         }
         return true; // Stop propagating the click event
       }

@@ -8,7 +8,7 @@
     .module('ar-config')
     .factory('ArConfig', ArConfig);
 
-  function ArConfig(ArView, Do, $log, $rootScope, UserLocation, World) {
+  function ArConfig(AppActions, ArView, $log, $rootScope, UserLocation, World) {
 
     var service = {
       init: init
@@ -34,7 +34,7 @@
 
     function onLocationChanged(lat, lon, alt) {
       if (World.startup) {
-        Do.action('toast', {message: 'Localisé !'});
+        AppActions.execute('toast', { message: 'Localisé !' });
       }
       UserLocation.update(lon, lat, alt);
       if (World.startup || UserLocation.movingDistance() > 20) {
