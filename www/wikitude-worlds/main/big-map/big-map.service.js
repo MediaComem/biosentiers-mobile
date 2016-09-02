@@ -4,7 +4,7 @@
 (function () {
   'use strict';
   angular
-    .module('bigmap')
+    .module('big-map')
     .factory('BigMap', BigMapService);
 
   function BigMapService(Icons, $log, Outing, turf, UserLocation) {

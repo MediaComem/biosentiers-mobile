@@ -15,7 +15,7 @@
     'app-actions',
     'ar-view',
     'arDirectives',
-    'bigmap',
+    'big-map',
     'big-map-modal',
     'debug-position-modal',
     'debug-stats',
