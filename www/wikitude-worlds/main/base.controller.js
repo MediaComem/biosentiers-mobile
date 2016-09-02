@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(AppActions, DebugPositionModal, FiltersModal, $ionicModal, $log, $rootScope, $scope, World) {
+  function BaseCtrl(AppActions, DebugPositionModal, FiltersModal, $ionicModal, $log, Outing, $scope, World) {
     var base = this;
 
     base.modal = null;
@@ -28,10 +28,10 @@
       console.log('modal removed');
     });
 
-    $rootScope.$on('marker:loaded', function (event, properties) {
-      base.poi = World.poiData;
-      base.properties = properties;
-      showPoiModal(base.properties.theme_name);
+    Outing.currentPoiChangeObs.subscribe(function(data) {
+      base.poi = data.poi;
+      base.poiDetails = data.details;
+      showPoiModal(data.poi.properties.theme_name);
     });
 
     ////////////////////

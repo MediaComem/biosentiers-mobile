@@ -37,7 +37,7 @@
     };
 
     // Getters
-    Object.defineProperties(Location, {
+    Object.defineProperties(Location.prototype, {
       'lon': { get: getLon },
       'lat': { get: getLat },
       'alt': { get: getAlt }
@@ -52,7 +52,6 @@
     }
 
     function update(lon, lat, alt) {
-      $log.debug('User location changed to longitude ' + lon + ', latitude ' + lat + ', altitude ' + alt);
 
       var firstLocation = !hasLocation();
 
@@ -61,14 +60,22 @@
       realLocationSubject.onNext(service.real);
 
       // Only update the spaced location the first time, or if the user has moved beyond the threshold.
-      if (firstLocation || movingDistance() > movingDistanceThreshold) {
+      var distance = movingDistance();
+      if (firstLocation || distance > movingDistanceThreshold) {
         service.spaced = service.real.clone();
         spacedLocationSubject.onNext(service.spaced);
 
         if (!firstLocation) {
-          $log.debug('User has moved ' + movingDistance() + 'm (more than ' + movingDistanceThreshold + 'm)');
+          $log.debug('User has moved more than ' + movingDistanceThreshold + 'm');
         }
       }
+
+      var message = 'User location changed to longitude ' + service.real.lon + ', latitude ' + service.real.lat + ', altitude ' + service.real.alt;
+      if (distance) {
+        message += ' (moved ' + distance + 'm from the last spaced position)';
+      }
+
+      $log.debug(message);
     }
 
     function movingDistance() {
