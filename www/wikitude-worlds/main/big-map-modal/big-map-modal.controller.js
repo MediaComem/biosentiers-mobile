@@ -65,15 +65,17 @@
     }
 
     function getPointsToShow(poly) {
+
       var toShow = [];
       var points = Outing.getPois();
-      console.log(points);
+
       _.each(points, function (point) {
         if (turf.inside(point, poly)) {
           $log.info('is in screen visibility');
           toShow.push(point);
         }
       });
+
       return toShow;
     }
 

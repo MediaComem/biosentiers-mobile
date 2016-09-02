@@ -7,43 +7,48 @@
 
   function OutingService($log, $rootScope, rx) {
 
-    var dataSubject = new rx.BehaviorSubject({
-      pois: [],
-      themes: []
-    });
+    var outing,
+        outingSubject = new rx.ReplaySubject(1);
 
     var service = {
-      hasData      : hasData,
-      setData      : setData,
-      getPois      : getPois,
-      getThemes    : getThemes,
-      dataChangeObs: dataSubject.asObservable()
+      hasOuting      : hasOuting,
+      setOuting      : setOuting,
+      getPois        : getPois,
+      getPathGeoJson : getPathGeoJson,
+      getThemes      : getThemes,
+      outingChangeObs: outingSubject.asObservable()
     };
 
     return service;
 
     ////////////////////
 
-    function hasData() {
-      return getPois().length >= 1;
+    function hasOuting() {
+      return !_.isNil(outing);
     }
 
-    function setData(data) {
-      if (data) {
-        $log.debug('POI data changed');
-        dataSubject.onNext({
-          pois: data.features,
-          themes: _.compact(_.uniq(_.map(data.features, 'properties.theme_name'))).sort()
-        });
+    function setOuting(newOuting) {
+      if (newOuting) {
+        outing = newOuting;
+        $log.debug('Outing loaded');
+        outingSubject.onNext(outing);
       }
     }
 
+    function getPoisGeoJson() {
+      return outing ? outing.pois : undefined;
+    }
+
     function getPois() {
-      return dataSubject.getValue().pois;
+      return outing ? outing.pois.features : undefined;
     }
 
     function getThemes() {
-      return dataSubject.getValue().themes;
+      return outing ? _.compact(_.uniq(_.map(outing.pois.features, 'properties.theme_name'))).sort() : undefined;
+    }
+
+    function getPathGeoJson() {
+      return outing ? outing.path : undefined;
     }
   }
 })();

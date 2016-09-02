@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(Icons, Ionicitude, outingData, $cordovaToast, PoiGeo, leafletData, $http, $ionicPlatform, $scope, WorldActions) {
+  function OutingCtrl($cordovaToast, Icons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, $scope, WorldActions) {
     var ctrl = this;
 
     var UserPosition = {
@@ -53,36 +53,31 @@
       }
     };
 
-    $http.get('data/path.json').then(function (success) {
-        console.log(success.data);
-        ctrl.map.path = {
-          data : success.data,
-          style: {
-            color : 'red',
-            weigth: 6
-          }
+    PoiGeo.getPath().then(function(success) {
+      ctrl.map.path = {
+        data : success.data,
+        style: {
+          color : 'red',
+          weigth: 6
         }
-      }, function (error) {
-        console.log(error);
       }
-    );
+    }, function(error) {
+      $log.warn(error);
+    });
 
-    leafletData.getMap('map')
-      .then(function (map) {
-        console.log(map);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    leafletData.getMap('map').then(function(map) {
+      $log.debug(map);
+    }).catch(function(error) {
+      $log.warn(error);
+    });
 
     ctrl.launchAR = function () {
       try {
         Ionicitude.launchAR()
-          .then(PoiGeo.getPoints)
-          .then(worldLoaded)
+          .then(loadWorldOuting)
           .catch(handleError);
       } catch (e) {
-        console.log(e);
+        $log.warn(e);
         $cordovaToast.showShortBottom("Device not supported !");
       }
     };
@@ -90,12 +85,23 @@
     ctrl.data = outingData;
 
     function handleError(error) {
-      console.log('World not loaded', error);
+      $log.error(error);
     }
 
-    function worldLoaded(success) {
-      console.log('World loaded', success);
-      WorldActions.execute('loadPoints', success.data);
+    function loadWorldOuting(success) {
+      $log.debug('World loaded');
+
+      var promises = [
+        PoiGeo.getPath(),
+        PoiGeo.getPoints()
+      ];
+
+      return $q.all(promises).then(function(results) {
+        WorldActions.execute('loadOuting', {
+          path: results[0].data,
+          pois: results[1].data
+        });
+      });
     }
   }
 })();

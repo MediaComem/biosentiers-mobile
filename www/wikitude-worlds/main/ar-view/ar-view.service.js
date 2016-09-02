@@ -44,7 +44,7 @@
      * so we avoid that by simply showing/hiding them when the user changes filters but does not move.
      */
     function updateAr() {
-      if (Outing.hasData()) { // Check if the data is actually lodaded.
+      if (Outing.hasOuting()) { // Check if the data is actually lodaded.
         var timer = Timers.start();
 
         // Retrieve all available points.

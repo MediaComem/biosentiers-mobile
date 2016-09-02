@@ -24,12 +24,13 @@
     };
 
     // Update available choices when the data changes.
-    Outing.dataChangeObs.subscribe(function(data) {
-      if (data.themes.length) {
-        service.themes = data.themes;
-        selected.themes = data.themes.slice();
-        $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
-      }
+    Outing.outingChangeObs.subscribe(function() {
+
+      var themes = Outing.getThemes();
+      service.themes = themes;
+      selected.themes = themes.slice();
+
+      $log.debug('Filters: available themes updated to ' + themes.join(', '));
     });
 
     return service;

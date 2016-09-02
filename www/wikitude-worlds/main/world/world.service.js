@@ -14,7 +14,7 @@
       startup                : true,
       poiData                : null,
       loadPoiData            : loadPoiData,
-      loadPoints             : Outing.setData,
+      loadOuting             : Outing.setOuting,
       updateDeviceOrientation: updateDeviceOrientation
     };
 
