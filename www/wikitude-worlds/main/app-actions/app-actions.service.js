@@ -8,7 +8,7 @@
     .module('app-actions')
     .factory('AppActions', AppActionsService);
 
-  function AppActionsService() {
+  function AppActionsService($log) {
 
     var service = {};
 
@@ -16,10 +16,10 @@
 
     return service;
 
-    function execute(name, opt) {
-      name !== 'showPos' && console.log('Execute app action :', name, 'with opt :', opt);
+    function execute(name, options) {
+      $log.debug('Executing app action ' + name + ' with options ' + angular.toJson(options));
       var dest = "architectsdk://" + name;
-      document.location = opt ? dest + "?" + angular.toJson(opt) : dest;
+      document.location = options ? dest + "?" + angular.toJson(options) : dest;
     }
   }
 })();

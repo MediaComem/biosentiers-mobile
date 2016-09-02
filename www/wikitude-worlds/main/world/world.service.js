@@ -9,6 +9,7 @@
     .factory('World', WorldService);
 
   function WorldService(DeviceOrientation, $log, Outing, $rootScope) {
+
     var service = {
       startup                : true,
       poiData                : null,
