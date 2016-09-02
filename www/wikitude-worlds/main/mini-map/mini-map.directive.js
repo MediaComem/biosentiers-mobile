@@ -16,7 +16,7 @@
     };
   }
 
-  function MiniMapCtrl(ArView, Icons, $http, BigMapModal, $log, $scope, UserLocation) {
+  function MiniMapCtrl(ArView, BigMapModal, Icons, $log, Outing, $scope, UserLocation) {
     var ctrl = this,
         zoom = 16;
 
@@ -59,17 +59,14 @@
       BigMapModal.open($scope);
     });
 
-    $http.get('../../data/path.json').then(function (success) {
+    Outing.outingChangeObs.subscribe(function(outing) {
       ctrl.spec.geojson.path = {
-        data : success.data,
+        data : outing.path,
         style: {
           color : 'red',
           weigth: 6
         }
       };
-      console.log(ctrl.spec);
-    }, function (error) {
-      $log.error(error);
     });
 
     UserLocation.currentObs.subscribe(centerMiniMap);
