@@ -17,12 +17,12 @@
     bigmap.remove = BigMapModal.remove;
     bigmap.config = BigMap.config;
 
-    // var debouncedUpdatePoints = _.debounce(BigMap.updateVisiblePoints, 500);
+    // var debouncedUpdatePoints = _.debounce(BigMap.updateMapMarkers, 500);
 
     leafletData.getMap('bigmap').then(function (result) {
       BigMap.setMap(result);
-      BigMap.updateVisiblePoints();
-      $scope.$on('leafletDirectiveMap.bigmap.moveend', BigMap.updateVisiblePoints);
+      BigMap.updateMapMarkers();
+      $scope.$on('leafletDirectiveMap.bigmap.moveend', BigMap.updateMapMarkers);
     }).catch(function (error) {
       $log.error(error);
     });

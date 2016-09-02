@@ -9,16 +9,18 @@
 
   function BigMapService(Icons, $log, Outing, turf, UserLocation) {
     var service = {
-      config             : {},
-      updateVisiblePoints: updateVisiblePoints,
-      setMap             : setMap
+      config          : {},
+      updateMapMarkers: updateMapMarkers,
+      setMap          : setMap
     };
 
-    var map        = null,
-        userMarker = {
-          lat : UserLocation.current.lat,
-          lng : UserLocation.current.lon,
-          icon: Icons.user
+    var map            = null,
+        defaultMarkers = {
+          user: {
+            lat : UserLocation.current.lat,
+            lng : UserLocation.current.lon,
+            icon: Icons.user
+          }
         };
 
     initialize();
@@ -27,6 +29,9 @@
 
     ////////////////////
 
+    /**
+     * Sets the config property of the service
+     */
     function initialize() {
       service.config = {
         center : {
@@ -34,14 +39,17 @@
           lng : UserLocation.current.lon,
           zoom: 17
         },
-        markers: {},
+        markers: defaultMarkers,
         geojson: {},
         layers : {
           overlays: {
-            points  : {
-              name   : "Points d'intérêt",
-              type   : "markercluster",
-              visible: true
+            markers : {
+              name        : "Marqueurs",
+              type        : "markercluster",
+              visible     : true,
+              layerOptions: {
+                disableClusteringAtZoom: 18
+              }
             },
             Oiseaux : {
               name   : "Oiseaux",
@@ -63,30 +71,37 @@
       };
     }
 
+    /**
+     * Stores the leaflet map for the BigMap in the service.
+     * @param leafletMap The leaflet map to be used as the BigMap
+     */
     function setMap(leafletMap) {
       leafletMap !== null && (map = leafletMap);
     }
 
-    function updateVisiblePoints() {
+    /**
+     * Updates the visible map markers on the BigMap.
+     * First, get the screen bounds, then loads all the pois on this bounds.
+     * Reset the map markers to show only the user one, then adds the new markers.
+     */
+    function updateMapMarkers() {
       if (map !== null) {
-        var screenPoly = getScreenPolygon(map.getBounds());
-        // debugScreenPoly(screen);
-        var poisToShow = getPointsToShow(screenPoly);
-        updateMarkers(poisToShow);
+        var screenPoly = getScreenPolygon();
+        var poisToShow = getMapMarkersToShow(screenPoly);
+        resetMapMarkers();
+        addMapMarkers(poisToShow);
       } else {
         $log.error('No map available. Try to call the BigMap.setMap() method, passing it a valid leaflet map.');
       }
     }
 
-    function debugScreenPoly(screenPoly) {
-      service.config.geojson.poly = {
-        data: screenPoly
-      };
-      console.log(service.config);
-    }
-
-    function getScreenPolygon(bounds) {
-      console.log(bounds);
+    /**
+     * Gets the bounds of the currently visible par of the map, directly from the map.
+     * Then creates a GeoJSON Polygon object (with turf) and returns this Polygon object.
+     * @return {Object} A GeoJSON Polygon object representing
+     */
+    function getScreenPolygon() {
+      var bounds = map.getBounds();
       var NE = bounds._northEast;
       var SW = bounds._southWest;
       return turf.helpers.polygon([[
@@ -98,33 +113,44 @@
       ]]);
     }
 
-    function getPointsToShow(poly) {
+    /**
+     * Gets the pois that are inside the given Polygon GeoJSON Object.
+     * The pois are retrieved from the Outing service.
+     * @param poly
+     * @return {Array} An Array that contains all the GeoJSON Point that are insode the polygon.
+     */
+    function getMapMarkersToShow(poly) {
       var toShow = [];
-      var points = Outing.getPois();
-      console.log(points);
-      _.each(points, function (point) {
-        if (turf.inside(point, poly)) {
-          $log.info('is in screen visibility');
-          toShow.push(point);
+      var pois = Outing.getPois();
+      _.each(pois, function (poi) {
+        if (turf.inside(poi, poly)) {
+          toShow.push(poi);
         }
       });
       return toShow;
     }
 
-    function updateMarkers(pointsArray) {
-      resetMarkers();
-      _.each(pointsArray, function (point) {
-        service.config.markers[point.properties.id_poi] = {
-          layer: 'points',
-          lat  : point.geometry.coordinates[1],
-          lng  : point.geometry.coordinates[0],
-          icon : Icons.get(point.properties.theme_name)
+    /**
+     * Adds new markers on the map, based on the informations in the poisToAdd argument.
+     * @param poisToAdd An Array containing GeoJSON Point object.
+     */
+    function addMapMarkers(poisToAdd) {
+      _.each(poisToAdd, function (poi) {
+        service.config.markers[poi.properties.id_poi] = {
+          layer: 'markers',
+          lat  : poi.geometry.coordinates[1],
+          lng  : poi.geometry.coordinates[0],
+          icon : Icons.get(poi.properties.theme_name)
         };
       })
     }
 
-    function resetMarkers() {
-      service.config.markers = {}
+    /**
+     * Resets the map markers to their original stats.
+     * That is : only the user marker is visible.
+     */
+    function resetMapMarkers() {
+      service.config.markers = defaultMarkers;
     }
   }
 })();
