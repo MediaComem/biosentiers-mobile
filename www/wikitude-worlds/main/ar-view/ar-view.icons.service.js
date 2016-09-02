@@ -5,14 +5,12 @@
   'use strict';
 
   angular
-    .module('ARLib')
-    .factory('Markers', MarkersService);
+    .module('ar-view')
+    .factory('ArIcons', ArIconsService);
 
-  function MarkersService() {
+  function ArIconsService() {
 
-    var service = {
-      get: getMarker
-    };
+    var markers = [];
 
     var availableTypes = [
       'default',
@@ -30,12 +28,15 @@
       'garden'
     ];
 
-    var markers = [];
+    var service = {
+      get: getIcon
+    };
 
     return service;
+
     ////////////////////
 
-    function getMarker(type) {
+    function getIcon(type) {
       if (!markers[type] || markers[type].destroyed) {
         var img = new AR.ImageResource("assets/" + type + ".png", {
           onError: function () {

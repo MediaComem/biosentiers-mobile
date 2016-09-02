@@ -12,11 +12,14 @@
     'ngCordova',
     // Application modules.
     'AuthModule',
+    'poi',
     'icons',
+    'leaflet-directive',
     'OutingsModule',
     'POIModule',
     'QRModule',
-    'timers'
+    'timers',
+    'world-actions'
     // 'arDirectives'
   ]);
 })();

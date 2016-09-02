@@ -5,19 +5,19 @@
   'use strict';
 
   angular
-    .module('ARLib')
-    .factory('Do', DoService);
+    .module('app-actions')
+    .factory('AppActions', AppActionsService);
 
-  function DoService() {
+  function AppActionsService() {
 
     var service = {};
 
-    service.action = action;
+    service.execute = execute;
 
     return service;
 
-    function action(name, opt) {
-      name !== 'showPos' && console.log('Do action :', name, 'with opt :', opt);
+    function execute(name, opt) {
+      name !== 'showPos' && console.log('Execute app action :', name, 'with opt :', opt);
       var dest = "architectsdk://" + name;
       document.location = opt ? dest + "?" + angular.toJson(opt) : dest;
     }

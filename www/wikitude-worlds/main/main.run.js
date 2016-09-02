@@ -8,12 +8,12 @@
     .module('ar')
     .run(run);
 
-  function run(ArConfig, Do, $window, World) {
+  function run(AppActions, ArConfig, $window, World) {
 
     ArConfig.init();
 
     $window.World = World;
 
-    Do.action('open');
+    AppActions.execute('open');
   }
 })();

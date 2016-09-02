@@ -3,11 +3,13 @@
  */
 (function () {
   'use strict';
-  angular
-    .module('POIModule')
-    .factory('POIData', POIData);
 
-  function POIData() {
+  angular
+    .module('poi')
+    .factory('PoiContent', PoiContentService);
+
+  function PoiContentService() {
+
     var service = {
       getData: getData
     };

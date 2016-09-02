@@ -19,18 +19,18 @@
     };
   }
 
-  function StatsCtrl($log, POI) {
-    var ctrl = this;
+  function StatsCtrl(ArView, $log) {
+    var stats = this;
 
-    ctrl.plus = 0;
-    ctrl.moins = 0;
-    ctrl.total = 0;
+    stats.plus = 0;
+    stats.moins = 0;
+    stats.total = 0;
 
-    POI.poisChangeObs.subscribe(function(changes) {
+    ArView.poisChangeObs.subscribe(function(changes) {
       $log.debug('Updating stats', changes.shown.length, changes.hidden.length, changes.visible.length);
-      ctrl.plus = changes.shown.length;
-      ctrl.moins = changes.hidden.length;
-      ctrl.total = changes.visible.length;
+      stats.plus = changes.shown.length;
+      stats.moins = changes.hidden.length;
+      stats.total = changes.visible.length;
     });
   }
 })();

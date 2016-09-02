@@ -7,7 +7,7 @@
     .module('app')
     .controller('IdleController', IdleController);
 
-  function IdleController(POIGeo) {
-    console.log(POIGeo.getGeoMarks());
+  function IdleController(PoiGeo) {
+    console.log(PoiGeo.getGeoMarks());
   }
 })();

@@ -4,7 +4,7 @@
 (function () {
   'use strict';
   angular
-    .module('ARLib')
+    .module('ar-view')
     .factory('UserLocation', UserLocationService);
 
   function UserLocationService(rx, turf) {

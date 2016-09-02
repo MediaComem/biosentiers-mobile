@@ -12,7 +12,9 @@
     'leaflet-directive',
     'ngCordova',
     // Application modules.
+    'app-actions',
     'ar-config',
+    'ar-view',
     'arDirectives',
     'ARLib',
     'bigmap',
@@ -24,6 +26,7 @@
     'mini-map',
     'mini-map-orientation',
     'modals',
+    'poi',
     'timers',
     'world'
   ]);

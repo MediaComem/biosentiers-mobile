@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('ARLib', [ 'filters', 'rx', 'TurfModule' ]);
+  angular.module('ar-view', [ 'filters', 'poi', 'rx', 'TurfModule' ]);
 })();

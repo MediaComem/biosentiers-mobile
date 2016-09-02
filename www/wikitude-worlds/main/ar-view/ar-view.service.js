@@ -5,24 +5,24 @@
   'use strict';
 
   angular
-    .module('ARLib')
-    .factory('POI', POIService);
+    .module('ar-view')
+    .factory('ArView', ArViewService);
 
-  function POIService(ARPOI, Do, Filters, $log, POIData, rx, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArMarker, Filters, $log, Poi, rx, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
         reachLimit = 250,
         poisChangeSubject = new rx.Subject();
 
-    var POI = {
+    var service = {
       updateAr: updateAr,
       poisChangeObs: poisChangeSubject.asObservable()
     };
 
     Filters.filtersChangeObs.subscribe(updateAr);
 
-    return POI;
+    return service;
 
     ////////////////////
 
@@ -44,11 +44,11 @@
      * so we avoid that by simply showing/hiding them when the user changes filters but does not move.
      */
     function updateAr() {
-      if (POIData.hasData()) { // Check if the data is actually lodaded.
+      if (Poi.hasData()) { // Check if the data is actually lodaded.
         var timer = Timers.start();
 
         // Retrieve all available points.
-        var allPois = POIData.getPois();
+        var allPois = Poi.getPois();
         $log.debug(allPois.length + ' points in total');
 
         // Determine the nearest points; those are the only points that should be in the AR.
@@ -91,7 +91,7 @@
         // Notify observers of changes.
         poisChangeSubject.onNext(changes);
 
-        //Do.action('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
+        //AppActions.execute('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
       }
     }
 
@@ -194,16 +194,16 @@
         var dist = arPoi.distanceToUser();
         console.log("distance to user ", dist);
         if (dist <= 20) {
-          Do.action('loadMarkerData', { id: arPoi.id, properties: arPoi.properties });
+          AppActions.execute('loadMarkerData', { id: arPoi.id, properties: arPoi.properties });
         } else {
-          Do.action('toast', { message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt." });
+          AppActions.execute('toast', { message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt." });
         }
         return true; // Stop propagating the click event
       }
     }
 
     function addArPoi(poi, enabled) {
-      var arPoi = new ARPOI(poi, enabled, onArPoiClick);
+      var arPoi = new ArMarker(poi, enabled, onArPoiClick);
       arPointsById[getPoiId(poi)] = arPoi;
       return arPoi;
     }
@@ -212,7 +212,7 @@
 
       var arPoi = arPointsById[id];
       if (!arPoi) {
-        $log.warn('Could not find ARPOI to remove with id ' + JSON.stringify(id));
+        $log.warn('Could not find ArMarker to remove with id ' + JSON.stringify(id));
         return;
       }
 

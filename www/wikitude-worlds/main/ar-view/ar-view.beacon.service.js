@@ -5,10 +5,10 @@
   'use strict';
 
   angular
-    .module('ARLib')
-    .factory('Beacon', fnBeacon);
+    .module('ar-view')
+    .factory('Beacon', BeaconService);
 
-  function fnBeacon(Do) {
+  function BeaconService(AppActions) {
     /**
      * @param data
      * @constructor
@@ -65,7 +65,7 @@
         console.log(Beacon.nearest);
         Beacon.nearest.activate();
         console.log('Loading the beacon\'s points');
-        Do.action('loadPois', {beacon: Beacon.nearest.id});
+        AppActions.execute('loadPois', { beacon: Beacon.nearest.id });
       }
     }
 
