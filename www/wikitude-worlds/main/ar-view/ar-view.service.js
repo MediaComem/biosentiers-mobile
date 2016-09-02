@@ -16,15 +16,32 @@
         poisChangeSubject = new rx.Subject();
 
     var service = {
-      updateAr: updateAr,
+      init         : init,
+      updateAr     : updateAr,
       poisChangeObs: poisChangeSubject.asObservable()
     };
-
-    Filters.filtersChangeObs.subscribe(updateAr);
 
     return service;
 
     ////////////////////
+
+    function init() {
+      AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
+      AR.context.scene.cullingDistance = 250;
+      AR.context.scene.maxScalingDistance = 500;
+      AR.context.scene.minScalingDistance = 7;
+      AR.context.scene.scalingFactor = 0.01;
+      AR.context.onScreenClick = onScreenClick;
+      AR.context.onLocationChanged = onLocationChanged;
+    }
+
+    function onScreenClick() {
+      console.log('screen clicked');
+    }
+
+    function onLocationChanged(lat, lon, alt) {
+      UserLocation.update(lon, lat, alt);
+    }
 
     /**
      * Updates the POIs in the AR.

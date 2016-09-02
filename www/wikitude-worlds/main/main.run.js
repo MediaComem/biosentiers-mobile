@@ -8,9 +8,9 @@
     .module('ar')
     .run(run);
 
-  function run(AppActions, ArConfig, $timeout, $window, World) {
+  function run(AppActions, ArView, $timeout, $window, World) {
 
-    ArConfig.init();
+    ArView.init();
 
     $window.World = World;
 

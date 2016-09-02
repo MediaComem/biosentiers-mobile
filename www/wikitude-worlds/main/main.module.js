@@ -13,7 +13,6 @@
     'ngCordova',
     // Application modules.
     'app-actions',
-    'ar-config',
     'ar-view',
     'arDirectives',
     'bigmap',
