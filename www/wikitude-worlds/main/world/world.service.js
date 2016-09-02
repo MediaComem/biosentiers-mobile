@@ -18,31 +18,23 @@
       updateDeviceOrientation: updateDeviceOrientation
     };
 
-    Filters.filtersChangeObs.subscribe(onFiltersChanged);
-    UserLocation.currentObs.subscribe(onLocationChanged);
+    // Update the AR when:
+    // * The outing is loaded.
+    // * The user location changes (spaced by interval).
+    // * The user changes the filters.
+    Outing.outingChangeObs.subscribe(ArView.updateAr);
+    UserLocation.spacedObs.subscribe(ArView.updateAr);
+    Filters.filtersChangeObs.subscribe(ArView.updateAr);
+
+    // Display a message when the user location is first detected.
+    UserLocation.realObs.first().subscribe(notifyUserLocated);
 
     return service;
 
     ////////////////////
 
-    function onFiltersChanged() {
-      ArView.updateAr();
-    }
-
-    function onLocationChanged(userLocation) {
-      if (World.startup) {
-        AppActions.execute('toast', { message: 'Localisé !' });
-      }
-
-      if (World.startup || UserLocation.movingDistance() > 20) {
-        if (!World.startup) {
-          $log.debug('User has moved ' + UserLocation.movingDistance() + 'm (more than 20m)');
-        }
-
-        UserLocation.backupCurrent();
-        ArView.updateAr();
-        World.startup = false;
-      }
+    function notifyUserLocated() {
+      AppActions.execute('toast', { message: 'Localisé !' });
     }
 
     function updateDeviceOrientation(data) {

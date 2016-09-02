@@ -16,8 +16,8 @@
 
     var map        = null,
         userMarker = {
-          lat : UserLocation.current.lat,
-          lng : UserLocation.current.lon,
+          lat : UserLocation.real.lat,
+          lng : UserLocation.real.lon,
           icon: Icons.user
         };
 
@@ -30,8 +30,8 @@
     function initialize() {
       service.config = {
         center : {
-          lat : UserLocation.current.lat,
-          lng : UserLocation.current.lon,
+          lat : UserLocation.real.lat,
+          lng : UserLocation.real.lon,
           zoom: 17
         },
         markers: {},

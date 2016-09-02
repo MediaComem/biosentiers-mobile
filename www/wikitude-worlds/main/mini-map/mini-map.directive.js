@@ -70,7 +70,7 @@
       };
     });
 
-    UserLocation.currentObs.subscribe(centerMiniMap);
+    UserLocation.realObs.subscribe(centerMiniMap);
 
     ArView.poisChangeObs.subscribe(function(changes) {
       $log.log(changes);
@@ -107,15 +107,14 @@
     function centerMiniMap() {
       if (minimap.config.hasOwnProperty('center')) {
         $log.debug('Updating the minimap center');
-        minimap.config.center.lat = UserLocation.current.lat;
-        minimap.config.center.lng = UserLocation.current.lon;
+        minimap.config.center.lat = UserLocation.real.lat;
+        minimap.config.center.lng = UserLocation.real.lon;
       }
       if (minimap.config.markers.hasOwnProperty('user')) {
         $log.debug('Updating the minimap marker');
-        minimap.config.markers.user.lat = UserLocation.current.lat;
-        minimap.config.markers.user.lng = UserLocation.current.lon;
+        minimap.config.markers.user.lat = UserLocation.real.lat;
+        minimap.config.markers.user.lng = UserLocation.real.lon;
       }
-      $scope.$apply();
     }
   }
 })();
