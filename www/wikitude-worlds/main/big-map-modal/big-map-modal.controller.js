@@ -9,7 +9,7 @@
     .module('big-map-modal')
     .controller('BigMapCtrl', BigMapCtrl);
 
-  function BigMapCtrl(Icons, $log, leafletData, BigMapModal, Poi, turf, UserLocation, $scope) {
+  function BigMapCtrl(Icons, $log, leafletData, BigMapModal, Outing, turf, UserLocation, $scope) {
     var ctrl = this, map = null;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
@@ -66,7 +66,7 @@
 
     function getPointsToShow(poly) {
       var toShow = [];
-      var points = Poi.getPois();
+      var points = Outing.getPois();
       console.log(points);
       _.each(points, function (point) {
         if (turf.inside(point, poly)) {

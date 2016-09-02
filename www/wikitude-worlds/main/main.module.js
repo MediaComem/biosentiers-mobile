@@ -23,7 +23,7 @@
     'icons',
     'mini-map',
     'mini-map-orientation',
-    'poi',
+    'outing',
     'timers',
     'world'
   ]);

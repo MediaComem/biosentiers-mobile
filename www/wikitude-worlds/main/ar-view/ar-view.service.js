@@ -8,7 +8,7 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArMarker, Filters, $log, Poi, rx, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArMarker, Filters, $log, Outing, rx, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
@@ -44,11 +44,11 @@
      * so we avoid that by simply showing/hiding them when the user changes filters but does not move.
      */
     function updateAr() {
-      if (Poi.hasData()) { // Check if the data is actually lodaded.
+      if (Outing.hasData()) { // Check if the data is actually lodaded.
         var timer = Timers.start();
 
         // Retrieve all available points.
-        var allPois = Poi.getPois();
+        var allPois = Outing.getPois();
         $log.debug(allPois.length + ' points in total');
 
         // Determine the nearest points; those are the only points that should be in the AR.

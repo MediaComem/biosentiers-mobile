@@ -2,10 +2,10 @@
   'use strict';
 
   angular
-    .module('poi')
-    .factory('Poi', PoiService);
+    .module('outing')
+    .factory('Outing', OutingService);
 
-  function PoiService($log, $rootScope, rx) {
+  function OutingService($log, $rootScope, rx) {
 
     var dataSubject = new rx.BehaviorSubject({
       pois: [],
