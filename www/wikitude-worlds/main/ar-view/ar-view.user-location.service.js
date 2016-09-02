@@ -23,11 +23,24 @@
       spacedObs: spacedLocationSubject.asObservable()
     };
 
-    //Getters
-    Object.defineProperties(service, {
-      'lon': {get: lon},
-      'lat': {get: lat},
-      'alt': {get: alt}
+    function Location(lon, lat, alt) {
+      this.type = 'Feature';
+      this.properties = {};
+      this.geometry = {
+        type: 'Point',
+        coordinates: [ lon, lat, alt ]
+      };
+    }
+
+    Location.prototype.clone = function() {
+      return new Location(this.lon, this.lat, this.alt);
+    };
+
+    // Getters
+    Object.defineProperties(Location, {
+      'lon': { get: getLon },
+      'lat': { get: getLat },
+      'alt': { get: getAlt }
     });
 
     return service;
@@ -44,12 +57,12 @@
       var firstLocation = !hasLocation();
 
       // Always update the real location.
-      service.real = wikitudePositionToGeoJson(lon, lat, alt);
+      service.real = new Location(lon, lat, alt);
       realLocationSubject.onNext(service.real);
 
       // Only update the spaced location the first time, or if the user has moved beyond the threshold.
       if (firstLocation || movingDistance() > movingDistanceThreshold) {
-        service.spaced = angular.copy(service.real);
+        service.spaced = service.real.clone();
         spacedLocationSubject.onNext(service.spaced);
 
         if (!firstLocation) {
@@ -62,27 +75,16 @@
       return service.spaced ? turf.distance(service.real, service.spaced) * 1000 : 0;
     }
 
-    function lon() {
-      return service.real ? service.real.geometry.coordinates[0] : undefined;
+    function getLon() {
+      return this.geometry.coordinates[0];
     }
 
-    function lat() {
-      return service.real ? service.real.geometry.coordinates[1] : undefined;
+    function getLat() {
+      return this.geometry.coordinates[1];
     }
 
-    function alt() {
-      return service.real ? service.real.geometry.coordinates[2] : undefined;
-    }
-
-    function wikitudePositionToGeoJson(lon, lat, alt) {
-      return {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'Point',
-          coordinates: [ lon, lat, alt ]
-        }
-      };
+    function getAlt() {
+      return this.geometry.coordinates[2];
     }
   }
 })();
