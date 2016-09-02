@@ -8,7 +8,7 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArMarker, Filters, $log, Outing, rx, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArMarker, Filters, $log, Outing, $rootScope, rx, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
@@ -36,11 +36,15 @@
     }
 
     function onScreenClick() {
-      console.log('screen clicked');
+      $rootScope.$apply(function() {
+        console.log('screen clicked');
+      });
     }
 
     function onLocationChanged(lat, lon, alt) {
-      UserLocation.update(lon, lat, alt);
+      $rootScope.$apply(function() {
+        UserLocation.update(lon, lat, alt);
+      });
     }
 
     /**
@@ -61,55 +65,59 @@
      * so we avoid that by simply showing/hiding them when the user changes filters but does not move.
      */
     function updateAr() {
-      if (Outing.hasOuting()) { // Check if the data is actually lodaded.
-        var timer = Timers.start();
 
-        // Retrieve all available points.
-        var allPois = Outing.getPois();
-        $log.debug(allPois.length + ' points in total');
-
-        // Determine the nearest points; those are the only points that should be in the AR.
-        var nearestPois = getNearestPois(allPois);
-
-        // Determine the visible points based on user-selected filters.
-        // (Some of the nearest points might not be visible if they do not match the selected filters.)
-        var visiblePois = Filters.filterPois(nearestPois);
-
-        // We will keep track of applied changes.
-        var changes = {
-          visible: visiblePois
-        };
-
-        var newPoiIds = _.map(nearestPois, getPoiId),
-            newVisiblePoiIds = _.map(visiblePois, getPoiId);
-
-        // Remove points that are too far away from the AR.
-        // Store the list of removed points.
-        changes.removed = removeFarthestPois(newPoiIds);
-
-        // Hide points that are in the AR but that do not match user-selected filters.
-        var hidden = hideFilteredPois(newVisiblePoiIds);
-
-        // Store the list of hidden points (this includes the points that we just removed from the AR).
-        changes.hidden = changes.removed.concat(hidden);
-
-        // Add new points not yet present in the AR.
-        // Store the list of added points.
-        changes.added = addNewPois(nearestPois, newPoiIds, newVisiblePoiIds);
-
-        // Show points that were hidden in the AR but that should now be visible (e.g. because the user changed the current filters).
-        var shown = showVisiblePois(newVisiblePoiIds);
-
-        // Store the list of shown points (including points that were just added to the AR and that are visible).
-        changes.shown = shown.concat(filterVisiblePois(changes.added, newVisiblePoiIds));
-
-        timer.stop('load ' + newPoiIds.length + ' points in AR (' + newVisiblePoiIds.length + ' visible)');
-
-        // Notify observers of changes.
-        poisChangeSubject.onNext(changes);
-
-        //AppActions.execute('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
+      // Ensure the data is loaded and the user is located.
+      if (!Outing.hasOuting() || !UserLocation.hasLocation()) {
+        return;
       }
+
+      var timer = Timers.start();
+
+      // Retrieve all available points.
+      var allPois = Outing.getPois();
+      $log.debug(allPois.length + ' points in total');
+
+      // Determine the nearest points; those are the only points that should be in the AR.
+      var nearestPois = getNearestPois(allPois);
+
+      // Determine the visible points based on user-selected filters.
+      // (Some of the nearest points might not be visible if they do not match the selected filters.)
+      var visiblePois = Filters.filterPois(nearestPois);
+
+      // We will keep track of applied changes.
+      var changes = {
+        visible: visiblePois
+      };
+
+      var newPoiIds = _.map(nearestPois, getPoiId),
+          newVisiblePoiIds = _.map(visiblePois, getPoiId);
+
+      // Remove points that are too far away from the AR.
+      // Store the list of removed points.
+      changes.removed = removeFarthestPois(newPoiIds);
+
+      // Hide points that are in the AR but that do not match user-selected filters.
+      var hidden = hideFilteredPois(newVisiblePoiIds);
+
+      // Store the list of hidden points (this includes the points that we just removed from the AR).
+      changes.hidden = changes.removed.concat(hidden);
+
+      // Add new points not yet present in the AR.
+      // Store the list of added points.
+      changes.added = addNewPois(nearestPois, newPoiIds, newVisiblePoiIds);
+
+      // Show points that were hidden in the AR but that should now be visible (e.g. because the user changed the current filters).
+      var shown = showVisiblePois(newVisiblePoiIds);
+
+      // Store the list of shown points (including points that were just added to the AR and that are visible).
+      changes.shown = shown.concat(filterVisiblePois(changes.added, newVisiblePoiIds));
+
+      timer.stop('load ' + newPoiIds.length + ' points in AR (' + newVisiblePoiIds.length + ' visible)');
+
+      // Notify observers of changes.
+      poisChangeSubject.onNext(changes);
+
+      //AppActions.execute('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
     }
 
     function getNearestPois(pois) {
@@ -188,8 +196,8 @@
     }
 
     function isInReach(poi) {
-      var distance = turf.distance(UserLocation.current, poi);
-      return turf.distance(UserLocation.current, poi) * 1000 < reachLimit;
+      var distance = turf.distance(UserLocation.real, poi);
+      return turf.distance(UserLocation.real, poi) * 1000 < reachLimit;
     }
 
     function isInAr(poi) {

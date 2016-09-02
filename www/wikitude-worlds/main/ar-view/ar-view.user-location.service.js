@@ -9,77 +9,80 @@
 
   function UserLocationService($log, rx, turf) {
 
-    var currentLocationSubject = new rx.ReplaySubject(1);
+    var movingDistanceThreshold = 20;
 
-    /**
-     * @param lon
-     * @param lat
-     * @param alt
-     * @constructor
-     */
-    function UserLocation(lon, lat, alt) {
-      this.type = "Feature";
-      this.properties = {};
-      this.geometry = {
-        type       : "Point",
-        coordinates: [lon, lat, alt]
-      }
-    }
+    var realLocationSubject = new rx.ReplaySubject(1),
+        spacedLocationSubject = new rx.ReplaySubject(1);
 
-    // Static
-    UserLocation.current = null;
-    UserLocation.currentObs = currentLocationSubject.asObservable();
-    UserLocation.last = null;
-    UserLocation.update = update;
-    UserLocation.backupCurrent = backupCurrent;
-    UserLocation.movingDistance = movingDistance;
+    var service = {
+      real: null,
+      spaced: null,
+      update: update,
+      hasLocation: hasLocation,
+      realObs: realLocationSubject.asObservable(),
+      spacedObs: spacedLocationSubject.asObservable()
+    };
 
     //Getters
-    Object.defineProperties(UserLocation.prototype, {
-      "lon"    : {get: lon},
-      "lat"    : {get: lat},
-      "alt"    : {get: alt},
-      "literal": {get: literal}
+    Object.defineProperties(service, {
+      'lon': {get: lon},
+      'lat': {get: lat},
+      'alt': {get: alt}
     });
-    // UserLocation.prototype.lon = lon;
-    // UserLocation.prototype.lat = lat;
-    // UserLocation.prototype.alt = alt;
-    // UserLocation.prototype.literal = literal;
 
-    return UserLocation;
+    return service;
 
     ////////////////////
 
-    function update(lon, lat, alt) {
-      $log.debug('User location changed to longitude ' + lon + ', latitude ' + lat + ', altitude ' + alt);
-      UserLocation.current = new UserLocation(lon, lat, alt);
-      currentLocationSubject.onNext(UserLocation.current);
+    function hasLocation() {
+      return !_.isNil(service.real);
     }
 
-    function backupCurrent() {
-      UserLocation.last = angular.copy(UserLocation.current);
+    function update(lon, lat, alt) {
+      $log.debug('User location changed to longitude ' + lon + ', latitude ' + lat + ', altitude ' + alt);
+
+      var firstLocation = !hasLocation();
+
+      // Always update the real location.
+      service.real = wikitudePositionToGeoJson(lon, lat, alt);
+      realLocationSubject.onNext(service.real);
+
+      // Only update the spaced location the first time, or if the user has moved beyond the threshold.
+      if (firstLocation || movingDistance() > movingDistanceThreshold) {
+        service.spaced = angular.copy(service.real);
+        spacedLocationSubject.onNext(service.spaced);
+
+        if (!firstLocation) {
+          $log.debug('User has moved ' + movingDistance() + 'm (more than ' + movingDistanceThreshold + 'm)');
+        }
+      }
     }
 
     function movingDistance() {
-      var distance = turf.distance(UserLocation.current, UserLocation.last) * 1000;
-      console.log('distance parcourue', distance);
-      return distance;
+      return service.spaced ? turf.distance(service.real, service.spaced) * 1000 : 0;
     }
 
     function lon() {
-      return this.geometry.coordinates[0];
+      return service.real ? service.real.geometry.coordinates[0] : undefined;
     }
 
     function lat() {
-      return this.geometry.coordinates[1];
+      return service.real ? service.real.geometry.coordinates[1] : undefined;
     }
 
     function alt() {
-      return this.geometry.coordinates[2];
+      return service.real ? service.real.geometry.coordinates[2] : undefined;
     }
 
-    function literal() {
-      return 'lon: ' + this.lon() + ', lat: ' + this.lat() + ', alt: ' + this.alt();
+    function wikitudePositionToGeoJson(lon, lat, alt) {
+      return {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Point',
+          coordinates: [ lon, lat, alt ]
+        }
+      };
     }
   }
 })();

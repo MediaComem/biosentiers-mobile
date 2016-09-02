@@ -8,14 +8,12 @@
     .module('ar')
     .run(run);
 
-  function run(AppActions, ArView, $timeout, $window, World) {
+  function run(AppActions, ArView, $window, World) {
 
     ArView.init();
 
     $window.World = World;
 
-    $timeout(function() {
-      AppActions.execute('open');
-    });
+    AppActions.execute('open');
   }
 })();
