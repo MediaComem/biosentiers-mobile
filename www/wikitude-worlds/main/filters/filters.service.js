@@ -24,17 +24,23 @@
     };
 
     // Update available choices when the data changes.
-    Poi.dataChangeObs.subscribe(function(data) {
-      if (data.themes.length) {
-        service.themes = data.themes;
-        selected.themes = data.themes.slice();
-        $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
-      }
-    });
+    Poi.dataChangeObs.subscribe(updateAvailableChoices);
 
     return service;
 
     ////////////////////
+
+    /**
+     * Updates available filters choice, based on the ones in the newData param.
+     * @param newData
+     */
+    function updateAvailableChoices(newData) {
+      if (newData.themes.length) {
+        service.themes = newData.themes;
+        selected.themes = newData.themes.slice();
+        $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
+      }
+    }
 
     /**
      * Returns the currently selected filters.
