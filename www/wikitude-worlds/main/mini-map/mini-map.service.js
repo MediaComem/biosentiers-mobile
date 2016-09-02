@@ -22,6 +22,9 @@
 
     ////////////////////
 
+    /**
+     * Sets ths service config property
+     */
     function initialize() {
       service.config = {
         tiles   : {

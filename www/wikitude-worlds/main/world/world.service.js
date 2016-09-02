@@ -29,7 +29,7 @@
       ArView.updateAr();
     }
 
-    function onLocationChanged(UserLocation) {
+    function onLocationChanged() {
       if (service.startup) {
         AppActions.execute('toast', { message: 'Localisé !' });
       }
