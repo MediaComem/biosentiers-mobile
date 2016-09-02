@@ -1,4 +1,4 @@
 (function () {
   'use strict';
-  angular.module('poi', []);
+  angular.module('outing', []);
 })();

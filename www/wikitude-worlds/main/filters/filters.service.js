@@ -5,7 +5,7 @@
     .module('filters')
     .factory('Filters', FiltersService);
 
-  function FiltersService($log, Poi, rx) {
+  function FiltersService($log, Outing, rx) {
 
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
@@ -24,7 +24,7 @@
     };
 
     // Update available choices when the data changes.
-    Poi.dataChangeObs.subscribe(updateAvailableChoices);
+    Outing.outingChangeObs.subscribe(updateAvailableChoices);
 
     return service;
 
@@ -32,14 +32,14 @@
 
     /**
      * Updates available filters choice, based on the ones in the newData param.
-     * @param newData
      */
-    function updateAvailableChoices(newData) {
-      if (newData.themes.length) {
-        service.themes = newData.themes;
-        selected.themes = newData.themes.slice();
-        $log.debug('Filters: available themes updated to ' + service.themes.join(', '));
-      }
+    function updateAvailableChoices() {
+
+      var themes = Outing.getThemes();
+      service.themes = themes;
+      selected.themes = themes.slice();
+
+      $log.debug('Filters: available themes updated to ' + themes.join(', '));
     }
 
     /**

@@ -13,7 +13,6 @@
     'ngCordova',
     // Application modules.
     'app-actions',
-    'ar-config',
     'ar-view',
     'arDirectives',
     'bigmap',
@@ -25,7 +24,7 @@
     'mini-map',
     'mini-map-orientation',
     'modals',
-    'poi',
+    'outing',
     'timers',
     'world'
   ]);

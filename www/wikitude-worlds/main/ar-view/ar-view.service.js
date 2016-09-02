@@ -8,7 +8,7 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArMarker, Filters, $log, Poi, rx, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArMarker, Filters, $log, Outing, rx, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById = {},
@@ -16,15 +16,32 @@
         poisChangeSubject = new rx.Subject();
 
     var service = {
-      updateAr: updateAr,
+      init         : init,
+      updateAr     : updateAr,
       poisChangeObs: poisChangeSubject.asObservable()
     };
-
-    Filters.filtersChangeObs.subscribe(updateAr);
 
     return service;
 
     ////////////////////
+
+    function init() {
+      AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
+      AR.context.scene.cullingDistance = 250;
+      AR.context.scene.maxScalingDistance = 500;
+      AR.context.scene.minScalingDistance = 7;
+      AR.context.scene.scalingFactor = 0.01;
+      AR.context.onScreenClick = onScreenClick;
+      AR.context.onLocationChanged = onLocationChanged;
+    }
+
+    function onScreenClick() {
+      console.log('screen clicked');
+    }
+
+    function onLocationChanged(lat, lon, alt) {
+      UserLocation.update(lon, lat, alt);
+    }
 
     /**
      * Updates the POIs in the AR.
@@ -44,11 +61,11 @@
      * so we avoid that by simply showing/hiding them when the user changes filters but does not move.
      */
     function updateAr() {
-      if (Poi.hasData()) { // Check if the data is actually lodaded.
+      if (Outing.hasOuting()) { // Check if the data is actually lodaded.
         var timer = Timers.start();
 
         // Retrieve all available points.
-        var allPois = Poi.getPois();
+        var allPois = Outing.getPois();
         $log.debug(allPois.length + ' points in total');
 
         // Determine the nearest points; those are the only points that should be in the AR.

@@ -9,7 +9,7 @@
     .module('big-map-modal')
     .controller('BigMapCtrl', BigMapCtrl);
 
-  function BigMapCtrl($log, leafletData, BigMap, BigMapModal, $scope) {
+  function BigMapCtrl(leafletData, $log, BigMap, BigMapModal, $scope) {
     var bigmap = this;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.

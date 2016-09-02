@@ -16,7 +16,8 @@
     };
   }
 
-  function MiniMapCtrl(ArView, $http, BigMapModal, $log, MiniMap, $scope, UserLocation) {
+  function MiniMapCtrl(ArView, BigMapModal, $log, MiniMap, Outing, $scope, UserLocation) {
+
     var minimap = this;
 
     $log.info('minimap should not be visible');
@@ -26,9 +27,7 @@
 
     $scope.$on('leafletDirectiveMap.minimap.click', showBigMapModal);
 
-    $http.get('../../data/path.json')
-      .then(function (result) {MiniMap.addPath(result.data);})
-      .catch(handleError);
+    Outing.outingChangeObs.subscribe(MiniMap.addPath);
 
     UserLocation.currentObs.subscribe(centerMiniMap);
 
@@ -73,10 +72,6 @@
         minimap.config.markers.user.lng = UserLocation.current.lon;
       }
       $scope.$apply();
-    }
-
-    function handleError(error) {
-      $log.error(error);
     }
   }
 })();

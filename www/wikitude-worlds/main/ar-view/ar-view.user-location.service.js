@@ -7,7 +7,7 @@
     .module('ar-view')
     .factory('UserLocation', UserLocationService);
 
-  function UserLocationService(rx, turf) {
+  function UserLocationService($log, rx, turf) {
 
     var currentLocationSubject = new rx.ReplaySubject(1);
 
@@ -33,7 +33,6 @@
     UserLocation.update = update;
     UserLocation.backupCurrent = backupCurrent;
     UserLocation.movingDistance = movingDistance;
-    UserLocation.debug = debug;
 
     //Getters
     Object.defineProperties(UserLocation.prototype, {
@@ -52,6 +51,7 @@
     ////////////////////
 
     function update(lon, lat, alt) {
+      $log.debug('User location changed to longitude ' + lon + ', latitude ' + lat + ', altitude ' + alt);
       UserLocation.current = new UserLocation(lon, lat, alt);
       currentLocationSubject.onNext(UserLocation.current);
     }
@@ -64,13 +64,6 @@
       var distance = turf.distance(UserLocation.current, UserLocation.last) * 1000;
       console.log('distance parcourue', distance);
       return distance;
-    }
-
-    function debug() {
-      return {
-        current: UserLocation.current,
-        last   : UserLocation.last
-      };
     }
 
     function lon() {

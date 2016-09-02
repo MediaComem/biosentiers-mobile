@@ -61,17 +61,16 @@
 
     /**
      * Adds the received path as a geojson layer on the config object for the minimap.
-     * @param pathData A GeoJSON object representing the path
+     * @param outing A GeoJSON object containing a path property that reprensents the path to add.
      */
-    function addPath(pathData) {
+    function addPath(outing) {
       service.config.geojson.path = {
-        data : pathData,
+        data : outing.path,
         style: {
           color : 'red',
           weigth: 6
         }
       };
-      console.log(service.config);
     }
 
     /**

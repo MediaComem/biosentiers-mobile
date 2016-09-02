@@ -8,21 +8,41 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(DeviceOrientation, $ionicLoading, $log, Poi, $rootScope) {
+  function WorldService(AppActions, ArView, DeviceOrientation, Filters, $log, Outing, $rootScope, UserLocation) {
+
     var service = {
       startup                : true,
       poiData                : null,
       loadPoiData            : loadPoiData,
-      write                  : write,
-      loadPoints             : Poi.setData,
-      showLoading            : showLoading,
-      hideLoading            : $ionicLoading.hide,
+      loadOuting             : Outing.setOuting,
       updateDeviceOrientation: updateDeviceOrientation
     };
+
+    Filters.filtersChangeObs.subscribe(onFiltersChanged);
+    UserLocation.currentObs.subscribe(onLocationChanged);
 
     return service;
 
     ////////////////////
+
+    function onFiltersChanged() {
+      ArView.updateAr();
+    }
+
+    function onLocationChanged(UserLocation) {
+      if (service.startup) {
+        AppActions.execute('toast', { message: 'Localisé !' });
+      }
+
+      if (service.startup || UserLocation.movingDistance() > 20) {
+        if (!service.startup) {
+          $log.debug('User has moved ' + UserLocation.movingDistance() + 'm (more than 20m)');
+        }
+        UserLocation.backupCurrent();
+        ArView.updateAr();
+        service.startup = false;
+      }
+    }
 
     function updateDeviceOrientation(data) {
       DeviceOrientation.updateOrientation(data);
@@ -33,14 +53,5 @@
       service.poiData = data;
       $rootScope.$emit('marker:loaded', properties);
     }
-
-    function write(message) {
-      $log.debug("World writes", message);
-    }
-
-    function showLoading(message) {
-      return $ionicLoading.show({template: message});
-    }
-
   }
 })();

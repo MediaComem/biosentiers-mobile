@@ -7,7 +7,7 @@
     .module('bigmap')
     .factory('BigMap', BigMapService);
 
-  function BigMapService(Icons, $log, Poi, turf, UserLocation) {
+  function BigMapService(Icons, $log, Outing, turf, UserLocation) {
     var service = {
       config             : {},
       updateVisiblePoints: updateVisiblePoints,
@@ -100,7 +100,7 @@
 
     function getPointsToShow(poly) {
       var toShow = [];
-      var points = Poi.getPois();
+      var points = Outing.getPois();
       console.log(points);
       _.each(points, function (point) {
         if (turf.inside(point, poly)) {

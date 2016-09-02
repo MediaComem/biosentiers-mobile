@@ -10,6 +10,7 @@ var _ = require('lodash'),
     sass = require('gulp-sass'),
     sh = require('shelljs'),
     sort = require('gulp-sort'),
+    stable = require('stable'),
     util = require('gulp-util'),
     watch = require('gulp-watch');
 
@@ -93,7 +94,11 @@ function injectSourcesFactory(name, indexPath, sourcesPath) {
     util.log('Injecting ' + util.colors.blue(name) + ' sources');
 
     var sources = pathToGulpSrc(sourcesPath, { read: false })
-      .pipe(sort(compareAngularFiles));
+      .pipe(sort({
+        customSortFn: function(files) {
+          return stable(files, compareAngularFiles);
+        }
+      }));
 
     return pathToGulpSrc(indexPath)
       .pipe(inject(sources, { relative: true }))
