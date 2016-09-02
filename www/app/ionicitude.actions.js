@@ -18,6 +18,9 @@
         .then(function (success) { console.log(success); })
         .catch(function (error) { console.log(error); });
 
+      /**
+       * Registering Ionicitude Actions
+       */
       Ionicitude
         .addAction(open)
         .addAction(loadMarkerData)
@@ -28,6 +31,10 @@
 
       ////////////////////
 
+      /**
+       * Starts to watch the device's orientation and send the data to the AR View.
+       * @param service The Ionicitude service
+       */
       function open(service) {
         $log.debug('World opened');
 

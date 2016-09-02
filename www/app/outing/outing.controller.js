@@ -48,7 +48,7 @@
         user: {
           lat : UserPosition.lat,
           lng : UserPosition.lng,
-          icon: Icons.user()
+          icon: Icons.user
         }
       }
     };

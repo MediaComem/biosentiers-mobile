@@ -5,18 +5,20 @@
   'use strict';
 
   angular.module('app', [
+    // Third-party modules.
     'ionic',
-    'ngCordova',
     'IonicitudeModule',
-    'AuthModule',
-    'QRModule',
-    'OutingsModule', // SHC : pour le service contenant la liste des sorties
-    'poi',
     'leaflet-directive',
-    'timers',
+    'ngCordova',
+    // Application modules.
+    'AuthModule',
+    'poi',
     'icons',
+    'leaflet-directive',
+    'OutingsModule',
+    'QRModule',
+    'timers',
     'world-actions'
     // 'arDirectives'
   ]);
-
 })();

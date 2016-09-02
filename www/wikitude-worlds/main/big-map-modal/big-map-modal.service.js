@@ -9,14 +9,13 @@
     .module('big-map-modal')
     .factory('BigMapModal', BigMapModalService);
 
-  function BigMapModalService($ionicModal) {
+  function BigMapModalService($ionicModal, Modals) {
 
     var service = {
-      open : openModal,
-      close: closeModal
+      show : showModal,
+      hide: Modals.hide,
+      remove: Modals.remove
     };
-
-    var current = null;
 
     return service;
 
@@ -26,27 +25,11 @@
      * Opens the BigMapModal using the $scope parameter as its scope.
      * @param $scope The scope to use as the modal scope.
      */
-    function openModal($scope) {
-      $ionicModal.fromTemplateUrl('big-map-modal/big-map-modal.html', {
+    function showModal($scope) {
+      return $ionicModal.fromTemplateUrl('big-map-modal/big-map-modal.html', {
         scope    : $scope,
         animation: 'slide-in-up'
-      }).then(modalLoaded);
-    }
-
-    /**
-     * Closes the BigMapModal, providing that it exists.
-     */
-    function closeModal() {
-      current !== null && current.hide();
-    }
-
-    /**
-     * Sets the received modal as the current BigMapModal.
-     * @param modal The modal to set as current.
-     */
-    function modalLoaded(modal) {
-      current = modal;
-      current.show();
+      }).then(Modals.show);
     }
   }
 })();

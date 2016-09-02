@@ -12,7 +12,12 @@
 
   function IconsService() {
     var service = {
-      user: getUserIcon,
+      /**
+       * Returns the icon definition for the user.
+       * Usage : var userIcon = Icons.user
+       * @returns Object
+       */
+      get user() {return angular.copy(icons.user);},
       get: getIcon
     };
 
@@ -42,14 +47,6 @@
     return service;
 
     ////////////////////
-
-    /**
-     * Returns the icon definition for the user
-     * @returns Object
-     */
-    function getUserIcon() {
-      return angular.copy(icons.user);
-    }
 
     /**
      * Returns the icon definition corresponding to the name given.

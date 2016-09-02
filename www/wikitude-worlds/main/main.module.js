@@ -16,6 +16,7 @@
     'ar-config',
     'ar-view',
     'arDirectives',
+    'bigmap',
     'big-map-modal',
     'debug-position-modal',
     'debug-stats',
@@ -23,6 +24,7 @@
     'icons',
     'mini-map',
     'mini-map-orientation',
+    'modals',
     'outing',
     'timers',
     'world'

@@ -1,0 +1,23 @@
+.stats {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  background-color: white;
+}
+
+.stats span {
+  text-align: center;
+}
+
+.stats .plus {
+  color: green;
+}
+
+.stats .moins {
+  color: red;
+}
+
+.stats .total {
+  color: blue;
+}

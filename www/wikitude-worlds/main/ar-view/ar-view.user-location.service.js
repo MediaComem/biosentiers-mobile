@@ -35,11 +35,17 @@
     UserLocation.movingDistance = movingDistance;
     UserLocation.debug = debug;
 
-    //Method
-    UserLocation.prototype.lon = lon;
-    UserLocation.prototype.lat = lat;
-    UserLocation.prototype.alt = alt;
-    UserLocation.prototype.literal = literal;
+    //Getters
+    Object.defineProperties(UserLocation.prototype, {
+      "lon"    : {get: lon},
+      "lat"    : {get: lat},
+      "alt"    : {get: alt},
+      "literal": {get: literal}
+    });
+    // UserLocation.prototype.lon = lon;
+    // UserLocation.prototype.lat = lat;
+    // UserLocation.prototype.alt = alt;
+    // UserLocation.prototype.literal = literal;
 
     return UserLocation;
 
@@ -63,7 +69,7 @@
     function debug() {
       return {
         current: UserLocation.current,
-        last: UserLocation.last
+        last   : UserLocation.last
       };
     }
 

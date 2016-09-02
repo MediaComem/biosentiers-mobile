@@ -4,17 +4,17 @@
     .controller('BaseCtrl', BaseCtrl);
 
   function BaseCtrl(AppActions, DebugPositionModal, FiltersModal, $ionicModal, $log, $rootScope, $scope, World) {
-    var ctrl = this;
+    var base = this;
 
-    ctrl.modal = null;
-    ctrl.closeAR = closeAR;
-    ctrl.showDebugModal = showDebugModal;
-    ctrl.showFiltersModal = showFiltersModal;
+    base.modal = null;
+    base.closeAR = closeAR;
+    base.showDebugModal = showDebugModal;
+    base.showFiltersModal = showFiltersModal;
 
     // Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function () {
-      if (ctrl.modal) {
-        ctrl.modal.remove();
+      if (base.modal) {
+        base.modal.remove();
       }
     });
     // Execute action on hide modal
@@ -29,9 +29,9 @@
     });
 
     $rootScope.$on('marker:loaded', function (event, properties) {
-      ctrl.poi = World.poiData;
-      ctrl.properties = properties;
-      showPoiModal(ctrl.properties.theme_name);
+      base.poi = World.poiData;
+      base.properties = properties;
+      showPoiModal(base.properties.theme_name);
     });
 
     ////////////////////
@@ -50,15 +50,15 @@
         scope    : $scope,
         animation: 'slide-in-up'
       }).then(function (modal) {
-        ctrl.modal = modal;
-        ctrl.modal.show();
+        base.modal = modal;
+        base.modal.show();
       });
     }
 
     function showFiltersModal() {
       FiltersModal.showModal($scope).then(function (modal) {
-        ctrl.modal = modal;
-        ctrl.modal.show();
+        base.modal = modal;
+        base.modal.show();
       });
     }
   }
