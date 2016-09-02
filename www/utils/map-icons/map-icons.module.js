@@ -4,13 +4,13 @@
  */
 (function () {
   'use strict';
-  angular.module('icons', []);
+  angular.module('map-icons', []);
 
   angular
-    .module('icons')
-    .factory('Icons', IconsService);
+    .module('map-icons')
+    .factory('MapIcons', MapIconsService);
 
-  function IconsService() {
+  function MapIconsService() {
     var service = {
       /**
        * Returns the icon definition for the user.
@@ -37,8 +37,8 @@
         iconSize  : [16, 16],
         iconAnchor: [8, 8]
       },
-      Papillon: {
-        iconUrl   : '../../img/icons/Papillon.png',
+      Papillons: {
+        iconUrl   : '../../img/icons/Papillons.png',
         iconSize  : [16, 16],
         iconAnchor: [8, 8]
       }

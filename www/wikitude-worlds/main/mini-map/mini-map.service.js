@@ -8,7 +8,7 @@
     .module('mini-map')
     .factory('MiniMap', MiniMapService);
 
-  function MiniMapService(Icons, $log) {
+  function MiniMapService(MapIcons, $log) {
     var zoom    = 16,
         service = {
           config          : {},
@@ -49,7 +49,7 @@
           user: {
             lat : 46.781001,
             lng : 6.647128,
-            icon: Icons.user
+            icon: MapIcons.user
           }
         },
         events  : {
@@ -89,7 +89,7 @@
         service.config.markers[marker.properties.id_poi] = {
           lat : marker.geometry.coordinates[1],
           lng : marker.geometry.coordinates[0],
-          icon: Icons.get(marker.properties.theme_name)
+          icon: MapIcons.get(marker.properties.theme_name)
         }
       });
       $log.log(service.config);

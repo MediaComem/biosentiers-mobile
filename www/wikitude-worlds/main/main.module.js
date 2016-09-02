@@ -20,7 +20,7 @@
     'debug-position-modal',
     'debug-stats',
     'filters-modal',
-    'icons',
+    'map-icons',
     'mini-map',
     'mini-map-orientation',
     'modals',

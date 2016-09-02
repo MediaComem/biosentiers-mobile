@@ -7,20 +7,23 @@
     .module('big-map')
     .factory('BigMap', BigMapService);
 
-  function BigMapService(Icons, $log, Outing, turf, UserLocation) {
+  function BigMapService(MapIcons, $log, Outing, turf, UserLocation) {
     var service = {
       config          : {},
       updateMapMarkers: updateMapMarkers,
       setMap          : setMap
     };
 
-    var map            = null,
-        defaultMarkers = {
+    var map                 = null,
+        defaultMarkers      = {
           user: {
             lat : UserLocation.current.lat,
             lng : UserLocation.current.lon,
-            icon: Icons.user
+            icon: MapIcons.user
           }
+        },
+        clusterLayerOptions = {
+          disableClusteringAtZoom: 18
         };
 
     initialize();
@@ -43,26 +46,24 @@
         geojson: {},
         layers : {
           overlays: {
-            markers : {
+            markers  : {
               name        : "Marqueurs",
               type        : "markercluster",
               visible     : true,
-              layerOptions: {
-                disableClusteringAtZoom: 18
-              }
+              layerOptions: clusterLayerOptions
             },
-            Oiseaux : {
+            Oiseaux  : {
               name   : "Oiseaux",
               type   : "markercluster",
               visible: false
             },
-            Flore   : {
+            Flore    : {
               name   : "Flore",
               type   : "markercluster",
               visible: true
             },
-            Papillon: {
-              name   : "Papillon",
+            Papillons: {
+              name   : "Papillons",
               type   : "markercluster",
               visible: true
             }
@@ -140,7 +141,7 @@
           layer: 'markers',
           lat  : poi.geometry.coordinates[1],
           lng  : poi.geometry.coordinates[0],
-          icon : Icons.get(poi.properties.theme_name)
+          icon : MapIcons.get(poi.properties.theme_name)
         };
       })
     }
