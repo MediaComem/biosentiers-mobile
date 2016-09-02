@@ -1,6 +1,9 @@
 (function () {
   angular
     .module('ar')
+    .config(function($compileProvider) {
+      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|blob|cdvfile):|data:image\//);
+    })
     .controller('BaseCtrl', BaseCtrl);
 
   function BaseCtrl(AppActions, DebugPositionModal, FiltersModal, $ionicModal, $log, Outing, $scope, World) {
@@ -31,6 +34,7 @@
     Outing.currentPoiChangeObs.subscribe(function(data) {
       base.poi = data.poi;
       base.poiDetails = data.details;
+      base.testImgPath = 'file:///data/data/com.biosentiers.app/files/test.png';
       showPoiModal(data.poi.properties.theme_name);
     });
 
