@@ -16,76 +16,22 @@
     };
   }
 
-  function MiniMapCtrl(ArView, BigMapModal, Icons, $log, Outing, $scope, UserLocation) {
+  function MiniMapCtrl(ArView, BigMapModal, $log, MiniMap, Outing, $scope, UserLocation) {
 
-    var minimap = this,
-        zoom = 16;
+    var minimap = this;
 
-    minimap.config = {
-      tiles   : {
-        url    : '../../data/Tiles/{z}/{x}/{y}.png',
-        options: {
-          errorTileUrl: '../../data/Tiles/error.png'
-        }
-      },
-      defaults: {
-        scrollWheelZoom   : false,
-        touchZoom         : false,
-        doubleClickZoom   : false,
-        dragging          : false,
-        attributionControl: false
-      },
-      center  : {
-        lat : 46.781001,
-        lng : 6.647128,
-        zoom: zoom
-      },
-      markers : {
-        user: {
-          lat : 46.781001,
-          lng : 6.647128,
-          icon: Icons.user
-        }
-      },
-      events  : {
-        map: {
-          enable: ['click'],
-          logic : 'emit'
-        }
-      },
-      geojson : {}
-    };
+    $log.info('minimap should not be visible');
+    // Hides the minimap while loading things
+    minimap.isVisible = false;
+    minimap.config = MiniMap.config;
 
-    $scope.$on('leafletDirectiveMap.minimap.click', function () {
-      BigMapModal.show($scope);
-    });
+    $scope.$on('leafletDirectiveMap.minimap.click', showBigMapModal);
 
-    Outing.outingChangeObs.subscribe(function(outing) {
-      minimap.config.geojson.path = {
-        data : outing.path,
-        style: {
-          color : 'red',
-          weigth: 6
-        }
-      };
-    });
+    Outing.outingChangeObs.subscribe(MiniMap.addPath);
 
     UserLocation.realObs.subscribe(centerMiniMap);
 
-    ArView.poisChangeObs.subscribe(function(changes) {
-      $log.log(changes);
-      _.each(changes.removed, function (point) {
-        delete minimap.config.markers[point.properties.id_poi];
-      });
-      _.each(changes.added, function (point) {
-        minimap.config.markers[point.properties.id_poi] = {
-          lat : point.geometry.coordinates[1],
-          lng : point.geometry.coordinates[0],
-          icon: Icons.get(point.properties.theme_name)
-        }
-      });
-      $log.log(minimap.config);
-    });
+    ArView.poisChangeObs.subscribe(MiniMap.updateMapMarkers);
 
     // Execute action on hide modal
     $scope.$on('modal.hidden', function () {
@@ -98,12 +44,22 @@
       console.log('modal removed');
     });
 
+    // Show the minimap when loading things is done
+    minimap.isVisible = true;
+    $log.info('minimap should now be visible');
+
     ////////////////////
 
-    function resetMiniMap() {
-      centerMiniMap();
+    /**
+     * Opens up the BigMap modal, passing as its scope the scope of the MiniMapCtrl.
+     */
+    function showBigMapModal() {
+      BigMapModal.show($scope);
     }
 
+    /**
+     * Centers the minimap center and the position of the user marker to match the actual user's location.
+     */
     function centerMiniMap() {
       if (minimap.config.hasOwnProperty('center')) {
         $log.debug('Updating the minimap center');
