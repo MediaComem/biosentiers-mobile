@@ -16,7 +16,6 @@
     'ar-config',
     'ar-view',
     'arDirectives',
-    'ARLib',
     'bigmap',
     'big-map-modal',
     'debug-position-modal',

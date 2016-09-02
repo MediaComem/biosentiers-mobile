@@ -16,7 +16,6 @@
     'icons',
     'leaflet-directive',
     'OutingsModule',
-    'POIModule',
     'QRModule',
     'timers',
     'world-actions'
