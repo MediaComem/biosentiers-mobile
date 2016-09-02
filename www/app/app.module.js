@@ -13,8 +13,8 @@
     // Application modules.
     'AuthModule',
     'poi',
-    'icons',
     'leaflet-directive',
+    'map-icons',
     'OutingsModule',
     'QRModule',
     'timers',

@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl($cordovaToast, Icons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, $scope, WorldActions) {
+  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, $scope, WorldActions) {
     var ctrl = this;
 
     var UserPosition = {
@@ -48,7 +48,7 @@
         user: {
           lat : UserPosition.lat,
           lng : UserPosition.lng,
-          icon: Icons.user
+          icon: MapIcons.user
         }
       }
     };

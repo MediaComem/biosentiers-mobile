@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('bigmap', []);
+  angular.module('big-map', []);
 })();
