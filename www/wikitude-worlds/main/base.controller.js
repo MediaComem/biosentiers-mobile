@@ -6,7 +6,7 @@
     })
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(AppActions, DebugPositionModal, FiltersModal, $ionicModal, $log, Outing, $scope, World) {
+  function BaseCtrl(AppActions, DebugPositionModal, FiltersModal, $ionicModal, $log, Outing, $scope, $timeout, World) {
     var base = this;
 
     base.modal = null;
@@ -34,7 +34,12 @@
     Outing.currentPoiChangeObs.subscribe(function(data) {
       base.poi = data.poi;
       base.poiDetails = data.details;
-      base.testImgPath = 'file:///data/data/com.biosentiers.app/files/test.png';
+
+      $timeout(function() {
+        console.log('setting image path');
+        base.testImgPath = 'cdvfile://localhost/files-external/test2.png';
+      }, 5000);
+
       showPoiModal(data.poi.properties.theme_name);
     });
 

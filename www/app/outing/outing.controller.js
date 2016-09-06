@@ -8,8 +8,13 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, $scope, WorldActions) {
+  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, $scope, $timeout, WorldActions) {
     var ctrl = this;
+
+    $timeout(function() {
+      $log.debug('Setting test image path');
+      ctrl.testImgPath = 'cdvfile://localhost/files-external/test2.png';
+    }, 10000);
 
     var UserPosition = {
       lat: 46.781001,

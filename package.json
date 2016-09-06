@@ -44,7 +44,8 @@
       "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
       "id": "cordova-plugin-x-toast"
     },
-    "cordova-plugin-device-orientation"
+    "cordova-plugin-device-orientation",
+    "cordova-plugin-file-transfer"
   ],
   "cordovaPlatforms": [
     {

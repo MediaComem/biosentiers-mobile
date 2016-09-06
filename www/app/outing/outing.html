@@ -18,6 +18,9 @@
         <div class="col text-right">{{outing.data.statut}}</div>
       </div>
 
+      <p>{{ outing.testImgPath }}</p>
+      <img ng-src="{{ outing.testImgPath }}" />
+
       <button ng-if="outing.data.statut === 'En attente'" class="button button-balanced button-block button-outline"
               on-release="outing.launchAR()">Démarrer
       </button>
