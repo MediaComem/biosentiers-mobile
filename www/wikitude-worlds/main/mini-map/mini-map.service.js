@@ -13,6 +13,7 @@
         service = {
           config          : {},
           addPath         : addPath,
+          center          : center,
           updateMapMarkers: updateMapMarkers
         };
 
@@ -95,5 +96,21 @@
       $log.log(service.config);
     }
 
+    /**
+     * Centers the mini-map and the user marker to the real user's location.
+     * @param realLocation The current user's Location
+     */
+    function center(realLocation) {
+      if (service.config.hasOwnProperty('center')) {
+        $log.debug('Updating the minimap center');
+        service.config.center.lat = realLocation.lat;
+        service.config.center.lng = realLocation.lon;
+      }
+      if (service.config.markers.hasOwnProperty('user')) {
+        $log.debug('Updating the minimap marker');
+        service.config.markers.user.lat = realLocation.lat;
+        service.config.markers.user.lng = realLocation.lon;
+      }
+    }
   }
 })();
