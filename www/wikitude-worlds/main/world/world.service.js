@@ -8,13 +8,13 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(AppActions, ArView, DeviceOrientation, Filters, $log, Outing, $rootScope, UserLocation) {
+  function WorldService(AppActions, ArView, DeviceOrientation, Filters, $log, Outing, UserLocation) {
 
     var service = {
       startup                : true,
       poiData                : null,
-      loadPoiData            : loadPoiData,
       loadOuting             : Outing.setOuting,
+      loadPoiDetails         : Outing.loadCurrentPoiDetails,
       updateDeviceOrientation: updateDeviceOrientation
     };
 
@@ -39,12 +39,6 @@
 
     function updateDeviceOrientation(data) {
       DeviceOrientation.updateOrientation(data);
-    }
-
-    function loadPoiData(data, properties) {
-      console.log('setting the poi data');
-      service.poiData = data;
-      $rootScope.$emit('marker:loaded', properties);
     }
   }
 })();

@@ -1,3 +1,4 @@
 --ignore-dir=platforms
 --ignore-dir=plugins
+--ignore-dir=www/data
 --ignore-dir=www/lib

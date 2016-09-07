@@ -5,18 +5,27 @@
     .module('outing')
     .factory('Outing', OutingService);
 
-  function OutingService($log, $rootScope, rx) {
+  function OutingService(AppActions, $log, rx) {
 
     var outing,
-        outingSubject = new rx.ReplaySubject(1);
+        currentPoi,
+        currentPoiDetails,
+        outingSubject = new rx.ReplaySubject(1),
+        currentPoiSubject = new rx.ReplaySubject(1);
 
     var service = {
-      hasOuting      : hasOuting,
-      setOuting      : setOuting,
-      getPois        : getPois,
-      getPathGeoJson : getPathGeoJson,
-      getThemes      : getThemes,
-      outingChangeObs: outingSubject.asObservable()
+      // Outing functions
+      hasOuting     : hasOuting,
+      setOuting     : setOuting,
+      getPois       : getPois,
+      getPathGeoJson: getPathGeoJson,
+      getThemes     : getThemes,
+      // Current POI functions
+      loadCurrentPoi       : loadCurrentPoi,
+      loadCurrentPoiDetails: loadCurrentPoiDetails,
+      // Observables
+      outingChangeObs    : outingSubject.asObservable(),
+      currentPoiChangeObs: currentPoiSubject.asObservable()
     };
 
     return service;
@@ -49,6 +58,19 @@
 
     function getPathGeoJson() {
       return outing ? outing.path : undefined;
+    }
+
+    function loadCurrentPoi(poi) {
+      currentPoi = poi;
+      AppActions.execute('loadPoiDetails', { id: poi.properties.id_poi });
+    }
+
+    function loadCurrentPoiDetails(details) {
+      currentPoiDetails = details;
+      currentPoiSubject.onNext({
+        poi: currentPoi,
+        details: currentPoiDetails
+      });
     }
   }
 })();

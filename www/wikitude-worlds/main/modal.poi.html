@@ -1,13 +1,13 @@
 <ion-modal-view>
   <ion-header-bar class="bar bar-header bar-balanced">
-    <h1 class="title">{{base.poi.name}}</h1>
+    <h1 class="title">{{base.poiDetails.name}}</h1>
     <button class="button button-clear button-primary" ng-click="base.modal.hide()">Cancel</button>
   </ion-header-bar>
   <ion-content>
     <div class="list">
       <a class="item" href="#" ng-click="base.log(base)">Dev opt 1</a>
-      <a class="item" href="#" ng-click="base.log(base.poi)">Dev opt 2</a>
-      <a class="item" href="#" ng-click="base.log(base.poi.name)">Dev opt 3</a>
+      <a class="item" href="#" ng-click="base.log(base.poiDetails)">Dev opt 2</a>
+      <a class="item" href="#" ng-click="base.log(base.poiDetails.name)">Dev opt 3</a>
     </div>
   </ion-content>
 </ion-modal-view>

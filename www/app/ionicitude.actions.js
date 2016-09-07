@@ -23,7 +23,7 @@
        */
       Ionicitude
         .addAction(open)
-        .addAction(loadMarkerData)
+        .addAction(loadPoiDetails)
         .addAction(toast)
         .addAction(setPosition)
         .addAction(close)
@@ -50,9 +50,8 @@
         });
       }
 
-      function loadMarkerData(service, param) {
-        console.log('get marker data');
-        WorldActions.execute('loadPoiData', PoiContent.getData(param.id), param.properties);
+      function loadPoiDetails(service, param) {
+        WorldActions.execute('loadPoiDetails', PoiContent.getData(param.id));
       }
 
       function toast(service, param) {

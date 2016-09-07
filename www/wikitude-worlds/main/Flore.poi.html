@@ -1,31 +1,31 @@
 <ion-modal-view>
   <ion-header-bar class="bar bar-header bar-energized">
-    <h1 class="title">{{base.properties.common_name}}</h1>
+    <h1 class="title">{{base.poi.properties.common_name}}</h1>
     <button class="button button-clear button-primary" ng-click="base.modal.hide()">Cancel</button>
   </ion-header-bar>
   <ion-header-bar class="bar bar-subheader bat-stable">
     <h2 class="title">Flore</h2>
   </ion-header-bar>
   <ion-content>
-    <img src="./assets/img/fleur/{{base.properties.id_specie}}_0_grandes.jpg" alt="fleur" style="width: 100%; height: auto">
+    <img ng-src="./assets/img/fleur/{{base.poi.properties.id_specie}}_0_grandes.jpg" alt="fleur" style="width: 100%; height: auto">
     <div class="list card">
-      <div class="item">Nom Commun<span style="float: right">{{base.properties.common_name}}</span></div>
-      <div class="item">Nom Scientifique<span style="float: right">{{base.properties.scientific_name}}</span></div>
-      <div class="item">Famille<span style="float: right">{{base.properties.name}}</span></div>
+      <div class="item">Nom Commun<span style="float: right">{{base.poi.properties.common_name}}</span></div>
+      <div class="item">Nom Scientifique<span style="float: right">{{base.poi.properties.scientific_name}}</span></div>
+      <div class="item">Famille<span style="float: right">{{base.poi.properties.name}}</span></div>
       <div class="item">Observé le<span style="float: right">06 juillet 2015</span></div>
       <div class="item item-body">
         <h3>Informations fournies par :</h3>
-        <p>{{base.properties.owner_name}}</p>
+        <p>{{base.poi.properties.owner_name}}</p>
       </div>
       <div class="item item-body">
         <h2>Description</h2>
         <h3>Caractéristiques physiques</h3>
         <p>
-          {{base.properties.physical_characteristics}}
+          {{base.poi.properties.physical_characteristics}}
         </p>
         <h3>Caractéristiques de l'habitat</h3>
         <p>
-          {{base.properties.habitat_characteristics}}
+          {{base.poi.properties.habitat_characteristics}}
         </p>
       </div>
     </div>
