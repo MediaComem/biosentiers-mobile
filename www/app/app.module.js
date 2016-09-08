@@ -12,6 +12,7 @@
     'ngCordova',
     // Application modules.
     'AuthModule',
+    'bio.files',
     'poi',
     'leaflet-directive',
     'map-icons',
