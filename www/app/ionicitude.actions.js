@@ -8,7 +8,7 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, Timers, WorldActions) {
+  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, $q, Timers, WorldActions) {
 
     var deviceOrientationWatch,
         deviceOrientationUpdatesInterval = 250;
@@ -19,15 +19,13 @@
         .catch(function (error) { console.log(error); });
 
       /**
-       * Registering Ionicitude Actions
+       * Register Ionicitude Actions
        */
-      Ionicitude
-        .addAction(open)
-        .addAction(loadPoiDetails)
-        .addAction(toast)
-        .addAction(setPosition)
-        .addAction(close)
-        .listLibActions();
+      addIonicitudeAction(open);
+      addIonicitudeAction(loadPoiDetails);
+      addIonicitudeAction(toast);
+      addIonicitudeAction(setPosition);
+      addIonicitudeAction(close);
 
       ////////////////////
 
@@ -51,7 +49,7 @@
       }
 
       function loadPoiDetails(service, param) {
-        WorldActions.execute('loadPoiDetails', PoiContent.getData(param.id));
+        return PoiContent.getData(param.id);
       }
 
       function toast(service, param) {
@@ -74,6 +72,34 @@
         }
 
         service.close();
+      }
+
+      function addIonicitudeAction(func) {
+        if (!func.name) {
+          throw new Error('Ionicitude action function must be named');
+        }
+
+        return Ionicitude.addAction(func.name, wrapIonicitudeAction(func));
+      }
+
+      function wrapIonicitudeAction(func) {
+        return function(service, data) {
+
+          var executionId = data._executionId;
+
+          var resultOrPromise = func(service, _.omit(data, '_executionId'));
+
+          if (executionId) {
+            $q.resolve(resultOrPromise).then(function(result) {
+              WorldActions.execute('returnResultFromApp', {
+                id: executionId,
+                result: result
+              });
+            })
+          }
+
+          return resultOrPromise;
+        }
       }
     });
   }
