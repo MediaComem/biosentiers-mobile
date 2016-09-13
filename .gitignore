@@ -110,6 +110,8 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# GNU Screen
+.screenrc
 
 ### SublimeText ###
 # cache files for sublime text
