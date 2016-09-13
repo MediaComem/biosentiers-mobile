@@ -8,7 +8,7 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, Timers, WorldActions) {
+  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, $q, Timers, WorldActions) {
 
     var deviceOrientationWatch,
         deviceOrientationUpdatesInterval = 250;
@@ -19,15 +19,13 @@
         .catch(function (error) { console.log(error); });
 
       /**
-       * Registering Ionicitude Actions
+       * Register Ionicitude Actions
        */
-      Ionicitude
-        .addAction(open)
-        .addAction(loadPoiDetails)
-        .addAction(toast)
-        .addAction(setPosition)
-        .addAction(close)
-        .listLibActions();
+      addIonicitudeAction(open);
+      addIonicitudeAction(loadPoiDetails);
+      addIonicitudeAction(toast);
+      addIonicitudeAction(setPosition);
+      addIonicitudeAction(close);
 
       ////////////////////
 
@@ -51,7 +49,7 @@
       }
 
       function loadPoiDetails(service, param) {
-        WorldActions.execute('loadPoiDetails', PoiContent.getData(param.id));
+        return PoiContent.getData(param.id);
       }
 
       function toast(service, param) {
@@ -74,6 +72,76 @@
         }
 
         service.close();
+      }
+
+      /**
+       * Adds an Ionicitude action.
+       *
+       * The action is added in a wrapper that can automatically return the result
+       * of the action to the wikitude world.
+       *
+       * Use the `AppActions` service in the wikitude world to execute these actions.
+       *
+       * @param {Function} func - The function to wrap.
+       * @see {@link #wrapIonicitudeAction}
+       */
+      function addIonicitudeAction(func) {
+        if (!func.name) {
+          throw new Error('Ionicitude action function must be named');
+        }
+
+        return Ionicitude.addAction(func.name, wrapIonicitudeAction(func));
+      }
+
+      /**
+       * Creates a wrapper around an Ionicitude action function that can automatically
+       * return the result of the action to the wikitude world.
+       *
+       * A result will be returned only if the `_executionId` parameter is provided to
+       * the generated function. The `AppActions` service in the wikitude world will
+       * automatically generate and provide this execution ID if given the `return` option.
+       *
+       * @param {Function} func - The Ionicitude action function (it must be a named function).
+       * @returns {Function} A wrapper function that can be added to Ionicitude.
+       * @see AppActions
+       */
+      function wrapIonicitudeAction(func) {
+
+        // Return the function that will actually be added to Ionicitude, and which will call `func`.
+        return function(service, params) {
+
+          // Retrieve the action execution ID provided by the wikitude world (if any).
+          var executionId = params._executionId;
+
+          // Execute the passed function (without the execution ID).
+          var resultOrPromise = func(service, _.omit(params, '_executionId'));
+
+          // If an execution ID was provided, resolve the result (it might be a value or a promise),
+          // then return the result (or error) to the wikitude world.
+          if (executionId) {
+            $q.resolve(resultOrPromise).then(function(result) {
+              returnResultToWorld(executionId, result);
+            }, function(err) {
+              returnErrorToWorld(executionId, err);
+            });
+          }
+
+          return resultOrPromise;
+        }
+      }
+
+      function returnResultToWorld(executionId, result) {
+        WorldActions.execute('returnResultFromApp', {
+          id: executionId,
+          result: result
+        });
+      }
+
+      function returnErrorToWorld(executionId, err) {
+        WorldActions.execute('returnResultFromApp', {
+          id: executionId,
+          error: err.message
+        });
       }
     });
   }

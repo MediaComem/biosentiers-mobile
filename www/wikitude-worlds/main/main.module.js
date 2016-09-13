@@ -12,7 +12,7 @@
     'leaflet-directive',
     'ngCordova',
     // Application modules.
-    'app-actions',
+    'bio.world.app-actions',
     'ar-view',
     'arDirectives',
     'big-map',
