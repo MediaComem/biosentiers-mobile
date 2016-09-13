@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('app-actions', []);
+  angular.module('bio.world.app-actions', []);
 })();

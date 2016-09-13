@@ -60,7 +60,11 @@
     }
 
     function loadCurrentPoi(poi) {
-      AppActions.execute('loadPoiDetails', { id: poi.properties.id_poi }).then(function(details) {
+
+      var params = { id: poi.properties.id_poi },
+          options = { return: true };
+
+      AppActions.execute('loadPoiDetails', params, options).then(function(details) {
 
         currentPoi = poi;
         currentPoiDetails = details;
