@@ -16,6 +16,8 @@
       lng: 6.647128
     };
 
+    ctrl.downloadProgress = "Télécharger";
+
     ctrl.map = {
       maxbounds: {
         northEast: {
@@ -103,5 +105,29 @@
         });
       });
     }
+
+
+    // Zip Download
+    ctrl.getZip = function (outingId){
+      downloader.init({folder: outingId.toString(), unzip: true});
+      downloader.get("http://knae.niloo.fr/testBirds.zip");
+
+      document.addEventListener("DOWNLOADER_downloadProgress", function(event){
+        var data = event.data;
+
+        $scope.$apply(function () {
+          ctrl.downloadProgress = data[0]  + ' %';
+        });
+
+      });
+
+      document.addEventListener("DOWNLOADER_unzipSuccess", function(event){
+        $scope.$apply(function () {
+          ctrl.downloadProgress = "Réussit";
+        });
+      });
+
+    }
+
   }
 })();
