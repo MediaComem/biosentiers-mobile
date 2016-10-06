@@ -10,9 +10,10 @@
 
   function OutingsCtrl(outingsData, $scope, $ionicTabsDelegate) {
     var ctrl = this;
+
     ctrl.outings = outingsData;
     console.log(ctrl.outings);
-  
+
     $scope.goForward = function () {
         var selected = $ionicTabsDelegate.selectedIndex();
         if (selected != -1) {
@@ -26,6 +27,6 @@
             $ionicTabsDelegate.select(selected - 1);
         }
     }
-    
+
   }
 })();

@@ -3,7 +3,12 @@
 
   angular
     .module('app')
-    .run(run);
+    .run(run)
+    //Allow to use cdvfile protocol with images
+    .config( ['$compileProvider',
+      function( $compileProvider ){
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|blob|cdvfile):|data:image\//);
+      }]);
 
   function run($ionicPlatform) {
     $ionicPlatform.ready(function () {
