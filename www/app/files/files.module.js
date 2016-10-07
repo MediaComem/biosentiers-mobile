@@ -1,4 +1,4 @@
 (function () {
   'use strict';
-  angular.module('biosentiers.files', []);
+  angular.module('bio.files', []);
 })();

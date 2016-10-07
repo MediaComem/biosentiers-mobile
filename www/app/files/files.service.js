@@ -48,7 +48,7 @@
 
       function onResolved() {
         var duration = (new Date.getTime() - start) / 1000;
-        $log.debug('Downloaded ' url + ' to ' + relativePath + ' in ' + duration + 's (' + fileSize + ' bytes)')
+        $log.debug('Downloaded ' + url + ' to ' + relativePath + ' in ' + duration + 's (' + fileSize + ' bytes)');
         return join(rootUrl, relativePath);
       }
 

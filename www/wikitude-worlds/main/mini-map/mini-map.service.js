@@ -28,7 +28,7 @@
     function initialize() {
       service.config = {
         tiles   : {
-          url    : '../../data/Tiles/{z}/{x}/{y}.png',
+          url    : 'cdvfile://localhost/files-external/test2.png',
           options: {
             errorTileUrl: '../../data/Tiles/error.png'
           }
