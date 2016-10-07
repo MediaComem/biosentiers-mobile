@@ -108,6 +108,8 @@
 
 
     // Zip Download
+
+    //TODO add to localdb that the download and unzip was sucessful
     ctrl.getZip = function (outingId){
       downloader.init({folder: outingId.toString(), unzip: true});
       downloader.get("http://knae.niloo.fr/testBirds.zip");
@@ -124,6 +126,8 @@
       document.addEventListener("DOWNLOADER_unzipSuccess", function(event){
         $scope.$apply(function () {
           ctrl.downloadProgress = "Réussit";
+
+
         });
       });
 

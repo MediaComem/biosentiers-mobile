@@ -14,6 +14,9 @@
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="15" />
     <preference name="BackupWebStorage" value="none" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+    <preference name="iosPersistentFileLocation" value="Library" />
+    <preference name="android-permission" value="ACCESS_COARSE_LOCATION"/>
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <feature name="StatusBar">
@@ -70,7 +73,4 @@
         <splash height="480" src="resources\ios\splash\Default~iphone.png" width="320" />
     </platform>
     <icon src="resources\android\icon\drawable-xhdpi-icon.png" />
-    <preference name="AndroidPersistentFileLocation" value="Internal" />
-    <preference name="iosPersistentFileLocation" value="Library" />
-    <preference name="BackupWebStorage" value="none" />
 </widget>

@@ -53,7 +53,8 @@
     {
       "locator": "https://github.com/fastrde/phonegap-downloader.git",
       "id": "cordova-plugin-fastrde-downloader"
-    }
+    },
+    "cordova.plugins.diagnostic"
   ],
   "cordovaPlatforms": [
     {
