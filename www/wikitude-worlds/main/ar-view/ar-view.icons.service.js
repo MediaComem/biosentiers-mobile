@@ -36,20 +36,24 @@
 
     ////////////////////
 
-    function getIcon(type) {
-      if (!markers[type] || markers[type].destroyed) {
-        var img = new AR.ImageResource("assets/" + type + ".png", {
+    function getIcon(type, opacityWithinDistance) {
+      var typeAndOpacity = type + '' + opacityWithinDistance*10;
+
+      if (!markers[typeAndOpacity] || markers[typeAndOpacity].destroyed) {
+        console.log(typeAndOpacity);
+        var img = new AR.ImageResource("assets/" + typeAndOpacity + ".png", {
           onError: function () {
             throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
           }
         });
-        markers[type] = new AR.ImageDrawable(img, 2, {
+
+        markers[typeAndOpacity] = new AR.ImageDrawable(img, 2, {
           zOrder : 0,
           opacity: 1.0
         });
       }
       //console.log("Type :", type);
-      return markers[type];
+      return markers[typeAndOpacity];
     }
   }
 })();

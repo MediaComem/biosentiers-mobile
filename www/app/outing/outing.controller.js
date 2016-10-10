@@ -107,7 +107,7 @@
     }
 
 
-    // Zip Download
+    /* Zip Download
 
     //TODO add to localdb that the download and unzip was sucessful
     ctrl.getZip = function (outingId){
@@ -132,6 +132,7 @@
       });
 
     }
+    */
 
   }
 })();
