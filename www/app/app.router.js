@@ -45,6 +45,7 @@
 
       .state('app.outings', {
         url: '/outings',
+        cache: false, //fix issue with other tabs system - species - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
         views: {
           'menuContent': {
             templateUrl: 'app/outings/outings.html'
@@ -112,6 +113,62 @@
         }
       })
 
+      .state('app.species', {
+        url: '/species',
+        cache: false, //fix issue with other tabs system - outings
+        views: {
+          'menuContent': {
+            templateUrl: 'app/species/species.html'
+          }
+        }
+      })
+
+      .state('app.species.flora', {
+        url: '/flora',
+        views: {
+          'species-flora': {
+            templateUrl: 'app/species/species-flora.html',
+            controller: 'SpeciesCtrl as ctrl'
+          }
+        },
+        resolve: {
+          speciesData: function (Species) {
+            return Species.getAll('Flore');
+          }
+        }
+      })
+
+      .state('app.species.birds', {
+        url: '/birds',
+        views: {
+          'species-birds': {
+            templateUrl: 'app/species/species-birds.html',
+            controller: 'SpeciesCtrl as ctrl'
+          }
+        },
+        resolve: {
+          speciesData: function (Species) {
+            return Species.getAll('Oiseaux');
+          }
+        }
+      })
+
+      .state('app.species.butterflies', {
+        url: '/butterflies',
+        views: {
+          'species-butterflies': {
+            templateUrl: 'app/species/species-butterflies.html',
+            controller: 'SpeciesCtrl as ctrl'
+          }
+        },
+        resolve: {
+          speciesData: function (Species) {
+            return Species.getAll('Papillons');
+          }
+        }
+      })
+
+
       .state('app.settings', {
         url: '/settings',
         views: {
@@ -132,6 +189,21 @@
         resolve: {
           outingData: function(Outings, $stateParams) {
             return Outings.getOne($stateParams.outingId);
+          }
+        }
+      })
+
+      .state('app.specie', {
+        url: '/species/:specieId',
+        views: {
+          'menuContent': {
+            templateUrl: 'app/specie/specie.html',
+            controller: 'SpecieCtrl as specie'
+          }
+        },
+        resolve: {
+          specieData: function(Species, $stateParams) {
+            return Species.getOne($stateParams.specieId);
           }
         }
       });

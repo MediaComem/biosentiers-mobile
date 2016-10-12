@@ -1,0 +1,29 @@
+<ion-view view-title="{{specie.data[0].properties.common_name}}">
+  <ion-content>
+    <div>
+      <leaflet id="map" maxbounds="specie.map.maxbounds" defaults="specie.map.defaults" tiles="specie.map.tiles"
+               center="specie.map.center" geojson="specie.map.path" markers="specie.map.markers" layers="specie.map.layers"></leaflet>
+    </div>
+    <div class="padding">
+
+      <div class="row">
+        <div class="col text-left">Nom latin</div>
+        <div class="col text-right">{{specie.data[0].properties.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col text-left">Nom scientifique</div>
+        <div class="col text-right">{{specie.data[0].properties.scientific_name}}</div>
+      </div>
+      <div class="row">
+        <div class="col text-left">Habitat</div>
+        <div class="col text-right">{{specie.data[0].properties.habitat_characteristics}}</div>
+      </div>
+      <div class="row">
+        <p>{{specie.data[0].properties.physical_characteristics}}</p>
+      </div>
+      <div class="row">
+        <p>{{specie.data[0].properties.lien_url}}</p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
