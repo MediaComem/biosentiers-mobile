@@ -24,24 +24,32 @@
         }
       });
 
-      //Opacity within distance
-      //Everything within 0-20 meters has the same/full opacity), rounded to 1 decimal
-      var opacityCalc = this.location.distanceToUser() > 20 ? Math.round(((this.location.distanceToUser() - 20)*((0.1-1.0)/(250-20))+1.0)*10) : 10;
-      this.properties.opacityWithinDistance = opacityCalc%2 == 0 ? opacityCalc/10 : (opacityCalc + 1)/10;
-
       this.geoObject = new AR.GeoObject(this.location, {
         enabled: enabled,
         onClick: onClick(this),
         drawables: {
-          cam: [ ArIcons.get(this.properties.theme_name, this.properties.opacityWithinDistance) ]
+          cam: [ ArIcons.get(this.properties.theme_name, CalcOpacity(this.location)) ]
         }
       });
 
     }
 
+    /** Opacity within distance
+     *  Everything within 0-20 meters has the same/full opacity), rounded to 1 decimal
+    */
+    function CalcOpacity(location) {
+      var opacityCalc = location.distanceToUser() > 20 ? Math.round(((location.distanceToUser() - 20)*((0.1-1.0)/(250-20))+1.0)*10) : 10;
+      return opacityCalc%2 == 0 ? opacityCalc/10 : (opacityCalc + 1)/10;
+    }
+
     // Methods
     ArMarker.prototype.distanceToUser = function() {
       return this.location.distanceToUser();
+    };
+
+    ArMarker.prototype.updateOpacity = function(arPoi) {
+      this.geoObject.drawables.cam = [ ArIcons.get(this.properties.theme_name, CalcOpacity(this.location)) ];
+      return this;
     };
 
     ArMarker.prototype.remove = function() {

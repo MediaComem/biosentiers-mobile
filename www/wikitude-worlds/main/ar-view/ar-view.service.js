@@ -178,6 +178,8 @@
       var shown = _.reduce(newVisiblePoiIds, function(memo, id) {
 
         var arPoi = arPointsById[id];
+        setArPoiOpacity(arPoi);//Update drawables
+
         if (!isArPoiVisible(arPoi)) {
           memo.push(setArPoiVisible(arPoi, true).poi);
         }
@@ -211,6 +213,10 @@
     function setArPoiVisible(arPoi, visible) {
       arPoi.geoObject.enabled = visible;
       return arPoi;
+    }
+
+    function setArPoiOpacity(arPoi) {
+      return arPoi.updateOpacity();
     }
 
     function onArPoiClick(arPoi) {

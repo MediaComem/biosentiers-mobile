@@ -40,7 +40,7 @@
       var typeAndOpacity = type + '' + opacityWithinDistance*10;
 
       if (!markers[typeAndOpacity] || markers[typeAndOpacity].destroyed) {
-        console.log(typeAndOpacity);
+
         var img = new AR.ImageResource("assets/" + typeAndOpacity + ".png", {
           onError: function () {
             throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
