@@ -39,7 +39,7 @@
       "id": "phonegap-plugin-barcodescanner"
     },
     {
-      "locator": "https://github.com/Tazaf/wikitude-ionic-plugin.git",
+      "locator": "https://github.com/Wikitude/wikitude-cordova-plugin.git",
       "id": "com.wikitude.phonegap.WikitudePlugin"
     },
     {
@@ -49,12 +49,7 @@
     "cordova-plugin-file-transfer",
     "cordova-plugin-network-information",
     "cordova-plugin-zip",
-    "cordova-plugin-fastrde-md5",
-    {
-      "locator": "https://github.com/fastrde/phonegap-downloader.git",
-      "id": "cordova-plugin-fastrde-downloader"
-    },
-    "cordova.plugins.diagnostic"
+    "cordova-plugin-fastrde-md5"
   ],
   "cordovaPlatforms": [
     {
