@@ -27,6 +27,25 @@
       <button ng-if="outing.data.statut === 'Terminée'" class="button button-balanced button-block button-outline"
               on-release="outing.launchAR()">Compte-rendu
       </button>
+
+      <!-- Test downloadzip
+
+      <button ng-if="outing.data.statut === 'En attente' && outing.downloadProgress === 'Réussit'" class="button button-balanced button-block button-outline"
+              on-release="outing.launchAR()">Démarrer
+      </button>
+      <button ng-if="outing.data.statut === 'En cours' && outing.downloadProgress === 'Réussit'" class="button button-balanced button-block button-outline"
+              on-release="outing.launchAR()">Reprendre
+      </button>
+      <button ng-if="outing.data.statut === 'Terminée' && outing.downloadProgress === 'Réussit'" class="button button-balanced button-block button-outline"
+              on-release="outing.launchAR()">Compte-rendu
+      </button>
+
+      <button ng-if="outing.downloadProgress != 'Réussit'" class="button button-balanced button-block"
+              ng-click="outing.getZip({{outing.data.id}})">{{outing.downloadProgress}}
+      </button>
+
+
+      <img src="cdvfile://localhost/persistent/{{outing.data.id}}/oiseaux/50_700px.jpg" /> -->
     </div>
   </ion-content>
 </ion-view>

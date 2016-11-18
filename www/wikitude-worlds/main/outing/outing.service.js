@@ -21,8 +21,7 @@
       getPathGeoJson: getPathGeoJson,
       getThemes     : getThemes,
       // Current POI functions
-      loadCurrentPoi       : loadCurrentPoi,
-      loadCurrentPoiDetails: loadCurrentPoiDetails,
+      loadCurrentPoi: loadCurrentPoi,
       // Observables
       outingChangeObs    : outingSubject.asObservable(),
       currentPoiChangeObs: currentPoiSubject.asObservable()
@@ -61,15 +60,19 @@
     }
 
     function loadCurrentPoi(poi) {
-      currentPoi = poi;
-      AppActions.execute('loadPoiDetails', { id: poi.properties.id_poi });
-    }
 
-    function loadCurrentPoiDetails(details) {
-      currentPoiDetails = details;
-      currentPoiSubject.onNext({
-        poi: currentPoi,
-        details: currentPoiDetails
+      var params = { id: poi.properties.id_poi },
+          options = { return: true };
+
+      AppActions.execute('loadPoiDetails', params, options).then(function(details) {
+
+        currentPoi = poi;
+        currentPoiDetails = details;
+
+        currentPoiSubject.onNext({
+          poi: currentPoi,
+          details: currentPoiDetails
+        });
       });
     }
   }

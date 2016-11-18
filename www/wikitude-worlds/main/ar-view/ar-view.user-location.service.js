@@ -56,6 +56,7 @@
       var firstLocation = !hasLocation();
 
       // Always update the real location.
+
       service.real = new Location(lon, lat, alt);
       realLocationSubject.onNext(service.real);
 
@@ -76,6 +77,7 @@
       }
 
       $log.debug(message);
+
     }
 
     function movingDistance() {

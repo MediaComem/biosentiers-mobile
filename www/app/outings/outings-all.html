@@ -2,13 +2,14 @@
   <ion-content on-swipe-right="goBack()" on-swipe-left="goForward()">
     <ion-list>
       <ion-item ng-repeat="outing in ctrl.outings" href="#/app/outings/{{outing.id}}">
+
+
         <h2>{{outing.name}}</h2>
         <p>Date : {{outing.date}}</p>
         <p>Créée par {{outing.creator}}</p>
         <p>Statut : {{outing.statut}}</p>
+
       </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>
-
-

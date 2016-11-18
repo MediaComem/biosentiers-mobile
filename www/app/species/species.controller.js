@@ -6,13 +6,13 @@
 
   angular
     .module('app')
-    .controller('OutingsCtrl', OutingsCtrl);
+    .controller('SpeciesCtrl', SpeciesCtrl);
 
-  function OutingsCtrl(outingsData, $scope, $ionicTabsDelegate) {
+  function SpeciesCtrl(speciesData, $scope, $ionicTabsDelegate) {
     var ctrl = this;
 
-    ctrl.outings = outingsData;
-    console.log(ctrl.outings);
+    ctrl.species = speciesData;
+    console.log(ctrl.species);
 
     $scope.goForward = function () {
         var selected = $ionicTabsDelegate.selectedIndex();

@@ -16,6 +16,7 @@
     'leaflet-directive',
     'map-icons',
     'OutingsModule',
+    'SpeciesModule',
     'QRModule',
     'timers',
     'world-actions'

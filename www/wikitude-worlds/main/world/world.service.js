@@ -14,8 +14,8 @@
       startup                : true,
       poiData                : null,
       loadOuting             : Outing.setOuting,
-      loadPoiDetails         : Outing.loadCurrentPoiDetails,
-      updateDeviceOrientation: updateDeviceOrientation
+      updateDeviceOrientation: updateDeviceOrientation,
+      returnResultFromApp    : AppActions.returnResultFromApp
     };
 
     // Update the AR when:

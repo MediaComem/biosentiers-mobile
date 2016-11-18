@@ -23,7 +23,9 @@
   function MiniMapOrientationCtrl(DeviceOrientation, $log, $scope) {
 
     var subscription = DeviceOrientation.orientationChangeObs.subscribe(function(data) {
-      $scope.setOrientation(data.trueHeading);
+      if ($scope.setOrientation) {
+        $scope.setOrientation(data.trueHeading);
+      }
     });
 
     $scope.$on('$destroy', subscription.dispose);
