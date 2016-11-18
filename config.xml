@@ -4,7 +4,7 @@
     <description>
         An Ionic Framework and Cordova project.
     </description>
-    <author email="you@example.com" href="http://www.heig-vd.ch/rad/mei">
+    <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">
       Media Engineering Institute
     </author>
     <content src="index.html" />
