@@ -13,8 +13,8 @@
 
     var service = {
       show : showModal,
-      hide: Modals.hide,
-      remove: Modals.remove
+      hide: Modals.hideCurrent,
+      remove: Modals.removeCurrent
     };
 
     return service;
@@ -29,7 +29,7 @@
       return $ionicModal.fromTemplateUrl('big-map-modal/big-map-modal.html', {
         scope    : $scope,
         animation: 'slide-in-up'
-      }).then(Modals.show);
+      }).then(Modals.showCurrent);
     }
   }
 })();

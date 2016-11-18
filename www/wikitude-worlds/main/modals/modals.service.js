@@ -7,7 +7,7 @@
 		.module('modals')
 		.factory('Modals', ModalsService);
 
-	function ModalsService($q, ArView) {
+	function ModalsService(ArView, $q) {
 		var service = {
 			showCurrent  : showModal,
 			hideCurrent  : hideModal,
@@ -30,7 +30,6 @@
 				return modal.show().then(function () {
 					current = modal;
 					ArView.pauseAr();
-					console.log(current);
 				});
 			} else {
 				return $q.reject('No modal to show');
