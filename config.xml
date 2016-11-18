@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.biosentiers.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>BioSentiers</name>
-    <description>
-        An Ionic Framework and Cordova project.
+    <description>
+        An Ionic Framework and Cordova project.
     </description>
-    <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+    <author email="you@example.com" href="http://www.heig-vd.ch/rad/mei">
+      Media Engineering Institute
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -16,7 +16,7 @@
     <preference name="BackupWebStorage" value="none" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
-    <preference name="android-permission" value="ACCESS_COARSE_LOCATION"/>
+    <preference name="android-permission" value="ACCESS_COARSE_LOCATION" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <feature name="StatusBar">
@@ -73,4 +73,5 @@
         <splash height="480" src="resources\ios\splash\Default~iphone.png" width="320" />
     </platform>
     <icon src="resources\android\icon\drawable-xhdpi-icon.png" />
+    <plugin name="com.wikitude.phonegap.WikitudePlugin" spec="https://github.com/Wikitude/wikitude-cordova-plugin.git" />
 </widget>
