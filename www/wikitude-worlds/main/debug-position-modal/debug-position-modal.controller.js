@@ -11,16 +11,16 @@
     .controller('DebugCtrl', DebugCtrl);
 
   function DebugCtrl(AppActions, DebugPositionModal, $log) {
-    var ctrl = this;
+    var debug = this;
 
-    ctrl.position = {};
-    ctrl.close = DebugPositionModal.close;
-    ctrl.balises = balises;
-    ctrl.heig = heig;
-    ctrl.plage = plage;
-    ctrl.cheseaux = cheseaux;
-    ctrl.champPittet = champPittet;
-    ctrl.custom = custom;
+    debug.position = {};
+    debug.remove = DebugPositionModal.remove;
+    debug.balises = balises;
+    debug.heig = heig;
+    debug.plage = plage;
+    debug.cheseaux = cheseaux;
+    debug.champPittet = champPittet;
+    debug.custom = custom;
 
     ////////////////////
 
@@ -56,8 +56,8 @@
      * Sets the position to the given coordinates
      */
     function custom() {
-      if (ctrl.position.hasOwnProperty('lat') && ctrl.position.hasOwnProperty('lon') && ctrl.position.hasOwnProperty('alt')) {
-        setPosition(ctrl.position.lat, ctrl.position.lon, ctrl.position.alt)
+      if (debug.position.hasOwnProperty('lat') && debug.position.hasOwnProperty('lon') && debug.position.hasOwnProperty('alt')) {
+        setPosition(debug.position.lat, debug.position.lon, debug.position.alt)
       } else {
         AppActions.execute('toast', {message: "Des champs ne sont pas remplis"});
       }
@@ -89,7 +89,7 @@
      * @param alt The altitude of the faked position
      */
     function setPosition(lat, lon, alt) {
-      DebugPositionModal.close().then(function (success) {
+      Modals.remove().then(function (success) {
         $log.debug(success);
         AppActions.execute('setPosition', {lat: lat, lon: lon, alt: alt});
       }).catch(function (error) {

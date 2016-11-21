@@ -22,6 +22,7 @@
 
 		/**
 		 * Sets the received modal as the current modal, and opens it.
+		 * While doing so, deactivate the camera and sensors for the AR to spare resources.
 		 * @param modal The modal to set as current.
 		 */
 		function showModal(modal) {
@@ -36,7 +37,8 @@
 		}
 
 		/**
-		 * Hides the current, providing that it exists.
+		 * Hides the current modal, providing that it exists.
+		 * While doing so, activate the camera and sensors for the AR.
 		 * @returns Promise
 		 */
 		function hideModal() {
@@ -50,7 +52,8 @@
 
 		/**
 		 * Removes the current modal, providing that it exists
-		 * @returns Promise
+     * While doing so, activate the camera and sensors for the AR.
+     * @returns Promise
 		 */
 		function removeModal() {
 			if (current !== null) {
@@ -60,7 +63,6 @@
 				return $q.reject('No active modal to remove');
 			}
 		}
-
 	}
 })
 ();

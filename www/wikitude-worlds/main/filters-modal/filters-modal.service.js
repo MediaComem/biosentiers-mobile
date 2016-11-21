@@ -5,10 +5,11 @@
     .module('filters-modal')
     .factory('FiltersModal', FiltersModalService);
 
-  function FiltersModalService($ionicModal, $log) {
-
+  function FiltersModalService($ionicModal, Modals) {
     var service = {
-      showModal: showModal
+      show  : showModal,
+      hide  : Modals.hideCurrent,
+      remove: Modals.removeCurrent
     };
 
     return service;
@@ -19,11 +20,10 @@
      * Shows a modal dialog to configure filters.
      */
     function showModal($scope) {
-      $log.debug('Showing filters modal');
       return $ionicModal.fromTemplateUrl('filters-modal/filters-modal.html', {
-        scope: $scope,
+        scope    : $scope,
         animation: 'slide-in-up'
-      });
+      }).then(Modals.showCurrent);
     }
   }
 })();

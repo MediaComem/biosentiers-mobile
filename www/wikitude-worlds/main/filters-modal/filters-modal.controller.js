@@ -3,20 +3,21 @@
 
   angular
     .module('filters-modal')
-    .controller('FiltersModalCtrl', FiltersModalCtrl)
+    .controller('FiltersModalCtrl', FiltersModalCtrl);
 
-  function FiltersModalCtrl(Filters, $scope) {
-    var ctrl = this;
+  function FiltersModalCtrl(Filters, FiltersModal, $scope) {
+    var filters = this;
 
+    filters.remove = FiltersModal.removeCurrent;
     // Public data
-    ctrl.themes = Filters.themes;
+    filters.themes = Filters.themes;
 
-    ctrl.selected = {
+    filters.selected = {
       themes: themesArrayToCheckedThemesObject(Filters.getSelected().themes)
     };
 
     // Functions
-    ctrl.getThemeImageUrl = getThemeImageUrl;
+    filters.getThemeImageUrl = getThemeImageUrl;
 
     // Events
     var debouncedUpdateFilters = _.debounce(updateFilters, 650);
@@ -26,7 +27,7 @@
 
     function updateFilters() {
       Filters.updateSelected({
-        themes: checkedThemesObjectToThemesArray(ctrl.selected.themes)
+        themes: checkedThemesObjectToThemesArray(filters.selected.themes)
       });
     }
 
