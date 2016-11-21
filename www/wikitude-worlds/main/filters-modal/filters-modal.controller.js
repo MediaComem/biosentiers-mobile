@@ -8,7 +8,7 @@
   function FiltersModalCtrl(Filters, FiltersModal, $scope) {
     var filters = this;
 
-    filters.remove = FiltersModal.removeCurrent;
+    filters.remove = FiltersModal.remove;
     // Public data
     filters.themes = Filters.themes;
 
