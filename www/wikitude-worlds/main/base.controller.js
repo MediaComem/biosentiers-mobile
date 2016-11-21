@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(AppActions, DebugPositionModal, FiltersModal, $ionicModal, $log, Outing, $scope) {
+  function BaseCtrl(AppActions, Modals, $ionicModal, $log, Outing, $scope) {
     var base = this;
 
     base.modal = null;
@@ -42,11 +42,11 @@
     }
 
     function showDebugModal() {
-      DebugPositionModal.show($scope);
+      Modals.showDebugPosition($scope);
     }
 
     function showFiltersModal() {
-      FiltersModal.show($scope);
+      Modals.showFilters($scope);
     }
 
     function showPoiModal(type) {

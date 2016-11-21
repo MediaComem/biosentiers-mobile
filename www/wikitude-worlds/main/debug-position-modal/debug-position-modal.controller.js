@@ -10,11 +10,11 @@
     .module('debug-position-modal')
     .controller('DebugCtrl', DebugCtrl);
 
-  function DebugCtrl(AppActions, DebugPositionModal, $log) {
+  function DebugCtrl(AppActions, Modals, $log) {
     var debug = this;
 
     debug.position = {};
-    debug.remove = DebugPositionModal.remove;
+    debug.remove = Modals.removeCurrent;
     debug.balises = balises;
     debug.heig = heig;
     debug.plage = plage;

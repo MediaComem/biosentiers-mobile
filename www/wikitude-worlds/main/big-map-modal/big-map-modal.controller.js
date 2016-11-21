@@ -9,12 +9,12 @@
     .module('big-map-modal')
     .controller('BigMapCtrl', BigMapCtrl);
 
-  function BigMapCtrl(leafletData, $log, BigMap, BigMapModal, $scope) {
+  function BigMapCtrl(leafletData, $log, BigMap, Modals, $scope) {
     var bigmap = this;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
     // So, the Modals.closeCurrent closes the BigMap Modal.
-    bigmap.remove = BigMapModal.remove;
+    bigmap.remove = Modals.removeCurrent;
     bigmap.config = BigMap.config;
 
     // var debouncedUpdatePoints = _.debounce(BigMap.updateMapMarkers, 500);

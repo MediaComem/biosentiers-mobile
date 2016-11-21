@@ -16,7 +16,7 @@
     };
   }
 
-  function MiniMapCtrl(ArView, BigMapModal, $log, MiniMap, Outing, $scope, UserLocation) {
+  function MiniMapCtrl(ArView, Modals, $log, MiniMap, Outing, $scope, UserLocation) {
 
     var minimap = this;
 
@@ -54,7 +54,7 @@
      * Opens up the BigMap modal, passing as its scope the scope of the MiniMapCtrl.
      */
     function showBigMapModal() {
-      BigMapModal.show($scope);
+      Modals.showBigMap($scope);
     }
   }
 })();

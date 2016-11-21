@@ -1,68 +1,103 @@
 /**
  * Created by Mathias on 31.08.2016.
  */
-(function () {
-	'use strict';
-	angular
-		.module('modals')
-		.factory('Modals', ModalsService);
+(function() {
+  'use strict';
+  angular
+    .module('modals')
+    .factory('Modals', ModalsService);
 
-	function ModalsService(ArView, $q) {
-		var service = {
-			showCurrent  : showModal,
-			hideCurrent  : hideModal,
-			removeCurrent: removeModal
-		};
+  function ModalsService(ArView, $ionicModal, $q) {
+    var service = {
+      showBigMap       : showBigMap,
+      showDebugPosition: showDebugPosition,
+      showFilters      : showFilters,
+      hideCurrent      : hideModal,
+      removeCurrent    : removeModal
+    };
 
-		var current = null;
+    var current = null;
 
-		return service;
+    return service;
 
-		////////////////////
+    ////////////////////
 
-		/**
-		 * Sets the received modal as the current modal, and opens it.
-		 * While doing so, deactivate the camera and sensors for the AR to spare resources.
-		 * @param modal The modal to set as current.
-		 */
-		function showModal(modal) {
-			if (modal) {
-				return modal.show().then(function () {
-					current = modal;
-					ArView.pauseAr();
-				});
-			} else {
-				return $q.reject('No modal to show');
-			}
-		}
+    /**
+     * Opens the BigMapModal using the $scope parameter as its scope.
+     * @param $scope The scope to use as the modal scope.
+     */
+    function showBigMap($scope) {
+      return $ionicModal.fromTemplateUrl('big-map-modal/big-map-modal.html', {
+        scope    : $scope,
+        animation: 'slide-in-up'
+      }).then(loadModal);
+    }
 
-		/**
-		 * Hides the current modal, providing that it exists.
-		 * While doing so, activate the camera and sensors for the AR.
-		 * @returns Promise
-		 */
-		function hideModal() {
-			if (current !== null) {
-				ArView.resumeAr();
-				return current.hide();
-			} else {
-				return $q.reject('No active modal to close');
-			}
-		}
+    /**
+     * Opens the modal using the $scope parameter as its scope.
+     * @param $scope The scope to use as the modal scope.
+     */
+    function showDebugPosition($scope) {
+      return $ionicModal.fromTemplateUrl('debug-position-modal/debug-position-modal.html', {
+        scope    : $scope,
+        animation: 'slide-in-up'
+      }).then(loadModal);
+    }
 
-		/**
-		 * Removes the current modal, providing that it exists
+    /**
+     * Shows a modal dialog to configure filters.
+     */
+    function showFilters($scope) {
+      return $ionicModal.fromTemplateUrl('filters-modal/filters-modal.html', {
+        scope    : $scope,
+        animation: 'slide-in-up'
+      }).then(loadModal);
+    }
+
+
+    /**
+     * Sets the received modal as the current modal, and opens it.
+     * While doing so, deactivate the camera and sensors for the AR to spare resources.
+     * @param modal The modal to set as current.
+     */
+    function loadModal(modal) {
+      if (modal) {
+        return modal.show().then(function() {
+          current = modal;
+          ArView.pauseAr();
+        });
+      } else {
+        return $q.reject('No modal to show');
+      }
+    }
+
+    /**
+     * Hides the current modal, providing that it exists.
      * While doing so, activate the camera and sensors for the AR.
      * @returns Promise
-		 */
-		function removeModal() {
-			if (current !== null) {
-				ArView.resumeAr();
-				return current.remove();
-			} else {
-				return $q.reject('No active modal to remove');
-			}
-		}
-	}
+     */
+    function hideModal() {
+      if (current !== null) {
+        ArView.resumeAr();
+        return current.hide();
+      } else {
+        return $q.reject('No active modal to close');
+      }
+    }
+
+    /**
+     * Removes the current modal, providing that it exists
+     * While doing so, activate the camera and sensors for the AR.
+     * @returns Promise
+     */
+    function removeModal() {
+      if (current !== null) {
+        ArView.resumeAr();
+        return current.remove();
+      } else {
+        return $q.reject('No active modal to remove');
+      }
+    }
+  }
 })
 ();

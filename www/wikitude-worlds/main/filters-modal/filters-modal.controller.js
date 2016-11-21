@@ -5,10 +5,10 @@
     .module('filters-modal')
     .controller('FiltersModalCtrl', FiltersModalCtrl);
 
-  function FiltersModalCtrl(Filters, FiltersModal, $scope) {
+  function FiltersModalCtrl(Filters, Modals, $scope) {
     var filters = this;
 
-    filters.remove = FiltersModal.remove;
+    filters.remove = Modals.removeCurrent;
     // Public data
     filters.themes = Filters.themes;
 
