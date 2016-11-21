@@ -11,8 +11,7 @@
 		var service = {
 			showCurrent  : showModal,
 			hideCurrent  : hideModal,
-			removeCurrent: removeModal,
-			get isCurrentShown() {return current ? current.isShown : false;}
+			removeCurrent: removeModal
 		};
 
 		var current = null;
