@@ -64,7 +64,7 @@
       if (modal) {
         return modal.show().then(function() {
           current = modal;
-          ArView.pauseAr();
+          // ArView.pauseAr();
         });
       } else {
         return $q.reject('No modal to show');
@@ -78,7 +78,7 @@
      */
     function hideModal() {
       if (current !== null) {
-        ArView.resumeAr();
+        // ArView.resumeAr();
         return current.hide();
       } else {
         return $q.reject('No active modal to close');
@@ -92,7 +92,7 @@
      */
     function removeModal() {
       if (current !== null) {
-        ArView.resumeAr();
+        // ArView.resumeAr();
         return current.remove();
       } else {
         return $q.reject('No active modal to remove');

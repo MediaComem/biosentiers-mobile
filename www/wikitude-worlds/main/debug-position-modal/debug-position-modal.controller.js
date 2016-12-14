@@ -89,7 +89,7 @@
      * @param alt The altitude of the faked position
      */
     function setPosition(lat, lon, alt) {
-      Modals.remove().then(function (success) {
+      Modals.removeCurrent().then(function (success) {
         $log.debug(success);
         AppActions.execute('setPosition', {lat: lat, lon: lon, alt: alt});
       }).catch(function (error) {
