@@ -5,7 +5,7 @@
     .module('filters-modal')
     .controller('FiltersModalCtrl', FiltersModalCtrl);
 
-  function FiltersModalCtrl(Filters, Modals, $scope) {
+  function FiltersModalCtrl(Filters, $log, Modals, $scope) {
     var filters = this;
 
     filters.remove = Modals.removeCurrent;
@@ -13,24 +13,39 @@
     filters.themes = Filters.themes;
 
     filters.selected = {
-      themes: themesArrayToCheckedThemesObject(Filters.getSelected().themes)
+      themes: themesArrayToCheckedThemesObject(Filters.getSelected().themes),
+      options: Filters.getSelected().options
     };
 
     // Functions
     filters.getThemeImageUrl = getThemeImageUrl;
 
     // Events
-    var debouncedUpdateFilters = _.debounce(updateFilters, 650);
-    $scope.$watch('filters.selected.themes', debouncedUpdateFilters, true);
+    var debouncedUpdateThemes = _.debounce(updateThemes, 650);
+    $scope.$watch('filters.selected.themes', debouncedUpdateThemes, true);
+
+    var debouncedUpdateOptions = _.debounce(updateOptions, 650);
+    $scope.$watch('filters.selected.options', debouncedUpdateOptions, true);
 
     ////////////////////
 
-    function updateFilters() {
+    function updateThemes() {
       Filters.updateSelected({
         themes: checkedThemesObjectToThemesArray(filters.selected.themes)
       });
     }
 
+    function updateOptions() {
+      Filters.updateSelected({
+        options: filters.selected.options
+      });
+    }
+
+    /**
+     * Returns the path to a theme's image, based on the given theme.
+     * @param theme The name of the theme for which we want the image's path
+     * @return {string} The path to the theme's image
+     */
     function getThemeImageUrl(theme) {
       return 'assets/' + theme + '.png';
     }

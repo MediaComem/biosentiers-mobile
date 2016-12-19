@@ -8,6 +8,7 @@
     // Third-party modules.
     'ionic',
     'IonicitudeModule',
+    'lokijs',
     'leaflet-directive',
     'ngCordova',
     // Application modules.
@@ -16,6 +17,7 @@
     'leaflet-directive',
     'map-icons',
     'OutingsModule',
+    'seen-pois-data',
     'SpeciesModule',
     'QRModule',
     'timers',

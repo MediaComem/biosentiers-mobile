@@ -8,7 +8,7 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, $q, Timers, WorldActions) {
+  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, $q, SeenPoisData, Timers, WorldActions) {
 
     var deviceOrientationWatch,
         deviceOrientationUpdatesInterval = 250;
@@ -26,6 +26,7 @@
       addIonicitudeAction(toast);
       addIonicitudeAction(setPosition);
       addIonicitudeAction(close);
+      addIonicitudeAction(getSeenPois);
 
       ////////////////////
 
@@ -73,6 +74,14 @@
 
         service.close();
       }
+
+      function getSeenPois(service, param) {
+        return SeenPoisData.start().then(function() {
+          return SeenPoisData.getAll(param.outingId);
+        });
+      }
+
+      ////////////////////
 
       /**
        * Adds an Ionicitude action.

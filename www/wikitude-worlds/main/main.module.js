@@ -25,6 +25,7 @@
     'mini-map-orientation',
     'modals',
     'outing',
+    'seen-tracker',
     'timers',
     'world'
   ]);

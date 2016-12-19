@@ -20,6 +20,7 @@
       getPois       : getPois,
       getPathGeoJson: getPathGeoJson,
       getThemes     : getThemes,
+      getSeenPois   : getSeenPois,
       // Current POI functions
       loadCurrentPoi: loadCurrentPoi,
       // Observables
@@ -38,7 +39,7 @@
     function setOuting(newOuting) {
       if (newOuting) {
         outing = newOuting;
-        $log.debug('Outing loaded');
+        $log.debug('Outing loaded', outing);
         outingSubject.onNext(outing);
       }
     }
@@ -53,6 +54,10 @@
 
     function getThemes() {
       return outing ? _.compact(_.uniq(_.map(outing.pois.features, 'properties.theme_name'))).sort() : undefined;
+    }
+
+    function getSeenPois() {
+      return outing ? outing.seen : undefined;
     }
 
     function getPathGeoJson() {

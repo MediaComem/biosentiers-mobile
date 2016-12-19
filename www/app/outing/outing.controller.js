@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, $scope, WorldActions) {
+  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
     var ctrl = this;
 
     var UserPosition = {
@@ -85,6 +85,7 @@
     };
 
     ctrl.data = outingData;
+    $log.log(outingData);
 
     function handleError(error) {
       $log.error(error);
@@ -95,13 +96,16 @@
 
       var promises = [
         PoiGeo.getPath(),
-        PoiGeo.getPoints()
+        PoiGeo.getPoints(),
+        SeenPoisData.getAll(outingData.id, true)
       ];
 
       return $q.all(promises).then(function(results) {
+        $log.log(results);
         WorldActions.execute('loadOuting', {
           path: results[0].data,
-          pois: results[1].data
+          pois: results[1].data,
+          seen: results[2]
         });
       });
     }

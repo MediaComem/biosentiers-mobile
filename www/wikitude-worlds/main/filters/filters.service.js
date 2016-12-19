@@ -5,12 +5,15 @@
     .module('filters')
     .factory('Filters', FiltersService);
 
-  function FiltersService($log, Outing, rx) {
+  function FiltersService($log, Outing, rx, SeenTracker) {
 
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
     var selected = {
-      themes: []
+      themes : [],
+      options: {
+        showSeenPois: false
+      }
     };
 
     var filtersChangeSubject = new rx.BehaviorSubject(selected);
@@ -31,7 +34,7 @@
     ////////////////////
 
     /**
-     * Updates available filters choice, based on the ones in the newData param.
+     * Updates available filters choice.
      */
     function updateAvailableChoices() {
 
@@ -62,6 +65,7 @@
 
       _.each(changes, function(value, key) {
         var currentValue = selected[key];
+        $log.log('updateSelected', 'currentValue', currentValue, 'newValue', value);
         if (!_.isEqual(value, currentValue)) {
           selected[key] = value;
           changed = true;
@@ -82,6 +86,12 @@
 
       if (selected.themes.length < service.themes.length) {
         pois = _.filter(pois, matchBySelectedThemes);
+      }
+
+      if (selected.options.showSeenPois === false) {
+        $log.log('filtering the pois that remains to be seen', angular.copy(pois));
+        pois = _.reject(pois, SeenTracker.hasBeenSeen);
+        $log.log('pois remaining to be seen', angular.copy(pois));
       }
 
       $log.debug('Filters: ' + n + ' points of interest filtered to ' + pois.length + ' matching points with criteria ' + JSON.stringify(selected));

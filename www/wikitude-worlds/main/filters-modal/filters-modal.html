@@ -1,20 +1,28 @@
 <ion-modal-view id="poi-filters" ng-controller="FiltersModalCtrl as filters">
-  <ion-header-bar class="bar bar-header bar-balanced">
-    <h1 class="title">Filters</h1>
-    <button class="button button-clear button-primary" ng-click="filters.remove()">Close</button>
-  </ion-header-bar>
-  <ion-content>
-    <ion-list>
-
-      <!-- Theme filters -->
-      <div class="item item-divider">
-        Thème
-      </div>
-      <ion-checkbox class="poi-theme" ng-repeat="theme in filters.themes" ng-model="filters.selected.themes[theme]">
-        {{ theme }}
-        <img ng-src="{{ filters.getThemeImageUrl(theme) }}" />
-      </ion-checkbox>
-
-    </ion-list>
-  </ion-content>
+	<ion-header-bar class="bar bar-header bar-balanced">
+		<h1 class="title">Filters</h1>
+		<button class="button button-clear button-primary" ng-click="filters.remove()">Close</button>
+	</ion-header-bar>
+	<ion-content>
+		<ion-list>
+			<li class="item item-toggle">
+				Afficher les éléments déjà vus
+				<label class="toggle">
+					<input type="checkbox" ng-model="filters.selected.options['showSeenPois']">
+					<div class="track">
+						<div class="handle"></div>
+					</div>
+				</label>
+			</li>
+			
+			<!-- Theme filters -->
+			<div class="item item-divider">
+				Thème
+			</div>
+			<ion-checkbox class="poi-theme" ng-repeat="theme in filters.themes" ng-model="filters.selected.themes[theme]">
+				{{ theme }}
+				<img ng-src="{{ filters.getThemeImageUrl(theme) }}"/>
+			</ion-checkbox>
+		</ion-list>
+	</ion-content>
 </ion-modal-view>
