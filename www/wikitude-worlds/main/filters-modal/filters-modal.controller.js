@@ -14,7 +14,7 @@
 
     filters.selected = {
       themes: themesArrayToCheckedThemesObject(Filters.getSelected().themes),
-      options: Filters.getSelected().options
+      options: _.clone(Filters.getSelected().options)
     };
 
     // Functions
@@ -37,7 +37,7 @@
 
     function updateOptions() {
       Filters.updateSelected({
-        options: filters.selected.options
+        options: _.clone(filters.selected.options)
       });
     }
 
@@ -74,7 +74,6 @@
         if (selected) {
           memo.push(theme);
         }
-
         return memo;
       }, []);
     }

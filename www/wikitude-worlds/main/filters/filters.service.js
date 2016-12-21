@@ -65,7 +65,6 @@
 
       _.each(changes, function(value, key) {
         var currentValue = selected[key];
-        $log.log('updateSelected', 'currentValue', currentValue, 'newValue', value);
         if (!_.isEqual(value, currentValue)) {
           selected[key] = value;
           changed = true;
