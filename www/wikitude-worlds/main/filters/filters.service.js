@@ -88,9 +88,7 @@
       }
 
       if (selected.options.showSeenPois === false) {
-        $log.log('filtering the pois that remains to be seen', angular.copy(pois));
         pois = _.reject(pois, SeenTracker.hasBeenSeen);
-        $log.log('pois remaining to be seen', angular.copy(pois));
       }
 
       $log.debug('Filters: ' + n + ' points of interest filtered to ' + pois.length + ' matching points with criteria ' + JSON.stringify(selected));

@@ -30,10 +30,20 @@
       return angular.copy(seenPois);
     }
 
+    /**
+     * Set that the POI with the ID passed as argument has been seen by the user.
+     * @param poiId The ID of the POI to mark as seen.
+     */
     function setSeen(poiId) {
-
+      if (_.includes(seenPois, poiId)) {
+        seenPois.push(poiId);
+        $log.log(seenPois);
+      }
     }
 
+    /**
+     * Set the value for the private seenPois Array.
+     */
     function setSeenPois() {
       seenPois = Outing.getSeenPois();
       $log.log('seenPois from SeenTracker', seenPois);
@@ -42,10 +52,10 @@
     /**
      * Check if the given POI has not already been seen by the user.
      * @param poi A GeoJSON object representing the POI to check. Must contains a properties.id property
-     * @return {boolean} True if the POI remains to be seen, False if the POI has already been seen.
+     * @return {boolean} True if the POI has been seen, False if the POI remains to be seen.
      */
     function hasBeenSeen(poi) {
-      return !_.includes(seenPois, poi.properties.id_poi);
+      return _.includes(seenPois, poi.properties.id_poi);
     }
   }
 })();
