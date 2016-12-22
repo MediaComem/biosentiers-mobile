@@ -10,8 +10,8 @@
 
   function ArIconsService($log) {
 
-    var markers     = [],
-        seenMarkers = [];
+    var icons     = [],
+        seenIcons = [];
 
     var availableTypes = [
       'default',
@@ -41,7 +41,7 @@
     function getIcon(type, withOpacity, opacityWithinDistance) {
       var typeAndOpacity = withOpacity ? type + '' + opacityWithinDistance * 10 : type;
 
-      if (!markers[typeAndOpacity] || markers[typeAndOpacity].destroyed) {
+      if (!icons[typeAndOpacity] || icons[typeAndOpacity].destroyed) {
 
         var img = new AR.ImageResource("assets/" + typeAndOpacity + ".png", {
           onError: function() {
@@ -49,17 +49,17 @@
           }
         });
 
-        markers[typeAndOpacity] = new AR.ImageDrawable(img, 2, {
+        icons[typeAndOpacity] = new AR.ImageDrawable(img, 2, {
           zOrder : 0,
           opacity: 1.0
         });
       }
       //console.log("Type :", type);
-      return markers[typeAndOpacity];
+      return icons[typeAndOpacity];
     }
 
     function getSeenIcon(type) {
-      if (!seenMarkers[type] || seenMarkers[type].destroyed) {
+      if (!seenIcons[type] || seenIcons[type].destroyed) {
 
         var img = new AR.ImageResource("assets/" + type + "Vu.png", {
           onError: function() {
@@ -67,12 +67,12 @@
           }
         });
 
-        seenMarkers[type] = new AR.ImageDrawable(img, 2, {
+        seenIcons[type] = new AR.ImageDrawable(img, 2, {
           zOrder : 0,
           opacity: 1.0
         });
       }
-      return seenMarkers[type];
+      return seenIcons[type];
     }
   }
 })();

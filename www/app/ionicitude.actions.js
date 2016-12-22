@@ -71,15 +71,15 @@
         } else {
           $log.warn('No devices orientation updates to stop');
         }
-
         service.close();
+        SeenPoisData.save();
       }
 
-      function getSeenPois(service, param) {
-        return SeenPoisData.start().then(function() {
-          return SeenPoisData.getAll(param.outingId);
-        });
-      }
+      // function getSeenPois(service, param) {
+      //   return SeenPoisData.start().then(function() {
+      //     return SeenPoisData.getAll(param.outingId);
+      //   });
+      // }
 
       ////////////////////
 

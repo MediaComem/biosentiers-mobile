@@ -11,7 +11,7 @@
     var seenPois = [],
         service  = {
           getSeenPois: getSeenPois,
-          setSeen: setSeen,
+          addSeenId  : addSeenId,
           hasBeenSeen: hasBeenSeen
         };
 
@@ -34,8 +34,8 @@
      * Set that the POI with the ID passed as argument has been seen by the user.
      * @param poiId The ID of the POI to mark as seen.
      */
-    function setSeen(poiId) {
-      if (_.includes(seenPois, poiId)) {
+    function addSeenId(poiId) {
+      if (!_.includes(seenPois, poiId)) {
         seenPois.push(poiId);
         $log.log(seenPois);
       }

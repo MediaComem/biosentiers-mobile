@@ -16,16 +16,16 @@
      * @constructor
      */
     function ArMarker(poi, enabled, onClick, hasBeenSeen) {
-      var poiIcon;
+      var self = this;
 
-      this.poi = poi;
-      this.id = poi.properties.id_poi;
-      this.properties = poi.properties;
-      this.hasBeenSeen = hasBeenSeen;
+      self.poi = poi;
+      self.id = poi.properties.id_poi;
+      self.properties = poi.properties;
+      self.hasBeenSeen = hasBeenSeen;
 
-      this.location = new AR.GeoLocation(poi.geometry.coordinates[1], poi.geometry.coordinates[0], poi.geometry.coordinates[2]);
+      self.location = new AR.GeoLocation(poi.geometry.coordinates[1], poi.geometry.coordinates[0], poi.geometry.coordinates[2]);
 
-      this.title = new AR.Label(this.id, 1, {
+      self.title = new AR.Label(self.id, 1, {
         zOrder : 1,
         offsetY: 2,
         style  : {
@@ -34,19 +34,26 @@
         }
       });
 
-      if (this.hasBeenSeen) {
-        poiIcon = ArIcons.getSeen(this.properties.theme_name);
-      } else {
-        poiIcon = ArIcons.get(this.properties.theme_name, false, CalcOpacity(this.location));
-      }
 
-      this.geoObject = new AR.GeoObject(this.location, {
+      self.geoObject = new AR.GeoObject(self.location, {
         enabled  : enabled,
-        onClick  : onClick(this),
+        onClick  : onClick(self),
         drawables: {
-          cam: [poiIcon]
+          cam: [getIcon()]
         }
       });
+
+      /**
+       * Select the correct icon depending on wether the ArPoi have been seen or not.
+       * @return {AR.ImageDrawable} The icon to add to the new ArMarker
+       */
+      function getIcon() {
+        if (self.hasBeenSeen) {
+          return ArIcons.getSeen(self.properties.theme_name);
+        } else {
+          return ArIcons.get(self.properties.theme_name, false, CalcOpacity(self.location));
+        }
+      }
     }
 
     /**
@@ -73,6 +80,17 @@
      */
     ArMarker.prototype.isVisible = function() {
       return this.geoObject.enabled;
+    };
+
+    /**
+     * Update the ArPoi to reflect the fact that it had been seen by the user.
+     * This means:
+     *  * setting its flag to true
+     *  * changing its icon
+     */
+    ArMarker.prototype.setSeen = function() {
+      this.hasBeenSeen = true;
+      this.geoObject.drawables.cam = [ArIcons.getSeen(this.properties.theme_name)];
     };
 
     /**

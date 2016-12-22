@@ -301,7 +301,7 @@
      */
     function onArPoiClick(arPoi) {
       return function onClick() {
-        SeenTracker.setSeen(arPoi.id);
+        if (!arPoi.hasBeenSeen) setPoiSeen();
         console.log('POI clicked', arPoi);
         var dist = arPoi.distanceToUser();
         console.log("distance to user ", dist);
@@ -311,6 +311,14 @@
           AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
         }
         return true; // Stop propagating the click event
+      };
+
+      function setPoiSeen() {
+        SeenTracker.addSeenId(arPoi.id);
+        arPoi.setSeen();
+        if (Filters.getSelected().options.showSeenPois === false) {
+          arPoi.setVisible(false);
+        }
       }
     }
 

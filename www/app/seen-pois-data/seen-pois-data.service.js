@@ -12,7 +12,8 @@
     var deferred = $q.defer();
     var db,
         service = {
-          getAll: getAll
+          getAll: getAll,
+          save: save
         };
 
     return service;
@@ -70,6 +71,14 @@
           return seen.data;
         }
       });
+    }
+
+    /**
+     * Saves the database on the file system.
+     * @return {*|{value}}
+     */
+    function save() {
+      return db.saveDatabase();
     }
 
     function init(seen) {
