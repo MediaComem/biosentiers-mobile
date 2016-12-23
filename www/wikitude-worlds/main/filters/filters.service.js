@@ -12,7 +12,7 @@
     var selected = {
       themes : [],
       options: {
-        showSeenPois: false
+        showSeenPois: true
       }
     };
 
