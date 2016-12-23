@@ -13,7 +13,8 @@
     var db,
         service = {
           getAll: getAll,
-          save: save
+          save: save,
+          addOne: addOne
         };
 
     return service;
@@ -61,7 +62,7 @@
           seen = db.addCollection(outingId);
           init(seen);
           $log.log(db);
-          db.saveDatabase();
+          save();
         } else {
           $log.log('Some POIs seen. Database loaded', seen.data);
         }
@@ -81,15 +82,42 @@
       return db.saveDatabase();
     }
 
+    /**
+     * Adds a new seen poi in the adequate database, based on the given outingId.
+     * @param outingId The ID of the outing in which the poi has been seen
+     * @param poiId The ID of the POI that have been seen.
+     */
+    function addOne(outingId, poiId) {
+      var seen = db.getCollection(outingId);
+      seen.insertOne(new SeenObject(poiId));
+      $log.log(db, seen);
+    }
+
+    /**
+     * DEV
+     * Add some random seen pois to the database to populate it.
+     * @param seen The database in which the seenPois will be added
+     */
     function init(seen) {
       seen.insert([
-        {id: 5007, seenAt: Date.now()},
-        {id: 5010, seenAt: Date.now()},
-        {id: 5291, seenAt: Date.now()},
-        {id: 5347, seenAt: Date.now()},
-        {id: 5391, seenAt: Date.now()},
-        {id: 5018, seenAt: Date.now()}
+        new SeenObject(5007),
+        new SeenObject(5010),
+        new SeenObject(5291),
+        new SeenObject(5391),
+        new SeenObject(5018),
+        new SeenObject(5347)
       ]);
+    }
+
+    /**
+     * Creates a new SeenObject with the given id.
+     * The seenAt property of this object will be set as Date.now().
+     * @param id The id of the new SeenObject
+     * @constructor
+     */
+    function SeenObject(id) {
+      this.id = id;
+      this.seenAt = Date.now();
     }
   }
 })();

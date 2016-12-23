@@ -14,6 +14,9 @@
         currentPoiSubject = new rx.ReplaySubject(1);
 
     var service = {
+      get id() {
+        return hasOuting() ? outing.id : undefined;
+      },
       // Outing functions
       hasOuting     : hasOuting,
       setOuting     : setOuting,

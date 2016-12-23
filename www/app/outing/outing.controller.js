@@ -103,6 +103,7 @@
       return $q.all(promises).then(function(results) {
         $log.log(results);
         WorldActions.execute('loadOuting', {
+          id: outingData.id,
           path: results[0].data,
           pois: results[1].data,
           seen: results[2]

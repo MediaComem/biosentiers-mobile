@@ -305,11 +305,11 @@
         console.log('POI clicked', arPoi);
         var dist = arPoi.distanceToUser();
         console.log("distance to user ", dist);
-        if (dist <= 20) {
-          Outing.loadCurrentPoi(arPoi.poi);
-        } else {
-          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
-        }
+        // if (dist <= 20) {
+        //   Outing.loadCurrentPoi(arPoi.poi);
+        // } else {
+        //   AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
+        // }
         return true; // Stop propagating the click event
       };
 

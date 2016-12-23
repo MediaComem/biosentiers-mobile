@@ -88,7 +88,8 @@
         $log.debug('Executing app action ' + name + ' with ' + angular.toJson(fullData) + ' and options ' + angular.toJson(options));
 
         var dest = "architectsdk://" + name;
-        document.location = dest + "?" + angular.toJson(fullData);
+        var url = dest + "?" + angular.toJson(fullData);
+        document.location = url;
       }
 
       function cancel() {

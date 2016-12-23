@@ -26,7 +26,9 @@
       addIonicitudeAction(toast);
       addIonicitudeAction(setPosition);
       addIonicitudeAction(close);
-      addIonicitudeAction(getSeenPois);
+      addIonicitudeAction(addSeenPoi);
+
+      Ionicitude.listLibActions();
 
       ////////////////////
 
@@ -75,11 +77,10 @@
         SeenPoisData.save();
       }
 
-      // function getSeenPois(service, param) {
-      //   return SeenPoisData.start().then(function() {
-      //     return SeenPoisData.getAll(param.outingId);
-      //   });
-      // }
+      function addSeenPoi(service, param) {
+        $log.log('adding seen poi');
+        SeenPoisData.addOne(param.outingId, param.poiId);
+      }
 
       ////////////////////
 

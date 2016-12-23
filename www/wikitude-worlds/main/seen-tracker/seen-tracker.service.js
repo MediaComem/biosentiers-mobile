@@ -7,7 +7,7 @@
     .module('seen-tracker')
     .factory('SeenTracker', SeenTrackerService);
 
-  function SeenTrackerService($log, Outing) {
+  function SeenTrackerService($log, Outing, AppActions) {
     var seenPois = [],
         service  = {
           getSeenPois: getSeenPois,
@@ -38,6 +38,11 @@
       if (!_.includes(seenPois, poiId)) {
         seenPois.push(poiId);
         $log.log(seenPois);
+        var param = {
+          poiId: poiId,
+          outingId: Outing.id
+        };
+        AppActions.execute('addSeenPoi', param);
       }
     }
 

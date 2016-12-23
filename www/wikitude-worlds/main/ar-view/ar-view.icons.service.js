@@ -69,7 +69,7 @@
 
         seenIcons[type] = new AR.ImageDrawable(img, 2, {
           zOrder : 0,
-          opacity: 1.0
+          opacity: 0.75
         });
       }
       return seenIcons[type];
