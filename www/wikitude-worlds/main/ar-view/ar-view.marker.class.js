@@ -34,36 +34,20 @@
         }
       });
 
+      self.icon = ArIcons.get(self.properties.theme_name, calcOpacity(self.distanceToUser()), self.hasBeenSeen);
+      // self.icon.opacity = ;
+      // icon.opacity = calcOpacity(self.location.distanceToUser());
+      // icon.opacity = 0.5;
+
+      $log.log(self.icon);
 
       self.geoObject = new AR.GeoObject(self.location, {
         enabled  : enabled,
         onClick  : onClick(self),
         drawables: {
-          cam: [getIcon()]
+          cam: [self.icon]
         }
       });
-
-      /**
-       * Select the correct icon depending on wether the ArPoi have been seen or not.
-       * @return {AR.ImageDrawable} The icon to add to the new ArMarker
-       */
-      function getIcon() {
-        if (self.hasBeenSeen) {
-          return ArIcons.getSeen(self.properties.theme_name);
-        } else {
-          return ArIcons.get(self.properties.theme_name, false, CalcOpacity(self.location));
-        }
-      }
-    }
-
-    /**
-     * Calculates the opacity needed for the ArMarker, based on it's distance to
-     * Opacity within distance
-     * Everything within 0-20 meters has the same/full opacity), rounded to 1 decimal
-     */
-    function CalcOpacity(location) {
-      var opacityCalc = location.distanceToUser() > 20 ? Math.round(((location.distanceToUser() - 20) * ((0.1 - 1.0) / (250 - 20)) + 1.0) * 10) : 10;
-      return opacityCalc % 2 == 0 ? opacityCalc / 10 : (opacityCalc + 1) / 10;
     }
 
     // Methods
@@ -90,7 +74,7 @@
      */
     ArMarker.prototype.setSeen = function() {
       this.hasBeenSeen = true;
-      this.geoObject.drawables.cam = [ArIcons.getSeen(this.properties.theme_name)];
+      this.icon = [ArIcons.get(this.properties.theme_name, calcOpacity(this.distanceToUser()), this.hasBeenSeen)];
     };
 
     /**
@@ -109,7 +93,7 @@
      * Updates the ArMarker by calculating it's new opacity.
      */
     ArMarker.prototype.updateOpacity = function() {
-      this.geoObject.drawables.cam = [ArIcons.get(this.properties.theme_name, CalcOpacity(this.location))];
+      this.icon = [ArIcons.get(this.properties.theme_name, calcOpacity(this.distanceToUser()))];
     };
 
     /**
@@ -125,5 +109,21 @@
     };
 
     return ArMarker;
+
+    ////////////////////
+
+    /**
+     * Calculates the opacity needed for the ArMarker, based on it's distance to the user.
+     * The farthest it is, the more transparent it will be. All points less distant to the user
+     * than the value of
+     * @param distance The distance between the user and the ArPoi
+     * @return {number} The value of the ArPoi's icon opacity.
+     */
+    function calcOpacity(distance) {
+      var opacityFactor = 1 / (AR.context.scene.cullingDistance - AR.context.scene.minOpacityDistance);
+      distance = distance - AR.context.scene.minOpacityDistance;
+      var opacity = 1 - (distance * opacityFactor);
+      return opacity > 1 ? 1 : opacity;
+    }
   }
 })();

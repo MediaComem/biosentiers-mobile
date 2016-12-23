@@ -13,9 +13,10 @@
   function ArViewService(AppActions, ArMarker, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
-    var arPointsById      = {},
-        reachLimit        = 250,
-        poisChangeSubject = new rx.Subject();
+    var arPointsById         = {},
+        reachLimit           = 250,
+        minPoiActiveDistance = 20,
+        poisChangeSubject    = new rx.Subject();
 
     var service = {
       init         : init,
@@ -35,10 +36,11 @@
      */
     function init() {
       AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
-      AR.context.scene.cullingDistance = 250;
+      AR.context.scene.cullingDistance = reachLimit;
       AR.context.scene.maxScalingDistance = 500;
       AR.context.scene.minScalingDistance = 7;
       AR.context.scene.scalingFactor = 0.01;
+      AR.context.scene.minOpacityDistance = minPoiActiveDistance;
       AR.context.onScreenClick = onScreenClick;
       AR.context.onLocationChanged = onLocationChanged;
     }
@@ -307,11 +309,11 @@
         console.log('POI clicked', arPoi);
         var dist = arPoi.distanceToUser();
         console.log("distance to user ", dist);
-        if (dist <= 20) {
+        if (dist <= minPoiActiveDistance) {
           Outing.loadCurrentPoi(arPoi.poi);
           if (!arPoi.hasBeenSeen) setPoiSeen();
         } else {
-          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - 20) + "m trop loin du point d'intérêt."});
+          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
         }
         return true; // Stop propagating the click event
       };
