@@ -29,16 +29,12 @@
       }, function(error) {
         $log.warn(error);
       });
-
     }
 
     function getOne(specieId) {
       return getAll().then(function(species) {
         return _.filter(species, function(d){ return d.properties.id_specie == specieId; });
       });
-
-      return null;
     }
-
   }
 })();

@@ -45,15 +45,15 @@
     /**
      * Tries to get all the POIs that have been seen for a particuler outing.
      * If it's the first time retrieving the POIs for this outing, the collection will be created.
-     * By passing a True as the second parameter, it's possible to retrieve an Array containing the IDs of the POIs that have been seen.
+     * By passing True as the second parameter, it's possible to retrieve an Array containing the IDs of the POIs that have been seen.
      * By not passing a second parameter or by passing False, the result will be returned as they are in the database
      * @param outingId The ID of the Outing for which we want to get all the seen POIs.
      * @param asIdArray A Boolean indicating if the results should be returned as an array of IDs
      * @return {Promise} A promise of an Array containing the IDs of the POIs that have been seen for the specified Outing
      */
     function getAll(outingId, asIdArray) {
-      if (!outingId) {
-        throw new TypeError('SeenPoisData.getAll expected one argument, none given');
+      if (!outingId || typeof outingId === "boolean") {
+        throw new TypeError('SeenPoisData.getAll expect first parameter to be an Outing Id');
       }
       return start().then(function() {
         var seen = db.getCollection(outingId);

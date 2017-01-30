@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -10,7 +10,7 @@
     var outing,
         currentPoi,
         currentPoiDetails,
-        outingSubject = new rx.ReplaySubject(1),
+        outingSubject     = new rx.ReplaySubject(1),
         currentPoiSubject = new rx.ReplaySubject(1);
 
     var service = {
@@ -18,14 +18,16 @@
         return hasOuting() ? outing.id : undefined;
       },
       // Outing functions
-      hasOuting     : hasOuting,
-      setOuting     : setOuting,
-      getPois       : getPois,
-      getPathGeoJson: getPathGeoJson,
-      getThemes     : getThemes,
-      getSeenPois   : getSeenPois,
+      hasOuting          : hasOuting,
+      setOuting          : setOuting,
+      getPois            : getPois,
+      getPathGeoJson     : getPathGeoJson,
+      getStartGeoJson    : getStartGeoJson,
+      getEndGeoJson      : getEndGeoJson,
+      getThemes          : getThemes,
+      getSeenPois        : getSeenPois,
       // Current POI functions
-      loadCurrentPoi: loadCurrentPoi,
+      loadCurrentPoi     : loadCurrentPoi,
       // Observables
       outingChangeObs    : outingSubject.asObservable(),
       currentPoiChangeObs: currentPoiSubject.asObservable()
@@ -47,10 +49,6 @@
       }
     }
 
-    function getPoisGeoJson() {
-      return outing ? outing.pois : undefined;
-    }
-
     function getPois() {
       return outing ? outing.pois.features : undefined;
     }
@@ -67,10 +65,18 @@
       return outing ? outing.path : undefined;
     }
 
+    function getStartGeoJson() {
+      return outing ? outing.path.features[1] : undefined;
+    }
+
+    function getEndGeoJson() {
+      return outing ? outing.path.features[2] : undefined;
+    }
+
     function loadCurrentPoi(poi) {
 
-      var params = { id: poi.properties.id_poi },
-          options = { return: true };
+      var params  = {id: poi.properties.id_poi},
+          options = {return: true};
 
       AppActions.execute('loadPoiDetails', params, options).then(function(details) {
 
@@ -78,7 +84,7 @@
         currentPoiDetails = details;
 
         currentPoiSubject.onNext({
-          poi: currentPoi,
+          poi    : currentPoi,
           details: currentPoiDetails
         });
       });
