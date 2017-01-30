@@ -1,5 +1,12 @@
 /**
  * Created by Mathias on 04.05.2016.
+ * This is a service that manages the ImageDrawable used when creating new ArMarker.
+ * ImageDrawables are objects representing the visuals placed in a particular geolocation in the ArView.
+ * This service should be used whenever one wants to create/retrieve an ImageDrawable of a certain type.
+ * ImageDrawables can be either 'active' or 'inactive' and have either a Seen Icon or a Classic Icon.
+ * An active ImageDrawable has full opacity, whereas an inactive one has 0.5 opacity.
+ * Seen Icon will be used when the ImageDrawable is fetched for an ArMarker that has already been seen.
+ * Classic Icon are for ArMarker that remains to be seen.
  */
 (function() {
   'use strict';
@@ -10,66 +17,98 @@
 
   function ArIconsService($log) {
 
-    var images    = [];
-
-    var availableTypes = [
-      'default',
-      'bird',
-      'butterfly',
-      'flower',
-      'watercourse',
-      'territory',
-      'greenroof',
-      'ecoarea',
-      'wetarea',
-      'wildlifecorridor',
-      'birdterritory',
-      'biodivercity',
-      'garden'
-    ];
+    var iconsInactive     = [],
+        iconsActive       = [],
+        iconsSeenActive   = [],
+        iconsSeenInactive = [];
 
     var service = {
-      get: getIcon,
-      // getSeen: getSeenIcon
+      getInactive: getInactiveIcon,
+      getActive  : getActiveIcon
     };
 
     return service;
 
     ////////////////////
 
-    function getIcon(type, opacity, hasBeenSeen) {
-      type = hasBeenSeen ? type + 'Vu' : type;
+    /**
+     * Returns the Inactive ImageDrawable corresponding to the given type. An Inactive ImageDrawable have an opacity of 0.5.
+     * If hasBeenSeen is set to true, the ImageDrawable returned will have a Seen Icon for this type.
+     * If hasBeenSeen is undefined or set to false, it will have a classic Icon for the given type.
+     * @param type The type of the Inactive ImageDrawable.
+     * @param hasBeenSeen A Boolean indicating if the returned ImageDrawable should have a Seen Icon (true) or a classis Icon (false or undefined).
+     * @return {AR.ImageDrawable} The requested Inactive ImageDrawable.
+     */
+    function getInactiveIcon(type, hasBeenSeen) {
+      return !!hasBeenSeen ? getIcon(type, 'inactive', true) : getIcon(type, 'inactive', false);
+    }
 
-      if (!images[type] || images[type].destroyed) {
-        images[type] = new AR.ImageResource("assets/" + type + ".png", {
+    /**
+     * Returns the Active ImageDrawable corresponding to the given type. An Active ImageDrawable have an opacity of 1.
+     * If hasBeenSeen is set to true, the ImageDrawable returned will have a Seen Icon for this type.
+     * If hasBeenSeen is undefined or set to false, it will have a classic Icon for the given type.
+     * @param type The type of the Active ImageDrawable.
+     * @param hasBeenSeen A Boolean indicating if the returned ImageDrawable should have a Seen Icon (true) or a classis Icon (false or undefined).
+     * @return {AR.ImageDrawable} The requested Active ImageDrawable.
+     */
+    function getActiveIcon(type, hasBeenSeen) {
+      return !!hasBeenSeen ? getIcon(type, 'active', true) : getIcon(type, 'active', false);
+    }
+
+    /**
+     * Internal function that fetchs the correct ImageDrawable for the given type in the given state.
+     * The returned ImageDrawable will have a Seen Icon if hasBeenSeen is true, and a classis Icon if hasBeenSeen is false.
+     * Depending of the state and the value of hasBeenSeen, the ImageDrawable will be looked upon in a particular storage (array) :
+     *  * with state = 'active' and hasBeenSeen = 'true', it will be searched for in the iconsSeeActive storage
+     *  * with state = 'active' and hasBeenSeen = 'false', it will be searched for in the iconsActive storage
+     *  * with state = 'inactive' and hasBeenSeen = 'true', it will be searched for in the iconsSeeInactive storage
+     *  * with state = 'inactive' and hasBeenSeen = 'false', it will be searched for in the iconsInactive storage
+     * The ImageDrawable are Singletons.
+     * @param type
+     * @param state
+     * @param hasBeenSeen
+     * @return {AR.ImageDrawable} The requested ImageDrawable.
+     */
+    function getIcon(type, state, hasBeenSeen) {
+      var storage, opacity;
+      if (state === 'active') {
+        storage = hasBeenSeen ? iconsSeenActive : iconsActive;
+        opacity = 1;
+      } else if (state === 'inactive') {
+        storage = hasBeenSeen ? iconsSeenInactive : iconsInactive;
+        opacity = 0.5;
+      }
+
+      if (!storage[type] || storage[type].destroyed) {
+        var img = new AR.ImageResource("assets/" + type + (hasBeenSeen ? "Vu.png" : ".png"), {
           onError: function() {
             throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
           }
         });
+        storage[type] = new AR.ImageDrawable(img, 2, {
+          zOrder : 0,
+          opacity: opacity
+        });
       }
 
-      //console.log("Type :", type);
-      return new AR.ImageDrawable(images[type], 2, {
-        zOrder : 0,
-        opacity: opacity
-      });
+      $log.debug(type, state, hasBeenSeen, storage, opacity);
+      return storage[type];
     }
 
-    // function getSeenIcon(type) {
-    //   if (!seenIcons[type] || seenIcons[type].destroyed) {
-    //
-    //     var img = new AR.ImageResource("assets/" + type + "Vu.png", {
-    //       onError: function() {
-    //         throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
-    //       }
-    //     });
-    //
-    //     seenIcons[type] = new AR.ImageDrawable(img, 2, {
-    //       zOrder : 0,
-    //       opacity: 0.75
-    //     });
-    //   }
-    //   return seenIcons[type];
-    // }
+    // var availableTypes = [
+    //   'default',
+    //   'bird',
+    //   'butterfly',
+    //   'flower',
+    //   'watercourse',
+    //   'territory',
+    //   'greenroof',
+    //   'ecoarea',
+    //   'wetarea',
+    //   'wildlifecorridor',
+    //   'birdterritory',
+    //   'biodivercity',
+    //   'garden'
+    // ];
   }
 })();

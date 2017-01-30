@@ -23,23 +23,18 @@
       self.properties = poi.properties;
       self.hasBeenSeen = hasBeenSeen;
 
-      self.location = new AR.GeoLocation(poi.geometry.coordinates[1], poi.geometry.coordinates[0], poi.geometry.coordinates[2]);
+      self.location = new AR.GeoLocation(poi.geometry.coordinates[1], poi.geometry.coordinates[0], getCorrectedAltitude());
 
-      self.title = new AR.Label(self.id, 1, {
-        zOrder : 1,
-        offsetY: 2,
-        style  : {
-          textColor: '#FFFFFF',
-          fontStyle: AR.CONST.FONT_STYLE.BOLD
-        }
+      self.actionRange = new AR.ActionRange(self.location, AR.context.scene.minOpacityDistance, {
+        onEnter: setActive(self),
+        onExit : setInactive(self)
       });
 
-      self.icon = ArIcons.get(self.properties.theme_name, calcOpacity(self.distanceToUser()), self.hasBeenSeen);
-      // self.icon.opacity = ;
-      // icon.opacity = calcOpacity(self.location.distanceToUser());
-      // icon.opacity = 0.5;
-
-      $log.log(self.icon);
+      if (self.distanceToUser() > 20) {
+        self.icon = ArIcons.getInactive(self.properties.theme_name, self.hasBeenSeen);
+      } else {
+        self.icon = ArIcons.getActive(self.properties.theme_name, self.hasBeenSeen);
+      }
 
       self.geoObject = new AR.GeoObject(self.location, {
         enabled  : enabled,
@@ -48,6 +43,21 @@
           cam: [self.icon]
         }
       });
+
+      ////////////////////
+
+      /**
+       * Returns a corrected altitude depending on the plaform on which the app is running.
+       * In fact, there is a bug on Android where the altitude returned is not the actual altitude
+       * @return {*}
+       */
+      function getCorrectedAltitude() {
+        if (ionic.Platform.isAndroid()) {
+          return poi.geometry.coordinates[2] + 80;
+        } else {
+          return poi.geometry.coordinates[2];
+        }
+      }
     }
 
     // Methods
@@ -74,7 +84,7 @@
      */
     ArMarker.prototype.setSeen = function() {
       this.hasBeenSeen = true;
-      this.icon = [ArIcons.get(this.properties.theme_name, calcOpacity(this.distanceToUser()), this.hasBeenSeen)];
+      this.geoObject.drawables.cam = [ArIcons.getActive(this.properties.theme_name, this.hasBeenSeen)];
     };
 
     /**
@@ -90,18 +100,9 @@
     };
 
     /**
-     * Updates the ArMarker by calculating it's new opacity.
-     */
-    ArMarker.prototype.updateOpacity = function() {
-      this.icon = [ArIcons.get(this.properties.theme_name, calcOpacity(this.distanceToUser()))];
-    };
-
-    /**
      * Removes the ArPoi from the ArView, along with all of its componants.
      */
     ArMarker.prototype.remove = function() {
-      this.title.destroy();
-      this.title.destroyed && (this.title = null);
       this.location.destroy();
       this.location.destroyed && (this.location = null);
       this.geoObject.destroy();
@@ -113,17 +114,33 @@
     ////////////////////
 
     /**
-     * Calculates the opacity needed for the ArMarker, based on it's distance to the user.
-     * The farthest it is, the more transparent it will be. All points less distant to the user
-     * than the value of
-     * @param distance The distance between the user and the ArPoi
-     * @return {number} The value of the ArPoi's icon opacity.
+     * Returns a Closure to use as callback for the onEnter event of an ArPoi's ActionRange.
+     * @param ArPoi The ArPoi for which the closure will be created.
+     * @return {Function} The Closure to use as callback.
      */
-    function calcOpacity(distance) {
-      var opacityFactor = 1 / (AR.context.scene.cullingDistance - AR.context.scene.minOpacityDistance);
-      distance = distance - AR.context.scene.minOpacityDistance;
-      var opacity = 1 - (distance * opacityFactor);
-      return opacity > 1 ? 1 : opacity;
+    function setActive(ArPoi) {
+      /**
+       * This function will be fired any time the user is within an ArPoi ActionRange.
+       * It will change the ArPoi's Icon to a opaque one, indicating that the ArPoi can be clicked.
+       */
+      return function onEnterSetActive() {
+        ArPoi.geoObject.drawables.cam = [ArIcons.getActive(ArPoi.properties.theme_name, ArPoi.hasBeenSeen)];
+      }
+    }
+
+    /**
+     * Returns a Closure to use as callback for the onExit event of an ArPoi's ActionRange.
+     * @param ArPoi The ArPoi for which the closure will be created.
+     * @return {Function} The Closure to use as callback.
+     */
+    function setInactive(ArPoi) {
+      /**
+       * This function will be fired any time the user moves out of an ArPoi's ActionRange.
+       * It will change the ArPoi's Icon to a transparent one, indicating that the ArPoi can't be clicked.
+       */
+      return function onExitSetInactive() {
+        ArPoi.geoObject.drawables.cam = [ArIcons.getInactive(ArPoi.properties.theme_name, ArPoi.hasBeenSeen)];
+      }
     }
   }
 })();
