@@ -91,7 +91,7 @@
         });
       }
 
-      $log.debug(type, state, hasBeenSeen, storage, opacity);
+      $log.debug("ar-view.icons.service.js - getIcon()", type, state, hasBeenSeen, storage, opacity);
       return storage[type];
     }
 

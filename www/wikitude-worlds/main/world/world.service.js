@@ -1,14 +1,14 @@
 /**
  * Created by Mathias on 25.08.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(AppActions, ArView, DeviceOrientation, Filters, $log, Outing, UserLocation) {
+  function WorldService(AppActions, ArView, DeviceOrientation, Filters, $log, Outing, UserLocation, $timeout) {
 
     var service = {
       startup                : true,
@@ -29,12 +29,18 @@
     // Display a message when the user location is first detected.
     UserLocation.realObs.first().subscribe(notifyUserLocated);
 
+    Outing.outingChangeObs.first().subscribe(ArView.loadExtremityPoints);
+
+    $timeout(function() {
+      UserLocation.update(6.64763376, 46.78071086, 432);
+    }, 5000);
+
     return service;
 
     ////////////////////
 
     function notifyUserLocated() {
-      AppActions.execute('toast', { message: 'Localisé !' });
+      AppActions.execute('toast', {message: 'Localisé !'});
     }
 
     function updateDeviceOrientation(data) {

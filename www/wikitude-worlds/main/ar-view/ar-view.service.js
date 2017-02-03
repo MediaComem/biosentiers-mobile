@@ -10,25 +10,39 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArMarker, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArExtremityMarker, ArMarker, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById         = {},
+        arExtremityPoints    = {end: undefined, start: undefined},
         reachLimit           = 250,
         minPoiActiveDistance = 20,
         poisChangeSubject    = new rx.Subject();
 
     var service = {
-      init         : init,
-      updateAr     : updateAr,
-      pauseAr      : pauseAr,
-      resumeAr     : resumeAr,
-      poisChangeObs: poisChangeSubject.asObservable()
+      init               : init,
+      updateAr           : updateAr,
+      loadExtremityPoints: loadExtremityPoints,
+      pauseAr            : pauseAr,
+      resumeAr           : resumeAr,
+      poisChangeObs      : poisChangeSubject.asObservable()
     };
 
     return service;
 
     ////////////////////
+
+    function loadExtremityPoints() {
+      var jsonStartPoint = Outing.getStartPoint();
+      var jsonEndPoint = Outing.getEndPoint();
+
+      $log.log(jsonStartPoint, jsonEndPoint);
+
+      arExtremityPoints.start = new ArExtremityMarker(jsonStartPoint);
+      arExtremityPoints.end = new ArExtremityMarker(jsonEndPoint);
+
+      $log.debug(arExtremityPoints);
+    }
 
     /**
      * Initializes the different options of the Wikitude AR Object, such as the constants
@@ -40,7 +54,7 @@
       AR.context.scene.maxScalingDistance = 500;
       AR.context.scene.minScalingDistance = 7;
       AR.context.scene.scalingFactor = 0.01;
-      AR.context.scene.minOpacityDistance = minPoiActiveDistance;
+      AR.context.scene.minPoiActiveDistance = minPoiActiveDistance;
       AR.context.onScreenClick = onScreenClick;
       AR.context.onLocationChanged = onLocationChanged;
     }
@@ -136,8 +150,6 @@
 
       // Notify observers of changes.
       poisChangeSubject.onNext(changes);
-
-      //AppActions.execute('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
     }
 
     /**

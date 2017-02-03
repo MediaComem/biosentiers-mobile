@@ -14,6 +14,6 @@
 
     $window.World = World;
 
-    AppActions.execute('open');
+    //AppActions.execute('open');
   }
 })();

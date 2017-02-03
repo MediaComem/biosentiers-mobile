@@ -28,7 +28,7 @@
      * Sets the position to the St-Roch building
      */
     function heig() {
-      setPosition(46.781058, 6.647179, 431);
+      setPosition(46.78071086, 6.64763376, 432);
     }
 
     /**

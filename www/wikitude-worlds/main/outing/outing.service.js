@@ -22,8 +22,8 @@
       setOuting          : setOuting,
       getPois            : getPois,
       getPathGeoJson     : getPathGeoJson,
-      getStartGeoJson    : getStartGeoJson,
-      getEndGeoJson      : getEndGeoJson,
+      getStartPoint      : getStartPoint,
+      getEndPoint        : getEndPoint,
       getThemes          : getThemes,
       getSeenPois        : getSeenPois,
       // Current POI functions
@@ -65,11 +65,11 @@
       return outing ? outing.path : undefined;
     }
 
-    function getStartGeoJson() {
+    function getStartPoint() {
       return outing ? outing.path.features[1] : undefined;
     }
 
-    function getEndGeoJson() {
+    function getEndPoint() {
       return outing ? outing.path.features[2] : undefined;
     }
 
