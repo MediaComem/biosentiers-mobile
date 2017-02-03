@@ -887,29 +887,31 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          "6.642858092",
-          "46.78024432"
+          6.642858092,
+          46.78024432,
+          -32768
         ]
       },
       "properties": {
         "name": "Office du tourisme d'Yverdon-les-Bains",
         "created_at": "2015-02-24T11:20:00",
-        "type": "start"
+        "type": "Start"
       }
     },
     {
-      "type": "Point",
-      "geomtry": {
+      "type": "Feature",
+      "geometry": {
         "type": "Point",
         "coordinates": [
-          "6.6660022",
-          "46.78398753"
+          6.6660022,
+          46.78398753,
+          -32768
         ]
       },
       "properties": {
         "name": "Canapé vert de Champ-Pittet",
         "created_at": "2015-02-24T11:20:00",
-        "type": "end"
+        "type": "End"
       }
     }
   ]
