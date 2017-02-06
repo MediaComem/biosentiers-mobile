@@ -8,7 +8,7 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(AppActions, ArView, DeviceOrientation, Filters, $log, Outing, UserLocation, $timeout) {
+  function WorldService(Altitude, AppActions, ArView, DeviceOrientation, Filters, $log, Outing, UserLocation, $timeout) {
 
     var service = {
       startup                : true,
@@ -31,9 +31,8 @@
 
     Outing.outingChangeObs.first().subscribe(ArView.loadExtremityPoints);
 
-    $timeout(function() {
-      UserLocation.update(6.64763376, 46.78071086, 432);
-    }, 5000);
+    // Faking the position to be localised in the office.
+    AppActions.execute('setPosition', {lat: 46.78071086, lon: 6.64763376, alt: Altitude.correct(432)});
 
     return service;
 

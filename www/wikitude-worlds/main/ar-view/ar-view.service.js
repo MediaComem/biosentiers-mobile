@@ -14,7 +14,7 @@
 
     // Private data
     var arPointsById         = {},
-        arExtremityPoints    = {end: undefined, start: undefined},
+        arExtremityPoints    = {},
         reachLimit           = 250,
         minPoiActiveDistance = 20,
         poisChangeSubject    = new rx.Subject();
@@ -32,16 +32,14 @@
 
     ////////////////////
 
+    /**
+     * Loads in the AR View both the start point and the end point of the outing.
+     */
     function loadExtremityPoints() {
-      var jsonStartPoint = Outing.getStartPoint();
-      var jsonEndPoint = Outing.getEndPoint();
-
-      $log.log(jsonStartPoint, jsonEndPoint);
-
-      arExtremityPoints.start = new ArExtremityMarker(jsonStartPoint);
-      arExtremityPoints.end = new ArExtremityMarker(jsonEndPoint);
-
-      $log.debug(arExtremityPoints);
+      arExtremityPoints = {
+        start: new ArExtremityMarker(Outing.getStartPoint()),
+        end  : new ArExtremityMarker(Outing.getEndPoint())
+      }
     }
 
     /**
@@ -309,37 +307,6 @@
     }
 
     /**
-     * This function is used to create a closure for an ArPoi that will fire when the ArPoin will be clicked by the user.
-     * @param arPoi The ArPoi for which to create the closure.
-     * @return {onClick} The closure that will fire each time the ArPoi is clicked.
-     */
-    function onArPoiClick(arPoi) {
-      /**
-       * When a ArPoi is clicked by the user, if there
-       */
-      return function onClick() {
-        console.log('POI clicked', arPoi);
-        var dist = arPoi.distanceToUser();
-        console.log("distance to user ", dist);
-        if (dist <= minPoiActiveDistance) {
-          Outing.loadCurrentPoi(arPoi.poi);
-          if (!arPoi.hasBeenSeen) setPoiSeen();
-        } else {
-          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
-        }
-        return true; // Stop propagating the click event
-      };
-
-      function setPoiSeen() {
-        SeenTracker.addSeenId(arPoi.id);
-        arPoi.setSeen();
-        if (Filters.getSelected().options.showSeenPois === false) {
-          arPoi.setVisible(false);
-        }
-      }
-    }
-
-    /**
      * Creates a new ArPoi based on the GeoJSON poi object passed as the first argument.
      * This new ArPoi will be automatically added to the ArView, but its vibisility will depend upon
      * the value of the enabled argument. If it's true, the ArPoi will be visible, if it's false, it will not.
@@ -370,6 +337,37 @@
       arPoi.remove();
       delete arPointsById[id];
       return arPoi.poi;
+    }
+
+    /**
+     * This function is used to create a closure for an ArPoi that will fire when the ArPoin will be clicked by the user.
+     * @param arPoi The ArPoi for which to create the closure.
+     * @return {onClick} The closure that will fire each time the ArPoi is clicked.
+     */
+    function onArPoiClick(arPoi) {
+      /**
+       * When a ArPoi is clicked by the user, if there
+       */
+      return function onClick() {
+        console.log('POI clicked', arPoi);
+        var dist = arPoi.distanceToUser();
+        console.log("distance to user ", dist);
+        if (dist <= minPoiActiveDistance) {
+          Outing.loadCurrentPoi(arPoi.poi);
+          if (!arPoi.hasBeenSeen) setPoiSeen();
+        } else {
+          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
+        }
+        return true; // Stop propagating the click event
+      };
+
+      function setPoiSeen() {
+        SeenTracker.addSeenId(arPoi.id);
+        arPoi.setSeen();
+        if (Filters.getSelected().options.showSeenPois === false) {
+          arPoi.setVisible(false);
+        }
+      }
     }
 
     /**

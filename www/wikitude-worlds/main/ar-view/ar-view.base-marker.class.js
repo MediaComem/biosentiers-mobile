@@ -7,7 +7,7 @@
     .module('ar-view')
     .service('ArBaseMarker', ArBaseMarkerClass);
 
-  function ArBaseMarkerClass($log) {
+  function ArBaseMarkerClass(Altitude, $log) {
     /**
      *
      * @constructor
@@ -22,7 +22,7 @@
       self.properties = poi.properties;
 
       $log.debug('ArBaseMarker -> self', self);
-      self.location = new AR.GeoLocation(self.poi.geometry.coordinates[1], self.poi.geometry.coordinates[0], correctAltitude(self.poi.geometry.coordinates[2]));
+      self.location = new AR.GeoLocation(self.poi.geometry.coordinates[1], self.poi.geometry.coordinates[0], Altitude.correct(self.poi.geometry.coordinates[2]));
 
       self.geoObject = new AR.GeoObject(self.location, {
         enabled: enabled
@@ -66,20 +66,5 @@
     };
 
     return ArBaseMarker;
-
-    ////////////////////
-
-    /**
-     * Returns a corrected altitude depending on the plaform on which the app is running.
-     * In fact, there is a bug on Android where the altitude returned is not the actual altitude
-     * @return {Number} The corrected altitude
-     */
-    function correctAltitude(altitude) {
-      if (ionic.Platform.isAndroid()) {
-        altitude += 80;
-      }
-      return altitude;
-    }
-
   }
 })();
