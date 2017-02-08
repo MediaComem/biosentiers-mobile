@@ -41,7 +41,6 @@
     // Execute action on remove modal
     $scope.$on('modal.removed', function () {
       // Execute action
-      minimap.isVisible = true;
       console.log('modal removed');
     });
 
@@ -55,7 +54,6 @@
      * Opens up the BigMap modal, passing as its scope the scope of the MiniMapCtrl.
      */
     function showBigMapModal() {
-      minimap.isVisible= false;
       Modals.showBigMap($scope);
     }
   }

@@ -2,7 +2,7 @@
  * Created by Mathias on 29.08.2016.
  * This module manages the different icons needed on the several map in the application
  */
-(function () {
+(function() {
   'use strict';
   angular.module('map-icons', []);
 
@@ -22,26 +22,12 @@
     };
 
     var icons = {
-      user   : {
-        iconUrl   : '../../img/icons/user.png',
-        iconSize  : [20, 20], // size of the icon
-        iconAnchor: [10, 10] // point of the icon which will correspond to marker's location
-      },
-      Oiseaux: {
-        iconUrl   : '../../img/icons/Oiseaux.png',
-        iconSize  : [16, 16],
-        iconAnchor: [8, 8]
-      },
-      Flore  : {
-        iconUrl   : '../../img/icons/Flore.png',
-        iconSize  : [16, 16],
-        iconAnchor: [8, 8]
-      },
-      Papillons: {
-        iconUrl   : '../../img/icons/Papillons.png',
-        iconSize  : [16, 16],
-        iconAnchor: [8, 8]
-      }
+      user     : new IconConf('user', 20, 10),
+      start    : new IconConf('start', 16, 8),
+      end      : new IconConf('end', 16, 8),
+      Oiseaux  : new IconConf('Oiseaux', 16, 8),
+      Flore    : new IconConf('Flore', 16, 8),
+      Papillons: new IconConf('Papillons', 16, 8)
     };
 
     return service;
@@ -57,6 +43,19 @@
      */
     function getIcon(name) {
       return icons.hasOwnProperty(name) ? angular.copy(icons[name]) : undefined;
+    }
+
+    /**
+     * Creates an object used to define the icon showed on the leaflet map.
+     * @param name The name of the file to use for the icon. Will be fetched from the www/img/icons folder.
+     * @param size The size of the icon. Will be used both for height and width.
+     * @param anchor The position of the anchor. Will be used for both x and y.
+     * @constructor
+     */
+    function IconConf(name, size, anchor) {
+      this.iconUrl = '../../img/icons/' + name + '.png';
+      this.iconSize = [size, size];
+      this.iconAnchor = [anchor, anchor];
     }
   }
 })();
