@@ -1,9 +1,9 @@
 <div>
-	<div class="bigmap-opener"></div>
-  <div class="minimap-container" data-tap-disabled="true" ng-if="minimap.isVisible">
-    <leaflet id="minimap" defaults="minimap.config.defaults" tiles="minimap.config.tiles"
-             markers="minimap.config.markers" center="minimap.config.center"
-             geojson="minimap.config.geojson" geojson-nested="true" event-broadcast="minimap.config.events"></leaflet>
-  </div>
-  <mini-map-orientation></mini-map-orientation>
+	<div class="minimap-container" data-tap-disabled="true" ng-if="minimap.isVisible">
+		<leaflet id="minimap" defaults="minimap.config.defaults" tiles="minimap.config.tiles"
+		         markers="minimap.config.markers" center="minimap.config.center"
+		         geojson="minimap.config.geojson" geojson-nested="true" event-broadcast="minimap.config.events"></leaflet>
+		<div class="bigmap-opener"></div>
+	</div>
+	<mini-map-orientation></mini-map-orientation>
 </div>

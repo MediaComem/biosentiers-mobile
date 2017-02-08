@@ -111,11 +111,13 @@
      * @param coll
      */
     function populateDb(coll) {
-      coll.insert(new OutingClass(3, 'Deuxième sortie de classe', 'pending', 'Mme Adams', '12.05.2016'));
-      coll.insert(new OutingClass(1, 'Promenade de vacances', 'pending', 'Ben', '12.03.2016'));
-      coll.insert(new OutingClass(4, 'Dernière sortie de classe', 'pending', 'Jens', '21.08.2016'));
-      coll.insert(new OutingClass(2, 'Première sortie de classe', 'pending', 'Mr Harnold', '10.03.2016'));
-      coll.insert(new OutingClass(5, 'Deuxième sortie de classe', 'pending', 'Mathias', '22.10.2016'));
+      coll.insert([
+        new OutingClass(3, 'Deuxième sortie de classe', 'pending', 'Mme Adams', '12.05.2016'),
+        new OutingClass(1, 'Promenade de vacances', 'pending', 'Ben', '12.03.2016'),
+        new OutingClass(4, 'Dernière sortie de classe', 'pending', 'Jens', '21.08.2016'),
+        new OutingClass(2, 'Première sortie de classe', 'pending', 'Mr Harnold', '10.03.2016'),
+        new OutingClass(5, 'Deuxième sortie de classe', 'pending', 'Mathias', '22.10.2016')
+      ]);
       BioDb.save();
     }
   }

@@ -7,40 +7,19 @@
     .module('seen-pois-data')
     .factory('SeenPoisData', SeenPoisDataService);
 
-  function SeenPoisDataService($log, Loki, $q) {
+  function SeenPoisDataService(BioDb, $log, Loki, $q) {
 
     var deferred = $q.defer();
     var db,
-        service = {
+        collName = 'seen-pois',
+        service  = {
           getAll: getAll,
-          save: save,
           addOne: addOne
         };
 
     return service;
 
     ////////////////////
-
-    /**
-     * Starts the database for the seen pois.
-     * @return {Promise} Returns a promise of the started database.
-     */
-    function start() {
-      if (!db) {
-        $log.log('initializing Loki');
-        db = new Loki('seen-pois', {
-          autosave        : true,
-          autosaveInterval: 30000,
-          adapter         : new LokiCordovaFSAdapter({'prefix': 'biosentiers'})
-        });
-
-        db.loadDatabase({}, function() {
-          $log.log(db);
-          deferred.resolve();
-        });
-      }
-      return deferred.promise;
-    }
 
     /**
      * Tries to get all the POIs that have been seen for a particuler outing.
@@ -51,74 +30,91 @@
      * @param asIdArray A Boolean indicating if the results should be returned as an array of IDs
      * @return {Promise} A promise of an Array containing the IDs of the POIs that have been seen for the specified Outing
      */
-    function getAll(outingId, asIdArray) {
-      console.log(outingId, typeof outingId);
-      if (!outingId || typeof outingId !== "number") {
-        throw new TypeError('SeenPoisData.getAll expect first parameter to be an Outing Id');
-      }
-      return start().then(function() {
-        var seen = db.getCollection(outingId);
-        if (!seen) {
-          $log.log('No seen POIs. Creating the collection');
-          seen = db.addCollection(outingId);
-          init(seen);
-          $log.log(db);
-          save();
-        } else {
-          $log.log('Some POIs seen. Database loaded', seen.data);
-        }
-        if (asIdArray === true) {
-          return _.map(seen.data, 'id');
-        } else {
-          return seen.data;
-        }
-      });
+    // function getAll(outingId, asIdArray) {
+    //   console.log(outingId, typeof outingId);
+    //   if (!outingId || typeof outingId !== "number") {
+    //     throw new TypeError('SeenPoisData.getAll expect first parameter to be an Outing Id');
+    //   }
+    //   return start().then(function() {
+    //     var seen = db.getCollection(outingId);
+    //     if (!seen) {
+    //       $log.log('No seen POIs. Creating the collection');
+    //       seen = db.addCollection(outingId);
+    //       init(seen);
+    //       $log.log(db);
+    //       save();
+    //     } else {
+    //       $log.log('Some POIs seen. Database loaded', seen.data);
+    //     }
+    //     if (asIdArray === true) {
+    //       return _.map(seen.data, 'id');
+    //     } else {
+    //       return seen.data;
+    //     }
+    //   });
+    // }
+
+    function getAll(outingId) {
+      return BioDb.getCollection(collName)
+        .then(function(coll) {
+          var res = coll.find({outing_id: outingId});
+          if (res.length === 0) {
+            populate(coll, outingId);
+            res = coll.find({outing_id: outingId});
+          }
+          return res;
+        })
+        .catch(handleError);
     }
 
     /**
-     * Saves the database on the file system.
-     * @return {*|{value}}
-     */
-    function save() {
-      return db.saveDatabase();
-    }
-
-    /**
-     * Adds a new seen poi in the adequate database, based on the given outingId.
+     * Adds a new seen poi to the collection, that matches the given parameter.
      * @param outingId The ID of the outing in which the poi has been seen
      * @param poiId The ID of the POI that have been seen.
      */
     function addOne(outingId, poiId) {
-      var seen = db.getCollection(outingId);
-      seen.insertOne(new SeenObject(poiId));
-      $log.log(db, seen);
+      return BioDb.getCollection(collName)
+        .then(function(coll) {
+          return coll.insertOne(new SeenClass(outingId, poiId));
+        })
+        .then(BioDb.save)
+        .catch(handleError);
     }
 
-    /**
-     * DEV
-     * Add some random seen pois to the database to populate it.
-     * @param seen The database in which the seenPois will be added
-     */
-    function init(seen) {
-      seen.insert([
-        new SeenObject(5007),
-        new SeenObject(5010),
-        new SeenObject(5291),
-        new SeenObject(5391),
-        new SeenObject(5018),
-        new SeenObject(5347)
+    // TODO : supprimer en prod
+    function populate(coll, outing_id) {
+      coll.insert([
+        new SeenClass(outing_id, 5007),
+        new SeenClass(outing_id, 5010),
+        new SeenClass(outing_id, 5291),
+        new SeenClass(outing_id, 5391),
+        new SeenClass(outing_id, 5018),
+        new SeenClass(outing_id, 5347)
       ]);
+      BioDb.save();
     }
 
     /**
-     * Creates a new SeenObject with the given id.
+     * Creates a new SeenClass with the given id.
      * The seenAt property of this object will be set as Date.now().
-     * @param id The id of the new SeenObject
+     * @param outing_id The id of the Outing in which the SeenClass must be added
+     * @param poi_id The id of the new SeenClass
      * @constructor
      */
-    function SeenObject(id) {
-      this.id = id;
-      this.seenAt = Date.now();
+    function SeenClass(outing_id, poi_id) {
+      this.outing_id = outing_id;
+      this.poi_id = poi_id;
+      this.seen_at = Date.now();
+    }
+
+    /**
+     * Determines how to react to an error when a query is executed.
+     * Right now, this does nothing more than logging said error and returning it as a rejected Promise.
+     * @param error
+     */
+    function handleError(error) {
+      $log.error(error);
+      return $q.reject(error);
     }
   }
 })();

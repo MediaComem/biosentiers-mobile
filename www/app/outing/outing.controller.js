@@ -85,7 +85,6 @@
         .then(loadWorldOuting)
         .then(flagAsOngoing)
         .catch(handleError);
-      // flagAsOngoing();
     }
 
     function flagAsOngoing() {
@@ -122,17 +121,17 @@
       var promises = [
         PoiGeo.getPath(),
         PoiGeo.getPoints(),
-        SeenPoisData.getAll(outingData.id, true)
+        SeenPoisData.getAll(ctrl.data.id, true)
       ];
 
       return $q.all(promises).then(function(results) {
         $log.log(results);
         WorldActions.execute('loadOuting', {
-          id  : outingData.id,
+          id  : ctrl.data.id,
           data: ctrl.data,
           path: results[0].data,
           pois: results[1].data,
-          seen: results[2]
+          seen: _.map(results[2], 'poi_id')
         });
       });
     }

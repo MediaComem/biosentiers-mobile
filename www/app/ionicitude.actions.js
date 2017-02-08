@@ -8,7 +8,7 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude($cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, $q, SeenPoisData, Timers, WorldActions) {
+  function ionicitude(BioDb, $cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, $q, SeenPoisData, Timers, WorldActions) {
 
     var deviceOrientationWatch,
         deviceOrientationUpdatesInterval = 250;
@@ -74,12 +74,12 @@
           $log.warn('No devices orientation updates to stop');
         }
         service.close();
-        SeenPoisData.save();
+        BioDb.save();
       }
 
       function addSeenPoi(service, param) {
         $log.log('adding seen poi');
-        SeenPoisData.addOne(param.outingId, param.poiId);
+        console.log('addSeenPoi', SeenPoisData.addOne(param.outingId, param.poiId));
       }
 
       ////////////////////
