@@ -2,7 +2,7 @@
  * Created by Mathias on 29.03.2016.
  * This file regroups the routes used in the app.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -12,22 +12,22 @@
   function router($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('login', {
-        url: '/login',
-        templateUrl: 'app/auth-module/login.html',
-        controller: 'AuthCtrl',
+        url         : '/login',
+        templateUrl : 'app/auth-module/login.html',
+        controller  : 'AuthCtrl',
         controllerAs: 'auth'
       })
 
       .state('app', {
-        url: '/app',
-        abstract: true,
-        templateUrl: 'app/menu/menu.html',
-        controller: 'MenuCtrl',
+        url         : '/app',
+        abstract    : true,
+        templateUrl : 'app/menu/menu.html',
+        controller  : 'MenuCtrl',
         controllerAs: 'menu'
       })
 
       .state('app.account', {
-        url: '/account',
+        url  : '/account',
         views: {
           'menuContent': {
             templateUrl: 'app/account/account.html'
@@ -36,51 +36,51 @@
       })
 
       .state('app.outings', {
-        url: '/outings',
+        url  : '/outings',
         cache: false, //fix issue with other tabs system - species - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
         views: {
           'menuContent': {
-            templateUrl: 'app/outings/outings.html'
+            templateUrl : 'app/outings/outings.html'
           }
         }
       })
 
       .state('app.outings.all', {
-        url: '/all',
-        views: {
+        url    : '/all',
+        views  : {
           'outings-all': {
             templateUrl: 'app/outings/outings-all.html',
-            controller: 'OutingsCtrl as ctrl'
+            controller : 'OutingsCtrl as ctrl'
           }
         },
         resolve: {
-          outingsData: function (Outings) {
+          outingsData: function(Outings) {
             return Outings.getAll();
           }
         }
       })
 
-      .state('app.outings.waiting', {
-        url: '/waiting',
-        views: {
-          'outings-waiting': {
+      .state('app.outings.pending', {
+        url    : '/pending',
+        views  : {
+          'outings-pending': {
             templateUrl: 'app/outings/outings-all.html',
-            controller: 'OutingsCtrl as ctrl'
+            controller : 'OutingsCtrl as ctrl'
           }
         },
         resolve: {
           outingsData: function(Outings) {
-            return Outings.getWaiting();
+            return Outings.getPending();
           }
         }
       })
 
       .state('app.outings.ongoing', {
-        url: '/ongoing',
-        views: {
+        url    : '/ongoing',
+        views  : {
           'outings-ongoing': {
             templateUrl: 'app/outings/outings-all.html',
-            controller: 'OutingsCtrl as ctrl'
+            controller : 'OutingsCtrl as ctrl'
           }
         },
         resolve: {
@@ -91,22 +91,22 @@
       })
 
       .state('app.outings.over', {
-        url: '/over',
-        views: {
+        url    : '/over',
+        views  : {
           'outings-over': {
             templateUrl: 'app/outings/outings-all.html',
-            controller: 'OutingsCtrl as ctrl'
+            controller : 'OutingsCtrl as ctrl'
           }
         },
         resolve: {
           outingsData: function(Outings) {
-            return Outings.getOver();
+            return Outings.getFinished();
           }
         }
       })
 
       .state('app.species', {
-        url: '/species',
+        url  : '/species',
         cache: false, //fix issue with other tabs system - outings
         views: {
           'menuContent': {
@@ -116,45 +116,45 @@
       })
 
       .state('app.species.flora', {
-        url: '/flora',
-        views: {
+        url    : '/flora',
+        views  : {
           'species-flora': {
             templateUrl: 'app/species/species-flora.html',
-            controller: 'SpeciesCtrl as ctrl'
+            controller : 'SpeciesCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function (Species) {
+          speciesData: function(Species) {
             return Species.getAll('Flore');
           }
         }
       })
 
       .state('app.species.birds', {
-        url: '/birds',
-        views: {
+        url    : '/birds',
+        views  : {
           'species-birds': {
             templateUrl: 'app/species/species-birds.html',
-            controller: 'SpeciesCtrl as ctrl'
+            controller : 'SpeciesCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function (Species) {
+          speciesData: function(Species) {
             return Species.getAll('Oiseaux');
           }
         }
       })
 
       .state('app.species.butterflies', {
-        url: '/butterflies',
-        views: {
+        url    : '/butterflies',
+        views  : {
           'species-butterflies': {
             templateUrl: 'app/species/species-butterflies.html',
-            controller: 'SpeciesCtrl as ctrl'
+            controller : 'SpeciesCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function (Species) {
+          speciesData: function(Species) {
             return Species.getAll('Papillons');
           }
         }
@@ -162,7 +162,7 @@
 
 
       .state('app.settings', {
-        url: '/settings',
+        url  : '/settings',
         views: {
           'menuContent': {
             templateUrl: 'app/settings/settings.html'
@@ -171,26 +171,27 @@
       })
 
       .state('app.outing', {
-        url: '/outings/:outingId',
-        views: {
+        url    : '/outings/:outingId',
+        views  : {
           'menuContent': {
-            templateUrl: 'app/outing/outing.html',
-            controller: 'OutingCtrl as outing'
+            templateUrl : 'app/outing/outing.html',
+            controller  : 'OutingCtrl',
+            controllerAs: 'outing'
           }
         },
         resolve: {
           outingData: function(Outings, $stateParams) {
-            return Outings.getOne($stateParams.outingId);
+            return Outings.getOne(Number($stateParams.outingId));
           }
         }
       })
 
       .state('app.specie', {
-        url: '/species/:specieId',
-        views: {
+        url    : '/species/:specieId',
+        views  : {
           'menuContent': {
             templateUrl: 'app/specie/specie.html',
-            controller: 'SpecieCtrl as specie'
+            controller : 'SpecieCtrl as specie'
           }
         },
         resolve: {
@@ -203,6 +204,6 @@
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/login');
     // Dev route to access directly the launchAR button
-    $urlRouterProvider.otherwise('/app/outings/1');
+    $urlRouterProvider.otherwise('/app/outings');
   }
 })();

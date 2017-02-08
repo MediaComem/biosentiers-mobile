@@ -1,88 +1,97 @@
-(function () {
+(function() {
   'use strict';
   angular
     .module('OutingsModule')
     .factory('Outings', Outings);
 
-  function Outings() {
-    var service = {
-      getAll: getAll,
-      getOne: getOne,
-      getWaiting: getWaiting,
-      getOngoing: getOngoing,
-      getOver: getOver
-    };
-
-    // Some fake testing data
-    var waiting = [{
-      id: 3,
-      name: 'Deuxième sortie de classe',
-      statut: 'En attente',
-      creator: 'Mme Adams',
-      date: '12.05.2016'
-    }];
-
-    var ongoing = [{
-      id: 1,
-      name: 'Promenade de vacances',
-      statut: 'En cours',
-      creator: 'Ben',
-      date: '12.03.2016'
-    }, {
-      id: 4,
-      name: 'Dernière sortie de classe',
-      statut: 'En cours',
-      creator: 'Jens',
-      date: '21.08.2016'
-    }];
-
-    var over = [{
-      id: 2,
-      name: 'Première sortie de classe',
-      statut: 'Terminée',
-      creator: 'Mr Harnold',
-      date: '10.03.2016'
-    }, {
-      id: 5,
-      name: 'Sortie personnelle',
-      statut: 'Terminée',
-      creator: 'Mathias',
-      date: '22.10.2016'
-    }];
+  function Outings(OutingClass, BioDb, $log, $q) {
+    var deferred = $q.defer(),
+        collection,
+        collName = 'outings',
+        outings,
+        service  = {
+          getAll     : getAll,
+          getOne     : getOne,
+          getPending : getPending,
+          getOngoing : getOngoing,
+          getFinished: getFinished,
+          updateOne  : updateOne
+        };
 
     return service;
 
     ////////////////////
 
     function getAll() {
-      var outings = waiting.concat(ongoing, over);
-      return outings.sort(byId);
+      return BioDb.getCollection(collName)
+        .then(function(coll) {
+          var res = coll.find();
+          if (res.length === 0) {
+            populateDb(coll);
+            res = coll.find();
+          }
+          console.log(coll);
+          return res;
+        }).catch(handleError);
     }
 
     function getOne(outingId) {
-      var outings = getAll();
-      for (var i = 0; i < outings.length; i++) {
-        if (outings[i].id === parseInt(outingId)) {
-          return outings[i];
-        }
-      }
-      return null;
+      return BioDb.getCollection(collName)
+        .then(function(coll) {
+          var res = coll.findOne({id: outingId});
+          console.log('getOne - resultat', res);
+          return res;
+        }).catch(handleError);
     }
 
-    function getWaiting() {
-      return waiting.sort(byId);
+    function getPending() {
+      return BioDb.getCollection(collName)
+        .then(function(coll) {
+          console.log(coll);
+          return coll.chain().find({status: "pending"}).simplesort('id').data();
+        }).catch(handleError);
     }
 
     function getOngoing() {
-      return ongoing.sort(byId);
+      return BioDb.getCollection(collName)
+        .then(function(coll) {
+          console.log(coll);
+          return coll.chain().find({status: "ongoing"}).simplesort('id').data();
+        }).catch(handleError)
     }
 
-    function getOver() {
-      return over.sort(byId);
+    function getFinished() {
+      return BioDb.getCollection(collName)
+        .then(function(coll) {
+          console.log(coll);
+          return coll.chain().find({status: "finished"}).simplesort('id').data();
+        }).catch(handleError);
     }
 
-    function byId(a, b) {
-      return a.id - b.id;
+    function updateOne(doc) {
+      return BioDb.getCollection(collName)
+        .then(function(coll) { coll.update(doc); console.log(coll);})
+        .then(BioDb.save)
+        .catch(handleError);
+    }
+
+    function populateDb(coll) {
+      coll.insert(new OutingClass(3, 'Deuxième sortie de classe', 'pending', 'Mme Adams', '12.05.2016'));
+      coll.insert(new OutingClass(1, 'Promenade de vacances', 'pending', 'Ben', '12.03.2016'));
+      coll.insert(new OutingClass(4, 'Dernière sortie de classe', 'pending', 'Jens', '21.08.2016'));
+      coll.insert(new OutingClass(2, 'Première sortie de classe', 'pending', 'Mr Harnold', '10.03.2016'));
+      coll.insert(new OutingClass(5, 'Deuxième sortie de classe', 'pending', 'Mathias', '22.10.2016'));
+      BioDb.save();
+    }
+
+    /**
+     * Determines how to react to an error when a query is executed.
+     * Right now, this does nothing more than logging said error and returning it as a rejected Promise.
+     * @param error
+     */
+    function handleError(error) {
+      $log.error(error);
+      return $q.reject(error);
     }
   }
 })();

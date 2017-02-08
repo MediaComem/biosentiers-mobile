@@ -1,14 +1,14 @@
 /**
  * Created by Mathias on 29.03.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
+  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, OutingClass, outingData, Outings, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
     var ctrl = this;
 
     var UserPosition = {
@@ -63,35 +63,60 @@
           weigth: 6
         }
       }
-    }, function(error) {
-      $log.warn(error);
-    });
+    }).catch(handleError);
 
     leafletData.getMap('map').then(function(map) {
       $log.debug(map);
-    }).catch(function(error) {
-      $log.warn(error);
-    });
+    }).catch(handleError);
 
-    ctrl.launchAR = function () {
-      try {
-        Ionicitude.launchAR()
-          .then(loadWorldOuting)
-          .catch(handleError);
-      } catch (e) {
-        $log.warn(e);
-        $cordovaToast.showShortBottom("Device not supported !");
-      }
-    };
+    ctrl.startOuting = startOuting;
 
     ctrl.data = outingData;
-    $log.log(outingData);
+    $log.log(ctrl.data);
 
-    function handleError(error) {
-      $log.error(error);
+    ////////////////////
+
+    /**
+     * Load and launch the AR World with the outing's data, then changes the status of this outing from "pending" to "ongoing".
+     */
+    function startOuting() {
+      // $q.when()
+      //   .then(Ionicitude.launchAR)
+      //   .then(loadWorldOuting)
+      //   .then(flagAsOngoing)
+      //   .catch(handleError);
+      flagAsOngoing();
     }
 
-    function loadWorldOuting(success) {
+    function flagAsOngoing() {
+      console.log('flagging');
+      OutingClass.setOngoing(ctrl.data);
+      Outings.updateOne(ctrl.data);
+      console.log(ctrl.data);
+    }
+
+    /**
+     * Handles errors occuring.
+     * An UnsupportedFeatureError could be raised by Ionicitude if the device doesn't support Wikitude.
+     * For all the other errors, the error is logged and a toast is shown.
+     * @param e
+     */
+    function handleError(e) {
+      $log.error(e);
+      if (e instanceof UnsupportedFeatureError) {
+        $cordovaToast.showShortBottom("Device not supported !");
+      } else {
+        $cordovaToast.showShortBottom("Unknow error. Please check the logs.");
+      }
+    }
+
+    /**
+     * Load in the AR View the current outing's data.
+     * This means getting the GeoJSON for the path and the points, as well as retrieveing the
+     * points that have already been seen.
+     * When all these promises are resolved, a call to the AR function loadOuting is made.
+     */
+    function loadWorldOuting() {
       $log.debug('World loaded');
 
       var promises = [
@@ -103,7 +128,7 @@
       return $q.all(promises).then(function(results) {
         $log.log(results);
         WorldActions.execute('loadOuting', {
-          id: outingData.id,
+          id  : outingData.id,
           path: results[0].data,
           pois: results[1].data,
           seen: results[2]
@@ -112,32 +137,22 @@
     }
 
 
-    /* Zip Download
-
+    // Zip download
     //TODO add to localdb that the download and unzip was sucessful
-    ctrl.getZip = function (outingId){
-      downloader.init({folder: outingId.toString(), unzip: true});
-      downloader.get("http://knae.niloo.fr/testBirds.zip");
-
-      document.addEventListener("DOWNLOADER_downloadProgress", function(event){
-        var data = event.data;
-
-        $scope.$apply(function () {
-          ctrl.downloadProgress = data[0]  + ' %';
-        });
-
-      });
-
-      document.addEventListener("DOWNLOADER_unzipSuccess", function(event){
-        $scope.$apply(function () {
-          ctrl.downloadProgress = "Réussit";
-
-
-        });
-      });
-
-    }
-    */
-
+    // ctrl.getZip = function(outingId) {
+    //   downloader.init({folder: outingId.toString(), unzip: true});
+    //   downloader.get("http://knae.niloo.fr/testBirds.zip");
+    //   document.addEventListener("DOWNLOADER_downloadProgress", function(event) {
+    //     var data = event.data;
+    //     $scope.$apply(function() {
+    //       ctrl.downloadProgress = data[0] + ' %';
+    //     });
+    //   });
+    //   document.addEventListener("DOWNLOADER_unzipSuccess", function(event) {
+    //     $scope.$apply(function() {
+    //       ctrl.downloadProgress = "Réussit";
+    //     });
+    //   });
+    // }
   }
 })();

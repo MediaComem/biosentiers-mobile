@@ -13,6 +13,7 @@
     'ngCordova',
     // Application modules.
     'AuthModule',
+    'bio-db-module',
     'poi',
     'leaflet-directive',
     'map-icons',
@@ -21,6 +22,7 @@
     'SpeciesModule',
     'QRModule',
     'timers',
+    'trans',
     'world-actions'
     // 'arDirectives'
   ]);

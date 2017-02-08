@@ -52,7 +52,8 @@
      * @return {Promise} A promise of an Array containing the IDs of the POIs that have been seen for the specified Outing
      */
     function getAll(outingId, asIdArray) {
-      if (!outingId || typeof outingId === "boolean") {
+      console.log(outingId, typeof outingId);
+      if (!outingId || typeof outingId !== "number") {
         throw new TypeError('SeenPoisData.getAll expect first parameter to be an Outing Id');
       }
       return start().then(function() {
