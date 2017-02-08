@@ -80,18 +80,18 @@
      * Load and launch the AR World with the outing's data, then changes the status of this outing from "pending" to "ongoing".
      */
     function startOuting() {
-      // $q.when()
-      //   .then(Ionicitude.launchAR)
-      //   .then(loadWorldOuting)
-      //   .then(flagAsOngoing)
-      //   .catch(handleError);
-      flagAsOngoing();
+      $q.when()
+        .then(Ionicitude.launchAR)
+        .then(loadWorldOuting)
+        .then(flagAsOngoing)
+        .catch(handleError);
+      // flagAsOngoing();
     }
 
     function flagAsOngoing() {
       console.log('flagging');
       OutingClass.setOngoing(ctrl.data);
-      Outings.updateOne(ctrl.data);
+      // Outings.updateOne(ctrl.data);
       console.log(ctrl.data);
     }
 
@@ -129,6 +129,7 @@
         $log.log(results);
         WorldActions.execute('loadOuting', {
           id  : outingData.id,
+          data: ctrl.data,
           path: results[0].data,
           pois: results[1].data,
           seen: results[2]

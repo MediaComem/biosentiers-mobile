@@ -27,24 +27,5 @@
         $ionicTabsDelegate.select(selected - 1);
       }
     };
-
-    ////////////////////
-
-    function loadAll() {
-
-    }
-
-    function loadPending() {
-
-    }
-
-    function loadOngoing() {
-
-    }
-
-    function loadFinished() {
-
-    }
-
   }
 })();
