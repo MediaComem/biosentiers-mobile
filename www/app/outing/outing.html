@@ -4,19 +4,8 @@
 			<leaflet id="map" maxbounds="outing.map.maxbounds" defaults="outing.map.defaults" tiles="outing.map.tiles"
 			         center="outing.map.center" geojson="outing.map.path" markers="outing.map.markers"></leaflet>
 		</div>
+		
 		<div class="padding">
-			<div class="row">
-				<div class="col text-left">Créée le</div>
-				<div class="col text-right">{{outing.data.date}}</div>
-			</div>
-			<div class="row">
-				<div class="col text-left">Créée par</div>
-				<div class="col text-right">{{outing.data.created_by}}</div>
-			</div>
-			<div class="row">
-				<div class="col text-left">Statut</div>
-				<div class="col text-right">{{outing.data.status | status}}</div>
-			</div>
 			
 			<div ng-switch="outing.data.status">
 				<button ng-switch-when="pending" class="button button-balanced button-block button-outline"
@@ -29,6 +18,38 @@
 				        on-release="outing.showReport()">Compte-rendu
 				</button>
 			</div>
+			<div class="row">
+				<div class="col text-left">Créée le</div>
+				<div class="col text-right">{{outing.data.date}}</div>
+			</div>
+			<div class="row">
+				<div class="col text-left">Créée par</div>
+				<div class="col text-right">{{outing.data.created_by}}</div>
+			</div>
+			<div class="row">
+				<div class="col text-left">Statut</div>
+				<div class="col text-right">{{outing.data.status | status}}</div>
+			</div>
+			<div class="row" ng-if="outing.data.started_at">
+				<div class="col text-left">Commencée le</div>
+				<div class="col text-right">{{outing.data.started_at | date:'dd.MM.yyyy'}} à {{outing.data.started_at |
+					date:'HH:mm'}}
+				</div>
+			</div>
+			<div class="row" ng-if="outing.data.finished_at">
+				<div class="col text-left">Terminée le</div>
+				<div class="col text-right">{{outing.data.finished_at | date:'dd.MM.yyyy'}} à {{outing.data.finished_at |
+					date:'HH:mm'}}
+				</div>
+			</div>
+			<div class="list list-inset">
+				<a class="item item-icon-right" ui-sref="app.outing.seenlist({outingId: outing.data.id})">
+					Éléments vus
+					<span class="item-note">{{outing.nbSeenPoi}}/25</span>
+					<i class="icon ion-chevron-right"></i>
+				</a>
+			</div>
+			
 			
 			<!-- Test downloadzip
 

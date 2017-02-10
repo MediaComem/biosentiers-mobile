@@ -13,8 +13,9 @@
     var db,
         collName = 'seen-pois',
         service  = {
-          getAll: getAll,
-          addOne: addOne
+          getAll  : getAll,
+          countFor: countFor,
+          addOne  : addOne
         };
 
     return service;
@@ -37,6 +38,13 @@
           return res;
         })
         .catch(handleError);
+    }
+
+    function countFor(outingId) {
+      return BioDb.getCollection(collName)
+        .then(function(coll) {
+          return coll.count({outing_id: Number(outingId)});
+        }).catch(handleError);
     }
 
     /**

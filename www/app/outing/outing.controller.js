@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
+  function OutingCtrl(ActivityTracker, $cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
     var ctrl = this;
 
     var UserPosition = {
@@ -73,6 +73,11 @@
     ctrl.resumeOuting = resumeOuting;
 
     ctrl.data = outingData;
+
+    SeenPoisData.countFor(ctrl.data.id).then(function(res) {
+      ctrl.nbSeenPoi = res;
+    }).catch(handleError);
+
     $log.log(ctrl.data);
 
     ////////////////////
@@ -81,7 +86,7 @@
      * Load and launch the AR World with the outing's data, then changes the status of this outing from "pending" to "ongoing".
      */
     function startOuting() {
-      $q.when()
+      return $q.when()
         .then(Ionicitude.launchAR)
         .then(loadWorldOuting)
         .then(_.partial(Outings.setOngoingStatus, ctrl.data))
@@ -89,7 +94,7 @@
     }
 
     function resumeOuting() {
-      $q.when()
+      return $q.when()
         .then(startOuting)
         .then(ActivityTracker.logResume)
         .catch(handleError);
@@ -129,7 +134,6 @@
         $log.log(results);
         WorldActions.execute('loadOuting', {
           id  : ctrl.data.id,
-          data: ctrl.data,
           path: results[0].data,
           pois: results[1].data,
           seen: _.map(results[2], 'poi_id')
