@@ -14,7 +14,7 @@
 
   function MapIconsProvider() {
 
-    var iconBaseUrl;
+    var iconBaseUrl, icons;
 
     this.setIconBaseUrl = setIconBaseUrl;
 
@@ -47,7 +47,7 @@
         get: getIcon
       };
 
-      var icons = {
+      icons = {
         user     : new IconConf('user', 20, 10),
         start    : new IconConf('start', 16, 8),
         end      : new IconConf('end', 16, 8),
