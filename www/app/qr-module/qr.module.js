@@ -4,5 +4,5 @@
 (function () {
   'use strict';
 
-  angular.module('QRModule', []);
+  angular.module('qr-module', []);
 })();

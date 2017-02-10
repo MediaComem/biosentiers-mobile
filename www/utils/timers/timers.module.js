@@ -1,10 +1,10 @@
 (function() {
   'use strict';
 
-  angular.module('timers', []);
+  angular.module('timers-module', []);
 
   angular
-    .module('timers')
+    .module('timers-module')
     .factory('Timers', TimersService);
 
   function TimersService($log) {

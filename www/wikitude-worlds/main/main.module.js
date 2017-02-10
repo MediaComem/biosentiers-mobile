@@ -20,13 +20,13 @@
     'debug-position-modal',
     'debug-stats',
     'filters-modal',
-    'map-icons',
+    'map-icons-module',
     'mini-map',
     'mini-map-orientation',
     'modals',
     'outing',
     'seen-tracker',
-    'timers',
+    'timers-module',
     'world'
   ]);
 })();

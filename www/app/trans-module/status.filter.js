@@ -4,7 +4,7 @@
 (function() {
   'use strict';
   angular
-    .module('trans')
+    .module('trans-module')
     .filter('status', status);
 
   function status() {

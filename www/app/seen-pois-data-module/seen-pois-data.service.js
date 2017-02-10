@@ -4,7 +4,7 @@
 (function() {
   'use strict';
   angular
-    .module('seen-pois-data')
+    .module('seen-pois-data-module')
     .factory('SeenPoisData', SeenPoisDataService);
 
   function SeenPoisDataService(BioDb, $log, Loki, $q) {
@@ -23,37 +23,9 @@
 
     /**
      * Tries to get all the POIs that have been seen for a particuler outing.
-     * If it's the first time retrieving the POIs for this outing, the collection will be created.
-     * By passing True as the second parameter, it's possible to retrieve an Array containing the IDs of the POIs that have been seen.
-     * By not passing a second parameter or by passing False, the result will be returned as they are in the database
      * @param outingId The ID of the Outing for which we want to get all the seen POIs.
-     * @param asIdArray A Boolean indicating if the results should be returned as an array of IDs
-     * @return {Promise} A promise of an Array containing the IDs of the POIs that have been seen for the specified Outing
+     * @return {Promise} A promise of an Array containing the POIs that have been seen for the specified Outing
      */
-    // function getAll(outingId, asIdArray) {
-    //   console.log(outingId, typeof outingId);
-    //   if (!outingId || typeof outingId !== "number") {
-    //     throw new TypeError('SeenPoisData.getAll expect first parameter to be an Outing Id');
-    //   }
-    //   return start().then(function() {
-    //     var seen = db.getCollection(outingId);
-    //     if (!seen) {
-    //       $log.log('No seen POIs. Creating the collection');
-    //       seen = db.addCollection(outingId);
-    //       init(seen);
-    //       $log.log(db);
-    //       save();
-    //     } else {
-    //       $log.log('Some POIs seen. Database loaded', seen.data);
-    //     }
-    //     if (asIdArray === true) {
-    //       return _.map(seen.data, 'id');
-    //     } else {
-    //       return seen.data;
-    //     }
-    //   });
-    // }
-
     function getAll(outingId) {
       return BioDb.getCollection(collName)
         .then(function(coll) {

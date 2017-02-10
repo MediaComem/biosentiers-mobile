@@ -67,7 +67,7 @@
         }
       };
 
-      var noButton = { // Array[Object] (optional). Buttons to place in the popup footer.
+      var noButton = {
         text : 'Non',
         type : 'button-assertive',
         onTap: function() {
@@ -84,7 +84,9 @@
       prompt.then(function(validated) {
         $log.log("promptEndOfOuting - prompt result", validated);
         if (validated) {
-
+          $log.log('Fin de sentier');
+        } else {
+          $log.log('Pas de fin du sentier');
         }
       });
       // TODO : À supprimer lorsque cette fonction servira vraiment pour l'ActionRange

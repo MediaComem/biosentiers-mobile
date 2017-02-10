@@ -6,10 +6,10 @@
  */
 (function() {
   'use strict';
-  angular.module('map-icons', []);
+  angular.module('map-icons-module', []);
 
   angular
-    .module('map-icons')
+    .module('map-icons-module')
     .provider('MapIcons', MapIconsProvider);
 
   function MapIconsProvider() {

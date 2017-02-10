@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('poi')
+    .module('poi-module')
     .factory('PoiContent', PoiContentService);
 
   function PoiContentService() {

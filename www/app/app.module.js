@@ -7,23 +7,23 @@
   angular.module('app', [
     // Third-party modules.
     'ionic',
-    'IonicitudeModule',
+    'ionicitude-module',
     'lokijs',
     'leaflet-directive',
     'ngCordova',
     // Application modules.
-    'AuthModule',
+    'activity-tracker-module',
+    'auth-module',
     'bio-db-module',
-    'poi',
-    'leaflet-directive',
-    'map-icons',
-    'OutingsModule',
-    'seen-pois-data',
-    'SpeciesModule',
-    'QRModule',
-    'timers',
-    'trans',
-    'world-actions'
+    'poi-module',
+    'map-icons-module',
+    'outings-module',
+    'seen-pois-data-module',
+    'species-modules',
+    'qr-module',
+    'timers-module',
+    'trans-module',
+    'world-actions-module'
     // 'arDirectives'
   ]);
 })();

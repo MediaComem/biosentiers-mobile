@@ -5,19 +5,20 @@
 (function() {
   'use strict';
   angular
-    .module('OutingsModule')
+    .module('outings-module')
     .factory('Outings', Outings);
 
   function Outings(OutingClass, BioDb, $log, $q) {
     var collName = 'outings',
         outings,
         service  = {
-          getAll     : getAll,
-          getOne     : getOne,
-          getPending : getPending,
-          getOngoing : getOngoing,
-          getFinished: getFinished,
-          updateOne  : updateOne
+          getAll          : getAll,
+          getOne          : getOne,
+          getPending      : getPending,
+          getOngoing      : getOngoing,
+          getFinished     : getFinished,
+          updateOne       : updateOne,
+          setOngoingStatus: setOngoingStatus
         };
 
     return service;
@@ -103,6 +104,21 @@
     function handleError(error) {
       $log.error(error);
       return $q.reject(error);
+    }
+
+    /**
+     * Changes the status of a single outing, passed as argument, and updates this outing in the Loki DB.
+     * Only an outing with a 'pending' status could have its status changed to 'ongoing'.
+     * If you pass an outing with a status other than 'pending', the promise will resolve with no error, but the status will remain the same.
+     * @param outing {OutingClass} The outing whose status should be set as oingoing
+     */
+    function setOngoingStatus(outing) {
+      if (outing.status !== 'pending') return $q.resolve();
+      console.log('setOngoingStatus', outing);
+      outing.status = 'ongoing';
+      outing.started_at = Date.now();
+      console.log('setOngoingStatus - before update', outing);
+      return updateOne(outing);
     }
 
     /**

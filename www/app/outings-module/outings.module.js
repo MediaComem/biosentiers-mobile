@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('OutingsModule', []);
+  angular.module('outings-module', []);
 })();

@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('QRModule')
+    .module('qr-module')
     .factory('QRService', QRService);
 
   function QRService() {

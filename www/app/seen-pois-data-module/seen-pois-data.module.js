@@ -3,5 +3,5 @@
  */
 (function() {
   'use strict';
-  angular.module('seen-pois-data', []);
+  angular.module('seen-pois-data-module', []);
 })();

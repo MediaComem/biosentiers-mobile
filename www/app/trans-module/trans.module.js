@@ -3,5 +3,5 @@
  */
 (function() {
   'use strict';
-  angular.module('trans', []);
+  angular.module('trans-module', []);
 })();

@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, OutingClass, outingData, Outings, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
+  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
     var ctrl = this;
 
     var UserPosition = {
@@ -70,6 +70,7 @@
     }).catch(handleError);
 
     ctrl.startOuting = startOuting;
+    ctrl.resumeOuting = resumeOuting;
 
     ctrl.data = outingData;
     $log.log(ctrl.data);
@@ -83,15 +84,15 @@
       $q.when()
         .then(Ionicitude.launchAR)
         .then(loadWorldOuting)
-        .then(flagAsOngoing)
+        .then(_.partial(Outings.setOngoingStatus, ctrl.data))
         .catch(handleError);
     }
 
-    function flagAsOngoing() {
-      console.log('flagging');
-      OutingClass.setOngoing(ctrl.data);
-      // Outings.updateOne(ctrl.data);
-      console.log(ctrl.data);
+    function resumeOuting() {
+      $q.when()
+        .then(startOuting)
+        .then(ActivityTracker.logResume)
+        .catch(handleError);
     }
 
     /**

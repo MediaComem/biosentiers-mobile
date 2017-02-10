@@ -9,7 +9,7 @@
 (function() {
   'use strict';
   angular
-    .module('OutingsModule')
+    .module('outings-module')
     .service('OutingClass', OutingClass);
 
   function OutingClass() {

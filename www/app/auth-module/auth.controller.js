@@ -7,7 +7,7 @@
   'use strict';
 
   angular
-    .module('AuthModule')
+    .module('auth-module')
     .controller('AuthCtrl', AuthCtrl);
 
   /*

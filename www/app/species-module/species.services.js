@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   angular
-    .module('SpeciesModule')
+    .module('species-modules')
     .factory('Species', Species);
 
   function Species(PoiGeo) {

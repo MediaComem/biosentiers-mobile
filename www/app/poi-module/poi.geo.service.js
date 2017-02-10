@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('poi')
+    .module('poi-module')
     .factory('PoiGeo', PoiGeoService);
 
   function PoiGeoService($http) {
