@@ -1,6 +1,8 @@
 /**
  * Created by Mathias on 29.08.2016.
- * This module manages the different icons needed on the several map in the application
+ * This provider manages the different icons needed on the several map in the application.
+ * Since it's used by both the main app and the Ar app(s), the URL to retrieve the correct icon is not the same.
+ * This, this provider needs to be configured in a config block by calling the setIconBaseUrl method.
  */
 (function() {
   'use strict';
@@ -8,31 +10,54 @@
 
   angular
     .module('map-icons')
-    .factory('MapIcons', MapIconsService);
+    .provider('MapIcons', MapIconsProvider);
 
-  function MapIconsService() {
-    var service = {
-      /**
-       * Returns the icon definition for the user.
-       * Usage : var userIcon = Icons.user
-       * @returns Object
-       */
-      get user() {return angular.copy(icons.user);},
-      get: getIcon
-    };
+  function MapIconsProvider() {
 
-    var icons = {
-      user     : new IconConf('user', 20, 10),
-      start    : new IconConf('start', 16, 8),
-      end      : new IconConf('end', 16, 8),
-      Oiseaux  : new IconConf('Oiseaux', 16, 8),
-      Flore    : new IconConf('Flore', 16, 8),
-      Papillons: new IconConf('Papillons', 16, 8)
-    };
+    var iconBaseUrl;
 
-    return service;
+    this.setIconBaseUrl = setIconBaseUrl;
+
+    this.$get = service;
 
     ////////////////////
+
+    /**
+     * Sets the correct URL to the icon folder that contains the icons' images.
+     * This URL do not need a '/' at the end.
+     * @param url {String} The URL to the icons folder. Do not put a slash at the end.
+     */
+    function setIconBaseUrl(url) {
+      if (typeof url !== 'string') throw new TypeError('The setIconBaseUrl method from the MapIconsProvider needs a string value as its only parameter. ' + typeof url + ' given.');
+      iconBaseUrl = url;
+    }
+
+    /**
+     * Sets up the actual service and returns it.
+     * @return {{user: Object, get: getIcon}}
+     */
+    function service() {
+      var service = {
+        /**
+         * Returns the icon definition for the user.
+         * Usage : var userIcon = Icons.user
+         * @returns Object
+         */
+        get user() {return angular.copy(icons.user);},
+        get: getIcon
+      };
+
+      var icons = {
+        user     : new IconConf('user', 20, 10),
+        start    : new IconConf('start', 16, 8),
+        end      : new IconConf('end', 16, 8),
+        Oiseaux  : new IconConf('Oiseaux', 16, 8),
+        Flore    : new IconConf('Flore', 16, 8),
+        Papillons: new IconConf('Papillons', 16, 8)
+      };
+
+      return service;
+    }
 
     /**
      * Returns the icon definition corresponding to the name given.
@@ -53,7 +78,7 @@
      * @constructor
      */
     function IconConf(name, size, anchor) {
-      this.iconUrl = '../../img/icons/' + name + '.png';
+      this.iconUrl = iconBaseUrl + '/' + name + '.png';
       this.iconSize = [size, size];
       this.iconAnchor = [anchor, anchor];
     }
