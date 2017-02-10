@@ -12,13 +12,14 @@
     var collName = 'outings',
         outings,
         service  = {
-          getAll          : getAll,
-          getOne          : getOne,
-          getPending      : getPending,
-          getOngoing      : getOngoing,
-          getFinished     : getFinished,
-          updateOne       : updateOne,
-          setOngoingStatus: setOngoingStatus
+          getAll           : getAll,
+          getOne           : getOne,
+          getPending       : getPending,
+          getOngoing       : getOngoing,
+          getFinished      : getFinished,
+          updateOne        : updateOne,
+          setOngoingStatus : setOngoingStatus,
+          setFinishedStatus: setFinishedStatus
         };
 
     return service;
@@ -88,6 +89,7 @@
      * The object passed as a parameter must have the $loki and meta properties, required by LokiJS.
      * When the update is performed, the in-memory database is saved on the device's filesystem.
      * @param doc An object of the Outing to update
+     * @return {Promise} A promise of an updated document.
      */
     function updateOne(doc) {
       return BioDb.getCollection(collName)
@@ -99,7 +101,8 @@
     /**
      * Determines how to react to an error when a query is executed.
      * Right now, this does nothing more than logging said error and returning it as a rejected Promise.
-     * @param error
+     * @param {*} error
+     * @return {Promise} A rejected promise whose value is the received error.
      */
     function handleError(error) {
       $log.error(error);
@@ -109,15 +112,34 @@
     /**
      * Changes the status of a single outing, passed as argument, and updates this outing in the Loki DB.
      * Only an outing with a 'pending' status could have its status changed to 'ongoing'.
-     * If you pass an outing with a status other than 'pending', the promise will resolve with no error, but the status will remain the same.
-     * @param outing {OutingClass} The outing whose status should be set as oingoing
+     * If you pass an outing with a status other than 'pending', the promise will be resolved, but the outing will remain untouched.
+     * @param {OutingClass} outing The outing whose status should be set as 'oingoing'
+     * @param {String} outing.status This property must have a value of 'pending'. It will be set to 'ongoing'
+     * @param {Number} outing.started_at This property should be empty. It will be set as the current timestamp.
+     * @return {Promise} A promise of an updated Outing
      */
     function setOngoingStatus(outing) {
+      if (!outing) throw new TypeError('Outings : setOngoingStatus needs an Outing object as its first argument, none given');
       if (outing.status !== 'pending') return $q.resolve();
-      console.log('setOngoingStatus', outing);
       outing.status = 'ongoing';
       outing.started_at = Date.now();
-      console.log('setOngoingStatus - before update', outing);
+      return updateOne(outing);
+    }
+
+    /**
+     * Changes the status of a single outing, passed as argument, and updates this outing in the Loki DB.
+     * Only an outing with an 'ongoing' status value can have its status changed to 'finished'.
+     * Note that if you pass an outing with a status other than 'ongoing', the promise will be resolved, but the outing will remain untouched.
+     * @param {OutingClass} outing The outing whose status should be set as 'finished'
+     * @param {String} outing.status This property must have a value of 'ongoing'. It will be set to 'finished'
+     * @param {Number} outing.finished_at This property should be empty. It will be set as the current timestamp.
+     * @return {Promise} A promise of an updated Outing
+     */
+    function setFinishedStatus(outing) {
+      if (!outing) throw new TypeError('Outings : setFinishedStatus needs an Outing object as its first argument, none given');
+      if (outing.status !== 'ongoing') return $q.resolve();
+      outing.status = 'finished';
+      outing.finished_at = Date.now();
       return updateOne(outing);
     }
 

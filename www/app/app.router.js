@@ -186,6 +186,31 @@
         }
       })
 
+      .state('app.outing.seenlist', {
+        url    : '/seen',
+        views  : {
+          'menuContent@app': {
+            templateUrl : 'app/outing/outing-seen.html',
+            controller  : 'OutingSeenCtrl',
+            controllerAs: 'outingSeen'
+          }
+        },
+        resolve: {
+          seenPois: function(SeenPoisData, $stateParams) {
+            return SeenPoisData.getAll(Number($stateParams.outingId));
+          }
+        }
+      })
+
+      .state('app.outing.seenlist.poi', {
+        url  : '/poi/:poiId',
+        views: {
+          'menuContent@app': {
+            templateUrl: 'app/specie/specie.html'
+          }
+        }
+      })
+
       .state('app.specie', {
         url    : '/species/:specieId',
         views  : {

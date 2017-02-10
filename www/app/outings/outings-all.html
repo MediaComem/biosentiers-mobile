@@ -1,5 +1,5 @@
 <ion-view view-title="Mes Sorties">
-  <ion-content on-swipe-right="goBack()" on-swipe-left="goForward()">
+  <ion-content class="padding" on-swipe-right="goBack()" on-swipe-left="goForward()">
     <ion-list ng-if="!ctrl.loading && ctrl.outings.length >= 1">
       <ion-item ng-repeat="outing in ctrl.outings" href="#/app/outings/{{outing.id}}">
         <h2>{{outing.name}}</h2>
