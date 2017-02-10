@@ -12,6 +12,7 @@
         db,
         service  = {
           getCollection: getCollection,
+          reset        : reset,
           save         : save
         };
 
@@ -67,6 +68,15 @@
         err ? deferred.reject() : deferred.resolve();
       });
       return deferred.promise;
+    }
+
+    // TODO : Supprimer en prod
+    function reset() {
+      return start().then(function() {
+        db.removeCollection('outings');
+        db.removeCollection('seen-pois');
+        return save();
+      })
     }
   }
 })();

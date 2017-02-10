@@ -40,7 +40,7 @@
         cache: false, //fix issue with other tabs system - species - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
         views: {
           'menuContent': {
-            templateUrl : 'app/outings/outings.html'
+            templateUrl: 'app/outings/outings.html'
           }
         }
       })
@@ -197,6 +197,16 @@
         resolve: {
           specieData: function(Species, $stateParams) {
             return Species.getOne($stateParams.specieId);
+          }
+        }
+      })
+      .state('app.debug', {
+        url  : '/debug',
+        views: {
+          'menuContent': {
+            templateUrl : 'app/debug/debug.template.html',
+            controller  : 'DebugCtrl',
+            controllerAs: 'debug'
           }
         }
       });
