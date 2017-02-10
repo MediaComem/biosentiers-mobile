@@ -9,17 +9,21 @@
 
   function ArExtremityMarkerClass(ArBaseMarker, ArIcons, $ionicPopup, $log) {
     /**
-     * This class represent a point at the extremity of a path (namely the start point and the end point)
+     * This class represent a point at the extremity of a path (namely the start point and the end point).
+     * If the onEnterActionRange argument is passed, the point will have an ActionRange that will trigger the function.
      * @param poi The GeoJSON poi object representing the ArExtremityMarker to create
+     * @param onEnterActionRange (Optionnal) A function describing what happen when the user enters the ActionRange of the point
      * @constructor
      */
-    function ArExtremityMarker(poi) {
+    function ArExtremityMarker(poi, onEnterActionRange) {
       ArBaseMarker.call(this, poi, true);
       var self = this;
 
-      self.actionRange = new AR.ActionRange(self.location, AR.context.scene.minPoiActiveDistance, {
-        onEnter: promptEndOfOuting
-      });
+      if (onEnterActionRange && typeof onEnterActionRange === 'function') {
+        self.actionRange = new AR.ActionRange(self.location, AR.context.scene.minPoiActiveDistance, {
+          onEnter: onEnterActionRange
+        });
+      }
 
       $log.debug("ar-view.extremity.class.js - ArExtremityMarker", self.distanceToUser());
 
@@ -29,11 +33,7 @@
         self.icon = ArIcons.getActive(self.properties.type);
       }
 
-      // The onClick has a 'return true' behavior to stop the propagation of the click event
-      // to eventual ArPoi placed behind the ArExtremityMarker in the ArView.
-      // See : http://www.wikitude.com/external/doc/documentation/latest/Reference/JavaScript%20API/classes/GeoObject.html#event_onClick
-      // self.geoObject.onClick = function() { return true; };
-      self.geoObject.onClick = promptEndOfOuting;
+      self.geoObject.onClick = onEnterActionRange || function() {return true;};
       self.geoObject.drawables.cam = [self.icon];
     }
 
@@ -54,43 +54,5 @@
     };
 
     return ArExtremityMarker;
-
-    ////////////////////
-
-    function promptEndOfOuting() {
-      // TODO : ajouter un bouton au template html
-      var yesButton = {
-        text : 'Oui',
-        type : 'button-positive',
-        onTap: function() {
-          return true;
-        }
-      };
-
-      var noButton = {
-        text : 'Non',
-        type : 'button-assertive',
-        onTap: function() {
-          return false;
-        }
-      };
-
-      var prompt = $ionicPopup.show({
-        title      : 'Fin de sentier', // String. The title of the popup.
-        template   : '<p>Vous avez atteint la fin de votre sentier.</p><p>Souhaitez-vous mettre fin à votre sortie ?</p>', // String (optional). The html template to place in the popup body.
-        buttons    : [noButton, yesButton]
-      });
-
-      prompt.then(function(validated) {
-        $log.log("promptEndOfOuting - prompt result", validated);
-        if (validated) {
-          $log.log('Fin de sentier');
-        } else {
-          $log.log('Pas de fin du sentier');
-        }
-      });
-      // TODO : À supprimer lorsque cette fonction servira vraiment pour l'ActionRange
-      return true;
-    }
   }
 })();

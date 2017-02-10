@@ -1,22 +1,32 @@
 /**
  * Created by Mathias on 17.05.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('app')
     .run(ionicitude);
 
-  function ionicitude(BioDb, $cordovaDeviceOrientation, $ionicPlatform, Ionicitude, $cordovaToast, $log, PoiGeo, PoiContent, $q, SeenPoisData, Timers, WorldActions) {
+  function ionicitude(BioDb,
+                      $cordovaDeviceOrientation,
+                      $ionicPlatform,
+                      Ionicitude,
+                      $cordovaToast,
+                      $log,
+                      Outings,
+                      PoiContent,
+                      $q,
+                      SeenPoisData,
+                      WorldActions) {
 
     var deviceOrientationWatch,
         deviceOrientationUpdatesInterval = 250;
 
-    $ionicPlatform.ready(function () {
+    $ionicPlatform.ready(function() {
       Ionicitude.init()
-        .then(function (success) { console.log(success); })
-        .catch(function (error) { console.log(error); });
+        .then(function(success) { console.log(success); })
+        .catch(function(error) { console.log(error); });
 
       /**
        * Register Ionicitude Actions
@@ -27,6 +37,7 @@
       addIonicitudeAction(setPosition);
       addIonicitudeAction(close);
       addIonicitudeAction(addSeenPoi);
+      addIonicitudeAction(finishOuting);
 
       Ionicitude.listLibActions();
 
@@ -80,6 +91,17 @@
       function addSeenPoi(service, param) {
         $log.log('adding seen poi');
         console.log('addSeenPoi', SeenPoisData.addOne(param.outingId, param.poiId));
+      }
+
+      function finishOuting(service, param) {
+        return $q.when(param.outingId)
+          .then(Outings.getOne)
+          .then(Outings.setFinishedStatus)
+          .then(_.partial(close, service))
+          .catch(function(error) {
+            $log.error(error);
+            $q.reject(error);
+          });
       }
 
       ////////////////////
@@ -142,14 +164,14 @@
 
       function returnResultToWorld(executionId, result) {
         WorldActions.execute('returnResultFromApp', {
-          id: executionId,
+          id    : executionId,
           result: result
         });
       }
 
       function returnErrorToWorld(executionId, err) {
         WorldActions.execute('returnResultFromApp', {
-          id: executionId,
+          id   : executionId,
           error: err.message
         });
       }

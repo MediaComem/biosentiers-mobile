@@ -10,10 +10,11 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArExtremityMarker, ArMarker, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArExtremityMarker, ArMarker, $ionicPopup, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
     var arPointsById         = {},
+        hasReachedTheEnd     = false,
         arExtremityPoints    = {},
         reachLimit           = 250,
         minPoiActiveDistance = 20,
@@ -38,7 +39,7 @@
     function loadExtremityPoints() {
       arExtremityPoints = {
         start: new ArExtremityMarker(Outing.getStartPoint()),
-        end  : new ArExtremityMarker(Outing.getEndPoint())
+        end  : new ArExtremityMarker(Outing.getEndPoint(), onEnterActionRange)
       }
     }
 
@@ -368,6 +369,43 @@
           arPoi.setVisible(false);
         }
       }
+    }
+
+    function onEnterActionRange() {
+      // The prompt will only be shown once.
+      if (hasReachedTheEnd) return true;
+      // TODO : ajouter un bouton quelque part sur l'écran principal qui permet de fermer la sortie à partir du moment où la balise de fin a été atteinte.
+      var yesButton = {
+            text : 'Oui',
+            type : 'button-positive',
+            onTap: function() {
+              return true;
+            }
+          },
+          noButton  = {
+            text : 'Non',
+            type : 'button-outline button-assertive',
+            onTap: function() {
+              return false;
+            }
+          },
+          prompt    = $ionicPopup.show({
+            title   : 'Fin de sentier',
+            template: '<p>Vous avez atteint la fin de votre sentier.</p><p>Souhaitez-vous mettre fin à votre sortie ?</p>',
+            buttons : [noButton, yesButton]
+          });
+
+      prompt.then(function(validated) {
+        hasReachedTheEnd = !hasReachedTheEnd;
+        $log.log("promptEndOfOuting - prompt result", validated);
+        if (validated) {
+          AppActions.execute('finishOuting', {outingId: Outing.id});
+        } else {
+          $log.log('Pas de fin du sentier');
+        }
+      });
+      // TODO : À supprimer lorsque cette fonction servira vraiment pour l'ActionRange
+      return true;
     }
 
     /**
