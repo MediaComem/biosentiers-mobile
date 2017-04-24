@@ -59,8 +59,7 @@
     },
     "cordova-plugin-file-transfer",
     "cordova-plugin-network-information",
-    "cordova-plugin-zip",
-    "cordova-plugin-fastrde-md5"
+    "cordova-plugin-zip"
   ],
   "cordovaPlatforms": [
     {
