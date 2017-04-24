@@ -13,20 +13,20 @@
   function ArViewService(AppActions, ArExtremityMarker, ArMarker, $ionicPopup, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
-    var arPointsById         = {},
-        hasReachedTheEnd     = false,
-        arExtremityPoints    = {},
-        reachLimit           = 250,
-        minPoiActiveDistance = 20,
-        poisChangeSubject    = new rx.Subject();
+    var arPointsById            = {},
+        outingEndReachedSubject = new rx.ReplaySubject(1),
+        arExtremityPoints       = {},
+        reachLimit              = 250,
+        minPoiActiveDistance    = 20,
+        poisChangeSubject       = new rx.Subject();
 
     var service = {
       init               : init,
       updateAr           : updateAr,
       loadExtremityPoints: loadExtremityPoints,
       pauseAr            : pauseAr,
-      resumeAr           : resumeAr,
-      poisChangeObs      : poisChangeSubject.asObservable()
+      poisChangeObs      : poisChangeSubject.asObservable(),
+      outingEndReachedObs: outingEndReachedSubject.asObservable()
     };
 
     return service;
@@ -353,9 +353,10 @@
         console.log('POI clicked', arPoi);
         var dist = arPoi.distanceToUser();
         console.log("distance to user ", dist);
-        if (dist <= minPoiActiveDistance) {
+        if (1 === 1) {
+        // if (dist <= minPoiActiveDistance) {
           Outing.loadCurrentPoi(arPoi.poi);
-          if (!arPoi.hasBeenSeen) setPoiSeen();
+          // if (!arPoi.hasBeenSeen) setPoiSeen();
         } else {
           AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
         }
@@ -372,8 +373,6 @@
     }
 
     function onEnterActionRange() {
-      // The prompt will only be shown once.
-      if (hasReachedTheEnd) return true;
       // TODO : ajouter un bouton quelque part sur l'écran principal qui permet de fermer la sortie à partir du moment où la balise de fin a été atteinte.
       var yesButton = {
             text : 'Oui',
@@ -396,7 +395,6 @@
           });
 
       prompt.then(function(validated) {
-        hasReachedTheEnd = !hasReachedTheEnd;
         $log.log("promptEndOfOuting - prompt result", validated);
         if (validated) {
           AppActions.execute('finishOuting', {outingId: Outing.id});
@@ -421,26 +419,16 @@
     }
 
     /**
-     * Pauses the AR.
-     * This means disabling the camera and the sensors to spare resources and battery consumption.
+     * Pauses or resume the AR, depending on the valuer of state.
+     * If true is passed, then the AR is paused, meaning that the camera and sensors are disabled to spare resources and battery consumption.
      * This should be the case whenever a fullscreen HTML is shown, effectively hiding the AR View from the user.
-     * To reactivate the AR, use the resumeAr function.
+     * If false is passed, then the AR is resumed, meaning that the camera and sensors are enabled.
+     * @param {Boolean} state The state in which the AR should be. True is paused, False is resumed.
      */
-    function pauseAr() {
-      $log.debug('Pausing the AR (camera and sensors)');
-      AR.hardware.camera.enabled = false;
-      AR.hardware.sensors.enabled = false;
-    }
-
-    /**
-     * Resumes the AR.
-     * This means enabling the camera and the sensors for the AR View to properly track and show the points.
-     * This function should be called after pauseAr has been executed. Calling it while the AR View is active would achieve nothing.
-     */
-    function resumeAr() {
-      $log.debug('Resuming the AR (sensors and camera)');
-      AR.hardware.sensors.enabled = true;
-      AR.hardware.camera.enabled = true;
+    function pauseAr(state) {
+      $log.debug((state ? 'Pausing' : 'Resuming') + 'the AR (camera and sensors)');
+      AR.hardware.camera.enabled = !state;
+      AR.hardware.sensors.enabled = !state;
     }
   }
 })();
