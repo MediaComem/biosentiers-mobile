@@ -25,7 +25,7 @@
     minimap.isVisible = false;
     minimap.config = MiniMap.config;
 
-    $scope.$on('leafletDirectiveMap.minimap.click', showBigMapModal);
+    minimap.showBigMapModal = showBigMapModal;
 
     Outing.outingChangeObs.subscribe(MiniMap.addPath);
 
