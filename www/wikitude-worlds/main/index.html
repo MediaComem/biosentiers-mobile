@@ -1,118 +1,118 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,target-densitydpi=device-dpi"
-          name="viewport">
-
-    <title>Sortie - AR View</title>
-
-    <!-- Lodash -->
-    <script src="../../lib/lodash/dist/lodash.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="../../lib/jquery/dist/jquery.js"></script>
-
-    <!-- Ionic -->
-    <script src="architect://architect.js"></script>
-    <script src="../../lib/ionic/js/ionic.bundle.min.js"></script>
-    <link rel="stylesheet" href="../../lib/ionic/css/ionic.min.css">
-    <script src="../../lib/ngCordova/dist/ng-cordova.min.js"></script>
-
-    <!-- Turf -->
-    <script src="../../lib/turf/turf.min.js"></script>
-    <script src="../../lib/angular-turf-module/angular-turf-module.js"></script>
-
-    <!-- Leaflet -->
-    <script src="../../lib/leaflet/dist/leaflet.js"></script>
-    <script src="../../lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-    <link rel="stylesheet" href="../../lib/leaflet/dist/leaflet.css">
-    <link rel="stylesheet" href="../../lib/leaflet.markercluster/dist/MarkerCluster.css">
-    <link rel="stylesheet" href="../../lib/leaflet.markercluster/dist/MarkerCluster.Default.css">
-    <script src="../../lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-
-    <!-- RxJS -->
-    <script src="../../lib/rxjs/dist/rx.lite.min.js"></script>
-    <script src="../../lib/rxjs/dist/rx.aggregates.js"></script>
-    <script src="../../lib/rx-angular/dist/rx.angular.min.js"></script>
-
-    <!-- Utils -->
-    <script src="../../utils/timers/timers.module.js"></script>
-    <script src="../../utils/map-icons-module/map-icons.module.js"></script>
-
-    <!--
-      ATTENTION: the inject:css and inject:js sections are automatically filled
-      by the gulp-inject plugin. DO NOT EDIT THEM YOURSELF. See the README.
-    -->
-
-    <!-- inject:css -->
-    <link rel="stylesheet" href="big-map-modal/big-map-modal.css">
-    <link rel="stylesheet" href="debug-stats/debug-stats.css">
-    <link rel="stylesheet" href="filters-modal/filters-modal.css">
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="mini-map-orientation/mini-map-orientation.css">
-    <link rel="stylesheet" href="mini-map/mini-map.css">
-    <!-- endinject -->
-
-    <!-- inject:js -->
-    <script src="../ar-back-button-directive.js"></script>
-    <script src="main.module.js"></script>
-    <script src="base.controller.js"></script>
-    <script src="main.altitude.correct.js"></script>
-    <script src="main.run.js"></script>
-    <script src="app-actions/app-actions.module.js"></script>
-    <script src="app-actions/app-actions.service.js"></script>
-    <script src="ar-view/ar-view.module.js"></script>
-    <script src="ar-view/ar-view.base-marker.class.js"></script>
-    <script src="ar-view/ar-view.extremity-marker.js"></script>
-    <script src="ar-view/ar-view.icons.service.js"></script>
-    <script src="ar-view/ar-view.location.class.js"></script>
-    <script src="ar-view/ar-view.marker.class.js"></script>
-    <script src="ar-view/ar-view.service.js"></script>
-    <script src="ar-view/ar-view.user-location.service.js"></script>
-    <script src="big-map-modal/big-map-modal.module.js"></script>
-    <script src="big-map-modal/big-map-modal.controller.js"></script>
-    <script src="big-map/big-map.module.js"></script>
-    <script src="big-map/big-map.service.js"></script>
-    <script src="debug-position-modal/debug-position-modal.module.js"></script>
-    <script src="debug-position-modal/debug-position-modal.controller.js"></script>
-    <script src="debug-stats/debug-stats.module.js"></script>
-    <script src="debug-stats/debug-stats.directive.js"></script>
-    <script src="device-orientation/device-orientation.module.js"></script>
-    <script src="device-orientation/device-orientation.service.js"></script>
-    <script src="filters-modal/filters-modal.module.js"></script>
-    <script src="filters-modal/filters-modal.controller.js"></script>
-    <script src="filters/filters.module.js"></script>
-    <script src="filters/filters.service.js"></script>
-    <script src="mini-map-orientation/mini-map-orientation.module.js"></script>
-    <script src="mini-map-orientation/mini-map-orientation.directive.js"></script>
-    <script src="mini-map/mini-map.module.js"></script>
-    <script src="mini-map/mini-map.directive.js"></script>
-    <script src="mini-map/mini-map.service.js"></script>
-    <script src="modals/modals.module.js"></script>
-    <script src="modals/modals.service.js"></script>
-    <script src="outing/outing.module.js"></script>
-    <script src="outing/outing.service.js"></script>
-    <script src="seen-tracker/seen-tracker.module.js"></script>
-    <script src="seen-tracker/seen-tracker.service.js"></script>
-    <script src="world/world.module.js"></script>
-    <script src="world/world.service.js"></script>
-    <!-- endinject -->
-  </head>
-  <body ng-app="ar" ng-controller="BaseCtrl as base">
-    <ion-header-bar class="bar-balanced">
-      <button class="button back-button button-icon" ng-click="base.closeAR()">
-        <i class="icon ion-android-arrow-back"></i>
-      </button>
-      <h1 class="title">Réalité augmentée</h1>
-      <button class="button button-icon" ng-click="base.showDebugModal()">
-        <i class="icon ion-android-options"></i>
-      </button>
-    </ion-header-bar>
-    <div class="filters" data-tap-disabled="true">
-      <a class="icon ion-gear-a" href="#" ng-click="base.showFiltersModal()"></a>
-    </div>
-    <mini-map></mini-map>
-    <debug-stats class="row"></debug-stats>
-  </body>
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,target-densitydpi=device-dpi"
+		      name="viewport">
+		
+		<title>Sortie - AR View</title>
+		
+		<!-- Lodash -->
+		<script src="../../lib/lodash/dist/lodash.min.js"></script>
+		
+		<!-- jQuery -->
+		<script src="../../lib/jquery/dist/jquery.js"></script>
+		
+		<!-- Ionic -->
+		<script src="architect://architect.js"></script>
+		<script src="../../lib/ionic/js/ionic.bundle.min.js"></script>
+		<link rel="stylesheet" href="../../lib/ionic/css/ionic.min.css">
+		<script src="../../lib/ngCordova/dist/ng-cordova.min.js"></script>
+		
+		<!-- Turf -->
+		<script src="../../lib/turf/turf.min.js"></script>
+		<script src="../../lib/angular-turf-module/angular-turf-module.js"></script>
+		
+		<!-- Leaflet -->
+		<script src="../../lib/leaflet/dist/leaflet.js"></script>
+		<script src="../../lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+		<link rel="stylesheet" href="../../lib/leaflet/dist/leaflet.css">
+		<link rel="stylesheet" href="../../lib/leaflet.markercluster/dist/MarkerCluster.css">
+		<link rel="stylesheet" href="../../lib/leaflet.markercluster/dist/MarkerCluster.Default.css">
+		<script src="../../lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+		
+		<!-- RxJS -->
+		<script src="../../lib/rxjs/dist/rx.lite.min.js"></script>
+		<script src="../../lib/rxjs/dist/rx.aggregates.js"></script>
+		<script src="../../lib/rx-angular/dist/rx.angular.min.js"></script>
+		
+		<!-- Utils -->
+		<script src="../../utils/timers/timers.module.js"></script>
+		<script src="../../utils/map-icons-module/map-icons.module.js"></script>
+		
+		<!--
+			ATTENTION: the inject:css and inject:js sections are automatically filled
+			by the gulp-inject plugin. DO NOT EDIT THEM YOURSELF. See the README.
+		-->
+		
+		<!-- inject:css -->
+		<link rel="stylesheet" href="big-map-modal/big-map-modal.css">
+		<link rel="stylesheet" href="debug-stats/debug-stats.css">
+		<link rel="stylesheet" href="filters-modal/filters-modal.css">
+		<link rel="stylesheet" href="main.css">
+		<link rel="stylesheet" href="mini-map-orientation/mini-map-orientation.css">
+		<link rel="stylesheet" href="mini-map/mini-map.css">
+		<!-- endinject -->
+		
+		<!-- inject:js -->
+		<script src="../ar-back-button-directive.js"></script>
+		<script src="main.module.js"></script>
+		<script src="base.controller.js"></script>
+		<script src="main.altitude.correct.js"></script>
+		<script src="main.run.js"></script>
+		<script src="app-actions/app-actions.module.js"></script>
+		<script src="app-actions/app-actions.service.js"></script>
+		<script src="ar-view/ar-view.module.js"></script>
+		<script src="ar-view/ar-view.base-marker.class.js"></script>
+		<script src="ar-view/ar-view.extremity-marker.js"></script>
+		<script src="ar-view/ar-view.icons.service.js"></script>
+		<script src="ar-view/ar-view.location.class.js"></script>
+		<script src="ar-view/ar-view.marker.class.js"></script>
+		<script src="ar-view/ar-view.service.js"></script>
+		<script src="ar-view/ar-view.user-location.service.js"></script>
+		<script src="big-map-modal/big-map-modal.module.js"></script>
+		<script src="big-map-modal/big-map-modal.controller.js"></script>
+		<script src="big-map/big-map.module.js"></script>
+		<script src="big-map/big-map.service.js"></script>
+		<script src="debug-position-modal/debug-position-modal.module.js"></script>
+		<script src="debug-position-modal/debug-position-modal.controller.js"></script>
+		<script src="debug-stats/debug-stats.module.js"></script>
+		<script src="debug-stats/debug-stats.directive.js"></script>
+		<script src="device-orientation/device-orientation.module.js"></script>
+		<script src="device-orientation/device-orientation.service.js"></script>
+		<script src="filters-modal/filters-modal.module.js"></script>
+		<script src="filters-modal/filters-modal.controller.js"></script>
+		<script src="filters/filters.module.js"></script>
+		<script src="filters/filters.service.js"></script>
+		<script src="mini-map-orientation/mini-map-orientation.module.js"></script>
+		<script src="mini-map-orientation/mini-map-orientation.directive.js"></script>
+		<script src="mini-map/mini-map.module.js"></script>
+		<script src="mini-map/mini-map.directive.js"></script>
+		<script src="mini-map/mini-map.service.js"></script>
+		<script src="modals/modals.module.js"></script>
+		<script src="modals/modals.service.js"></script>
+		<script src="outing/outing.module.js"></script>
+		<script src="outing/outing.service.js"></script>
+		<script src="seen-tracker/seen-tracker.module.js"></script>
+		<script src="seen-tracker/seen-tracker.service.js"></script>
+		<script src="world/world.module.js"></script>
+		<script src="world/world.service.js"></script>
+		<!-- endinject -->
+	</head>
+	<body ng-app="ar" ng-controller="BaseCtrl as base">
+		<ion-header-bar class="bar-balanced">
+			<button class="button back-button button-icon" ng-click="base.closeAR()">
+				<i class="icon ion-android-arrow-back"></i>
+			</button>
+			<h1 class="title">Réalité augmentée</h1>
+		</ion-header-bar>
+		<button class="filters" type="button" data-tap-disabled="true" ng-click="base.showFiltersModal()">
+			<i class="icon ion-gear-a"></i>
+		</button>
+		<button class="filters" type="button" data-tap-disabled="true" ng-click="base.showDebugModal()">
+			<i class="icon ion-settings"></i>
+		</button>
+		<mini-map></mini-map>
+		<debug-stats class="row"></debug-stats>
+	</body>
 </html>

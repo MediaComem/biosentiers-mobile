@@ -1,42 +1,37 @@
 #test-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 100%;
-  text-align: right;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100%;
+    text-align: right;
 }
 
 option.placeholder {
-  color: #c0c0c0;
+    color: #c0c0c0;
 }
 
-.filters {
-    border:none;
-    font-size:1.5em;
-    color:white;
-    background-color: #11c1f3;
+.filters, .debug {
+    border: none;
+    font-size: 2em;
+    color: white;
     border-radius: 50%;
     width: 56px;
     height: 56px;
     position: fixed;
-    right: 16px;
     bottom: 16px;
     margin: auto;
     -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
-       -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
-            box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+    -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+    box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
 }
 
-.filters a {
-  display: block;
-  width: 56px;
-  height: 56px;
-  font-size: 32px;
-  text-align: center;
-  -webkit-border-radius: 80px;
-  -moz-border-radius: 80px;
-  border-radius: 80px;
-  color: #ffffff;
-  line-height: 56px;
+.filters {
+    background-color: #11c1f3;
+    right: 16px;
+}
+
+.debug {
+    background-color: #11c1f3;
+    right: 88px;
 }
 
