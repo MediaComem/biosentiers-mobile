@@ -3,19 +3,20 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(AppActions, Modals, $ionicModal, $log, Outing, $scope) {
+  function BaseCtrl(AppActions, Modals, $log, Outing, $scope) {
     var base = this;
 
-    base.modal = null;
+    base.poi = null;
+    base.poiDetails = null;
+    base.removePoiModal = removePoiModal;
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
 
     // Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
-      if (base.modal) {
-        base.modal.remove();
-      }
+      base.poi = null;
+      base.poiDetails = null;
     });
     // Execute action on hide modal
     $scope.$on('modal.hidden', function() {
@@ -50,13 +51,12 @@
     }
 
     function showPoiModal(type) {
-      $ionicModal.fromTemplateUrl(type + '.poi.html', {
-        scope    : $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        base.modal = modal;
-        base.modal.show();
-      });
+      Modals.showPoi(type, $scope);
+    }
+
+    function removePoiModal() {
+      // TODO : sauver le poi comme étant vu dans la base de donnée
+      Modals.removeCurrent();
     }
   }
 })();
