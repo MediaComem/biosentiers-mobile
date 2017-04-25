@@ -9,6 +9,7 @@
     base.poi = null;
     base.poiDetails = null;
     base.removePoiModal = removePoiModal;
+    base.setPoiSeen = setPoiSeen;
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
@@ -55,9 +56,14 @@
     }
 
     function removePoiModal() {
-      $log.log('removePoiModal - base.poi', base.poi);
-      ArView.setPoiSeen(base.poi);
-      Modals.removeCurrent();
+      return Modals.removeCurrent();
+    }
+
+    function setPoiSeen() {
+      var poi = base.poi;
+      removePoiModal().then(function() {
+        ArView.setPoiSeen(poi);
+      });
     }
   }
 })();
