@@ -1,6 +1,6 @@
 {
-  "name": "biosentiers-qrcode",
-  "version": "1.0.1",
+  "name": "@mediacomem/biosentiers-qrcode",
+  "version": "1.2.1",
   "description": "QR code binary format parser/serializer for BioSentiers",
   "main": "dist/biosentiers-qrcode.js",
   "scripts": {
@@ -15,7 +15,10 @@
     "type": "git",
     "url": "https://github.com/MediaComem/biosentiers-qrcode.git"
   },
-  "keywords": [],
+  "keywords": [
+    "biosentiers",
+    "qrcode"
+  ],
   "author": "yGeo",
   "license": "MIT",
   "bugs": {
@@ -54,5 +57,8 @@
   "babelBoilerplateOptions": {
     "entryFileName": "biosentiers-qrcode.js",
     "mainVarName": "bioqr"
+  },
+  "dependencies": {
+    "bignumber.js": "^4.0.1"
   }
 }

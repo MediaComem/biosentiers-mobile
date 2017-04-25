@@ -8,15 +8,19 @@ Encoding transforms an object into a 8-bit string:
 
 ```js
 var string = bioqr.encode({
-  version: 0,
-  creatorName: 'Räksmörgås',
-  excursionId: 'x728s',
-  excursionDate: new Date(),
-  excursionName: 'ジ　エクスクルシオン',
-  participantId: 'f8',
-  participantName: 'Bob',
-  types: [ 'bird', 'flower' ],
-  zones: [ 1, 3 ]
+    version: 1,
+    excursion: {
+      creatorName: 'Räksmörgås º¬∆',
+      id: 'x728s',
+      date: moment().milliseconds(0).toDate(),
+      name: 'ジ　エクスクルシオン',
+      participant: {
+        id: 'f8',
+        name: 'Bob',
+      },
+      types: ['bird', 'flower'],
+      zones: [1, 3]
+    }
 });
 ```
 
