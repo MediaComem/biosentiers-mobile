@@ -9,9 +9,8 @@
     .factory('Outings', Outings);
 
   function Outings(OutingClass, BioDb, $log, $q) {
-    var collName = 'outings',
-        outings,
-        service  = {
+    var COLL_NAME = 'outings';
+    var service  = {
           getAll           : getAll,
           getOne           : getOne,
           getPending       : getPending,
@@ -19,7 +18,8 @@
           getFinished      : getFinished,
           updateOne        : updateOne,
           setOngoingStatus : setOngoingStatus,
-          setFinishedStatus: setFinishedStatus
+          setFinishedStatus: setFinishedStatus,
+          createOne        : createOne
         };
 
     return service;
@@ -31,7 +31,7 @@
      * @return {Promise} A promise of an array of Outings
      */
     function getAll() {
-      return BioDb.getCollection(collName)
+      return BioDb.getCollection(COLL_NAME)
         .then(function(coll) {
           var res = coll.find();
           if (res.length === 0) {
@@ -43,12 +43,27 @@
     }
 
     /**
+     * Creates a new Outing in the database, based on the data provided through newOutingData
+     * @param newOutingData An object representing the data for the new Outing
+     * @return {Promise} A promise of a new Outing
+     */
+    function createOne(newOutingData) {
+      return BioDb.getCollection(COLL_NAME)
+        .then(function(coll) {
+          $log.log(newOutingData);
+          var newOuting = new OutingClass(newOutingData);
+          $log.log(newOuting);
+          coll.insert(newOuting);
+        }).catch(handleError);
+    }
+
+    /**
      * Retrieve one outing, based on the given ID.
      * @param outingId The id corresponding to the requested Outing
      * @return {Promise} A promise of a single Outing object.
      */
     function getOne(outingId) {
-      return BioDb.getCollection(collName)
+      return BioDb.getCollection(COLL_NAME)
         .then(function(coll) { return coll.findOne({id: outingId}); })
         .catch(handleError);
     }
@@ -58,7 +73,7 @@
      * @return {Promise} A promise of an array of Outings
      */
     function getPending() {
-      return BioDb.getCollection(collName)
+      return BioDb.getCollection(COLL_NAME)
         .then(function(coll) { return coll.chain().find({status: "pending"}).simplesort('id').data(); })
         .catch(handleError);
     }
@@ -68,7 +83,7 @@
      * @return {Promise} A promise of an array of Outings
      */
     function getOngoing() {
-      return BioDb.getCollection(collName)
+      return BioDb.getCollection(COLL_NAME)
         .then(function(coll) { return coll.chain().find({status: "ongoing"}).simplesort('id').data(); })
         .catch(handleError)
     }
@@ -78,7 +93,7 @@
      * @return {Promise} A promise of an array of Outings
      */
     function getFinished() {
-      return BioDb.getCollection(collName)
+      return BioDb.getCollection(COLL_NAME)
         .then(function(coll) { return coll.chain().find({status: "finished"}).simplesort('id').data(); })
         .catch(handleError);
     }
@@ -92,7 +107,7 @@
      * @return {Promise} A promise of an updated document.
      */
     function updateOne(doc) {
-      return BioDb.getCollection(collName)
+      return BioDb.getCollection(COLL_NAME)
         .then(function(coll) { coll.update(doc); })
         .then(BioDb.save)
         .catch(handleError);
