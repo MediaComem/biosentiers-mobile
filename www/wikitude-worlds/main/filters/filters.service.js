@@ -12,7 +12,8 @@
     var selected = {
       themes : [],
       options: {
-        showSeenPois: true
+        showSeenPois: true,
+        offSeason: false
       }
     };
 
