@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(AppActions, Modals, $log, Outing, $scope) {
+  function BaseCtrl(AppActions, ArView, Modals, $log, Outing, $scope) {
     var base = this;
 
     base.poi = null;
@@ -55,7 +55,8 @@
     }
 
     function removePoiModal() {
-      // TODO : sauver le poi comme étant vu dans la base de donnée
+      $log.log('removePoiModal - base.poi', base.poi);
+      ArView.setPoiSeen(base.poi);
       Modals.removeCurrent();
     }
   }
