@@ -181,7 +181,7 @@
         },
         resolve: {
           outingData: function(Outings, $stateParams) {
-            return Outings.getOne(Number($stateParams.outingId));
+            return Outings.getOne($stateParams.outingId);
           }
         }
       })
@@ -197,7 +197,7 @@
         },
         resolve: {
           seenPois: function(SeenPoisData, $stateParams) {
-            return SeenPoisData.getAll(Number($stateParams.outingId));
+            return SeenPoisData.getAll($stateParams.outingId);
           }
         }
       })

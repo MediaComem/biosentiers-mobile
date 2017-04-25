@@ -9,16 +9,16 @@
     .controller('OutingCtrl', OutingCtrl);
 
   function OutingCtrl(ActivityTracker, $cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
-    var ctrl = this;
+    var excursion = this;
 
     var UserPosition = {
       lat: 46.781001,
       lng: 6.647128
     };
 
-    ctrl.downloadProgress = "Télécharger";
+    excursion.downloadProgress = "Télécharger";
 
-    ctrl.map = {
+    excursion.map = {
       maxbounds: {
         northEast: {
           lat: 46.776593276526796,
@@ -56,7 +56,7 @@
     };
 
     PoiGeo.getPath().then(function(success) {
-      ctrl.map.path = {
+      excursion.map.path = {
         data : success.data,
         style: {
           color : 'red',
@@ -69,16 +69,16 @@
       $log.debug(map);
     }).catch(handleError);
 
-    ctrl.startOuting = startOuting;
-    ctrl.resumeOuting = resumeOuting;
+    excursion.startOuting = startOuting;
+    excursion.resumeOuting = resumeOuting;
 
-    ctrl.data = outingData;
+    excursion.data = outingData;
 
-    SeenPoisData.countFor(ctrl.data.id).then(function(res) {
-      ctrl.nbSeenPoi = res;
+    Outings.isNotNew(excursion.data);
+
+    SeenPoisData.countFor(excursion.data.id).then(function(res) {
+      excursion.nbSeenPoi = res;
     }).catch(handleError);
-
-    $log.log(ctrl.data);
 
     ////////////////////
 
@@ -89,7 +89,7 @@
       return $q.when()
         .then(Ionicitude.launchAR)
         .then(loadWorldOuting)
-        .then(_.partial(Outings.setOngoingStatus, ctrl.data))
+        .then(_.partial(Outings.setOngoingStatus, excursion.data))
         .catch(handleError);
     }
 
@@ -127,13 +127,14 @@
       var promises = [
         PoiGeo.getPath(),
         PoiGeo.getPoints(),
-        SeenPoisData.getAll(ctrl.data.id, true)
+        SeenPoisData.getAll(excursion.data.id, true)
       ];
 
       return $q.all(promises).then(function(results) {
         $log.log(results);
         WorldActions.execute('loadOuting', {
-          id  : ctrl.data.id,
+          id  : excursion.data.id,
+          excursion: excursion.data,
           path: results[0].data,
           pois: results[1].data,
           seen: _.map(results[2], 'poi_id')

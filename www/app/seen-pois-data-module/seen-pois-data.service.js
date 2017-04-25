@@ -43,7 +43,7 @@
     function countFor(outingId) {
       return BioDb.getCollection(collName)
         .then(function(coll) {
-          return coll.count({outing_id: Number(outingId)});
+          return coll.count({outing_id: outingId});
         }).catch(handleError);
     }
 

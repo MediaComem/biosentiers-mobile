@@ -3,7 +3,8 @@
     <ion-list ng-if="!ctrl.loading && ctrl.outings.length >= 1">
       <ion-item ng-repeat="outing in ctrl.outings" href="#/app/outings/{{outing.id}}">
         <h2>{{outing.name}}</h2>
-        <p>Date : {{outing.date}}</p>
+        <span ng-if="outing.is_new" class="badge badge-calm">Nouveau</span>
+        <p>Date : {{outing.date | date : 'dd.MM.yyyy'}}</p>
         <p>Créée par {{outing.created_by}}</p>
         <p>Statut : {{outing.status | status}}</p>
       </ion-item>

@@ -14,32 +14,54 @@
 
   function OutingClass() {
     /**
-     * Creates a new Outing object
+     * Creates a new Outing object, with the values passed a arguments.
+     * The following properties will also be created with default values:
+     * * status will be set to 'pending'
+     * * added_at will be set to the current time and date
+     * * nb_seen will be set to 0
+     * * is_new will be set to true
+     * @param created_by The name of the person who created the outing
      * @param id A number identifying the outing
      * @param name The title of the outing
-     * @param status The status of an outing can only be 'pending', 'ongoing', 'finished'
-     * @param created_by The name of the person who created the outing
      * @param date The date at which the outing is suppoed to take place
-     * @param created_at The date at which the outing has been created
-     * @param started_at (Optionnal) The date at which the outing has been started
-     * @param paused_at (Optionnla) The date at which the outing has been paused
-     * @param finished_at (Optionnal) The date at which the outing has been finished
-     * @param nb_seen {Number} (Optionnal) The number of POIs that have been seen in the context of this Outing. Default value : 0
+     * @param participant An object representing the participant data for this excursion
+     * @param types The types of POI that should only be visible in this excursion
+     * @param zones The path zones requested for this excursion
      * @constructor
      */
-    function Outing(id, name, status, created_by, date, created_at, started_at, paused_at, finished_at, nb_seen) {
+    function Outing(created_by, id, date, name, participant, types, zones) {
       // TODO id de type number, valeur du status, valeur par défaut des dates
-      this.id = id;
-      this.name = name;
-      this.status = status;
-      this.date = date;
       this.created_by = created_by;
-      this.created_at = created_at;
-      this.started_at = started_at;
-      this.paused_at = paused_at;
-      this.finished_at = finished_at;
-      this.nb_seen = nb_seen || 0;
+      this.id = id;
+      this.date = date;
+      this.name = name;
+      this.participant = participant;
+      this.types = types;
+      this.zones = zones;
+      this.status = status || 'pending';
+      this.added_at = new Date();
+      this.started_at = null;
+      this.paused_at = null;
+      this.finished_at = null;
+      this.is_new = true;
     }
+
+    /**
+     * Creates a new Outing object, based on the data retrieved from the QR Code
+     * @param qrCodeData Excursion data retrieved from the QR Code
+     * @return {Outing}
+     */
+    Outing.fromQrCodeData = function(qrCodeData) {
+      return new Outing(
+        qrCodeData.creatorName,
+        qrCodeData.id,
+        qrCodeData.date,
+        qrCodeData.name,
+        qrCodeData.participant,
+        qrCodeData.types,
+        qrCodeData.zones
+      );
+    };
 
     return Outing;
   }

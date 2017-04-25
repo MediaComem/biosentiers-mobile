@@ -10,17 +10,18 @@
 
   function Outings(OutingClass, BioDb, $log, $q) {
     var COLL_NAME = 'outings';
-    var service  = {
-          getAll           : getAll,
-          getOne           : getOne,
-          getPending       : getPending,
-          getOngoing       : getOngoing,
-          getFinished      : getFinished,
-          updateOne        : updateOne,
-          setOngoingStatus : setOngoingStatus,
-          setFinishedStatus: setFinishedStatus,
-          createOne        : createOne
-        };
+    var service = {
+      getAll           : getAll,
+      getOne           : getOne,
+      getPending       : getPending,
+      getOngoing       : getOngoing,
+      getFinished      : getFinished,
+      updateOne        : updateOne,
+      setOngoingStatus : setOngoingStatus,
+      setFinishedStatus: setFinishedStatus,
+      isNotNew         : isNotNew,
+      createOne        : createOne
+    };
 
     return service;
 
@@ -33,10 +34,10 @@
     function getAll() {
       return BioDb.getCollection(COLL_NAME)
         .then(function(coll) {
-          var res = coll.find();
+          var res = coll.chain().find().simplesort('date', true).data();
           if (res.length === 0) {
             populateDb(coll);
-            res = coll.find();
+            res = coll.chain().find().simplesort('date', true).data();
           }
           return res;
         }).catch(handleError);
@@ -50,8 +51,7 @@
     function createOne(newOutingData) {
       return BioDb.getCollection(COLL_NAME)
         .then(function(coll) {
-          $log.log(newOutingData);
-          var newOuting = new OutingClass(newOutingData);
+          var newOuting = OutingClass.fromQrCodeData(newOutingData);
           $log.log(newOuting);
           coll.insert(newOuting);
         }).catch(handleError);
@@ -158,6 +158,13 @@
       return updateOne(outing);
     }
 
+    function isNotNew(outing) {
+      if (!outing) throw new TypeError('Outings : isNotNew needs an Outing object as its first argument, none given');
+      if (!outing.is_new) return $q.resolve();
+      outing.is_new = false;
+      return updateOne(outing);
+    }
+
     /**
      * TODO : supprimer en production
      * Insert dumy data inside the given collection
@@ -165,11 +172,11 @@
      */
     function populateDb(coll) {
       coll.insert([
-        new OutingClass(3, 'Deuxième sortie de classe', 'pending', 'Mme Adams', '12.05.2016'),
-        new OutingClass(1, 'Promenade de vacances', 'pending', 'Ben', '12.03.2016'),
-        new OutingClass(4, 'Dernière sortie de classe', 'pending', 'Jens', '21.08.2016'),
-        new OutingClass(2, 'Première sortie de classe', 'pending', 'Mr Harnold', '10.03.2016'),
-        new OutingClass(5, 'Deuxième sortie de classe', 'pending', 'Mathias', '22.10.2016')
+        new OutingClass('Mme Adams', '3', new Date('2016.05.12'), 'Deuxième sortie de classe'),
+        new OutingClass('Ben', '1', new Date('2016.03.12'), 'Promenade de vacances'),
+        new OutingClass('Jens', '4', new Date('2016.08.21'), 'Dernière sortie de classe'),
+        new OutingClass('Mr Harnold', '2', new Date('2016.03.10'), 'Première sortie de classe'),
+        new OutingClass('Mathias', '5', new Date('2016.10.22'), 'Deuxième sortie de classe')
       ]);
       BioDb.save();
     }
