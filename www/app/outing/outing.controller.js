@@ -133,11 +133,12 @@
       return $q.all(promises).then(function(results) {
         $log.log(results);
         WorldActions.execute('loadOuting', {
-          id  : excursion.data.id,
-          excursion: excursion.data,
-          path: results[0].data,
-          pois: results[1].data,
-          seen: _.map(results[2], 'poi_id')
+          id   : excursion.data.id,
+          types: excursion.data.types,
+          zones: excursion.data.zones,
+          path : results[0].data,
+          pois : results[1].data,
+          seen : _.map(results[2], 'poi_id')
         });
       });
     }
