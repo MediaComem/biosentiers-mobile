@@ -8,19 +8,19 @@ Encoding transforms an object into a 8-bit string:
 
 ```js
 var string = bioqr.encode({
-    version: 1,
-    excursion: {
-      creatorName: 'Räksmörgås º¬∆',
-      id: 'x728s',
-      date: moment().milliseconds(0).toDate(),
-      name: 'ジ　エクスクルシオン',
-      participant: {
-        id: 'f8',
-        name: 'Bob',
-      },
-      types: ['bird', 'flower'],
-      zones: [1, 3]
-    }
+  version: 1,
+  excursion: {
+    creatorName: 'Räksmörgås º¬∆',
+    id: 'x728s',
+    date: moment().milliseconds(0).toDate(),
+    name: 'ジ　エクスクルシオン',
+    participant: {
+      id: 'f8',
+      name: 'Bob',
+    },
+    themes: ['bird', 'flower'],
+    zones: [1, 3]
+  }
 });
 ```
 
@@ -35,13 +35,13 @@ The string can be used in a QR code in binary format.
 
 
 
-## Formats
+## Versions
 
-### Format version 0
+### Version 1
 
 Field            | Offset | Size | Type                               | Description
 :---             | :---   | :--- | :---                               | :---
-version          | 0      | 1    | uint8                              | The binary format version (0-255)
+version          | 0      | 1    | uint8                              | The binary format version (1-255)
 creator name     | 1      | 40   | UTF-8 string                       | The name of the user who manages the excursion
 excursion id     | 41     | 5    | UTF-8 string                       | The unique identifier of the excursion
 excursion date   | 46     | 4    | uint32 (Unix timestamp in seconds) | The date at which the excursion was planned
@@ -60,9 +60,9 @@ zone(s)          | 133    | 1    | uint8 bitmask                      | A bitmas
 * Dates are unsigned 32-bit integers with a max value of `2 ^ 32 - 1` seconds from the Unix epoch (the largest date that can be represented is Sun, 07 Feb 2106 06:28:15)
 * Bitmask offsets 0 and 7 correspond to the least significant and most significant bit, respectively, in a 1-byte bitmask
 
-#### POI types
+#### POI themes
 
-Type      | Bitmask offset
+Themes    | Bitmask offset
 :---      | :---
 bird      | 0
 butterfly | 1

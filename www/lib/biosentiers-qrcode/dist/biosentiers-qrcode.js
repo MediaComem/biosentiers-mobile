@@ -2944,7 +2944,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var EXCURSION_NAME_LENGTH = 60;
 	var PARTICIPANT_ID_LENGTH = 2;
 	var PARTICIPANT_NAME_LENGTH = 20;
-	var TYPES = ['bird', 'butterfly', 'flower', 'tree'];
+	var THEMES = ['bird', 'butterfly', 'flower', 'tree'];
 	
 	function encode(data, options) {
 	  options = options || {};
@@ -2957,7 +2957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  encoder.add(_utf8String.encode, data.excursion.name, EXCURSION_NAME_LENGTH);
 	  encoder.add(_utf8String.encode, data.excursion.participant.id, PARTICIPANT_ID_LENGTH);
 	  encoder.add(_utf8String.encode, data.excursion.participant.name, PARTICIPANT_NAME_LENGTH);
-	  encoder.add(_bitmask.encode, data.excursion.types, options.types || TYPES);
+	  encoder.add(_bitmask.encode, data.excursion.themes, options.themes || THEMES);
 	  encoder.add(_bitmask.encode, data.excursion.zones);
 	
 	  if (encoder.bytes.length != FORMAT_LENGTH) {
@@ -2986,7 +2986,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        id: decoder.get(_utf8String.decode, PARTICIPANT_ID_LENGTH),
 	        name: decoder.get(_utf8String.decode, PARTICIPANT_NAME_LENGTH)
 	      },
-	      types: decoder.get(_bitmask.decode, TYPES),
+	      themes: decoder.get(_bitmask.decode, THEMES),
 	      zones: decoder.get(_bitmask.decode)
 	    }
 	  };
