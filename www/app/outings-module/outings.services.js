@@ -175,14 +175,14 @@
         id  : 'xf8',
         name: 'Robert'
       };
-      var types = ['bird', 'flower', 'butterfly', 'tree'];
-      var zones = [1, 2, 3, 4, 5, 6, 7, 8];
+      var themes = ['bird', 'flower', 'butterfly', 'tree'];
+      var zones = [1, 5, 8];
       coll.insert([
-        new OutingClass('Mme Adams', '3', new Date('2016.05.12'), 'Deuxième sortie de classe', participant, types, zones),
-        new OutingClass('Ben', '1', new Date('2016.03.12'), 'Promenade de vacances', participant, types, zones),
-        new OutingClass('Jens', '4', new Date('2016.08.21'), 'Dernière sortie de classe', participant, types, zones),
-        new OutingClass('Mr Harnold', '2', new Date('2016.03.10'), 'Première sortie de classe', participant, types, zones),
-        new OutingClass('Mathias', '5', new Date('2016.10.22'), 'Deuxième sortie de classe', participant, types, zones)
+        new OutingClass('Mme Adams', '3', new Date('2016.05.12'), 'Deuxième sortie de classe', participant, themes, zones),
+        new OutingClass('Ben', '1', new Date('2016.03.12'), 'Promenade de vacances', participant, themes, zones),
+        new OutingClass('Jens', '4', new Date('2016.08.21'), 'Dernière sortie de classe', participant, themes, zones),
+        new OutingClass('Mr Harnold', '2', new Date('2016.03.10'), 'Première sortie de classe', participant, themes, zones),
+        new OutingClass('Mathias', '5', new Date('2016.10.22'), 'Deuxième sortie de classe', participant, themes, zones)
       ]);
       BioDb.save();
     }

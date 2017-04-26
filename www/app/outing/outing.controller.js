@@ -57,7 +57,7 @@
 
     PoiGeo.getPath().then(function(success) {
       excursion.map.path = {
-        data : success.data,
+        data : success,
         style: {
           color : 'red',
           weigth: 6
@@ -126,19 +126,18 @@
 
       var promises = [
         PoiGeo.getPath(),
-        PoiGeo.getPoints(),
-        SeenPoisData.getAll(excursion.data.id, true)
+        PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
+        SeenPoisData.getAll(excursion.data.id),
       ];
 
       return $q.all(promises).then(function(results) {
         $log.log(results);
         WorldActions.execute('loadOuting', {
-          id   : excursion.data.id,
-          types: excursion.data.types,
-          zones: excursion.data.zones,
-          path : results[0].data,
-          pois : results[1].data,
-          seen : _.map(results[2], 'poi_id')
+          id         : excursion.data.id,
+          themes      : excursion.data.themes,
+          path       : results[0],
+          pois       : results[1],
+          seen       : _.map(results[2], 'poi_id')
         });
       });
     }

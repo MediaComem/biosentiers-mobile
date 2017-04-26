@@ -50,12 +50,12 @@
     }
 
     function getPois() {
-      return outing ? outing.pois.features : undefined;
+      return outing ? outing.pois : undefined;
     }
 
     function getThemes() {
       // return outing ? _.compact(_.uniq(_.map(outing.pois.features, 'properties.theme_name'))).sort() : undefined;
-      return outing ? _.compact(_.uniq(_.map(outing.pois.features, 'properties.theme_name'))).sort() : undefined;
+      return outing ? outing.themes : undefined;
     }
 
     function getSeenPois() {
@@ -67,10 +67,12 @@
     }
 
     function getStartPoint() {
+      // TODO : Lookup for the start point as the start point of the first selected zone
       return outing ? outing.path.features[1] : undefined;
     }
 
     function getEndPoint() {
+      // TODO : Lookup for the end point as the end point of the last selected zone
       return outing ? outing.path.features[2] : undefined;
     }
 

@@ -11,9 +11,9 @@
     // Update by calling `Filters.update(selected)`.
     var selected = {
       themes : [],
-      options: {
+      settings: {
         showSeenPois: true,
-        offSeason: false
+        showOffSeason: false
       }
     };
 
@@ -88,7 +88,7 @@
         pois = _.filter(pois, matchBySelectedThemes);
       }
 
-      if (selected.options.showSeenPois === false) {
+      if (selected.settings.showSeenPois === false) {
         pois = _.reject(pois, SeenTracker.hasBeenSeen);
       }
 

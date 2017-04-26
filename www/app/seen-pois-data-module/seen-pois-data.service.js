@@ -41,8 +41,10 @@
     }
 
     function countFor(outingId) {
+      $log.log('countFor id', outingId);
       return BioDb.getCollection(collName)
         .then(function(coll) {
+          $log.log('coutnFor collection', coll);
           return coll.count({outing_id: outingId});
         }).catch(handleError);
     }

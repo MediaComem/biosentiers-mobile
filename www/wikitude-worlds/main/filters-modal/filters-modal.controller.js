@@ -14,7 +14,7 @@
 
     filters.selected = {
       themes: themesArrayToCheckedThemesObject(Filters.getSelected().themes),
-      options: _.clone(Filters.getSelected().options)
+      settings: _.clone(Filters.getSelected().settings)
     };
 
     // Functions
@@ -24,8 +24,8 @@
     var debouncedUpdateThemes = _.debounce(updateThemes, 650);
     $scope.$watch('filters.selected.themes', debouncedUpdateThemes, true);
 
-    var debouncedUpdateOptions = _.debounce(updateOptions, 650);
-    $scope.$watch('filters.selected.options', debouncedUpdateOptions, true);
+    var debouncedUpdateSettings = _.debounce(updateSettings, 650);
+    $scope.$watch('filters.selected.settings', debouncedUpdateSettings, true);
 
     ////////////////////
 
@@ -35,9 +35,9 @@
       });
     }
 
-    function updateOptions() {
+    function updateSettings() {
       Filters.updateSelected({
-        options: _.clone(filters.selected.options)
+        settings: _.clone(filters.selected.settings)
       });
     }
 

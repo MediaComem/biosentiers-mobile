@@ -25,18 +25,18 @@
      * @param name The title of the outing
      * @param date The date at which the outing is suppoed to take place
      * @param participant An object representing the participant data for this excursion
-     * @param types The types of POI that should only be visible in this excursion
+     * @param themes The themes of POI that should only be visible in this excursion
      * @param zones The path zones requested for this excursion
      * @constructor
      */
-    function Outing(created_by, id, date, name, participant, types, zones) {
+    function Outing(created_by, id, date, name, participant, themes, zones) {
       // TODO id de type number, valeur du status, valeur par défaut des dates
       this.created_by = created_by;
       this.id = id;
       this.date = date;
       this.name = name;
       this.participant = participant;
-      this.types = types;
+      this.themes = themes;
       this.zones = zones;
       this.status = status || 'pending';
       this.added_at = new Date();
@@ -58,7 +58,7 @@
         qrCodeData.date,
         qrCodeData.name,
         qrCodeData.participant,
-        qrCodeData.types,
+        qrCodeData.themes,
         qrCodeData.zones
       );
     };
