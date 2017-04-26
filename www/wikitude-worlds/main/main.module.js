@@ -27,6 +27,7 @@
     'outing',
     'seen-tracker',
     'timers-module',
+    'trans-module',
     'world'
   ]);
 })();

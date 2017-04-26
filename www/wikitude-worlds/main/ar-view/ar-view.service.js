@@ -154,7 +154,7 @@
       var arPoi = arPointsById[getPoiId(poi)];
       SeenTracker.addSeenId(arPoi.id);
       arPoi.setSeen();
-      if (Filters.getSelected().options.showSeenPois === false) {
+      if (Filters.getSelected().settings.showSeenPois === false) {
         arPoi.setVisible(false);
       }
     }
