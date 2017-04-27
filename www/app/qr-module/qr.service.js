@@ -25,10 +25,14 @@
      */
     function getExcursionData(qrCodeData) {
       console.log('QR CODE raw data', qrCodeData);
-      var decodedData = bioqr.decode(qrCodeData.text, {format: 'numeric'});
+      var decodedData = bioqr.decode(qrCodeData.text, {format: 'numeric', zones: base1});
       switch (decodedData.version) {
         case 1:
           return fromVers1(decodedData)
+      }
+
+      function base1(i) {
+        return i + 1;
       }
     }
 

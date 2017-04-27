@@ -2958,7 +2958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  encoder.add(_utf8String.encode, data.excursion.participant.id, PARTICIPANT_ID_LENGTH);
 	  encoder.add(_utf8String.encode, data.excursion.participant.name, PARTICIPANT_NAME_LENGTH);
 	  encoder.add(_bitmask.encode, data.excursion.themes, options.themes || THEMES);
-	  encoder.add(_bitmask.encode, data.excursion.zones);
+	  encoder.add(_bitmask.encode, data.excursion.zones, options.zones);
 	
 	  if (encoder.bytes.length != FORMAT_LENGTH) {
 	    throw new Error('Format 0 byte length should be 134 (got ' + encoder.bytes.length + ')');
@@ -2986,8 +2986,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        id: decoder.get(_utf8String.decode, PARTICIPANT_ID_LENGTH),
 	        name: decoder.get(_utf8String.decode, PARTICIPANT_NAME_LENGTH)
 	      },
-	      themes: decoder.get(_bitmask.decode, THEMES),
-	      zones: decoder.get(_bitmask.decode)
+	      themes: decoder.get(_bitmask.decode, options.themes || THEMES),
+	      zones: decoder.get(_bitmask.decode, options.zones)
 	    }
 	  };
 	}
@@ -3010,9 +3010,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * For example, the values [ 1, 3 ] would be encoded as the integer 10 (or 00001010 in binary).
 	 *
 	 * If references are given, then each value must be one of the reference values.
-	 * The references array must not contain more than 32 items.
+	 * The references array must not contain more than 8 items.
 	 * For example, the values [ 'foo', 'baz' ] with references [ 'foo', 'bar', 'baz' ]
 	 * would be encoded as the integer 5 (or 00000101 in binary).
+	 *
+	 * If a reference function is given, it is used to convert each value to the corresponding bitmask index.
 	 */
 	function encode(bytes, offset, values, references) {
 	  var byte = 0;
@@ -3021,16 +3023,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    var bitmaskIndex = value;
 	
-	    // If references are given, convert the value to its index in the reference array
-	    if (references) {
-	      bitmaskIndex = references.indexOf(value);
-	      if (bitmaskIndex < 0) {
-	        throw new Error('Unknown bitmask value ' + value + ' (allowed: ' + references.join(', ') + ')');
-	      } else if (bitmaskIndex > 7) {
-	        throw new Error('References have too many values (' + references.length + ' > 32)');
+	    // If a reference function is given, call it with each value to obtain the corresponding bitmask index
+	    if (typeof references == 'function') {
+	      bitmaskIndex = references(value);
+	    }
+	    // If a references array is given, convert each value to its index in the reference array
+	    else if (references) {
+	        if (references.length > 8) {
+	          throw new Error('References have too many values (' + references.length + ' > 8)');
+	        }
+	
+	        bitmaskIndex = references.indexOf(value);
+	        if (bitmaskIndex < 0) {
+	          throw new Error('Unknown bitmask value ' + value + ' (allowed: ' + references.join(', ') + ')');
+	        }
 	      }
-	    } else if (!Number.isInteger(bitmaskIndex) || bitmaskIndex < 0 || bitmaskIndex > 31) {
-	      throw new Error('Bitmask value ' + i + ' must be an integer between 0 and 31 or one of the reference values (got ' + bitmaskIndex + ')');
+	
+	    // Ensure the bitmask index is valid
+	    if (!Number.isInteger(bitmaskIndex) || bitmaskIndex < 0 || bitmaskIndex > 7) {
+	      throw new Error('Bitmask value ' + i + ' must be an integer between 0 and 7 or one of the reference values (got ' + bitmaskIndex + ')');
 	    }
 	
 	    // Set the correct bit to 1 in the bitmask
@@ -3062,6 +3073,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Add the index (or reference value) to the result array if that is the case
 	      if (!references) {
 	        values.push(i);
+	      } else if (typeof references == 'function') {
+	        values.push(references(i));
 	      } else if (references[i]) {
 	        values.push(references[i]);
 	      }
