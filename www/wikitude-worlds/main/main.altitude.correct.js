@@ -15,9 +15,9 @@
        * @return {Number} The corrected altitude
        */
       correct: function(altitude) {
-        if (ionic.Platform.isAndroid()) {
-          altitude += 80;
-        }
+        // if (ionic.Platform.isAndroid()) {
+        //   altitude += 80;
+        // }
         return altitude;
       }
     }

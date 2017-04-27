@@ -109,11 +109,17 @@
 			</button>
 			<h1 class="title">Réalité augmentée</h1>
 		</ion-header-bar>
-		<button class="filters" type="button" data-tap-disabled="true" ng-click="base.showFiltersModal()">
-			<i class="icon ion-gear-a"></i>
-		</button>
-		<button class="debug" type="button" data-tap-disabled="true" ng-click="base.showDebugModal()">
-			<i class="icon ion-settings"></i>
+		<div class="fabs" ng-class="{'with-manual-end-btn': base.hasReachedEnd}">
+			<button class="filters" type="button" data-tap-disabled="true" ng-click="base.showFiltersModal()">
+				<i class="icon ion-gear-a"></i>
+			</button>
+			<button class="debug" type="button" data-tap-disabled="true" ng-click="base.showDebugModal()">
+				<i class="icon ion-settings"></i>
+			</button>
+		</div>
+		<button class="manual-end button button-full button-assertive" ng-click="base.finishOuting()"
+		        ng-if="base.hasReachedEnd">
+			<i class="icon ion-flag"></i> Terminer
 		</button>
 		<mini-map></mini-map>
 		<debug-stats class="row"></debug-stats>

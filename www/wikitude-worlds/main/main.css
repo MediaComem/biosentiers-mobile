@@ -10,27 +10,39 @@ option.placeholder {
     color: #c0c0c0;
 }
 
-.filters, .debug {
+.fabs {
+    position: fixed;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    bottom: 0;
+}
+
+.manual-end {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 0;
+    -webkit-box-shadow: 0 -1px 3px 0px rgba(41, 41, 41, .3);
+    -moz-box-shadow: 0 -1px 3px 0px rgba(41, 41, 41, .3);
+    box-shadow: 0 -1px 3px 0px rgba(41, 41, 41, .3);
+}
+
+.fabs.with-manual-end-btn {
+    bottom: 47px;
+}
+
+.fabs button {
     border: none;
     font-size: 2em;
     color: white;
     border-radius: 50%;
     width: 56px;
     height: 56px;
-    position: fixed;
-    bottom: 16px;
-    margin: auto;
     -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
     -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
     box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
-}
-
-.filters {
     background-color: #11c1f3;
-    right: 16px;
-}
-
-.debug {
-    background-color: #11c1f3;
-    right: 88px;
+    margin-bottom: 16px;
 }

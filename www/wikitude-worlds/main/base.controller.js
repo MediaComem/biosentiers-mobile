@@ -8,11 +8,13 @@
 
     base.poi = null;
     base.poiDetails = null;
+    base.hasReachedEnd = false;
     base.removePoiModal = removePoiModal;
     base.setPoiSeen = setPoiSeen;
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
+    base.finishOuting = finishOuting;
 
     // Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
@@ -36,11 +38,19 @@
       showPoiModal(data.poi.properties.theme_name);
     });
 
+    ArView.outingEndReachedObs.subscribe(function() {
+      base.hasReachedEnd = true;
+    });
+
     ////////////////////
 
     function closeAR() {
       $log.debug('Closing the AR');
       AppActions.execute('close');
+    }
+
+    function finishOuting() {
+      AppActions.execute('finishOuting', {outingId: Outing.id});
     }
 
     function showDebugModal() {

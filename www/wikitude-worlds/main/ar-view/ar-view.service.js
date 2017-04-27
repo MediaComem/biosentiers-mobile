@@ -13,7 +13,7 @@
   function ArViewService(AppActions, ArExtremityMarker, ArMarker, $ionicPopup, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
-        // Will store all the ArPoi in the view, by their id.
+    // Will store all the ArPoi in the view, by their id.
     var arPointsById            = {},
         arExtremityPoints       = {},
         reachLimit              = 250,
@@ -159,7 +159,7 @@
       }
     }
 
-    /* ----- PRIVATE FUNCTIONS ----- */
+    /* ----- EVENT FUNCTIONS ----- */
 
     /**
      * This function is called whenever the user clicks on the screen on the AR View.
@@ -182,6 +182,67 @@
         UserLocation.update(lon, lat, alt);
       });
     }
+
+    /**
+     * This function is used to create a closure for an ArPoi that will fire when the ArPoin will be clicked by the user.
+     * @param arPoi The ArPoi for which to create the closure.
+     * @return {onClick} The closure that will fire each time the ArPoi is clicked.
+     */
+    function onArPoiClick(arPoi) {
+      /**
+       * When a ArPoi is clicked by the user, if there
+       */
+      return function onClick() {
+        console.log('POI clicked', arPoi);
+        var dist = arPoi.distanceToUser();
+        console.log("distance to user ", dist);
+        if (1 === 1) {
+          // if (dist <= minPoiActiveDistance) {
+          Outing.loadCurrentPoi(arPoi.poi);
+          // if (!arPoi.hasBeenSeen) setPoiSeen();
+        } else {
+          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
+        }
+        return true; // Stop propagating the click event
+      };
+    }
+
+    function onEnterActionRange() {
+      var yesButton = {
+            text : 'Oui',
+            type : 'button-positive',
+            onTap: function() {
+              return true;
+            }
+          },
+          noButton  = {
+            text : 'Non',
+            type : 'button-outline button-assertive',
+            onTap: function() {
+              return false;
+            }
+          },
+          prompt    = $ionicPopup.show({
+            title   : 'Fin de sentier',
+            template: '<p>Vous avez atteint la fin de votre sentier.</p><p>Souhaitez-vous mettre fin à votre sortie ?</p>',
+            buttons : [noButton, yesButton]
+          });
+
+      prompt.then(function(validated) {
+        $log.log("promptEndOfOuting - prompt result", validated);
+        if (validated) {
+          AppActions.execute('finishOuting', {outingId: Outing.id});
+        } else {
+          // TODO : ajouter un bouton quelque part sur l'écran principal qui permet de fermer la sortie à partir du moment où la balise de fin a été atteinte.
+          outingEndReachedSubject.onNext();
+          $log.log('Pas de fin du sentier');
+        }
+      });
+      // TODO : À supprimer lorsque cette fonction servira vraiment pour l'ActionRange
+      return true;
+    }
+
+    /* ----- PRIVATE FUNCTIONS ----- */
 
     /**
      * Given a certain array of GeoJSON poi objects, returns an array with only the pois
@@ -370,64 +431,6 @@
       arPoi.remove();
       delete arPointsById[id];
       return arPoi.poi;
-    }
-
-    /**
-     * This function is used to create a closure for an ArPoi that will fire when the ArPoin will be clicked by the user.
-     * @param arPoi The ArPoi for which to create the closure.
-     * @return {onClick} The closure that will fire each time the ArPoi is clicked.
-     */
-    function onArPoiClick(arPoi) {
-      /**
-       * When a ArPoi is clicked by the user, if there
-       */
-      return function onClick() {
-        console.log('POI clicked', arPoi);
-        var dist = arPoi.distanceToUser();
-        console.log("distance to user ", dist);
-        if (1 === 1) {
-          // if (dist <= minPoiActiveDistance) {
-          Outing.loadCurrentPoi(arPoi.poi);
-          // if (!arPoi.hasBeenSeen) setPoiSeen();
-        } else {
-          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
-        }
-        return true; // Stop propagating the click event
-      };
-    }
-
-    function onEnterActionRange() {
-      // TODO : ajouter un bouton quelque part sur l'écran principal qui permet de fermer la sortie à partir du moment où la balise de fin a été atteinte.
-      var yesButton = {
-            text : 'Oui',
-            type : 'button-positive',
-            onTap: function() {
-              return true;
-            }
-          },
-          noButton  = {
-            text : 'Non',
-            type : 'button-outline button-assertive',
-            onTap: function() {
-              return false;
-            }
-          },
-          prompt    = $ionicPopup.show({
-            title   : 'Fin de sentier',
-            template: '<p>Vous avez atteint la fin de votre sentier.</p><p>Souhaitez-vous mettre fin à votre sortie ?</p>',
-            buttons : [noButton, yesButton]
-          });
-
-      prompt.then(function(validated) {
-        $log.log("promptEndOfOuting - prompt result", validated);
-        if (validated) {
-          AppActions.execute('finishOuting', {outingId: Outing.id});
-        } else {
-          $log.log('Pas de fin du sentier');
-        }
-      });
-      // TODO : À supprimer lorsque cette fonction servira vraiment pour l'ActionRange
-      return true;
     }
 
     /**

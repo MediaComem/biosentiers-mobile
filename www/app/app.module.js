@@ -11,6 +11,7 @@
     'lokijs',
     'leaflet-directive',
     'ngCordova',
+    'TurfModule',
     // Application modules.
     'activity-tracker-module',
     'auth-module',
