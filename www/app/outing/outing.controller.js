@@ -8,101 +8,40 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(ActivityTracker, $cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
+  function OutingCtrl(ActivityTracker, $cordovaToast, Ionicitude, $ionicPlatform, leafletData, leafletBoundsHelpers, $log, OutingMap, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, turf, WorldActions) {
     var excursion = this;
-
-    var UserPosition = {
-      lat: 46.781001,
-      lng: 6.647128
-    };
 
     excursion.startOuting = startOuting;
     excursion.resumeOuting = resumeOuting;
     excursion.actionButtonClick = actionButtonClick;
+    excursion.badgeClassFromStatus = badgeClassFromStatus;
 
     excursion.data = outingData;
-
     excursion.downloadProgress = "Télécharger";
-
-    excursion.map = {
-      geojson  : {},
-      maxbounds: {
-        northEast: {
-          lat: 46.776593276526796,
-          lng: 6.6319531547147532
-        },
-        southWest: {
-          lat: 46.789845089288413,
-          lng: 6.6803974239963217
-        }
-      },
-      tiles    : {
-        url    : 'data/Tiles/{z}/{x}/{y}.png',
-        options: {
-          errorTileUrl: 'data/Tiles/error.png'
-        }
-      },
-      defaults : {
-        scrollWheelZoom   : true,
-        maxZoom           : 18,
-        minZoom           : 11,
-        attributionControl: false
-      },
-      center   : {
-        lat : UserPosition.lat,
-        lng : UserPosition.lng,
-        zoom: 16
-      },
-      markers  : {
-        user: {
-          lat : UserPosition.lat,
-          lng : UserPosition.lng,
-          icon: MapIcons.user
-        }
-      }
+    excursion.map = OutingMap.config;
+    excursion.arData = {
+      id             : excursion.data.id,
+      themes         : excursion.data.themes,
+      path           : null,
+      extremityPoints: null,
+      pois           : null,
+      seen           : null
     };
 
-    // PoiGeo.getPath().then(function(success) {
-    //   excursion.map.geojson.path = {
-    //     data : success,
-    //     style: {
-    //       color : 'red',
-    //       weigth: 6
-    //     }
-    //   }
-    // }).catch(handleError);
-    //
-    // PoiGeo.getZones(excursion.data.zones).then(function(zones) {
-    //   $log.log('outingCtrl - getting the zones', zones);
-    //   excursion.map.geojson.zones = {
-    //     data: zones,
-    //     style: {
-    //       color: 'green',
-    //       weight: 4
-    //     }
-    //   }
-    // });
+    $log.info(excursion.map);
+
+    OutingMap.userLocation = {
+      lat: 46.781001,
+      lng: 6.647128
+    };
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(function(excursionGeoData) {
-      $log.info(excursionGeoData);
-      excursion.map.geojson = {
-        path : {
-          data : excursionGeoData.path,
-          style: {
-            style: {
-              color : 'red',
-              weigth: 6
-            }
-          }
-        },
-        zones: {
-          data : excursionGeoData.zones,
-          style: {
-            color : 'green',
-            weight: 4
-          }
-        }
-      };
+      $log.info('getExcursionGeoData -  excursionGeoData', excursionGeoData);
+      excursion.arData.path = OutingMap.path = excursionGeoData.path;
+      OutingMap.zones = excursionGeoData.zones;
+      excursion.arData.extremityPoints = OutingMap.extremityPoints = excursionGeoData.extremityPoints;
+      var bbox = turf.bbox(excursionGeoData.path);
+      excursion.map.bounds = leafletBoundsHelpers.createBoundsFromArray([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
     });
 
     leafletData.getMap('map').then(function(map) {
@@ -111,11 +50,22 @@
 
     Outings.isNotNew(excursion.data);
 
-    SeenPoisData.countFor(excursion.data.id).then(function(res) {
-      excursion.nbSeenPoi = res;
+    SeenPoisData.getAll(excursion.data.id).then(function(res) {
+      excursion.arData.seen = res;
+      excursion.nbSeenPoi = excursion.arData.seen.length;
     }).catch(handleError);
 
     ////////////////////
+
+    function badgeClassFromStatus(status) {
+      var classes = {
+        pending: 'badge-balanced',
+        ongoing: 'badge-energized',
+        finished: 'badge-assertive'
+      };
+
+      return classes[status];
+    }
 
     function actionButtonClick() {
       var actions = {
@@ -168,20 +118,14 @@
       $log.debug('World loaded');
 
       var promises = [
-        PoiGeo.getPath(),
-        PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
-        SeenPoisData.getAll(excursion.data.id),
+        PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes)
       ];
 
       return $q.all(promises).then(function(results) {
         $log.log(results);
-        WorldActions.execute('loadOuting', {
-          id    : excursion.data.id,
-          themes: excursion.data.themes,
-          path  : results[0],
-          pois  : results[1],
-          seen  : _.map(results[2], 'poi_id')
-        });
+        excursion.arData.pois = results[0];
+        $log.info('loadWorldOuting - excursion.arData', excursion.arData);
+        WorldActions.execute('loadOuting', excursion.arData);
       });
     }
 
