@@ -18,7 +18,7 @@ option.placeholder {
     bottom: 0;
 }
 
-.manual-end {
+.button.manual-end {
     position: fixed;
     bottom: 0;
     left: 0;

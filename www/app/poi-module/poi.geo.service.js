@@ -23,18 +23,15 @@
     ////////////////////
 
     /**
-     * Get all GeoJSON data for
+     * Get all GeoJSON data for an Excursion
      * @param zones An Array of zone numbers
      */
     function getExcursionGeoData(zones) {
       var promises = [
             getPath(),
-            getZones(zones)
+            getZones(zones),
           ],
-          data     = {
-            path : null,
-            zones: null
-          };
+          data     = {};
       return $q.all(promises).then(function(results) {
         data.path = results[0];
         data.zones = results[1];
@@ -45,7 +42,7 @@
 
     function getPoints() {
       // return $http.get('data/flowers_birds_150m.json');
-      return $http.get('data/flore.json')
+      return $http.get('data/flore.json');
     }
 
     function getPath() {
