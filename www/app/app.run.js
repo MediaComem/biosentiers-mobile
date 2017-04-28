@@ -28,7 +28,11 @@
     }
 
     /**
-     * ANDROID 6 - Grant Location permission at runtime
+     * ANDROID 6 - Ask for permissions at runtime.
+     * The app asks for :
+     * * Fine Location
+     * * Coarse Location
+     * * Camera
      */
     function grantAndroidPermissions() {
       cordova.plugins.diagnostic.requestRuntimePermissions(function(statuses) {
@@ -52,7 +56,8 @@
         console.error("The following error occurred: " + error);
       }, [
         cordova.plugins.diagnostic.runtimePermission.ACCESS_FINE_LOCATION,
-        cordova.plugins.diagnostic.runtimePermission.ACCESS_COARSE_LOCATION
+        cordova.plugins.diagnostic.runtimePermission.ACCESS_COARSE_LOCATION,
+        cordova.plugins.diagnostic.runtimePermission.CAMERA
       ]);
     }
   }
