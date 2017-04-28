@@ -1,9 +1,15 @@
 <ion-view view-title="{{outing.data.name}}">
 	<ion-content>
-		<div>
+		<div class="outing-map-container">
 			<leaflet id="map" maxbounds="outing.map.maxbounds" defaults="outing.map.defaults" tiles="outing.map.tiles"
 			         center="outing.map.center" geojson="outing.map.geojson" geojson-nested="true"
-			         markers="outing.map.markers" bounds="outing.map.bounds"></leaflet>
+			         markers="outing.map.markers" bounds="outing.map.bounds">
+				
+			</leaflet>
+			<div class="position-search" ng-hide="outing.positionFound">
+				<ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
+				Recherche de votre position...
+			</div>
 		</div>
 		
 		<div class="padding">
@@ -27,12 +33,13 @@
 			<div class="row zones">
 				<div class="col text-left">Zones sélectionnées</div>
 				<div class="col text-right">
-					<span ng-repeat="zone in outing.data.zones" class="badge badge-stable">{{zone}}</span>
+					<span ng-repeat="zone in outing.data.zones" class="badge badge-stable">n°{{zone}}</span>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col text-left">Statut</div>
-				<div class="col text-right"><span class="badge {{outing.badgeClassFromStatus(outing.data.status)}}">{{outing.data.status | status}}</span></div>
+				<div class="col text-right"><span class="badge {{outing.badgeClassFromStatus(outing.data.status)}}">{{outing.data.status | status}}</span>
+				</div>
 			</div>
 			<div class="row" ng-if="outing.data.started_at">
 				<div class="col text-left">Commencée le</div>

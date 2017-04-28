@@ -8,7 +8,7 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(ActivityTracker, $cordovaToast, Ionicitude, $ionicPlatform, leafletData, leafletBoundsHelpers, $log, OutingMap, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, turf, WorldActions) {
+  function OutingCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, leafletBoundsHelpers, $log, OutingMap, Outings, outingData, PoiGeo, $q, SeenPoisData, turf, WorldActions) {
     var excursion = this;
     var geoData;
 
@@ -20,13 +20,14 @@
     excursion.data = outingData;
     excursion.downloadProgress = "Télécharger";
     excursion.map = new OutingMap;
+    excursion.positionFound = false;
 
     $log.info(excursion.map);
 
-    excursion.map.setUserLocation({
-      lat: 46.781001,
-      lng: 6.647128
-    });
+    // excursion.map.setUserLocation({
+    //   lat: 46.781001,
+    //   lng: 6.647128
+    // });
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(function(excursionGeoData) {
       geoData = excursionGeoData;
@@ -48,12 +49,23 @@
       excursion.nbSeenPoi = res;
     }).catch(handleError);
 
+    $cordovaGeolocation.getCurrentPosition().then(function(position) {
+      $log.info('getCurrentPosition', position);
+      excursion.map.setUserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      });
+      // excursion.positionFound = true;
+    }, function(err) {
+      $log.error('getCurrentPosition', err);
+    });
+
     ////////////////////
 
     function badgeClassFromStatus(status) {
       var classes = {
-        pending: 'badge-balanced',
-        ongoing: 'badge-energized',
+        pending : 'badge-balanced',
+        ongoing : 'badge-energized',
         finished: 'badge-assertive'
       };
 
