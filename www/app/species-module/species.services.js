@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   angular
-    .module('SpeciesModule')
+    .module('species-modules')
     .factory('Species', Species);
 
   function Species(PoiGeo) {
@@ -29,16 +29,12 @@
       }, function(error) {
         $log.warn(error);
       });
-
     }
 
     function getOne(specieId) {
       return getAll().then(function(species) {
         return _.filter(species, function(d){ return d.properties.id_specie == specieId; });
       });
-
-      return null;
     }
-
   }
 })();

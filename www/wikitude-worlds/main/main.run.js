@@ -6,7 +6,12 @@
 
   angular
     .module('ar')
+    .config(config)
     .run(run);
+
+  function config(MapIconsProvider) {
+    MapIconsProvider.setIconBaseUrl('../../img/icons');
+  }
 
   function run(AppActions, ArView, $window, World) {
 
@@ -14,6 +19,6 @@
 
     $window.World = World;
 
-    AppActions.execute('open');
+    //AppActions.execute('open');
   }
 })();

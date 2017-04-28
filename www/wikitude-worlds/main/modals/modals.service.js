@@ -12,6 +12,7 @@
       showBigMap       : showBigMap,
       showDebugPosition: showDebugPosition,
       showFilters      : showFilters,
+      showPoi          : showPoi,
       hideCurrent      : hideModal,
       removeCurrent    : removeModal
     };
@@ -54,6 +55,12 @@
       }).then(loadModal);
     }
 
+    function showPoi(type, $scope) {
+      $ionicModal.fromTemplateUrl(type + '.poi.html', {
+        scope    : $scope,
+        animation: 'slide-in-up'
+      }).then(loadModal);
+    }
 
     /**
      * Sets the received modal as the current modal, and opens it.
@@ -64,7 +71,7 @@
       if (modal) {
         return modal.show().then(function() {
           current = modal;
-          // ArView.pauseAr();
+          ArView.pauseAr(true);
         });
       } else {
         return $q.reject('No modal to show');
@@ -78,7 +85,7 @@
      */
     function hideModal() {
       if (current !== null) {
-        // ArView.resumeAr();
+        ArView.pauseAr(false);
         return current.hide();
       } else {
         return $q.reject('No active modal to close');
@@ -92,7 +99,7 @@
      */
     function removeModal() {
       if (current !== null) {
-        // ArView.resumeAr();
+        ArView.pauseAr(false);
         return current.remove();
       } else {
         return $q.reject('No active modal to remove');

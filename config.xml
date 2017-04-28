@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.biosentiers.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>BioSentiers</name>
-  <description>&#xD;
-        An Ionic Framework and Cordova project.&#xD;
+  <description>&#xD;&#xD;&#xD;&#xD;
+        An Ionic Framework and Cordova project.&#xD;&#xD;&#xD;&#xD;
     </description>
-  <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">&#xD;
-      Media Engineering Institute&#xD;
+  <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">&#xD;&#xD;&#xD;&#xD;
+      Media Engineering Institute&#xD;&#xD;&#xD;&#xD;
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -75,4 +75,8 @@
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
   <plugin name="com.wikitude.phonegap.WikitudePlugin" spec="https://github.com/Wikitude/wikitude-cordova-plugin.git"/>
   <allow-navigation href="http://10.192.114.37:8100"/>
+  <allow-navigation href="http://10.192.114.91:8100"/>
+  <allow-navigation href="http://10.192.114.241:8100"/>
+  <allow-navigation href="http://10.192.116.83:8100"/>
+  <allow-navigation href="http://10.192.180.184:8100"/>
 </widget>

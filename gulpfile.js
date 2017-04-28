@@ -40,7 +40,7 @@ gulp.task('watch:app', watchSourcesFactory(injectAppSources, paths.appSources));
 gulp.task('watch:wikitude', watchSourcesFactory(injectWikitudeSources, paths.wikitudeSources));
 
 gulp.task('sass', function(done) {
-  gulp.src('./scss/ionic.app.scss')
+  gulp.src('./scss/*')
     .pipe(sass())
     .on('error', sass.logError)
     .pipe(gulp.dest('./www/css/'))

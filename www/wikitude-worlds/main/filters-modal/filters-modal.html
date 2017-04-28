@@ -8,7 +8,16 @@
 			<li class="item item-toggle">
 				Afficher les éléments déjà vus
 				<label class="toggle">
-					<input type="checkbox" ng-model="filters.selected.options['showSeenPois']">
+					<input type="checkbox" ng-model="filters.selected.settings['showSeenPois']">
+					<div class="track">
+						<div class="handle"></div>
+					</div>
+				</label>
+			</li>
+			<li class="item item-toggle">
+				Afficher les éléments hors-saison
+				<label class="toggle">
+					<input type="checkbox" ng-model="filters.selected.settings['showOffSeason']">
 					<div class="track">
 						<div class="handle"></div>
 					</div>
@@ -20,7 +29,7 @@
 				Thème
 			</div>
 			<ion-checkbox class="poi-theme" ng-repeat="theme in filters.themes" ng-model="filters.selected.themes[theme]">
-				{{ theme }}
+				{{ theme | themes}}
 				<img ng-src="{{ filters.getThemeImageUrl(theme) }}"/>
 			</ion-checkbox>
 		</ion-list>

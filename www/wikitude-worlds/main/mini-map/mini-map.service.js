@@ -93,7 +93,7 @@
           icon: MapIcons.get(marker.properties.theme_name)
         }
       });
-      $log.log(service.config);
+      $log.log('updateMapMarkers', service.config);
     }
 
     /**

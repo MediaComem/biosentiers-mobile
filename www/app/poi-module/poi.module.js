@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('poi', []);
+  angular.module('poi-module', []);
 })();

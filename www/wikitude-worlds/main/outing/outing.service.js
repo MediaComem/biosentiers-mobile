@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -10,22 +10,24 @@
     var outing,
         currentPoi,
         currentPoiDetails,
-        outingSubject = new rx.ReplaySubject(1),
+        outingSubject     = new rx.ReplaySubject(1),
         currentPoiSubject = new rx.ReplaySubject(1);
 
     var service = {
-      get id() {
-        return hasOuting() ? outing.id : undefined;
-      },
+      get id() { return getId() },
+      get startPoint() { return getStartPoint() },
+      get endpoint() { return getEndPoint() },
       // Outing functions
-      hasOuting     : hasOuting,
-      setOuting     : setOuting,
-      getPois       : getPois,
-      getPathGeoJson: getPathGeoJson,
-      getThemes     : getThemes,
-      getSeenPois   : getSeenPois,
+      hasOuting          : hasOuting,
+      setOuting          : setOuting,
+      getPois            : getPois,
+      getPathGeoJson     : getPathGeoJson,
+      getStartPoint      : getStartPoint,
+      getEndPoint        : getEndPoint,
+      getThemes          : getThemes,
+      getSeenPois        : getSeenPois,
       // Current POI functions
-      loadCurrentPoi: loadCurrentPoi,
+      loadCurrentPoi     : loadCurrentPoi,
       // Observables
       outingChangeObs    : outingSubject.asObservable(),
       currentPoiChangeObs: currentPoiSubject.asObservable()
@@ -34,6 +36,10 @@
     return service;
 
     ////////////////////
+
+    function getId() {
+      return hasOuting() ? outing.id : undefined;
+    }
 
     function hasOuting() {
       return !_.isNil(outing);
@@ -47,30 +53,37 @@
       }
     }
 
-    function getPoisGeoJson() {
-      return outing ? outing.pois : undefined;
-    }
-
     function getPois() {
-      return outing ? outing.pois.features : undefined;
+      return hasOuting() ? outing.pois : undefined;
     }
 
     function getThemes() {
-      return outing ? _.compact(_.uniq(_.map(outing.pois.features, 'properties.theme_name'))).sort() : undefined;
+      // return outing ? _.compact(_.uniq(_.map(outing.pois.features, 'properties.theme_name'))).sort() : undefined;
+      return hasOuting() ? outing.themes : undefined;
     }
 
     function getSeenPois() {
-      return outing ? outing.seen : undefined;
+      return hasOuting() ? outing.seen : undefined;
     }
 
     function getPathGeoJson() {
-      return outing ? outing.path : undefined;
+      return hasOuting() ? outing.path : undefined;
+    }
+
+    function getStartPoint() {
+      // TODO : Lookup for the start point as the start point of the first selected zone
+      return hasOuting() ? outing.extremityPoints.start : undefined;
+    }
+
+    function getEndPoint() {
+      // TODO : Lookup for the end point as the end point of the last selected zone
+      return hasOuting() ? outing.extremityPoints.end : undefined;
     }
 
     function loadCurrentPoi(poi) {
 
-      var params = { id: poi.properties.id_poi },
-          options = { return: true };
+      var params  = {id: poi.properties.id_poi},
+          options = {return: true};
 
       AppActions.execute('loadPoiDetails', params, options).then(function(details) {
 
@@ -78,7 +91,7 @@
         currentPoiDetails = details;
 
         currentPoiSubject.onNext({
-          poi: currentPoi,
+          poi    : currentPoi,
           details: currentPoiDetails
         });
       });

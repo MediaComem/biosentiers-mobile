@@ -1,143 +1,154 @@
 /**
  * Created by Mathias on 29.03.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl($cordovaToast, MapIcons, Ionicitude, $ionicPlatform, leafletData, $log, outingData, PoiGeo, $q, SeenPoisData, $scope, WorldActions) {
-    var ctrl = this;
+  function OutingCtrl(ActivityTracker, $cordovaToast, Ionicitude, $ionicPlatform, leafletData, leafletBoundsHelpers, $log, OutingMap, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, turf, WorldActions) {
+    var excursion = this;
 
-    var UserPosition = {
+    excursion.startOuting = startOuting;
+    excursion.resumeOuting = resumeOuting;
+    excursion.actionButtonClick = actionButtonClick;
+    excursion.badgeClassFromStatus = badgeClassFromStatus;
+
+    excursion.data = outingData;
+    excursion.downloadProgress = "Télécharger";
+    excursion.map = new OutingMap;
+    excursion.arData = {
+      id             : excursion.data.id,
+      themes         : excursion.data.themes,
+      path           : null,
+      extremityPoints: null,
+      pois           : null,
+      seen           : null
+    };
+
+    $log.info(excursion.map);
+
+    excursion.map.setUserLocation({
       lat: 46.781001,
       lng: 6.647128
-    };
+    });
 
-    ctrl.downloadProgress = "Télécharger";
+    PoiGeo.getExcursionGeoData(excursion.data.zones).then(function(excursionGeoData) {
+      $log.info('getExcursionGeoData -  excursionGeoData', excursionGeoData);
+      excursion.map.setPath(excursionGeoData.path);
+      excursion.map.setZones(excursionGeoData.zones);
+      excursion.map.setExtremityPoints(excursionGeoData.extremityPoints);
 
-    ctrl.map = {
-      maxbounds: {
-        northEast: {
-          lat: 46.776593276526796,
-          lng: 6.6319531547147532
-        },
-        southWest: {
-          lat: 46.789845089288413,
-          lng: 6.6803974239963217
-        }
-      },
-      tiles    : {
-        url    : 'data/Tiles/{z}/{x}/{y}.png',
-        options: {
-          errorTileUrl: 'data/Tiles/error.png'
-        }
-      },
-      defaults : {
-        scrollWheelZoom   : true,
-        maxZoom           : 18,
-        minZoom           : 11,
-        attributionControl: false
-      },
-      center   : {
-        lat : UserPosition.lat,
-        lng : UserPosition.lng,
-        zoom: 16
-      },
-      markers  : {
-        user: {
-          lat : UserPosition.lat,
-          lng : UserPosition.lng,
-          icon: MapIcons.user
-        }
-      }
-    };
-
-    PoiGeo.getPath().then(function(success) {
-      ctrl.map.path = {
-        data : success.data,
-        style: {
-          color : 'red',
-          weigth: 6
-        }
-      }
-    }, function(error) {
-      $log.warn(error);
+      excursion.arData.path = excursionGeoData.path;
+      excursion.arData.extremityPoints = excursionGeoData.extremityPoints;
+      var bbox = turf.bbox(excursionGeoData.path);
+      excursion.map.bounds = leafletBoundsHelpers.createBoundsFromArray([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
     });
 
     leafletData.getMap('map').then(function(map) {
-      $log.debug(map);
-    }).catch(function(error) {
-      $log.warn(error);
-    });
+      $log.info(map);
+    }).catch(handleError);
 
-    ctrl.launchAR = function () {
-      try {
-        Ionicitude.launchAR()
-          .then(loadWorldOuting)
-          .catch(handleError);
-      } catch (e) {
-        $log.warn(e);
-        $cordovaToast.showShortBottom("Device not supported !");
-      }
-    };
+    Outings.isNotNew(excursion.data);
 
-    ctrl.data = outingData;
-    $log.log(outingData);
+    SeenPoisData.getAll(excursion.data.id).then(function(res) {
+      excursion.arData.seen = res;
+      excursion.nbSeenPoi = excursion.arData.seen.length;
+    }).catch(handleError);
 
-    function handleError(error) {
-      $log.error(error);
+    ////////////////////
+
+    function badgeClassFromStatus(status) {
+      var classes = {
+        pending: 'badge-balanced',
+        ongoing: 'badge-energized',
+        finished: 'badge-assertive'
+      };
+
+      return classes[status];
     }
 
-    function loadWorldOuting(success) {
+    function actionButtonClick() {
+      var actions = {
+        pending: startOuting,
+        ongoing: resumeOuting
+      };
+      actions[excursion.data.status]();
+    }
+
+    /**
+     * Load and launch the AR World with the outing's data, then changes the status of this outing from "pending" to "ongoing".
+     */
+    function startOuting() {
+      return $q.when()
+        .then(Ionicitude.launchAR)
+        .then(loadWorldOuting)
+        .then(_.partial(Outings.setOngoingStatus, excursion.data))
+        .catch(handleError);
+    }
+
+    function resumeOuting() {
+      return $q.when()
+        .then(startOuting)
+        .then(ActivityTracker.logResume)
+        .catch(handleError);
+    }
+
+    /**
+     * Handles errors occuring.
+     * An UnsupportedFeatureError could be raised by Ionicitude if the device doesn't support Wikitude.
+     * For all the other errors, the error is logged and a toast is shown.
+     * @param e
+     */
+    function handleError(e) {
+      $log.error(e);
+      if (e instanceof UnsupportedFeatureError) {
+        $cordovaToast.showShortBottom("Device not supported !");
+      } else {
+        $cordovaToast.showShortBottom("Unknow error. Please check the logs.");
+      }
+    }
+
+    /**
+     * Load in the AR View the current outing's data.
+     * This means getting the GeoJSON for the path and the points, as well as retrieveing the
+     * points that have already been seen.
+     * When all these promises are resolved, a call to the AR function loadOuting is made.
+     */
+    function loadWorldOuting() {
       $log.debug('World loaded');
 
       var promises = [
-        PoiGeo.getPath(),
-        PoiGeo.getPoints(),
-        SeenPoisData.getAll(outingData.id, true)
+        PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes)
       ];
 
       return $q.all(promises).then(function(results) {
         $log.log(results);
-        WorldActions.execute('loadOuting', {
-          id: outingData.id,
-          path: results[0].data,
-          pois: results[1].data,
-          seen: results[2]
-        });
+        excursion.arData.pois = results[0];
+        $log.info('loadWorldOuting - excursion.arData', excursion.arData);
+        WorldActions.execute('loadOuting', excursion.arData);
       });
     }
 
 
-    /* Zip Download
-
+    // Zip download
     //TODO add to localdb that the download and unzip was sucessful
-    ctrl.getZip = function (outingId){
-      downloader.init({folder: outingId.toString(), unzip: true});
-      downloader.get("http://knae.niloo.fr/testBirds.zip");
-
-      document.addEventListener("DOWNLOADER_downloadProgress", function(event){
-        var data = event.data;
-
-        $scope.$apply(function () {
-          ctrl.downloadProgress = data[0]  + ' %';
-        });
-
-      });
-
-      document.addEventListener("DOWNLOADER_unzipSuccess", function(event){
-        $scope.$apply(function () {
-          ctrl.downloadProgress = "Réussit";
-
-
-        });
-      });
-
-    }
-    */
-
+    // ctrl.getZip = function(outingId) {
+    //   downloader.init({folder: outingId.toString(), unzip: true});
+    //   downloader.get("http://knae.niloo.fr/testBirds.zip");
+    //   document.addEventListener("DOWNLOADER_downloadProgress", function(event) {
+    //     var data = event.data;
+    //     $scope.$apply(function() {
+    //       ctrl.downloadProgress = data[0] + ' %';
+    //     });
+    //   });
+    //   document.addEventListener("DOWNLOADER_unzipSuccess", function(event) {
+    //     $scope.$apply(function() {
+    //       ctrl.downloadProgress = "Réussit";
+    //     });
+    //   });
+    // }
   }
 })();

@@ -4,5 +4,5 @@
 (function () {
   'use strict';
 
-  angular.module('AuthModule', []);
+  angular.module('auth-module', []);
 })();

@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('SpeciesModule', []);
+  angular.module('species-modules', []);
 })();

@@ -6,7 +6,8 @@
     <title></title>
 
     <!-- compiled css output -->
-    <link href="css/ionic.app.css" rel="stylesheet">
+    <link href="css/ionic.app.min.css" rel="stylesheet">
+    <link href="css/main.min.css" rel="stylesheet">
 
     <!-- Lodash -->
     <script src="lib/lodash/dist/lodash.min.js"></script>
@@ -25,15 +26,18 @@
     <link rel="stylesheet" href="lib/leaflet.markercluster/dist/MarkerCluster.css">
     <link rel="stylesheet" href="lib/leaflet.markercluster/dist/MarkerCluster.Default.css">
     <script src="lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+    
+    <!-- Turf -->
+    <script src="lib/turf/turf.min.js"></script>
+    <script src="lib/angular-turf-module/angular-turf-module.js"></script>
 
     <!-- Utils -->
     <script src="utils/timers/timers.module.js"></script>
-    <script src="utils/map-icons/map-icons.module.js"></script>
-
-    <!-- Idle -->
-    <!--<script src="lib/turf/turf.min.js"></script>-->
-    <!--<script src="lib/angular-turf-module/angular-turf-module.js"></script>-->
-    <!--<script src="app/_idle.tests/idle.controller.js"></script>-->
+    <script src="utils/map-icons-module/map-icons.module.js"></script>
+    <script src="utils/trans-module/trans.module.js"></script>
+    <script src="utils/trans-module/status.filter.js"></script>
+    <script src="utils/trans-module/themes.filter.js"></script>
+    <script src="utils/trans-module/outing-action-button.filter.js"></script>
 
     <!-- AR Module -->
     <script src="lib/ionicitude/dist/ionicitude.min.js"></script>
@@ -42,6 +46,9 @@
 	  <script src="lib/lokijs/src/lokijs.js"></script>
 	  <script src="lib/lokijs/src/loki-angular.js"></script>
 	  <script src="lib/loki-cordova-fs-adapter/loki-cordova-fs-adapter.js"></script>
+    
+    <!-- QR Code decoder -->
+    <script src="lib/biosentiers-qrcode/dist/biosentiers-qrcode.min.js"></script>
 
     <!--
       ATTENTION: the inject:css and inject:js sections are automatically filled
@@ -55,14 +62,22 @@
     <script src="app/app.module.js"></script>
     <script src="app/app.config.js"></script>
     <script src="app/app.router.js"></script>
+    <script src="app/app.run.js"></script>
     <script src="app/ionicitude.actions.js"></script>
+    <script src="app/activity-tracker-module/activity-tracker.module.js"></script>
+    <script src="app/activity-tracker-module/activity-tracker.service.js"></script>
     <script src="app/auth-module/auth.module.js"></script>
     <script src="app/auth-module/auth.controller.js"></script>
     <script src="app/auth-module/auth.service.js"></script>
-    <script src="app/idle.tests/idle.controller.js"></script>
+    <script src="app/bio-db-module/bio-db.module.js"></script>
+    <script src="app/bio-db-module/bio-db.service.js"></script>
+    <script src="app/debug/debug.controller.js"></script>
     <script src="app/menu/menu.controller.js"></script>
+    <script src="app/outing/outing-map.service.js"></script>
+    <script src="app/outing/outing-seen.controller.js"></script>
     <script src="app/outing/outing.controller.js"></script>
     <script src="app/outings-module/outings.module.js"></script>
+    <script src="app/outings-module/outings.class.js"></script>
     <script src="app/outings-module/outings.services.js"></script>
     <script src="app/outings/outings.controller.js"></script>
     <script src="app/paths-module/paths.module.js"></script>
@@ -72,14 +87,14 @@
     <script src="app/poi-module/poi.geo.service.js"></script>
     <script src="app/qr-module/qr.module.js"></script>
     <script src="app/qr-module/qr.service.js"></script>
-    <script src="app/seen-pois-data/seen-pois-data.module.js"></script>
-    <script src="app/seen-pois-data/seen-pois-data.service.js"></script>
+    <script src="app/seen-pois-data-module/seen-pois-data.module.js"></script>
+    <script src="app/seen-pois-data-module/seen-pois-data.service.js"></script>
     <script src="app/specie/specie.controller.js"></script>
     <script src="app/species-module/species.module.js"></script>
     <script src="app/species-module/species.services.js"></script>
     <script src="app/species/species.controller.js"></script>
-    <script src="app/world-actions/world-actions.module.js"></script>
-    <script src="app/world-actions/world-actions.service.js"></script>
+    <script src="app/world-actions-module/world-actions.module.js"></script>
+    <script src="app/world-actions-module/world-actions.service.js"></script>
     <!-- endinject -->
   </head>
 

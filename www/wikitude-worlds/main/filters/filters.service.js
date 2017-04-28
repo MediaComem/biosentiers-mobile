@@ -11,8 +11,9 @@
     // Update by calling `Filters.update(selected)`.
     var selected = {
       themes : [],
-      options: {
-        showSeenPois: true
+      settings: {
+        showSeenPois: true,
+        showOffSeason: false
       }
     };
 
@@ -83,12 +84,19 @@
 
       var n = pois.length;
 
+      // Filter by selected themes
       if (selected.themes.length < service.themes.length) {
         pois = _.filter(pois, matchBySelectedThemes);
       }
 
-      if (selected.options.showSeenPois === false) {
+      // Filter if already seen
+      if (selected.settings.showSeenPois === false) {
         pois = _.reject(pois, SeenTracker.hasBeenSeen);
+      }
+
+      // Filter if off-season
+      if (selected.settings.showOffSeason === false) {
+        pois = _.reject(pois, isOffSeason)
       }
 
       $log.debug('Filters: ' + n + ' points of interest filtered to ' + pois.length + ' matching points with criteria ' + JSON.stringify(selected));
@@ -98,6 +106,11 @@
 
     function matchBySelectedThemes(poi) {
       return _.isObject(poi.properties) && _.includes(selected.themes, poi.properties.theme_name);
+    }
+
+    function isOffSeason(poi) {
+      var currentMonth = new Date().getMonth() + 1;
+      return poi.properties.period_start >= currentMonth && poi.properties.period_end <= currentMonth;
     }
   }
 })();

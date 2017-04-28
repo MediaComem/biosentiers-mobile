@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('AuthModule')
+    .module('auth-module')
     .factory('AuthService', AuthService);
 
   function AuthService($q) {

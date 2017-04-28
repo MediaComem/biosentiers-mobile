@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('world-actions')
+    .module('world-actions-module')
     .factory('WorldActions', WorldActionsService);
 
   function WorldActionsService(Ionicitude) {

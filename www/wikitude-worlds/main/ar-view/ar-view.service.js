@@ -10,25 +10,30 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArMarker, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArExtremityMarker, ArMarker, $ionicPopup, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
-    var arPointsById         = {},
-        reachLimit           = 250,
-        minPoiActiveDistance = 20,
-        poisChangeSubject    = new rx.Subject();
+    // Will store all the ArPoi in the view, by their id.
+    var arPointsById            = {},
+        arExtremityPoints       = {},
+        reachLimit              = 250,
+        minPoiActiveDistance    = 20,
+        outingEndReachedSubject = new rx.ReplaySubject(1),
+        poisChangeSubject       = new rx.Subject();
 
     var service = {
-      init         : init,
-      updateAr     : updateAr,
-      pauseAr      : pauseAr,
-      resumeAr     : resumeAr,
-      poisChangeObs: poisChangeSubject.asObservable()
+      poisChangeObs      : poisChangeSubject.asObservable(),
+      outingEndReachedObs: outingEndReachedSubject.asObservable(),
+      init               : init,
+      updateAr           : updateAr,
+      loadExtremityPoints: loadExtremityPoints,
+      pauseAr            : pauseAr,
+      setPoiSeen         : setPoiSeen
     };
 
     return service;
 
-    ////////////////////
+    /* ----- PUBLIC FUNCTIONS ----- */
 
     /**
      * Initializes the different options of the Wikitude AR Object, such as the constants
@@ -40,31 +45,9 @@
       AR.context.scene.maxScalingDistance = 500;
       AR.context.scene.minScalingDistance = 7;
       AR.context.scene.scalingFactor = 0.01;
-      AR.context.scene.minOpacityDistance = minPoiActiveDistance;
+      AR.context.scene.minPoiActiveDistance = minPoiActiveDistance;
       AR.context.onScreenClick = onScreenClick;
       AR.context.onLocationChanged = onLocationChanged;
-    }
-
-    /**
-     * This function is called whenever the user clicks on the screen on the AR View.
-     */
-    function onScreenClick() {
-      $rootScope.$apply(function() {
-        console.log('screen clicked');
-      });
-    }
-
-    /**
-     * This function is called whenever Wikitude receives a new location for the user from the device's GPS.
-     * It's called with three parameters, representing the new Location, which are passed upon the UserLocation update() method.
-     * @param lat The latitude of the new Location
-     * @param lon The longitude of the new Location
-     * @param alt The altitude of the new Location
-     */
-    function onLocationChanged(lat, lon, alt) {
-      $rootScope.$apply(function() {
-        UserLocation.update(lon, lat, alt);
-      });
     }
 
     /**
@@ -136,9 +119,130 @@
 
       // Notify observers of changes.
       poisChangeSubject.onNext(changes);
-
-      //AppActions.execute('toast', {message: changes.added.length + " points en plus, " + changes.removed.length + " points en moins"});
     }
+
+    /**
+     * Loads in the AR View both the start point and the end point of the outing.
+     */
+    function loadExtremityPoints() {
+      arExtremityPoints = {
+        start: new ArExtremityMarker(Outing.getStartPoint()),
+        end  : new ArExtremityMarker(Outing.getEndPoint(), onEnterActionRange)
+      }
+    }
+
+    /**
+     * Pauses or resume the AR, depending on the valuer of state.
+     * If true is passed, then the AR is paused, meaning that the camera and sensors are disabled to spare resources and battery consumption.
+     * This should be the case whenever a fullscreen HTML is shown, effectively hiding the AR View from the user.
+     * If false is passed, then the AR is resumed, meaning that the camera and sensors are enabled.
+     * @param {Boolean} state The state in which the AR should be. True is paused, False is resumed.
+     */
+    function pauseAr(state) {
+      $log.debug((state ? 'Pausing' : 'Resuming') + 'the AR (camera and sensors)');
+      AR.hardware.camera.enabled = !state;
+      AR.hardware.sensors.enabled = !state;
+    }
+
+    /**
+     * Handles the seeing of an ArPoi by the user.
+     * This function saves the fact that the ArPoi has been seen in the local database.
+     * It also flags this ArPoi as having been seen, and hide it from the ArView if necessary.
+     * @param poi A GeoJSON object representing the poi that have been seen.
+     */
+    function setPoiSeen(poi) {
+      var arPoi = arPointsById[getPoiId(poi)];
+      SeenTracker.addSeenId(arPoi.id);
+      arPoi.setSeen();
+      if (Filters.getSelected().settings.showSeenPois === false) {
+        arPoi.setVisible(false);
+      }
+    }
+
+    /* ----- EVENT FUNCTIONS ----- */
+
+    /**
+     * This function is called whenever the user clicks on the screen on the AR View.
+     */
+    function onScreenClick() {
+      $rootScope.$apply(function() {
+        console.log('screen clicked');
+      });
+    }
+
+    /**
+     * This function is called whenever Wikitude receives a new location for the user from the device's GPS.
+     * It's called with three parameters, representing the new Location, which are passed upon the UserLocation update() method.
+     * @param lat The latitude of the new Location
+     * @param lon The longitude of the new Location
+     * @param alt The altitude of the new Location
+     */
+    function onLocationChanged(lat, lon, alt) {
+      $rootScope.$apply(function() {
+        UserLocation.update(lon, lat, alt);
+      });
+    }
+
+    /**
+     * This function is used to create a closure for an ArPoi that will fire when the ArPoin will be clicked by the user.
+     * @param arPoi The ArPoi for which to create the closure.
+     * @return {onClick} The closure that will fire each time the ArPoi is clicked.
+     */
+    function onArPoiClick(arPoi) {
+      /**
+       * When a ArPoi is clicked by the user, if there
+       */
+      return function onClick() {
+        console.log('POI clicked', arPoi);
+        var dist = arPoi.distanceToUser();
+        console.log("distance to user ", dist);
+        if (1 === 1) {
+          // if (dist <= minPoiActiveDistance) {
+          Outing.loadCurrentPoi(arPoi.poi);
+          // if (!arPoi.hasBeenSeen) setPoiSeen();
+        } else {
+          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
+        }
+        return true; // Stop propagating the click event
+      };
+    }
+
+    function onEnterActionRange() {
+      var yesButton = {
+            text : 'Oui',
+            type : 'button-positive',
+            onTap: function() {
+              return true;
+            }
+          },
+          noButton  = {
+            text : 'Non',
+            type : 'button-outline button-assertive',
+            onTap: function() {
+              return false;
+            }
+          },
+          prompt    = $ionicPopup.show({
+            title   : 'Fin de sentier',
+            template: '<p>Vous avez atteint la fin de votre sentier.</p><p>Souhaitez-vous mettre fin à votre sortie ?</p>',
+            buttons : [noButton, yesButton]
+          });
+
+      prompt.then(function(validated) {
+        $log.log("promptEndOfOuting - prompt result", validated);
+        if (validated) {
+          AppActions.execute('finishOuting', {outingId: Outing.id});
+        } else {
+          // TODO : ajouter un bouton quelque part sur l'écran principal qui permet de fermer la sortie à partir du moment où la balise de fin a été atteinte.
+          outingEndReachedSubject.onNext();
+          $log.log('Pas de fin du sentier');
+        }
+      });
+      // TODO : À supprimer lorsque cette fonction servira vraiment pour l'ActionRange
+      return true;
+    }
+
+    /* ----- PRIVATE FUNCTIONS ----- */
 
     /**
      * Given a certain array of GeoJSON poi objects, returns an array with only the pois
@@ -297,37 +401,6 @@
     }
 
     /**
-     * This function is used to create a closure for an ArPoi that will fire when the ArPoin will be clicked by the user.
-     * @param arPoi The ArPoi for which to create the closure.
-     * @return {onClick} The closure that will fire each time the ArPoi is clicked.
-     */
-    function onArPoiClick(arPoi) {
-      /**
-       * When a ArPoi is clicked by the user, if there
-       */
-      return function onClick() {
-        console.log('POI clicked', arPoi);
-        var dist = arPoi.distanceToUser();
-        console.log("distance to user ", dist);
-        if (dist <= minPoiActiveDistance) {
-          Outing.loadCurrentPoi(arPoi.poi);
-          if (!arPoi.hasBeenSeen) setPoiSeen();
-        } else {
-          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
-        }
-        return true; // Stop propagating the click event
-      };
-
-      function setPoiSeen() {
-        SeenTracker.addSeenId(arPoi.id);
-        arPoi.setSeen();
-        if (Filters.getSelected().options.showSeenPois === false) {
-          arPoi.setVisible(false);
-        }
-      }
-    }
-
-    /**
      * Creates a new ArPoi based on the GeoJSON poi object passed as the first argument.
      * This new ArPoi will be automatically added to the ArView, but its vibisility will depend upon
      * the value of the enabled argument. If it's true, the ArPoi will be visible, if it's false, it will not.
@@ -370,29 +443,6 @@
       // in array and as object keys (it is automatically casted to a string
       // when used as an object key).
       return '' + poi.properties.id_poi;
-    }
-
-    /**
-     * Pauses the AR.
-     * This means disabling the camera and the sensors to spare resources and battery consumption.
-     * This should be the case whenever a fullscreen HTML is shown, effectively hiding the AR View from the user.
-     * To reactivate the AR, use the resumeAr function.
-     */
-    function pauseAr() {
-      $log.debug('Pausing the AR (camera and sensors)');
-      AR.hardware.camera.enabled = false;
-      AR.hardware.sensors.enabled = false;
-    }
-
-    /**
-     * Resumes the AR.
-     * This means enabling the camera and the sensors for the AR View to properly track and show the points.
-     * This function should be called after pauseAr has been executed. Calling it while the AR View is active would achieve nothing.
-     */
-    function resumeAr() {
-      $log.debug('Resuming the AR (sensors and camera)');
-      AR.hardware.sensors.enabled = true;
-      AR.hardware.camera.enabled = true;
     }
   }
 })();

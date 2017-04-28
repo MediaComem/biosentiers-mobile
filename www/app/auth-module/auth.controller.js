@@ -3,20 +3,20 @@
  * This controller handled all action related to either QR Code connexion or Account Connexion.
  */
 
-(function () {
+(function() {
   'use strict';
 
   angular
-    .module('AuthModule')
+    .module('auth-module')
     .controller('AuthCtrl', AuthCtrl);
 
   /*
    Controller function
    */
-  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup, AuthService) {
+  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup, AuthService, Outings, QR, $log) {
     var auth = this;
 
-    $ionicPlatform.ready(function () {
+    $ionicPlatform.ready(function() {
       auth.doQRCodeLogin = doQRCodeLogin;
       auth.showAccountLoginForm = showAccountLoginForm;
     });
@@ -31,12 +31,13 @@
     function doQRCodeLogin() {
       $cordovaBarcodeScanner
         .scan()
-        .then(function (data) {
-          auth.infos = angular.fromJson(data.text);
+        .then(function(data) {
+          auth.excursion = QR.getExcursionData(data);
+          $log.log(auth.excursion);
           showQRValidation();
-        }, function (error) {
+        }, function(error) {
           console.log(error);
-        })
+        });
     }
 
     /**
@@ -44,22 +45,25 @@
      */
     function showQRValidation() {
       $ionicPopup.show({
-        title: "Validation",
+        title      : "Validation",
         templateUrl: 'app/auth-module/qr-overview.html',
-        scope: $scope,
-        buttons: [{
+        scope      : $scope,
+        buttons    : [{
           text: "Pas du tout",
           type: "button-assertive"
         }, {
-          text: "C'est ça !",
-          type: "button-balanced",
+          text : "C'est ça !",
+          type : "button-balanced",
           /**
            * When this button is tapped, creates the scanned outing in the device memory and redirect to it.
            * @param e
            * @returns {boolean}
            */
-          onTap: function (e) {
-            $state.go('app.outings');
+          onTap: function() {
+            // TODO : Create the new outing in the database
+            Outings.createOne(auth.excursion).then(function() {
+              $state.go('app.outings');
+            })
           }
         }]
       });
@@ -72,18 +76,18 @@
     function showAccountLoginForm() {
       auth.account = {};
       $ionicPopup.show({
-        title: "Connexion",
+        title      : "Connexion",
         templateUrl: 'app/auth-module/account-popup.html',
-        scope: $scope,
-        buttons: [{
-          text: "Annuler",
-          type: "button-assertive",
-          onTap: function () {
+        scope      : $scope,
+        buttons    : [{
+          text : "Annuler",
+          type : "button-assertive",
+          onTap: function() {
             auth.error = null;
           }
         }, {
-          text: "Connexion",
-          type: "button-balanced",
+          text : "Connexion",
+          type : "button-balanced",
           /**
            * When this button is tapped, performs the actual login process.
            * @param e
@@ -96,10 +100,10 @@
               e.preventDefault();
             } else {
               AuthService.connectUser(auth.account)
-                .then(function () {
+                .then(function() {
                   console.log('connection réussie !');
                   $state.go('app.outings');
-                }, function () {
+                }, function() {
                   console.log('connection refusée');
                 });
             }

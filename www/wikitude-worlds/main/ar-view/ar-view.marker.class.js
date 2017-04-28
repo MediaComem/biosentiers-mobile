@@ -5,7 +5,7 @@
     .module('ar-view')
     .factory('ArMarker', ArMarkerClass);
 
-  function ArMarkerClass(ArIcons, $log) {
+  function ArMarkerClass(ArBaseMarker, ArIcons, $log) {
 
     /**
      * This class represent a geolocalized marker in the ArView.
@@ -16,65 +16,32 @@
      * @constructor
      */
     function ArMarker(poi, enabled, onClick, hasBeenSeen) {
+      ArBaseMarker.call(this, poi, enabled);
+
       var self = this;
 
-      self.poi = poi;
       self.id = poi.properties.id_poi;
-      self.properties = poi.properties;
       self.hasBeenSeen = hasBeenSeen;
 
-      self.location = new AR.GeoLocation(poi.geometry.coordinates[1], poi.geometry.coordinates[0], getCorrectedAltitude());
-
-      self.actionRange = new AR.ActionRange(self.location, AR.context.scene.minOpacityDistance, {
+      self.actionRange = new AR.ActionRange(self.location, AR.context.scene.minPoiActiveDistance, {
         onEnter: setActive(self),
         onExit : setInactive(self)
       });
 
-      if (self.distanceToUser() > 20) {
+      if (self.distanceToUser() > AR.context.scene.minPoiActiveDistance) {
         self.icon = ArIcons.getInactive(self.properties.theme_name, self.hasBeenSeen);
       } else {
         self.icon = ArIcons.getActive(self.properties.theme_name, self.hasBeenSeen);
       }
 
-      self.geoObject = new AR.GeoObject(self.location, {
-        enabled  : enabled,
-        onClick  : onClick(self),
-        drawables: {
-          cam: [self.icon]
-        }
-      });
-
-      ////////////////////
-
-      /**
-       * Returns a corrected altitude depending on the plaform on which the app is running.
-       * In fact, there is a bug on Android where the altitude returned is not the actual altitude
-       * @return {*}
-       */
-      function getCorrectedAltitude() {
-        if (ionic.Platform.isAndroid()) {
-          return poi.geometry.coordinates[2] + 80;
-        } else {
-          return poi.geometry.coordinates[2];
-        }
-      }
+      self.geoObject.onClick = onClick(self);
+      self.geoObject.drawables.cam = [self.icon];
     }
 
+    ArMarker.prototype = Object.create(ArBaseMarker.prototype);
+    ArMarker.prototype.constructor = ArMarker;
+
     // Methods
-
-    /**
-     * Return the straight distance between the ArPoi and the user, in meters
-     */
-    ArMarker.prototype.distanceToUser = function() {
-      return this.location.distanceToUser();
-    };
-
-    /**
-     * Indicates wether or not the ArPoi is currently visible in the ArView.
-     */
-    ArMarker.prototype.isVisible = function() {
-      return this.geoObject.enabled;
-    };
 
     /**
      * Update the ArPoi to reflect the fact that it had been seen by the user.
@@ -88,25 +55,13 @@
     };
 
     /**
-     * Change the visibility of the ArPoi based on the value of the visible argument.
-     * To make an hidden ArPoi visible, call this function and pass it true as its argument's value.
-     * To make a visible ArPoi hidden, call this function and pass it false as its argument's value.
-     * @param visible A boolean indicating wether or not the ArPoi should be visible
-     * @return {ArMarker} The ArPoi whos visibility has been changed.
-     */
-    ArMarker.prototype.setVisible = function(visible) {
-      this.geoObject.enabled = visible;
-      return this;
-    };
-
-    /**
      * Removes the ArPoi from the ArView, along with all of its componants.
      */
     ArMarker.prototype.remove = function() {
-      this.location.destroy();
-      this.location.destroyed && (this.location = null);
-      this.geoObject.destroy();
-      this.geoObject.destroyed && (this.geoObject = null);
+      // Remove the location and geoObject
+      ArBaseMarker.prototype.remove.call(this);
+      this.actionRange.destroy();
+      this.actionRange.destroyed && (this.actionRange = null);
     };
 
     return ArMarker;
@@ -121,7 +76,7 @@
     function setActive(ArPoi) {
       /**
        * This function will be fired any time the user is within an ArPoi ActionRange.
-       * It will change the ArPoi's Icon to a opaque one, indicating that the ArPoi can be clicked.
+       * It will change the ArPoi's Icon to an opaque one, indicating that the ArPoi can be clicked.
        */
       return function onEnterSetActive() {
         ArPoi.geoObject.drawables.cam = [ArIcons.getActive(ArPoi.properties.theme_name, ArPoi.hasBeenSeen)];

@@ -5,13 +5,44 @@
   'use strict';
 
   angular
-    .module('QRModule')
-    .factory('QRService', QRService);
+    .module('qr-module')
+    .factory('QR', QRService);
 
   function QRService() {
 
-    var service = {};
+    var service = {
+      getExcursionData: getExcursionData
+    };
 
     return service;
+
+    ////////////////////
+
+    /**
+     * Returns the data for the excursion, based on the data retrieved from the QR Code
+     * @param qrCodeData
+     * @return {excursion|{creatorName, id, date, name, participant, types, zones}|*}
+     */
+    function getExcursionData(qrCodeData) {
+      console.log('QR CODE raw data', qrCodeData);
+      var decodedData = bioqr.decode(qrCodeData.text, {format: 'numeric', zones: base1});
+      switch (decodedData.version) {
+        case 1:
+          return fromVers1(decodedData)
+      }
+
+      function base1(i) {
+        return i + 1;
+      }
+    }
+
+    /**
+     * Get the excursion data from a v1 decoded QR Code
+     * @param decodedData Data decoded from a v1 QR Code
+     * @return {excursion|{creatorName, id, date, name, participant, types, zones}|*}
+     */
+    function fromVers1(decodedData) {
+      return decodedData.excursion;
+    }
   }
 })();
