@@ -13,7 +13,7 @@
   /*
    Controller function
    */
-  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup, AuthService, Outings, QR) {
+  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup, AuthService, Outings, QR, $log) {
     var auth = this;
 
     $ionicPlatform.ready(function() {
@@ -33,7 +33,7 @@
         .scan()
         .then(function(data) {
           auth.excursion = QR.getExcursionData(data);
-          console.log(auth.excursion);
+          $log.log(auth.excursion);
           showQRValidation();
         }, function(error) {
           console.log(error);

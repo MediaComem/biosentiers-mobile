@@ -24,3 +24,9 @@ progress {
   bottom: 0;
   height: 5px;
 }
+
+.themes, .zones {
+  .badge:not(:last-of-type) {
+    margin-right: 5px;
+  }
+}
