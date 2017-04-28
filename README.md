@@ -1,16 +1,26 @@
 # BioSentiers
 
-* [Installation](#installation)
-* [Development](#development)
-* [Conventions](#conventions)
-  * [File structure](#file-structure)
-  * [Style guide](#style-guide)
-* [Cordova plugins](#cordova-plugins)
-* [Ionic platforms](#ionic-platforms)
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Installation](#installation)
+- [Development](#development)
+  - [Compilation tasks](#compilation-tasks)
+  - [Injection tasks](#injection-tasks)
+  - [Automated tasks](#automated-tasks)
+- [Conventions](#conventions)
+  - [File structure](#file-structure)
+  - [Style guide](#style-guide)
+- [Cordova plugins](#cordova-plugins)
+  - [BarcodeScanner](#barcodescanner)
+  - [Wikitude](#wikitude)
+  - [Cordova File](#cordova-file)
+  - [Toast](#toast)
+- [Ionic platforms](#ionic-platforms)
 
-<a name="installation"></a>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Installation
 
 * Clone the repository.
@@ -27,9 +37,6 @@
   * Change `this._sdkKey` in `/platforms/android/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` for Android.
   * Change `this._sdkKey` in `/platforms/ios/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` for iOS.
 
-
-
-<a name="development"></a>
 ## Development
 
 [Gulp](http://gulpjs.com) tasks are provided to make your life easier.
@@ -72,12 +79,8 @@ To avoid manually launching the above tasks every time a file is added, modified
 
 **Note:** these tasks keep executing until they are stopped with Ctrl-C.
 
-
-
-<a name="conventions"></a>
 ## Conventions
 
-<a name="file-structure"></a>
 ### File structure
 
 This projects contains 2 Angular applications, one in `www/app` and another in `www/wikitude-worlds/main`.
@@ -106,7 +109,6 @@ The critical elements are:
 * Each of those directories should define an **Angular module**, saved in a file with a name that ends with `.module.js`.
   This module should be added to the dependencies of the other modules that need it, or to your main application module.
 
-<a name="style-guide"></a>
 ### Style guide
 
 * All Angular components (controllers, services, directives, etc) should be wrapped in
@@ -208,9 +210,6 @@ The critical elements are:
   }
   ```
 
-
-
-<a name="cordova-plugins"></a>
 ## Cordova plugins
 
 ### BarcodeScanner
@@ -242,11 +241,25 @@ https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin
 
 This plugin display "toasts" on the device to provide visual feedback messages to the user.
 
+## Third party library
 
+### Turf
 
-<a name="ionic-platforms"></a>
+[Turf][turf] is a JS library that helps making geographic calculations and manipulations; its documentation can be found [here][turf-doc].
+
+The version included in the project is buit using the [turf-builder tool][tbt] with the followings modules:
+
+* bbox
+* distance
+* helpers
+* inside
+
 ## Ionic platforms
 
 This project is meant to be used on Android and iOS devices; those are the Ionic platforms that are installed.
 
 **Important:** Android version 5.0.0 or higher is required for the Wikitude plugin to work.
+
+[turf]:https://turfjs.org
+[turf-doc]: http://turfjs.org/docs
+[tbt]: https://turfjs-builder.herokuapp.com/
