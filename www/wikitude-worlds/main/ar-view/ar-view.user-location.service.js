@@ -57,7 +57,6 @@
       }
 
       $log.debug(message);
-
     }
 
     function movingDistance() {

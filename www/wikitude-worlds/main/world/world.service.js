@@ -32,7 +32,7 @@
     Outing.outingChangeObs.first().subscribe(ArView.loadExtremityPoints);
 
     // Faking the position to be localised in the office.
-    AppActions.execute('setPosition', {lat: 46.78071086, lon: 6.64763376, alt: Altitude.correct(432)});
+    // AppActions.execute('setPosition', {lat: 46.78071086, lon: 6.64763376, alt: Altitude.correct(432)});
 
     return service;
 
