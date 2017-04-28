@@ -10,6 +10,7 @@
 
   function OutingCtrl(ActivityTracker, $cordovaToast, Ionicitude, $ionicPlatform, leafletData, leafletBoundsHelpers, $log, OutingMap, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, turf, WorldActions) {
     var excursion = this;
+    var geoData;
 
     excursion.startOuting = startOuting;
     excursion.resumeOuting = resumeOuting;
@@ -19,14 +20,6 @@
     excursion.data = outingData;
     excursion.downloadProgress = "Télécharger";
     excursion.map = new OutingMap;
-    excursion.arData = {
-      id             : excursion.data.id,
-      themes         : excursion.data.themes,
-      path           : null,
-      extremityPoints: null,
-      pois           : null,
-      seen           : null
-    };
 
     $log.info(excursion.map);
 
@@ -36,14 +29,12 @@
     });
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(function(excursionGeoData) {
-      $log.info('getExcursionGeoData -  excursionGeoData', excursionGeoData);
-      excursion.map.setPath(excursionGeoData.path);
-      excursion.map.setZones(excursionGeoData.zones);
-      excursion.map.setExtremityPoints(excursionGeoData.extremityPoints);
-
-      excursion.arData.path = excursionGeoData.path;
-      excursion.arData.extremityPoints = excursionGeoData.extremityPoints;
-      var bbox = turf.bbox(excursionGeoData.path);
+      geoData = excursionGeoData;
+      $log.info('getExcursionGeoData -  excursionGeoData', geoData);
+      excursion.map.setPath(geoData.path);
+      excursion.map.setZones(geoData.zones);
+      excursion.map.setExtremityPoints(geoData.extremityPoints);
+      var bbox = turf.bbox(geoData.path);
       excursion.map.bounds = leafletBoundsHelpers.createBoundsFromArray([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
     });
 
@@ -53,9 +44,8 @@
 
     Outings.isNotNew(excursion.data);
 
-    SeenPoisData.getAll(excursion.data.id).then(function(res) {
-      excursion.arData.seen = res;
-      excursion.nbSeenPoi = excursion.arData.seen.length;
+    SeenPoisData.countFor(excursion.data.id).then(function(res) {
+      excursion.nbSeenPoi = res;
     }).catch(handleError);
 
     ////////////////////
@@ -121,14 +111,22 @@
       $log.debug('World loaded');
 
       var promises = [
-        PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes)
+        PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
+        SeenPoisData.getAll(excursion.data.id)
       ];
 
       return $q.all(promises).then(function(results) {
         $log.log(results);
-        excursion.arData.pois = results[0];
-        $log.info('loadWorldOuting - excursion.arData', excursion.arData);
-        WorldActions.execute('loadOuting', excursion.arData);
+        var arData = {
+          id             : excursion.data.id,
+          themes         : excursion.data.themes,
+          path           : geoData.path,
+          extremityPoints: geoData.extremityPoints,
+          pois           : results[0],
+          seen           : results[1]
+        };
+        $log.info('loadWorldOuting - excursion.arData', arData);
+        WorldActions.execute('loadOuting', arData);
       });
     }
 
