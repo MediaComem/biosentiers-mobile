@@ -18,7 +18,7 @@
 
     excursion.data = outingData;
     excursion.downloadProgress = "Télécharger";
-    excursion.map = OutingMap.config;
+    excursion.map = new OutingMap;
     excursion.arData = {
       id             : excursion.data.id,
       themes         : excursion.data.themes,
@@ -30,16 +30,19 @@
 
     $log.info(excursion.map);
 
-    OutingMap.userLocation = {
+    excursion.map.setUserLocation({
       lat: 46.781001,
       lng: 6.647128
-    };
+    });
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(function(excursionGeoData) {
       $log.info('getExcursionGeoData -  excursionGeoData', excursionGeoData);
-      excursion.arData.path = OutingMap.path = excursionGeoData.path;
-      OutingMap.zones = excursionGeoData.zones;
-      excursion.arData.extremityPoints = OutingMap.extremityPoints = excursionGeoData.extremityPoints;
+      excursion.map.setPath(excursionGeoData.path);
+      excursion.map.setZones(excursionGeoData.zones);
+      excursion.map.setExtremityPoints(excursionGeoData.extremityPoints);
+
+      excursion.arData.path = excursionGeoData.path;
+      excursion.arData.extremityPoints = excursionGeoData.extremityPoints;
       var bbox = turf.bbox(excursionGeoData.path);
       excursion.map.bounds = leafletBoundsHelpers.createBoundsFromArray([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
     });
