@@ -8,9 +8,13 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, leafletBoundsHelpers, $log, OutingMap, Outings, outingData, PoiGeo, $q, SeenPoisData, turf, WorldActions) {
+  function OutingCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, leafletBoundsHelpers, $log, OutingMap, Outings, outingData, PoiGeo, $q, SeenPoisData, $timeout, turf, WorldActions) {
     var excursion = this;
     var geoData;
+    var positionWatcher = $cordovaGeolocation.watchPosition({
+      timeout           : 10000,
+      enableHighAccuracy: false
+    });
 
     excursion.startOuting = startOuting;
     excursion.resumeOuting = resumeOuting;
@@ -20,7 +24,12 @@
     excursion.data = outingData;
     excursion.downloadProgress = "Télécharger";
     excursion.map = new OutingMap;
-    excursion.positionFound = false;
+    excursion.positionBadge = {
+      label  : "Localisation...",
+      spinner: true,
+      icon   : false,
+      visible: true
+    };
 
     $log.info(excursion.map);
 
@@ -49,18 +58,31 @@
       excursion.nbSeenPoi = res;
     }).catch(handleError);
 
-    $cordovaGeolocation.getCurrentPosition().then(function(position) {
-      $log.info('getCurrentPosition', position);
-      excursion.map.setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      });
-      // excursion.positionFound = true;
-    }, function(err) {
-      $log.error('getCurrentPosition', err);
-    });
+    positionWatcher.then(null, positionError, positionUpdate);
 
     ////////////////////
+
+    function positionError(error) {
+      $log.error('positionError', error)
+    }
+
+    function positionUpdate(position) {
+        $log.info('getCurrentPosition', position);
+        excursion.map.setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+        updatePositionBadge();
+    }
+
+    function updatePositionBadge() {
+      excursion.positionBadge.label = "Localisé !";
+      excursion.positionBadge.icon = true;
+      excursion.positionBadge.spinner = false;
+      $timeout(function() {
+        excursion.positionBadge.visible = false;
+      }, 1000)
+    }
 
     function badgeClassFromStatus(status) {
       var classes = {
