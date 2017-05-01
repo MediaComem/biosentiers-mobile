@@ -68,7 +68,7 @@
         indexedZones[zoneFeature.properties.id_zone] = zoneFeature;
       });
       $log.info(indexedZones);
-      start = indexedZones.find(defined).properties.start;
+      start = _.find(indexedZones, defined).properties.start;
       end = _.last(indexedZones).properties.end;
       return {
         start: turf.helpers.point([start.lng, start.lat, start.alt], start),
