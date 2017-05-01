@@ -6,13 +6,8 @@
 			         markers="outing.map.markers" bounds="outing.map.bounds">
 			
 			</leaflet>
-			<div class="position-search" ng-if="outing.positionBadge.visible">
-				<ion-spinner icon="ripple" class="spinner-assertive" ng-if="outing.positionBadge.spinner"></ion-spinner>
-				<i class="icon ion-android-checkmark-circle balanced" ng-if="outing.positionBadge.icon"></i>
-				<span>{{ outing.positionBadge.label }}</span>
-			</div>
+			<position-badge state="outing.positionState"></position-badge>
 		</div>
-		
 		<div class="padding">
 			<button class="button button-balanced button-block button-outline"
 			        on-release="outing.actionButtonClick()">{{outing.data.status | outingActionButton}}

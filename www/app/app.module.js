@@ -19,6 +19,7 @@
     'poi-module',
     'map-icons-module',
     'outings-module',
+    'position-badge',
     'seen-pois-data-module',
     'species-modules',
     'qr-module',

@@ -13,7 +13,7 @@
     var geoData;
     var positionWatcher = $cordovaGeolocation.watchPosition({
       timeout           : 10000,
-      enableHighAccuracy: false
+      enableHighAccuracy: true
     });
 
     excursion.startOuting = startOuting;
@@ -24,12 +24,7 @@
     excursion.data = outingData;
     excursion.downloadProgress = "Télécharger";
     excursion.map = new OutingMap;
-    excursion.positionBadge = {
-      label  : "Localisation...",
-      spinner: true,
-      icon   : false,
-      visible: true
-    };
+    excursion.positionState = 'searching';
 
     $log.info(excursion.map);
 
@@ -63,25 +58,24 @@
     ////////////////////
 
     function positionError(error) {
-      $log.error('positionError', error)
+      $log.error('positionError', error);
+      excursion.positionState = 'error';
+      $timeout(function() {
+        excursion.positionState = 'refresh';
+      }, 1000);
     }
 
     function positionUpdate(position) {
-        $log.info('getCurrentPosition', position);
-        excursion.map.setUserLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        });
-        updatePositionBadge();
-    }
-
-    function updatePositionBadge() {
-      excursion.positionBadge.label = "Localisé !";
-      excursion.positionBadge.icon = true;
-      excursion.positionBadge.spinner = false;
+      $log.info('getCurrentPosition', position);
+      excursion.map.setUserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      });
+      excursion.positionState = 'success';
       $timeout(function() {
-        excursion.positionBadge.visible = false;
-      }, 1000)
+        excursion.positionState = 'searching';
+      }, 1000);
+      $log.info(positionWatcher);
     }
 
     function badgeClassFromStatus(status) {
