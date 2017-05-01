@@ -4,11 +4,12 @@
 			<leaflet id="map" maxbounds="outing.map.maxbounds" defaults="outing.map.defaults" tiles="outing.map.tiles"
 			         center="outing.map.center" geojson="outing.map.geojson" geojson-nested="true"
 			         markers="outing.map.markers" bounds="outing.map.bounds">
-				
+			
 			</leaflet>
-			<div class="position-search" ng-hide="outing.positionFound">
-				<ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
-				Recherche de votre position...
+			<div class="position-search" ng-if="outing.positionBadge.visible">
+				<ion-spinner icon="ripple" class="spinner-assertive" ng-if="outing.positionBadge.spinner"></ion-spinner>
+				<i class="icon ion-android-checkmark-circle balanced" ng-if="outing.positionBadge.icon"></i>
+				<span>{{ outing.positionBadge.label }}</span>
 			</div>
 		</div>
 		
