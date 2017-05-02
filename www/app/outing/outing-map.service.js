@@ -1,23 +1,27 @@
 /**
  * Created by Mathias Oberson on 28.04.2017.
+ * This service is responsible for the configuration of the map visible in an excursion page.
  */
 (function() {
   'use strict';
   angular
     .module('app')
-    .factory('OutingMap', OutingMapService);
+    .factory('OutingMapConfig', OutingMapConfigService);
 
-  function OutingMapService(MapIcons, $log, turf) {
-    // var service = {
-    //   get config() { return getConfig() },
-    //   set userLocation(location) { setUserLocation(location) },
-    //   set path(path) { setPath(path) },
-    //   set zones(zones) { setZones(zones) },
-    //   set extremityPoints(points) { setExtremityPoints(points) },
-    // };
+  function OutingMapConfigService(MapIcons, $log) {
+    // Flag used for the 'once' option of the setUserLocation() method
+    var hasBeenCentered = false;
 
     /**
-     *
+     * Creates the configuration object with the basic and/or static values.
+     * En excursion map is centered by default in the center of Yverdon-les-Bains.
+     * The tiles are local ones, located in the www/data/Tiles.
+     * The zonn level can go from 11 to 18 and their is no controls visible.
+     * Call:
+     * * setUserLocation to put a marker at the user's location
+     * * setPath to show the path on the map
+     * * setZones to show the zones on the map
+     * * setExtremityPoints to show the starting and ending point on the map
      * @constructor
      */
     function OutingMapConfig() {
@@ -49,6 +53,7 @@
       }
     }
 
+    // Defines the object methods
     OutingMapConfig.prototype.setUserLocation = setUserLocation;
     OutingMapConfig.prototype.setPath = setPath;
     OutingMapConfig.prototype.setZones = setZones;
@@ -58,22 +63,45 @@
 
     ////////////////////
 
-    function setUserLocation(location) {
+    /**
+     * Sets the user location on the map.
+     * This means creating (or updating) a marker for the user on the map at the user's location.
+     * If the center argument is passed 'never', the map won't be centered on the user's location.
+     * If you pass nothing or 'alway', the map will be centered each time the method is called.
+     * You can also pass the value 'once' for the map to be centered only the first time the function is called.
+     * @param {{lat: Number, lng: Number}} location An object with a lat and lng property
+     * @param {'always'|'never'|'once'} center An option describing if and how the map should be centered on the user's location.
+     */
+    function setUserLocation(location, center) {
+      if (typeof center === "undefined") center = 'always';
+      if (typeof location === "undefined") throw new TypeError("OutingMapConfig.setUserLocation - mandatory 'location' argument is undefined.");
       $log.info('OutingMapConfig - setUserLocation', this, location);
-      if (location) {
-        this.center = {
-          lat : location.lat,
-          lng : location.lng,
-          zoom: 16
-        };
+      if (typeof this.markers.user !== "undefined") {
+        $log.log('OutingMapConfig.setUserLocation - updating the marker');
+        this.markers.user.lat = location.lat;
+        this.markers.user.lng = location.lng;
+      } else {
+        $log.log('OutingMapConfig.setUserLocation - creating the marker');
         this.markers.user = {
           lat : location.lat,
           lng : location.lng,
           icon: MapIcons.user
         };
       }
+      if (center === 'always' || (center === 'once' && !hasBeenCentered)) {
+        this.center = {
+          lat : location.lat,
+          lng : location.lng,
+          zoom: 16
+        };
+        hasBeenCentered = true;
+      }
     }
 
+    /**
+     * Takes a path GeoJSON object and sets it as the value of the geojson.path property of this map config.
+     * @param {GeoJSON} path A GeoJSON object
+     */
     function setPath(path) {
       $log.info('OutingMap - setPath', path);
       if (path) {
@@ -87,6 +115,10 @@
       }
     }
 
+    /**
+     * Takes a zones GeoJSON object and sets it as the value of the geojson.zones property of this map config.
+     * @param {GeoJSON} zones A GeoJSON object
+     */
     function setZones(zones) {
       if (zones) {
         this.geojson.zones = {
@@ -102,6 +134,12 @@
       }
     }
 
+    /**
+     * Sets the starting and ending point of the excursion.
+     * The points argument must be an object with at least a start and an end property.
+     * Each of these properties must be a valid GeoJSON object representing a Point.
+     * @param {{start: GeoJSON, end: GeoJSON}} points An object containing GeoJSON Point objects.
+     */
     function setExtremityPoints(points) {
       if (points) {
         this.markers.start = {

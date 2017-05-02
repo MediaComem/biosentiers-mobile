@@ -8,13 +8,10 @@
     .module('app')
     .controller('OutingCtrl', OutingCtrl);
 
-  function OutingCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, leafletBoundsHelpers, $log, OutingMap, Outings, outingData, PoiGeo, $q, SeenPoisData, $timeout, turf, WorldActions) {
+  function OutingCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, leafletBoundsHelpers, $log, OutingMapConfig, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, $timeout, turf, WorldActions) {
+
     var excursion = this;
-    var geoData;
-    var positionWatcher = $cordovaGeolocation.watchPosition({
-      timeout           : 10000,
-      enableHighAccuracy: true
-    });
+    var geoData, positionWatcher;
 
     excursion.startOuting = startOuting;
     excursion.resumeOuting = resumeOuting;
@@ -23,39 +20,50 @@
 
     excursion.data = outingData;
     excursion.downloadProgress = "Télécharger";
-    excursion.map = new OutingMap;
+    excursion.map = new OutingMapConfig;
     excursion.positionState = 'searching';
 
-    $log.info(excursion.map);
+    $scope.$on('$ionicView.afterEnter', afterViewEnter);
 
-    // excursion.map.setUserLocation({
-    //   lat: 46.781001,
-    //   lng: 6.647128
-    // });
+    $scope.$on('$ionicView.beforeLeave', beforeViewLeave);
 
-    PoiGeo.getExcursionGeoData(excursion.data.zones).then(function(excursionGeoData) {
-      geoData = excursionGeoData;
+    PoiGeo.getExcursionGeoData(excursion.data.zones).then(loadExcursionData);
+
+    Outings.isNotNew(excursion.data);
+
+    leafletData.getMap('map').then(function(map) {
+      $log.info(map);
+    }).catch(handleError);
+
+    SeenPoisData.countFor(excursion.data.id).then(function(res) {
+      excursion.nbSeenPoi = res;
+    }).catch(handleError);
+
+    ////////////////////
+
+    function loadExcursionData(excursionData) {
+      geoData = excursionData;
       $log.info('getExcursionGeoData -  excursionGeoData', geoData);
       excursion.map.setPath(geoData.path);
       excursion.map.setZones(geoData.zones);
       excursion.map.setExtremityPoints(geoData.extremityPoints);
       var bbox = turf.bbox(geoData.path);
       excursion.map.bounds = leafletBoundsHelpers.createBoundsFromArray([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
-    });
+    }
 
-    leafletData.getMap('map').then(function(map) {
-      $log.info(map);
-    }).catch(handleError);
+    function afterViewEnter() {
+      $log.info('OutingCtrl - Activating location watcher');
+      positionWatcher = $cordovaGeolocation.watchPosition({
+        timeout           : 10000,
+        enableHighAccuracy: true
+      });
+      positionWatcher.then(null, positionError, positionUpdate);
+    }
 
-    Outings.isNotNew(excursion.data);
-
-    SeenPoisData.countFor(excursion.data.id).then(function(res) {
-      excursion.nbSeenPoi = res;
-    }).catch(handleError);
-
-    positionWatcher.then(null, positionError, positionUpdate);
-
-    ////////////////////
+    function beforeViewLeave() {
+      $log.info('OutingCtrl - Deactivating location watcher');
+      positionWatcher.cancel();
+    }
 
     function positionError(error) {
       $log.error('positionError', error);
@@ -70,7 +78,7 @@
       excursion.map.setUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      });
+      }, 'once');
       excursion.positionState = 'success';
       $timeout(function() {
         excursion.positionState = 'searching';
