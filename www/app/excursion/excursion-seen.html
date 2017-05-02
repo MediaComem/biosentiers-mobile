@@ -1,0 +1,15 @@
+<ion-view title="{{excursionSeen.excursion.name}}">
+	<div class="bar bar-subheader bar-balanced">
+		<h2 class="title">Éléments vus {{excursionSeen.seenPois.length}}/25</h2>
+		<progress max="25" value="{{excursionSeen.seenPois.length}}"></progress>
+	</div>
+	<ion-content class="has-subheader">
+		<div class="padding">
+			<ion-list>
+				<ion-item ng-repeat="seenPoi in excursionSeen.seenPois" ui-sref="app.excursion.seenlist.poi({poiId: seenPoi.poi_id})">
+					Vu le {{seenPoi.seen_at | date:'dd.MM.yyyy'}} à {{seenPoi.seen_at | date:'HH:mm:ss'}}
+				</ion-item>
+			</ion-list>
+		</div>
+	</ion-content>
+</ion-view>

@@ -35,79 +35,79 @@
         }
       })
 
-      .state('app.outings', {
-        url  : '/outings',
+      .state('app.excursions', {
+        url  : '/excursions',
         cache: false, //fix issue with other tabs system - species - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
         views: {
           'menuContent': {
-            templateUrl: 'app/outings/outings.html'
+            templateUrl: 'app/excursions/excursions.html'
           }
         }
       })
 
-      .state('app.outings.all', {
+      .state('app.excursions.all', {
         url    : '/all',
         views  : {
-          'outings-all': {
-            templateUrl: 'app/outings/outings-all.html',
-            controller : 'OutingsCtrl as ctrl'
+          'excursions-all': {
+            templateUrl: 'app/excursions/excursions-all.html',
+            controller : 'ExcursionsCtrl as excursions'
           }
         },
         resolve: {
-          outingsData: function(Outings) {
-            return Outings.getAll();
+          excursionsData: function(Excursions) {
+            return Excursions.getAll();
           }
         }
       })
 
-      .state('app.outings.pending', {
+      .state('app.excursions.pending', {
         url    : '/pending',
         views  : {
-          'outings-pending': {
-            templateUrl: 'app/outings/outings-all.html',
-            controller : 'OutingsCtrl as ctrl'
+          'excursions-pending': {
+            templateUrl: 'app/excursions/excursions-all.html',
+            controller : 'ExcursionsCtrl as excursions'
           }
         },
         resolve: {
-          outingsData: function(Outings) {
-            return Outings.getPending();
+          excursionsData: function(Excursions) {
+            return Excursions.getPending();
           }
         }
       })
 
-      .state('app.outings.ongoing', {
+      .state('app.excursions.ongoing', {
         url    : '/ongoing',
         views  : {
-          'outings-ongoing': {
-            templateUrl: 'app/outings/outings-all.html',
-            controller : 'OutingsCtrl as ctrl'
+          'excursions-ongoing': {
+            templateUrl: 'app/excursions/excursions-all.html',
+            controller : 'ExcursionsCtrl as excursions'
           }
         },
         resolve: {
-          outingsData: function(Outings) {
-            return Outings.getOngoing();
+          excursionsData: function(Excursions) {
+            return Excursions.getOngoing();
           }
         }
       })
 
-      .state('app.outings.over', {
+      .state('app.excursions.over', {
         url    : '/over',
         views  : {
-          'outings-over': {
-            templateUrl: 'app/outings/outings-all.html',
-            controller : 'OutingsCtrl as ctrl'
+          'excursions-over': {
+            templateUrl: 'app/excursions/excursions-all.html',
+            controller : 'ExcursionsCtrl as excursions'
           }
         },
         resolve: {
-          outingsData: function(Outings) {
-            return Outings.getFinished();
+          excursionsData: function(Excursions) {
+            return Excursions.getFinished();
           }
         }
       })
 
       .state('app.species', {
         url  : '/species',
-        cache: false, //fix issue with other tabs system - outings
+        cache: false, //fix issue with other tabs system - excursions
         views: {
           'menuContent': {
             templateUrl: 'app/species/species.html'
@@ -170,39 +170,39 @@
         }
       })
 
-      .state('app.outing', {
-        url    : '/outings/:outingId',
+      .state('app.excursion', {
+        url    : '/excursions/:excursionId',
         views  : {
           'menuContent': {
-            templateUrl : 'app/outing/outing.html',
-            controller  : 'OutingCtrl',
-            controllerAs: 'outing'
+            templateUrl : 'app/excursion/excursion.html',
+            controller  : 'ExcursionCtrl',
+            controllerAs: 'excursion'
           }
         },
         resolve: {
-          outingData: function(Outings, $stateParams) {
-            return Outings.getOne($stateParams.outingId);
+          excursionData: function(Excursions, $stateParams) {
+            return Excursions.getOne($stateParams.excursionId);
           }
         }
       })
 
-      .state('app.outing.seenlist', {
+      .state('app.excursion.seenlist', {
         url    : '/seen',
         views  : {
           'menuContent@app': {
-            templateUrl : 'app/outing/outing-seen.html',
-            controller  : 'OutingSeenCtrl',
-            controllerAs: 'outingSeen'
+            templateUrl : 'app/excursion/excursion-seen.html',
+            controller  : 'ExcursionSeenCtrl',
+            controllerAs: 'excursionSeen'
           }
         },
         resolve: {
           seenPois: function(SeenPoisData, $stateParams) {
-            return SeenPoisData.getAll($stateParams.outingId);
+            return SeenPoisData.getAll($stateParams.excursionId);
           }
         }
       })
 
-      .state('app.outing.seenlist.poi', {
+      .state('app.excursion.seenlist.poi', {
         url  : '/poi/:poiId',
         views: {
           'menuContent@app': {
@@ -239,6 +239,6 @@
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/login');
     // Dev route to access directly the launchAR button
-    $urlRouterProvider.otherwise('/app/outings');
+    $urlRouterProvider.otherwise('/app/excursions');
   }
 })();

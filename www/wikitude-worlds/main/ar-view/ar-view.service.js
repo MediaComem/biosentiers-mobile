@@ -10,7 +10,7 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArExtremityMarker, ArMarker, $ionicPopup, Filters, $log, Outing, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArExtremityMarker, ArMarker, $ionicPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
     // Will store all the ArPoi in the view, by their id.
@@ -18,12 +18,12 @@
         arExtremityPoints       = {},
         reachLimit              = 250,
         minPoiActiveDistance    = 20,
-        outingEndReachedSubject = new rx.ReplaySubject(1),
+        excursionEndReachedSubject = new rx.ReplaySubject(1),
         poisChangeSubject       = new rx.Subject();
 
     var service = {
       poisChangeObs      : poisChangeSubject.asObservable(),
-      outingEndReachedObs: outingEndReachedSubject.asObservable(),
+      excursionEndReachedObs: excursionEndReachedSubject.asObservable(),
       init               : init,
       updateAr           : updateAr,
       loadExtremityPoints: loadExtremityPoints,
@@ -70,14 +70,14 @@
     function updateAr() {
 
       // Ensure the data is loaded and the user is located.
-      if (!Outing.hasOuting() || !UserLocation.hasLocation()) {
+      if (!Excursion.hasExcursion() || !UserLocation.hasLocation()) {
         return;
       }
 
       var timer = Timers.start();
 
       // Retrieve all available points.
-      var allPois = Outing.getPois();
+      var allPois = Excursion.getPois();
       $log.debug(allPois.length + ' points in total');
 
       // Determine the nearest points; those are the only points that should be in the AR.
@@ -122,12 +122,12 @@
     }
 
     /**
-     * Loads in the AR View both the start point and the end point of the outing.
+     * Loads in the AR View both the start point and the end point of the excursion.
      */
     function loadExtremityPoints() {
       arExtremityPoints = {
-        start: new ArExtremityMarker(Outing.getStartPoint()),
-        end  : new ArExtremityMarker(Outing.getEndPoint(), onEnterActionRange)
+        start: new ArExtremityMarker(Excursion.getStartPoint()),
+        end  : new ArExtremityMarker(Excursion.getEndPoint(), onEnterActionRange)
       }
     }
 
@@ -198,7 +198,7 @@
         console.log("distance to user ", dist);
         if (1 === 1) {
           // if (dist <= minPoiActiveDistance) {
-          Outing.loadCurrentPoi(arPoi.poi);
+          Excursion.loadCurrentPoi(arPoi.poi);
           // if (!arPoi.hasBeenSeen) setPoiSeen();
         } else {
           AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
@@ -229,12 +229,11 @@
           });
 
       prompt.then(function(validated) {
-        $log.log("promptEndOfOuting - prompt result", validated);
+        $log.log("promptEndOfExcursion - prompt result", validated);
         if (validated) {
-          AppActions.execute('finishOuting', {outingId: Outing.id});
+          AppActions.execute('finishExcursion', {excursionId: Excursion.id});
         } else {
-          // TODO : ajouter un bouton quelque part sur l'écran principal qui permet de fermer la sortie à partir du moment où la balise de fin a été atteinte.
-          outingEndReachedSubject.onNext();
+          excursionEndReachedSubject.onNext();
           $log.log('Pas de fin du sentier');
         }
       });

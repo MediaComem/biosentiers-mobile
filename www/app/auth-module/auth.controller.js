@@ -13,7 +13,7 @@
   /*
    Controller function
    */
-  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup, AuthService, Outings, QR, $log) {
+  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup, AuthService, Excursions, QR, $log) {
     var auth = this;
 
     $ionicPlatform.ready(function() {
@@ -55,14 +55,12 @@
           text : "C'est ça !",
           type : "button-balanced",
           /**
-           * When this button is tapped, creates the scanned outing in the device memory and redirect to it.
-           * @param e
+           * When this button is tapped, creates the scanned excursion in the device memory and redirect to it.
            * @returns {boolean}
            */
           onTap: function() {
-            // TODO : Create the new outing in the database
-            Outings.createOne(auth.excursion).then(function() {
-              $state.go('app.outings');
+            Excursions.createOne(auth.excursion).then(function() {
+              $state.go('app.excursions');
             })
           }
         }]
@@ -102,7 +100,7 @@
               AuthService.connectUser(auth.account)
                 .then(function() {
                   console.log('connection réussie !');
-                  $state.go('app.outings');
+                  $state.go('app.excursions');
                 }, function() {
                   console.log('connection refusée');
                 });

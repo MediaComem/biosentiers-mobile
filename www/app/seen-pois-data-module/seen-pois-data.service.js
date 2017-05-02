@@ -23,55 +23,55 @@
     ////////////////////
 
     /**
-     * Tries to get all the POIs that have been seen for a particuler outing.
-     * @param outingId The ID of the Outing for which we want to get all the seen POIs.
-     * @return {Promise} A promise of an Array containing the POIs that have been seen for the specified Outing
+     * Tries to get all the POIs that have been seen for a particuler excursion.
+     * @param excursionId The ID of the Excursion for which we want to get all the seen POIs.
+     * @return {Promise} A promise of an Array containing the POIs that have been seen for the specified Excursion
      */
-    function getAll(outingId) {
+    function getAll(excursionId) {
       return BioDb.getCollection(collName)
         .then(function(coll) {
-          var res = coll.find({outing_id: outingId});
+          var res = coll.find({excursion_id: excursionId});
           if (res.length === 0) {
-            populate(coll, outingId);
-            res = coll.find({outing_id: outingId});
+            populate(coll, excursionId);
+            res = coll.find({excursion_id: excursionId});
           }
           return res;
         })
         .catch(handleError);
     }
 
-    function countFor(outingId) {
-      $log.log('countFor id', outingId);
+    function countFor(excursionId) {
+      $log.log('countFor id', excursionId);
       return BioDb.getCollection(collName)
         .then(function(coll) {
           $log.log('coutnFor collection', coll);
-          return coll.count({outing_id: outingId});
+          return coll.count({excursion_id: excursionId});
         }).catch(handleError);
     }
 
     /**
      * Adds a new seen poi to the collection, that matches the given parameter.
-     * @param outingId The ID of the outing in which the poi has been seen
+     * @param excursionId The ID of the excursion in which the poi has been seen
      * @param poiId The ID of the POI that have been seen.
      */
-    function addOne(outingId, poiId) {
+    function addOne(excursionId, poiId) {
       return BioDb.getCollection(collName)
         .then(function(coll) {
-          return coll.insertOne(new SeenClass(outingId, poiId));
+          return coll.insertOne(new SeenClass(excursionId, poiId));
         })
         .then(BioDb.save)
         .catch(handleError);
     }
 
     // TODO : supprimer en prod
-    function populate(coll, outing_id) {
+    function populate(coll, excursionId) {
       coll.insert([
-        new SeenClass(outing_id, 5007),
-        new SeenClass(outing_id, 5010),
-        new SeenClass(outing_id, 5291),
-        new SeenClass(outing_id, 5391),
-        new SeenClass(outing_id, 5018),
-        new SeenClass(outing_id, 5347)
+        new SeenClass(excursionId, 5007),
+        new SeenClass(excursionId, 5010),
+        new SeenClass(excursionId, 5291),
+        new SeenClass(excursionId, 5391),
+        new SeenClass(excursionId, 5018),
+        new SeenClass(excursionId, 5347)
       ]);
       BioDb.save();
     }
@@ -79,13 +79,13 @@
     /**
      * Creates a new SeenClass with the given id.
      * The seenAt property of this object will be set as Date.now().
-     * @param outing_id The id of the Outing in which the SeenClass must be added
-     * @param poi_id The id of the new SeenClass
+     * @param excursionId The id of the Excursion in which the SeenClass must be added
+     * @param poiId The id of the new SeenClass
      * @constructor
      */
-    function SeenClass(outing_id, poi_id) {
-      this.outing_id = outing_id;
-      this.poi_id = poi_id;
+    function SeenClass(excursionId, poiId) {
+      this.excursion_id = excursionId;
+      this.poi_id = poiId;
       this.seen_at = Date.now();
     }
 

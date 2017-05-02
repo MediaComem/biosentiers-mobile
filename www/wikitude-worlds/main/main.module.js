@@ -24,7 +24,7 @@
     'mini-map',
     'mini-map-orientation',
     'modals',
-    'outing',
+    'excursion',
     'position-badge',
     'seen-tracker',
     'timers-module',

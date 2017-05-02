@@ -74,7 +74,7 @@
     // TODO : Supprimer en prod
     function reset() {
       return start().then(function() {
-        db.removeCollection('outings');
+        db.removeCollection('excursions');
         db.removeCollection('seen-pois');
         return save();
       })

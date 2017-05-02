@@ -18,7 +18,7 @@
     'bio-db-module',
     'poi-module',
     'map-icons-module',
-    'outings-module',
+    'excursions-module',
     'position-badge',
     'seen-pois-data-module',
     'species-modules',

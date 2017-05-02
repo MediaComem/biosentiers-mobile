@@ -6,21 +6,19 @@
 
   angular
     .module('app')
-    .controller('OutingCtrl', OutingCtrl);
+    .controller('ExcursionCtrl', ExcursionCtrl);
 
-  function OutingCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, leafletBoundsHelpers, $log, OutingMapConfig, Outings, outingData, PoiGeo, $q, SeenPoisData, $scope, $timeout, turf, WorldActions) {
+  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, leafletBoundsHelpers, $log, ExcursionMapConfig, Excursions, excursionData, PoiGeo, $q, SeenPoisData, $scope, $timeout, turf, WorldActions) {
 
     var excursion = this;
     var geoData, positionWatcher;
 
-    excursion.startOuting = startOuting;
-    excursion.resumeOuting = resumeOuting;
     excursion.actionButtonClick = actionButtonClick;
     excursion.badgeClassFromStatus = badgeClassFromStatus;
 
-    excursion.data = outingData;
+    excursion.data = excursionData;
     excursion.downloadProgress = "Télécharger";
-    excursion.map = new OutingMapConfig;
+    excursion.map = new ExcursionMapConfig;
     excursion.positionState = 'searching';
 
     $scope.$on('$ionicView.afterEnter', afterViewEnter);
@@ -29,7 +27,7 @@
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(loadExcursionData);
 
-    Outings.isNotNew(excursion.data);
+    Excursions.isNotNew(excursion.data);
 
     leafletData.getMap('map').then(function(map) {
       $log.info(map);
@@ -52,7 +50,7 @@
     }
 
     function afterViewEnter() {
-      $log.info('OutingCtrl - Activating location watcher');
+      $log.info('ExcursionCtrl - Activating location watcher');
       positionWatcher = $cordovaGeolocation.watchPosition({
         timeout           : 10000,
         enableHighAccuracy: true
@@ -61,7 +59,7 @@
     }
 
     function beforeViewLeave() {
-      $log.info('OutingCtrl - Deactivating location watcher');
+      $log.info('ExcursionCtrl - Deactivating location watcher');
       positionWatcher.cancel();
     }
 
@@ -98,26 +96,26 @@
 
     function actionButtonClick() {
       var actions = {
-        pending: startOuting,
-        ongoing: resumeOuting
+        pending: startExcursion,
+        ongoing: resumeExcursion
       };
       actions[excursion.data.status]();
     }
 
     /**
-     * Load and launch the AR World with the outing's data, then changes the status of this outing from "pending" to "ongoing".
+     * Load and launch the AR World with the excursion's data, then changes the status of this excursion from "pending" to "ongoing".
      */
-    function startOuting() {
+    function startExcursion() {
       return $q.when()
         .then(Ionicitude.launchAR)
-        .then(loadWorldOuting)
-        .then(_.partial(Outings.setOngoingStatus, excursion.data))
+        .then(loadWorldExcursion)
+        .then(_.partial(Excursions.setOngoingStatus, excursion.data))
         .catch(handleError);
     }
 
-    function resumeOuting() {
+    function resumeExcursion() {
       return $q.when()
-        .then(startOuting)
+        .then(startExcursion)
         .then(ActivityTracker.logResume)
         .catch(handleError);
     }
@@ -138,12 +136,12 @@
     }
 
     /**
-     * Load in the AR View the current outing's data.
+     * Load in the AR View the current excursion's data.
      * This means getting the GeoJSON for the path and the points, as well as retrieveing the
      * points that have already been seen.
-     * When all these promises are resolved, a call to the AR function loadOuting is made.
+     * When all these promises are resolved, a call to the AR function loadExcursion is made.
      */
-    function loadWorldOuting() {
+    function loadWorldExcursion() {
       $log.debug('World loaded');
 
       var promises = [
@@ -161,16 +159,16 @@
           pois           : results[0],
           seen           : results[1]
         };
-        $log.info('loadWorldOuting - excursion.arData', arData);
-        WorldActions.execute('loadOuting', arData);
+        $log.info('loadWorldExcursion - excursion.arData', arData);
+        WorldActions.execute('loadExcursion', arData);
       });
     }
 
 
     // Zip download
     //TODO add to localdb that the download and unzip was sucessful
-    // ctrl.getZip = function(outingId) {
-    //   downloader.init({folder: outingId.toString(), unzip: true});
+    // ctrl.getZip = function(excursionId) {
+    //   downloader.init({folder: excursionId.toString(), unzip: true});
     //   downloader.get("http://knae.niloo.fr/testBirds.zip");
     //   document.addEventListener("DOWNLOADER_downloadProgress", function(event) {
     //     var data = event.data;

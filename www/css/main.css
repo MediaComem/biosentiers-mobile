@@ -23,9 +23,9 @@ progress {
 .themes .badge:not(:last-of-type), .zones .badge:not(:last-of-type) {
   margin-right: 5px; }
 
-.outing-map-container {
+.excursion-map-container {
   position: relative; }
-  .outing-map-container .position-badge {
+  .excursion-map-container .position-badge {
     position: absolute;
     bottom: 10px;
     left: 10px; }

@@ -14,7 +14,7 @@
                       Ionicitude,
                       $cordovaToast,
                       $log,
-                      Outings,
+                      Excursions,
                       PoiContent,
                       $q,
                       SeenPoisData,
@@ -37,7 +37,7 @@
       addIonicitudeAction(setPosition);
       addIonicitudeAction(close);
       addIonicitudeAction(addSeenPoi);
-      addIonicitudeAction(finishOuting);
+      addIonicitudeAction(finishExcursion);
 
       Ionicitude.listLibActions();
 
@@ -90,13 +90,13 @@
 
       function addSeenPoi(service, param) {
         $log.log('adding seen poi');
-        console.log('addSeenPoi', SeenPoisData.addOne(param.outingId, param.poiId));
+        console.log('addSeenPoi', SeenPoisData.addOne(param.excursionId, param.poiId));
       }
 
-      function finishOuting(service, param) {
-        return $q.when(param.outingId)
-          .then(Outings.getOne)
-          .then(Outings.setFinishedStatus)
+      function finishExcursion(service, param) {
+        return $q.when(param.excursionId)
+          .then(Excursions.getOne)
+          .then(Excursions.setFinishedStatus)
           .then(_.partial(close, service))
           .catch(function(error) {
             $log.error(error);

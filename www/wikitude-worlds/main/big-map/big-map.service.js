@@ -7,7 +7,7 @@
 		.module('big-map')
 		.factory('BigMap', BigMapService);
 
-	function BigMapService(Filters, $log, MapIcons, Outing, turf, UserLocation) {
+	function BigMapService(Filters, $log, MapIcons, Excursion, turf, UserLocation) {
 		var service = {
 			config          : {},
 			updateMapMarkers: updateMapMarkers,
@@ -118,13 +118,13 @@
 
 		/**
 		 * Gets the pois that are inside the given Polygon GeoJSON Object.
-		 * The pois are retrieved from the Outing
+		 * The pois are retrieved from the Excursion
 		 * service.
 		 * @param poly
 		 * @return {Array} An Array that contains all the GeoJSON Point that are insode the polygon.
 		 */
 		function getMapMarkersToShow(poly) {
-			var pois = Outing.getPois();
+			var pois = Excursion.getPois();
 			return _.filter(pois, function (poi) {
 				return turf.inside(poi, poly);
 			});

@@ -1,0 +1,15 @@
+<ion-view view-title="Mes Sorties">
+  <ion-content class="padding" on-swipe-right="goBack()" on-swipe-left="goForward()">
+    <ion-list ng-if="!excursions.loading && excursions.data.length >= 1">
+      <ion-item ng-repeat="excursion in excursions.data" href="#/app/excursions/{{excursion.id}}">
+        <h2>{{excursion.name}}</h2>
+        <span ng-if="excursion.is_new" class="badge badge-calm">Nouveau</span>
+        <p>Date : {{excursion.date | date : 'dd.MM.yyyy'}}</p>
+        <p>Créée par {{excursion.created_by}}</p>
+        <p>Statut : {{excursion.status | status}}</p>
+      </ion-item>
+    </ion-list>
+    <p ng-if="!excursions.loading && excursions.data.length == 0">Aucune sortie existante</p>
+	  <p ng-if="excursions.loading">Chargement</p>
+  </ion-content>
+</ion-view>

@@ -6,13 +6,13 @@
 
   angular
     .module('app')
-    .controller('OutingsCtrl', OutingsCtrl);
+    .controller('ExcursionsCtrl', ExcursionsCtrl);
 
-  function OutingsCtrl(outingsData, $scope, $ionicTabsDelegate) {
-    var ctrl = this;
-    // outings.loading = true;
-    console.log('outingsData', outingsData);
-    ctrl.outings = outingsData;
+  function ExcursionsCtrl(excursionsData, $scope, $ionicTabsDelegate) {
+    var excursions = this;
+    // excursions.loading = true;
+    console.log('excursionsData', excursionsData);
+    excursions.data = excursionsData;
 
     $scope.goForward = function() {
       var selected = $ionicTabsDelegate.selectedIndex();

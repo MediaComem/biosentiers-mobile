@@ -5,9 +5,9 @@
   'use strict';
   angular
     .module('trans-module')
-    .filter('outingActionButton', outingActionButton);
+    .filter('excursionActionButton', excursionActionButton);
 
-  function outingActionButton() {
+  function excursionActionButton() {
     var convert = {
       fr: {
         pending : "Démarrer",

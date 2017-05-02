@@ -2,24 +2,24 @@
   'use strict';
 
   angular
-    .module('outing')
-    .factory('Outing', OutingService);
+    .module('excursion')
+    .factory('Excursion', ExcursionService);
 
-  function OutingService(AppActions, $log, rx) {
+  function ExcursionService(AppActions, $log, rx) {
 
-    var outing,
+    var excursion,
         currentPoi,
         currentPoiDetails,
-        outingSubject     = new rx.ReplaySubject(1),
+        excursionSubject     = new rx.ReplaySubject(1),
         currentPoiSubject = new rx.ReplaySubject(1);
 
     var service = {
       get id() { return getId() },
       get startPoint() { return getStartPoint() },
       get endpoint() { return getEndPoint() },
-      // Outing functions
-      hasOuting          : hasOuting,
-      setOuting          : setOuting,
+      // Excursion functions
+      hasExcursion          : hasExcursion,
+      setExcursion          : setExcursion,
       getPois            : getPois,
       getPathGeoJson     : getPathGeoJson,
       getStartPoint      : getStartPoint,
@@ -29,7 +29,7 @@
       // Current POI functions
       loadCurrentPoi     : loadCurrentPoi,
       // Observables
-      outingChangeObs    : outingSubject.asObservable(),
+      excursionChangeObs    : excursionSubject.asObservable(),
       currentPoiChangeObs: currentPoiSubject.asObservable()
     };
 
@@ -38,46 +38,45 @@
     ////////////////////
 
     function getId() {
-      return hasOuting() ? outing.id : undefined;
+      return hasExcursion() ? excursion.id : undefined;
     }
 
-    function hasOuting() {
-      return !_.isNil(outing);
+    function hasExcursion() {
+      return !_.isNil(excursion);
     }
 
-    function setOuting(newOuting) {
-      if (newOuting) {
-        outing = newOuting;
-        $log.debug('Outing loaded', outing);
-        outingSubject.onNext(outing);
+    function setExcursion(newExcursion) {
+      if (newExcursion) {
+        excursion = newExcursion;
+        $log.debug('Excursion loaded', excursion);
+        excursionSubject.onNext(excursion);
       }
     }
 
     function getPois() {
-      return hasOuting() ? outing.pois : undefined;
+      return hasExcursion() ? excursion.pois : undefined;
     }
 
     function getThemes() {
-      // return outing ? _.compact(_.uniq(_.map(outing.pois.features, 'properties.theme_name'))).sort() : undefined;
-      return hasOuting() ? outing.themes : undefined;
+      return hasExcursion() ? excursion.themes : undefined;
     }
 
     function getSeenPois() {
-      return hasOuting() ? outing.seen : undefined;
+      return hasExcursion() ? excursion.seen : undefined;
     }
 
     function getPathGeoJson() {
-      return hasOuting() ? outing.path : undefined;
+      return hasExcursion() ? excursion.path : undefined;
     }
 
     function getStartPoint() {
       // TODO : Lookup for the start point as the start point of the first selected zone
-      return hasOuting() ? outing.extremityPoints.start : undefined;
+      return hasExcursion() ? excursion.extremityPoints.start : undefined;
     }
 
     function getEndPoint() {
       // TODO : Lookup for the end point as the end point of the last selected zone
-      return hasOuting() ? outing.extremityPoints.end : undefined;
+      return hasExcursion() ? excursion.extremityPoints.end : undefined;
     }
 
     function loadCurrentPoi(poi) {

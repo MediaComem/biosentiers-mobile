@@ -7,7 +7,7 @@
     .module('seen-tracker')
     .factory('SeenTracker', SeenTrackerService);
 
-  function SeenTrackerService($log, Outing, AppActions) {
+  function SeenTrackerService($log, Excursion, AppActions) {
     var seenPois = [],
         service  = {
           getSeenPois: getSeenPois,
@@ -15,7 +15,7 @@
           hasBeenSeen: hasBeenSeen
         };
 
-    Outing.outingChangeObs.subscribe(setSeenPois);
+    Excursion.excursionChangeObs.subscribe(setSeenPois);
 
     return service;
 
@@ -40,7 +40,7 @@
         $log.log(seenPois);
         var param = {
           poiId: poiId,
-          outingId: Outing.id
+          excursionId: Excursion.id
         };
         AppActions.execute('addSeenPoi', param);
       }
@@ -50,7 +50,7 @@
      * Set the value for the private seenPois Array.
      */
     function setSeenPois() {
-      seenPois = Outing.getSeenPois();
+      seenPois = Excursion.getSeenPois();
       $log.log('seenPois from SeenTracker', seenPois);
     }
 

@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(AppActions, ArView, Modals, $log, Outing, $scope) {
+  function BaseCtrl(AppActions, ArView, Modals, $log, Excursion, $scope) {
     var base = this;
 
     base.positionStatus = 'searching';
@@ -15,7 +15,7 @@
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
-    base.finishOuting = finishOuting;
+    base.finishExcursion = finishExcursion;
 
     // Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
@@ -33,13 +33,13 @@
       console.log('modal removed');
     });
 
-    Outing.currentPoiChangeObs.subscribe(function(data) {
+    Excursion.currentPoiChangeObs.subscribe(function(data) {
       base.poi = data.poi;
       base.poiDetails = data.details;
       showPoiModal(data.poi.properties.theme_name);
     });
 
-    ArView.outingEndReachedObs.subscribe(function() {
+    ArView.excursionEndReachedObs.subscribe(function() {
       base.hasReachedEnd = true;
     });
 
@@ -50,8 +50,8 @@
       AppActions.execute('close');
     }
 
-    function finishOuting() {
-      AppActions.execute('finishOuting', {outingId: Outing.id});
+    function finishExcursion() {
+      AppActions.execute('finishExcursion', {excursionId: Excursion.id});
     }
 
     function showDebugModal() {

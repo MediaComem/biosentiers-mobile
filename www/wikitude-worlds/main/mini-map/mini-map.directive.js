@@ -16,7 +16,7 @@
     };
   }
 
-  function MiniMapCtrl(ArView, Modals, $log, MiniMap, Outing, $scope, UserLocation) {
+  function MiniMapCtrl(ArView, Modals, $log, MiniMap, Excursion, $scope, UserLocation) {
 
     var minimap = this;
 
@@ -27,7 +27,7 @@
 
     minimap.showBigMapModal = showBigMapModal;
 
-    Outing.outingChangeObs.subscribe(MiniMap.addPath);
+    Excursion.excursionChangeObs.subscribe(MiniMap.addPath);
 
     UserLocation.realObs.subscribe(MiniMap.center);
 

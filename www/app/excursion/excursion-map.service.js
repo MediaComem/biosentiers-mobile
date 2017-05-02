@@ -6,9 +6,9 @@
   'use strict';
   angular
     .module('app')
-    .factory('OutingMapConfig', OutingMapConfigService);
+    .factory('ExcursionMapConfig', ExcursionMapConfigService);
 
-  function OutingMapConfigService(MapIcons, $log) {
+  function ExcursionMapConfigService(MapIcons, $log) {
     // Flag used for the 'once' option of the setUserLocation() method
     var hasBeenCentered = false;
 
@@ -24,7 +24,7 @@
      * * setExtremityPoints to show the starting and ending point on the map
      * @constructor
      */
-    function OutingMapConfig() {
+    function ExcursionMapConfig() {
       this.geojson = {};
       this.markers = {};
       this.bounds = {};
@@ -54,12 +54,12 @@
     }
 
     // Defines the object methods
-    OutingMapConfig.prototype.setUserLocation = setUserLocation;
-    OutingMapConfig.prototype.setPath = setPath;
-    OutingMapConfig.prototype.setZones = setZones;
-    OutingMapConfig.prototype.setExtremityPoints = setExtremityPoints;
+    ExcursionMapConfig.prototype.setUserLocation = setUserLocation;
+    ExcursionMapConfig.prototype.setPath = setPath;
+    ExcursionMapConfig.prototype.setZones = setZones;
+    ExcursionMapConfig.prototype.setExtremityPoints = setExtremityPoints;
 
-    return OutingMapConfig;
+    return ExcursionMapConfig;
 
     ////////////////////
 
@@ -74,14 +74,14 @@
      */
     function setUserLocation(location, center) {
       if (typeof center === "undefined") center = 'always';
-      if (typeof location === "undefined") throw new TypeError("OutingMapConfig.setUserLocation - mandatory 'location' argument is undefined.");
-      $log.info('OutingMapConfig - setUserLocation', this, location);
+      if (typeof location === "undefined") throw new TypeError("ExcursionMapConfig.setUserLocation - mandatory 'location' argument is undefined.");
+      $log.info('ExcursionMapConfig - setUserLocation', this, location);
       if (typeof this.markers.user !== "undefined") {
-        $log.log('OutingMapConfig.setUserLocation - updating the marker');
+        $log.log('ExcursionMapConfig.setUserLocation - updating the marker');
         this.markers.user.lat = location.lat;
         this.markers.user.lng = location.lng;
       } else {
-        $log.log('OutingMapConfig.setUserLocation - creating the marker');
+        $log.log('ExcursionMapConfig.setUserLocation - creating the marker');
         this.markers.user = {
           lat : location.lat,
           lng : location.lng,
@@ -103,7 +103,7 @@
      * @param {GeoJSON} path A GeoJSON object
      */
     function setPath(path) {
-      $log.info('OutingMap - setPath', path);
+      $log.info('ExcursionMap - setPath', path);
       if (path) {
         this.geojson.path = {
           data : path,

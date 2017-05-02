@@ -88,6 +88,8 @@
 		<script src="debug-stats/debug-stats.directive.js"></script>
 		<script src="device-orientation/device-orientation.module.js"></script>
 		<script src="device-orientation/device-orientation.service.js"></script>
+		<script src="excursion/excursion.module.js"></script>
+		<script src="excursion/excursion.service.js"></script>
 		<script src="filters-modal/filters-modal.module.js"></script>
 		<script src="filters-modal/filters-modal.controller.js"></script>
 		<script src="filters/filters.module.js"></script>
@@ -99,8 +101,6 @@
 		<script src="mini-map/mini-map.service.js"></script>
 		<script src="modals/modals.module.js"></script>
 		<script src="modals/modals.service.js"></script>
-		<script src="outing/outing.module.js"></script>
-		<script src="outing/outing.service.js"></script>
 		<script src="seen-tracker/seen-tracker.module.js"></script>
 		<script src="seen-tracker/seen-tracker.service.js"></script>
 		<script src="world/world.module.js"></script>
@@ -123,7 +123,7 @@
 				<i class="icon ion-settings"></i>
 			</button>
 		</div>
-		<button class="manual-end button button-full button-assertive" ng-click="base.finishOuting()"
+		<button class="manual-end button button-full button-assertive" ng-click="base.finishExcursion()"
 		        ng-if="base.hasReachedEnd">
 			<i class="icon ion-flag"></i> Terminer
 		</button>
