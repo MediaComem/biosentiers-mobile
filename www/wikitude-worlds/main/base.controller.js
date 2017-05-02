@@ -6,6 +6,7 @@
   function BaseCtrl(AppActions, ArView, Modals, $log, Outing, $scope) {
     var base = this;
 
+    base.positionStatus = 'searching';
     base.poi = null;
     base.poiDetails = null;
     base.hasReachedEnd = false;

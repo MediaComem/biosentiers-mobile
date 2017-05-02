@@ -25,6 +25,7 @@
     'mini-map-orientation',
     'modals',
     'outing',
+    'position-badge',
     'seen-tracker',
     'timers-module',
     'trans-module',
