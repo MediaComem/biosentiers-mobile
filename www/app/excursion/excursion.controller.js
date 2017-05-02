@@ -76,7 +76,7 @@
       excursion.map.setUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      }, 'once');
+      });
       excursion.positionState = 'success';
       $timeout(function() {
         excursion.positionState = 'searching';

@@ -15,33 +15,61 @@
       controller : 'PositionBadgeCtrl as posbadge',
       scope      : {
         state: '=',
-        label: '='
+        showLabel: '@'
       }
     }
   }
 
   function PositionBadgeCtrl($scope, $log) {
-    $scope.label = $scope.label || 'always';
+    $log.log('PositionBadgeCtrl', $scope.showLabel);
+    $scope.showLabel = $scope.showLabel || 'always';
     var posbadge = this;
     var states = {
-      searching: searchingState,
-      success  : successState,
-      error    : errorState,
-      refresh  : refreshState
+      searching: {
+        label: {
+          text: "Localisation...",
+          visible: true
+        },
+        action: searchingState
+      },
+      success  : {
+        label: {
+          text: "Localisé !",
+          visible: true
+        },
+        action: successState
+      },
+      error    : {
+        label: {
+          text: "Erreur de localisation...",
+          visible: true
+        },
+        action: errorState
+      },
+      refresh  : {
+        label: {
+          text: "Localiser",
+          visible: true
+        },
+        action: refreshState
+      }
     };
 
     $scope.$watch('state', function(newValue, oldValue) {
       $log.log('Position Badge Watch - state', newValue, oldValue);
-      if (!newValue) throw new Error("Position Badge Directive - ");
-      states[newValue]();
+      if (typeof newValue === "undefined") throw new Error("Position Badge Directive - undefined state value");
+      $scope.showLabel === 'never' && hideLabel(newValue);
+      states[newValue].action();
+      $scope.showLabel === 'once' && hideLabel(newValue);
     });
+
+    function hideLabel(state) {
+      states[state].label.visible = false;
+    }
 
     function searchingState() {
       posbadge.data = {
-        label  : {
-          text   : "Localisation...",
-          visible: true
-        },
+        label  : angular.copy(states.searching.label),
         spinner: true,
         success: false,
         error  : false,
@@ -51,10 +79,7 @@
 
     function successState() {
       posbadge.data = {
-        label  : {
-          text   : "Localisé !",
-          visible: true
-        },
+        label  : angular.copy(states.success.label),
         spinner: false,
         success: true,
         error  : false,
@@ -64,10 +89,7 @@
 
     function errorState() {
       posbadge.data = {
-        label  : {
-          text   : "Erreur de localisation...",
-          visible: true
-        },
+        label  : angular.copy(states.error.label),
         spinner: false,
         success: false,
         error  : true,
@@ -77,10 +99,7 @@
 
     function refreshState() {
       posbadge.data = {
-        label  : {
-          text   : "Localiser",
-          visible: true
-        },
+        label  : angular.copy(states.refresh.label),
         spinner: false,
         success: false,
         error  : false,
