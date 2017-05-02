@@ -10,7 +10,8 @@
   function PositionBadgeDirective() {
     return {
       restrict   : 'E',
-      templateUrl: 'app/position-badge/position-badge.html',
+      // templateUrl: 'app/position-badge/position-badge.html',
+      template   : '<div class="position-badge"><div class="pos-icon"><ion-spinner icon="ripple" class="spinner-assertive" ng-if="posbadge.data.spinner"></ion-spinner><i class="icon ion-android-checkmark-circle balanced" ng-if="posbadge.data.success"></i> <i class="icon ion-android-cancel assertive" ng-if="posbadge.data.error"></i> <i class="icon ion-loop positive" ng-if="posbadge.data.refresh"></i></div><div class="pos-label" ng-if="posbadge.data.label.visible">{{ posbadge.data.label.text }}</div></div>',
       controller : 'PositionBadgeCtrl as posbadge',
       scope      : {
         state: '=',
@@ -31,6 +32,7 @@
 
     $scope.$watch('state', function(newValue, oldValue) {
       $log.log('Position Badge Watch - state', newValue, oldValue);
+      if (!newValue) throw new Error("Position Badge Directive - ");
       states[newValue]();
     });
 
