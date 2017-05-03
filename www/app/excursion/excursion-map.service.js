@@ -8,7 +8,7 @@
     .module('app')
     .factory('ExcursionMapConfig', ExcursionMapConfigService);
 
-  function ExcursionMapConfigService(MapIcons, $log) {
+  function ExcursionMapConfigService(MapIcons, leafletBoundsHelpers, $log, turf) {
     // Flag used for the 'once' option of the setUserLocation() method
     var hasBeenCentered = false;
 
@@ -58,6 +58,7 @@
     ExcursionMapConfig.prototype.setPath = setPath;
     ExcursionMapConfig.prototype.setZones = setZones;
     ExcursionMapConfig.prototype.setExtremityPoints = setExtremityPoints;
+    ExcursionMapConfig.prototype.setBoundsFromGeoJson = setBoundsFromGeoJson;
 
     return ExcursionMapConfig;
 
@@ -151,6 +152,11 @@
           lng: points.end.geometry.coordinates[0]
         };
       }
+    }
+
+    function setBoundsFromGeoJson(geojson) {
+      var bbox = turf.bbox(geojson);
+      this.bounds = leafletBoundsHelpers.createBoundsFromArray([[bbox[1], bbox[0]], [bbox[3], bbox[2]]]);
     }
   }
 })();

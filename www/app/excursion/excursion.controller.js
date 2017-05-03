@@ -8,18 +8,22 @@
     .module('app')
     .controller('ExcursionCtrl', ExcursionCtrl);
 
-  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, leafletBoundsHelpers, $log, ExcursionMapConfig, Excursions, excursionData, PoiGeo, $q, SeenPoisData, $scope, $timeout, turf, WorldActions) {
+  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, $log, ExcursionMapConfig, Excursions, excursionData, PoiGeo, $q, SeenPoisData, $scope, $timeout, WorldActions) {
 
     var excursion = this;
     var geoData, positionWatcher;
 
     excursion.actionButtonClick = actionButtonClick;
     excursion.badgeClassFromStatus = badgeClassFromStatus;
+    excursion.centerMapOnZone = centerMapOnZone;
+    excursion.openFabActions = openFabActions;
 
+    excursion.show = false;
     excursion.data = excursionData;
     excursion.downloadProgress = "Télécharger";
     excursion.map = new ExcursionMapConfig;
     excursion.positionState = 'searching';
+    excursion.activeFAB = false;
 
     $scope.$on('$ionicView.afterEnter', afterViewEnter);
 
@@ -39,14 +43,30 @@
 
     ////////////////////
 
+    function openFabActions() {
+      excursion.activeFAB = !excursion.activeFAB;
+    }
+
+    function centerMapOnZone(zone) {
+      $log.log('ExcursionCtrl - center map on zone', zone);
+      var zoneGeoJson = getZone(zone);
+      $log.log('centerMapOnZone', zoneGeoJson);
+      excursion.map.setBoundsFromGeoJson(zoneGeoJson);
+    }
+
+    function getZone(zoneId) {
+      return _.find(excursion.map.geojson.zones.data.features, function(zone) {
+        return zone.properties.id_zone === zoneId;
+      })
+    }
+
     function loadExcursionData(excursionData) {
       geoData = excursionData;
       $log.info('getExcursionGeoData -  excursionGeoData', geoData);
       excursion.map.setPath(geoData.path);
       excursion.map.setZones(geoData.zones);
       excursion.map.setExtremityPoints(geoData.extremityPoints);
-      var bbox = turf.bbox(geoData.path);
-      excursion.map.bounds = leafletBoundsHelpers.createBoundsFromArray([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
+      excursion.map.setBoundsFromGeoJson(geoData.path);
     }
 
     function afterViewEnter() {
@@ -76,7 +96,7 @@
       excursion.map.setUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      });
+      }, 'never');
       excursion.positionState = 'success';
       $timeout(function() {
         excursion.positionState = 'searching';

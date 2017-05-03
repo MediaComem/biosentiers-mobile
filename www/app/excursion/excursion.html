@@ -1,17 +1,33 @@
 <ion-view view-title="{{excursion.data.name}}">
 	<ion-content>
 		<div class="excursion-map-container">
-			<leaflet id="map" maxbounds="excursion.map.maxbounds" defaults="excursion.map.defaults" tiles="excursion.map.tiles"
+			<div class="white-dropdown" ng-if="excursion.activeFAB"></div>
+			<leaflet id="map" maxbounds="excursion.map.maxbounds" defaults="excursion.map.defaults"
+			         tiles="excursion.map.tiles"
 			         center="excursion.map.center" geojson="excursion.map.geojson" geojson-nested="true"
 			         markers="excursion.map.markers" bounds="excursion.map.bounds">
 			
 			</leaflet>
 			<position-badge state="excursion.positionState" show-label="once"></position-badge>
+			<div class="fab-actions" ng-if="excursion.show">
+				<button class="main" ng-click="excursion.openFabActions()">
+					<i class="icon ion-android-locate"></i>
+				</button>
+				<button class="mini" ng-click="excursion.openFabActions()">
+					<i class="icon ion-android-locate"></i>
+				</button>
+			</div>
 		</div>
-		<div class="padding">
-			<button class="button button-balanced button-block button-outline"
-			        on-release="excursion.actionButtonClick()">{{excursion.data.status | excursionActionButton}}
-			</button>
+		<div class="">
+			<div class="list">
+				<div class="item item-button-right">
+					<span
+							class="{{excursion.badgeClassFromStatus(excursion.data.status)}}">{{excursion.data.status | status}}</span>
+					<button class="button button-balanced button-outline"
+					        on-release="excursion.actionButtonClick()">{{excursion.data.status | excursionActionButton}}
+					</button>
+				</div>
+			</div>
 			<div class="row">
 				<div class="col text-left">Créée le</div>
 				<div class="col text-right">{{excursion.data.date | date : 'dd.MM.yyyy'}}</div>
@@ -29,7 +45,8 @@
 			<div class="row zones">
 				<div class="col text-left">Zones sélectionnées</div>
 				<div class="col text-right">
-					<span ng-repeat="zone in excursion.data.zones" class="badge badge-stable">n°{{zone}}</span>
+					<span ng-repeat="zone in excursion.data.zones" class="badge badge-stable"
+					      ng-click="excursion.centerMapOnZone(zone)">n°{{zone}}</span>
 				</div>
 			</div>
 			<div class="row">
