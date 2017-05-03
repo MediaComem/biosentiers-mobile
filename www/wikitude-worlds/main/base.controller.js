@@ -16,6 +16,9 @@
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
     base.finishExcursion = finishExcursion;
+    base.maxScalingDistance = AR.context.scene.maxScalingDistance || 0;
+    base.minScalingDistance = AR.context.scene.minScalingDistance || 0;
+    base.scalingFactor = AR.context.scene.scalingFactor * 100 || 0;
 
     // Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
@@ -32,6 +35,19 @@
       // Execute action
       console.log('modal removed');
     });
+
+    $scope.$watch('base.maxScalingDistance', _.debounce(function(value) {
+      $log.log('debug-icon-size - maxScalingDistance', value);
+      AR.context.scene.maxScalingDistance = value;
+    }), 250);
+
+    $scope.$watch('base.minScalingDistance', _.debounce(function(value) {
+      $log.log('debug-icon-size - minScalingDistance', value);
+    }), 250);
+
+    $scope.$watch('base.scalingFactor', _.debounce(function(value) {
+      $log.log('debug-icon-size - scalingFactor', value);
+    }), 250);
 
     Excursion.currentPoiChangeObs.subscribe(function(data) {
       base.poi = data.poi;

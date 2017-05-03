@@ -42,8 +42,8 @@
     function init() {
       AR.context.clickBehavior = AR.CONST.CLICK_BEHAVIOR.TOUCH_DOWN;
       AR.context.scene.cullingDistance = reachLimit;
-      AR.context.scene.maxScalingDistance = 500;
-      AR.context.scene.minScalingDistance = 7;
+      AR.context.scene.maxScalingDistance = 50;
+      AR.context.scene.minScalingDistance = 5;
       AR.context.scene.scalingFactor = 0.01;
       AR.context.scene.minPoiActiveDistance = minPoiActiveDistance;
       AR.context.onScreenClick = onScreenClick;

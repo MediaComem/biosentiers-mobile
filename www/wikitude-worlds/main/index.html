@@ -123,6 +123,26 @@
 				<i class="icon ion-settings"></i>
 			</button>
 		</div>
+		<div class="list debug-icon-size">
+			<div class="item-divider padding">Max Scaling Distance : {{base.maxScalingDistance}}</div>
+			<div class="item range range-positive">
+				<i class="icon ion-minus"></i>
+				<input type="range" name="maxScalingDistance" min="0" max="250" value="base.maxScalingDistance" ng-model="base.maxScalingDistance">
+				<i class="icon ion-plus"></i>
+			</div>
+			<div class="item-divider padding">Min Scaling Distance : {{base.minScalingDistance}}</div>
+			<div class="item range range-positive">
+				<i class="icon ion-minus"></i>
+				<input type="range" name="minScalingDistance" min="0" max="25" value="base.minScalingDistance" ng-model="base.minScalingDistance">
+				<i class="icon ion-plus"></i>
+			</div>
+			<div class="item-divider padding">Scaling Factor : {{base.scalingFactor}}</div>
+			<div class="item range range-positive">
+				<i class="icon ion-minus"></i>
+				<input type="range" name="scalingFactor" min="0" max="100" value="base.scalingFactor" ng-model="base.scalingFactor">
+				<i class="icon ion-plus"></i>
+			</div>
+		</div>
 		<button class="manual-end button button-full button-assertive" ng-click="base.finishExcursion()"
 		        ng-if="base.hasReachedEnd">
 			<i class="icon ion-flag"></i> Terminer
