@@ -2,8 +2,8 @@
   position: absolute;
   top: 44px;
   left: 0;
-  right: 0;
   background-color: white;
+  width: 45vh;
 }
 
 .stats span {

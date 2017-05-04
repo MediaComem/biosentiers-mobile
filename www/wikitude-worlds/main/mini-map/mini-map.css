@@ -7,8 +7,8 @@
 }
 
 .minimap-container .leaflet-container {
-  height: 30vw;
-  width: 30vw;
+  height: 20vh;
+  width: 20vh;
   /*-webkit-border-radius: 100px;*/
   /*-moz-border-radius: 100px;*/
   /*border-radius: 100px;*/
