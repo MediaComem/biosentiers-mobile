@@ -13,7 +13,7 @@
     var service = {
       startup                : true,
       poiData                : null,
-      loadExcursion             : Excursion.setExcursion,
+      loadExcursion          : Excursion.setExcursion,
       updateDeviceOrientation: updateDeviceOrientation,
       returnResultFromApp    : AppActions.returnResultFromApp
     };
