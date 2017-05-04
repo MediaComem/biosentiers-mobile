@@ -44,7 +44,7 @@
       AR.context.scene.cullingDistance = reachLimit;
       AR.context.scene.maxScalingDistance = 50;
       AR.context.scene.minScalingDistance = 5;
-      AR.context.scene.scalingFactor = 0.01;
+      AR.context.scene.scalingFactor = 0.1;
       AR.context.scene.minPoiActiveDistance = minPoiActiveDistance;
       AR.context.onScreenClick = onScreenClick;
       AR.context.onLocationChanged = onLocationChanged;
@@ -196,8 +196,8 @@
         console.log('POI clicked', arPoi);
         var dist = arPoi.distanceToUser();
         console.log("distance to user ", dist);
-        if (1 === 1) {
-          // if (dist <= minPoiActiveDistance) {
+        // if (1 === 1) {
+        if (dist <= minPoiActiveDistance) {
           Excursion.loadCurrentPoi(arPoi.poi);
           // if (!arPoi.hasBeenSeen) setPoiSeen();
         } else {
