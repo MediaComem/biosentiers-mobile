@@ -3,7 +3,7 @@
     .module('ar')
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(AppActions, ArView, Modals, $log, Excursion, $scope) {
+  function BaseCtrl(AppActions, ArView, Modals, $log, Excursion, $scope, UserLocation) {
     var base = this;
 
     base.positionStatus = 'searching';
@@ -19,6 +19,10 @@
     base.maxScalingDistance = AR.context.scene.maxScalingDistance || 0;
     base.minScalingDistance = AR.context.scene.minScalingDistance || 0;
     base.scalingFactor = AR.context.scene.scalingFactor * 100 || 0;
+
+    UserLocation.realObs.subscribe(function(position) {
+      base.altitude = position.geometry.coordinates[2];
+    });
 
     // Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
