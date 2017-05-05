@@ -36,7 +36,7 @@
           $log.log(auth.excursion);
           showQRValidation();
         }, function(error) {
-          console.log(error);
+          $log.log(error);
         });
     }
 
@@ -99,10 +99,10 @@
             } else {
               AuthService.connectUser(auth.account)
                 .then(function() {
-                  console.log('connection réussie !');
+                  $log.log('connection réussie !');
                   $state.go('app.excursions');
                 }, function() {
-                  console.log('connection refusée');
+                  $log.log('connection refusée');
                 });
             }
           }

@@ -36,12 +36,12 @@
     // Execute action on hide modal
     $scope.$on('modal.hidden', function () {
       // Execute action
-      console.log('modal hidden');
+      $log.log('modal hidden');
     });
     // Execute action on remove modal
     $scope.$on('modal.removed', function () {
       // Execute action
-      console.log('modal removed');
+      $log.log('modal removed');
     });
 
     // Show the minimap when loading things is done

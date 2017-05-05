@@ -5,7 +5,7 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform) {
+  function run($ionicPlatform, $log) {
     $ionicPlatform.ready(function() {
       ionicInitialize();
       grantAndroidPermissions();
@@ -39,21 +39,21 @@
         for (var permission in statuses) {
           switch (statuses[permission]) {
             case cordova.plugins.diagnostic.permissionStatus.GRANTED:
-              console.log("Permission granted to use " + permission);
+              $log.log("Permission granted to use " + permission);
               break;
             case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
-              console.log("Permission to use " + permission + " has not been requested yet");
+              $log.log("Permission to use " + permission + " has not been requested yet");
               break;
             case cordova.plugins.diagnostic.permissionStatus.DENIED:
-              console.log("Permission denied to use " + permission + " - ask again?");
+              $log.log("Permission denied to use " + permission + " - ask again?");
               break;
             case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
-              console.log("Permission permanently denied to use " + permission + " - guess we won't be using it then!");
+              $log.log("Permission permanently denied to use " + permission + " - guess we won't be using it then!");
               break;
           }
         }
       }, function(error) {
-        console.error("The following error occurred: " + error);
+        $log.error("The following error occurred: " + error);
       }, [
         cordova.plugins.diagnostic.runtimePermission.ACCESS_FINE_LOCATION,
         cordova.plugins.diagnostic.runtimePermission.ACCESS_COARSE_LOCATION,

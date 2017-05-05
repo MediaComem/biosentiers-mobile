@@ -166,7 +166,7 @@
      */
     function onScreenClick() {
       $rootScope.$apply(function() {
-        console.log('screen clicked');
+        $log.log('screen clicked');
       });
     }
 
@@ -193,9 +193,9 @@
        * When a ArPoi is clicked by the user, if there
        */
       return function onClick() {
-        console.log('POI clicked', arPoi);
+        $log.log('POI clicked', arPoi);
         var dist = arPoi.distanceToUser();
-        console.log("distance to user ", dist);
+        $log.log("distance to user ", dist);
         // if (1 === 1) {
         if (dist <= minPoiActiveDistance) {
           Excursion.loadCurrentPoi(arPoi.poi);

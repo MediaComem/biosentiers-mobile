@@ -8,11 +8,11 @@
     .module('app')
     .controller('SpeciesCtrl', SpeciesCtrl);
 
-  function SpeciesCtrl(speciesData, $scope, $ionicTabsDelegate) {
+  function SpeciesCtrl(speciesData, $scope, $ionicTabsDelegate, $log) {
     var ctrl = this;
 
     ctrl.species = speciesData;
-    console.log(ctrl.species);
+    $log.log(ctrl.species);
 
     $scope.goForward = function() {
       var selected = $ionicTabsDelegate.selectedIndex();

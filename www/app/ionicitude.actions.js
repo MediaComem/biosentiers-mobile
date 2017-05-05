@@ -25,8 +25,8 @@
 
     $ionicPlatform.ready(function() {
       Ionicitude.init()
-        .then(function(success) { console.log(success); })
-        .catch(function(error) { console.log(error); });
+        .then(function(success) { $log.log(success); })
+        .catch(function(error) { $log.log(error); });
 
       /**
        * Register Ionicitude Actions
@@ -71,7 +71,7 @@
       }
 
       function setPosition(service, param) {
-        console.log('setting position :', param);
+        $log.log('setting position :', param);
         service.setLocation(param.lat, param.lon, param.alt, 1);
       }
 
@@ -90,7 +90,7 @@
 
       function addSeenPoi(service, param) {
         $log.log('adding seen poi');
-        console.log('addSeenPoi', SeenPoisData.addOne(param.excursionId, param.poiId));
+        $log.log('addSeenPoi', SeenPoisData.addOne(param.excursionId, param.poiId));
       }
 
       function finishExcursion(service, param) {

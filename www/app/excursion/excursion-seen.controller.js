@@ -7,10 +7,10 @@
     .module('app')
     .controller('ExcursionSeenCtrl', ExcursionSeenCtrl);
 
-  function ExcursionSeenCtrl(excursionData, seenPois) {
+  function ExcursionSeenCtrl(excursionData, seenPois, $log) {
     var excursionSeen = this;
 
-    console.log(seenPois);
+    $log.log(seenPois);
 
     excursionSeen.excursion = excursionData;
     excursionSeen.seenPois = seenPois;

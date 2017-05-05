@@ -8,10 +8,10 @@
     .module('app')
     .controller('ExcursionsCtrl', ExcursionsCtrl);
 
-  function ExcursionsCtrl(excursionsData, $scope, $ionicTabsDelegate) {
+  function ExcursionsCtrl(excursionsData, $scope, $ionicTabsDelegate, $log) {
     var excursions = this;
     // excursions.loading = true;
-    console.log('excursionsData', excursionsData);
+    $log.log('excursionsData', excursionsData);
     excursions.data = excursionsData;
 
     $scope.goForward = function() {
