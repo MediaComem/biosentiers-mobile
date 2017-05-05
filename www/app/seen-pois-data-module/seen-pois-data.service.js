@@ -1,22 +1,24 @@
 /**
  * Created by Mathias Oberson on 16.12.2016.
  */
-(function() {
+(function () {
   'use strict';
   angular
     .module('seen-pois-data-module')
     .factory('SeenPoisData', SeenPoisDataService);
 
-  function SeenPoisDataService(BioDb, $log, Loki, $q) {
+  function SeenPoisDataService(BioDb, $log, Loki, $q, rx) {
 
-    var deferred = $q.defer();
-    var db,
-        collName = 'seen-pois',
-        service  = {
-          getAll  : getAll,
-          countFor: countFor,
-          addOne  : addOne
-        };
+    var deferred = $q.defer(),
+      db,
+      collName = 'seen-pois',
+      seenPoiSubject = new rx.ReplaySubject(1),
+      service = {
+        getAll: getAll,
+        countFor: countFor,
+        addOne: addOne,
+        seenPoiObs: seenPoiSubject.asObservable()
+      };
 
     return service;
 
@@ -29,11 +31,11 @@
      */
     function getAll(excursionId) {
       return BioDb.getCollection(collName)
-        .then(function(coll) {
-          var res = coll.find({excursion_id: excursionId});
+        .then(function (coll) {
+          var res = coll.find({ excursion_id: excursionId });
           if (res.length === 0) {
             populate(coll, excursionId);
-            res = coll.find({excursion_id: excursionId});
+            res = coll.find({ excursion_id: excursionId });
           }
           return res;
         })
@@ -43,9 +45,9 @@
     function countFor(excursionId) {
       $log.log('countFor id', excursionId);
       return BioDb.getCollection(collName)
-        .then(function(coll) {
+        .then(function (coll) {
           $log.log('coutnFor collection', coll);
-          return coll.count({excursion_id: excursionId});
+          return coll.count({ excursion_id: excursionId });
         }).catch(handleError);
     }
 
@@ -56,8 +58,13 @@
      */
     function addOne(excursionId, poiId) {
       return BioDb.getCollection(collName)
-        .then(function(coll) {
-          return coll.insertOne(new SeenClass(excursionId, poiId));
+        .then(function (coll) {
+          var res = coll.insertOne(new SeenClass(excursionId, poiId));
+          if ('undefined' === typeof res) throw new Error("SeenPoisData:addOne: An error occured while trying to save that the POI n°" + poiId + " had been seen in the excursion n°" + excursionId);
+          return countFor(excursionId);
+        })
+        .then(function (count) {
+          seenPoiSubject.onNext({ excursionId: excursionId, nbSeen: count });
         })
         .then(BioDb.save)
         .catch(handleError);

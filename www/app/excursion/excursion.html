@@ -22,13 +22,18 @@
 				<button class="button button-balanced button-outline" on-release="excursion.actionButtonClick()">{{excursion.data.status | excursionActionButton}}
 				</button>
 			</div>
-			<a class="item item-icon-right" ui-sref="app.excursion.seenlist({excursionId: excursion.data.id})">
-					Éléments vus
-					<span class="item-note">{{excursion.nbSeenPoi}}/25</span>
-					<i class="icon ion-chevron-right"></i>
-				</a>
 		</div>
 		<div class="padding">
+			<div class="row" ng-if="excursion.data.started_at">
+				<div class="col text-left">Commencée le</div>
+				<div class="col text-right">{{excursion.data.started_at | date:'dd.MM.yyyy'}} à {{excursion.data.started_at | date:'HH:mm'}}
+				</div>
+			</div>
+			<div class="row" ng-if="excursion.data.finished_at">
+				<div class="col text-left">Terminée le</div>
+				<div class="col text-right">{{excursion.data.finished_at | date:'dd.MM.yyyy'}} à {{excursion.data.finished_at | date:'HH:mm'}}
+				</div>
+			</div>
 			<div class="row">
 				<div class="col text-left">Créée le</div>
 				<div class="col text-right">{{excursion.data.date | date : 'dd.MM.yyyy'}}</div>
@@ -38,13 +43,13 @@
 				<div class="col text-right">{{excursion.data.created_by}}</div>
 			</div>
 			<div class="row themes">
-				<div class="col text-left">Thèmes sélectionnés</div>
+				<div class="col text-left">Thèmes disponibles</div>
 				<div class="col text-right">
 					<span ng-repeat="theme in excursion.data.themes" class="badge badge-stable">{{theme}}</span>
 				</div>
 			</div>
 			<div class="row zones">
-				<div class="col text-left">Zones sélectionnées</div>
+				<div class="col text-left">Zones disponibles</div>
 			</div>
 			<div class="row">
 				<div class="col text-right">
@@ -61,17 +66,12 @@
 					<!--<span ng-repeat="zone in excursion.data.zones" class="badge badge-stable" ng-click="excursion.centerMapOnZone(zone)">n°{{zone}}</span>-->
 				</div>
 			</div>
-			<div class="row" ng-if="excursion.data.started_at">
-				<div class="col text-left">Commencée le</div>
-				<div class="col text-right">{{excursion.data.started_at | date:'dd.MM.yyyy'}} à {{excursion.data.started_at | date:'HH:mm'}}
-				</div>
-			</div>
-			<div class="row" ng-if="excursion.data.finished_at">
-				<div class="col text-left">Terminée le</div>
-				<div class="col text-right">{{excursion.data.finished_at | date:'dd.MM.yyyy'}} à {{excursion.data.finished_at | date:'HH:mm'}}
-				</div>
-			</div>
 			<div class="list list-inset">
+				<a class="item item-icon-right" ui-sref="app.excursion.seenlist({excursionId: excursion.data.id})">
+					Éléments vus
+					<span class="item-note">{{excursion.nbSeenPoi}}/25</span>
+					<i class="icon ion-chevron-right"></i>
+				</a>
 			</div>
 
 

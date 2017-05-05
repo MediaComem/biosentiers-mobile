@@ -9,6 +9,7 @@
     .controller('ExcursionCtrl', ExcursionCtrl);
 
   function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, $log, ExcursionMapConfig, Excursions, excursionData, PoiGeo, $q, SeenPoisData, $scope, $timeout, WorldActions) {
+    $log.log('excursion data', excursionData);
 
     var excursion = this;
     var geoData, positionWatcher;
@@ -41,6 +42,11 @@
     SeenPoisData.countFor(excursion.data.id).then(function(res) {
       excursion.nbSeenPoi = res;
     }).catch(handleError);
+
+    SeenPoisData.seenPoiObs.subscribe(function(data) {
+      $log.info('SeenPoisData: catched event - new poi has been seen', data);
+      if (excursion.data.id === data.excursionId) excursion.nbSeenPoi = data.nbSeen;
+    });
 
     ////////////////////
 
