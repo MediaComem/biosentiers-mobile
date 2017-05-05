@@ -17,6 +17,7 @@
     excursion.badgeClassFromStatus = badgeClassFromStatus;
     excursion.centerMapOnZone = centerMapOnZone;
     excursion.openFabActions = openFabActions;
+    excursion.zoneIsNotAvailable = zoneIsNotAvailable;
 
     excursion.show = false;
     excursion.data = excursionData;
@@ -42,6 +43,10 @@
     }).catch(handleError);
 
     ////////////////////
+
+    function zoneIsNotAvailable(zoneNb) {
+      return !_.includes(excursion.data.zones, zoneNb);
+    }
 
     function openFabActions() {
       excursion.activeFAB = !excursion.activeFAB;

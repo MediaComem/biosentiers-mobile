@@ -2,11 +2,9 @@
 	<ion-content>
 		<div class="excursion-map-container">
 			<div class="white-dropdown" ng-if="excursion.activeFAB"></div>
-			<leaflet id="map" maxbounds="excursion.map.maxbounds" defaults="excursion.map.defaults"
-			         tiles="excursion.map.tiles"
-			         center="excursion.map.center" geojson="excursion.map.geojson" geojson-nested="true"
-			         markers="excursion.map.markers" bounds="excursion.map.bounds">
-			
+			<leaflet id="map" maxbounds="excursion.map.maxbounds" defaults="excursion.map.defaults" tiles="excursion.map.tiles" center="excursion.map.center"
+			 geojson="excursion.map.geojson" geojson-nested="true" markers="excursion.map.markers" bounds="excursion.map.bounds">
+
 			</leaflet>
 			<position-badge state="excursion.positionState" show-label="once"></position-badge>
 			<div class="fab-actions" ng-if="excursion.show">
@@ -20,12 +18,15 @@
 		</div>
 		<div class="list">
 			<div class="item item-button-right">
-					<span
-							class="{{excursion.badgeClassFromStatus(excursion.data.status)}}">{{excursion.data.status | status}}</span>
-				<button class="button button-balanced button-outline"
-				        on-release="excursion.actionButtonClick()">{{excursion.data.status | excursionActionButton}}
+				<span class="{{excursion.badgeClassFromStatus(excursion.data.status)}} badge excursion-status">{{excursion.data.status | status}}</span>
+				<button class="button button-balanced button-outline" on-release="excursion.actionButtonClick()">{{excursion.data.status | excursionActionButton}}
 				</button>
 			</div>
+			<a class="item item-icon-right" ui-sref="app.excursion.seenlist({excursionId: excursion.data.id})">
+					Éléments vus
+					<span class="item-note">{{excursion.nbSeenPoi}}/25</span>
+					<i class="icon ion-chevron-right"></i>
+				</a>
 		</div>
 		<div class="padding">
 			<div class="row">
@@ -44,37 +45,36 @@
 			</div>
 			<div class="row zones">
 				<div class="col text-left">Zones sélectionnées</div>
-				<div class="col text-right">
-					<span ng-repeat="zone in excursion.data.zones" class="badge badge-stable"
-					      ng-click="excursion.centerMapOnZone(zone)">n°{{zone}}</span>
-				</div>
 			</div>
 			<div class="row">
-				<div class="col text-left">Statut</div>
-				<div class="col text-right"><span class="badge {{excursion.badgeClassFromStatus(excursion.data.status)}}">{{excursion.data.status | status}}</span>
+				<div class="col text-right">
+					<div class="button-bar">
+						<a class="button button-small button-calm" ng-class="{'disabled button-outline': excursion.zoneIsNotAvailable(1)}" ng-click="excursion.centerMapOnZone(1)">n°1</a>
+						<a class="button button-small button-calm" ng-class="{'disabled button-outline': excursion.zoneIsNotAvailable(2)}" ng-click="excursion.centerMapOnZone(2)">n°2</a>
+						<a class="button button-small button-calm" ng-class="{'disabled button-outline': excursion.zoneIsNotAvailable(3)}" ng-click="excursion.centerMapOnZone(3)">n°3</a>
+						<a class="button button-small button-calm" ng-class="{'disabled button-outline': excursion.zoneIsNotAvailable(4)}" ng-click="excursion.centerMapOnZone(4)">n°4</a>
+						<a class="button button-small button-calm" ng-class="{'disabled button-outline': excursion.zoneIsNotAvailable(5)}" ng-click="excursion.centerMapOnZone(5)">n°5</a>
+						<a class="button button-small button-calm" ng-class="{'disabled button-outline': excursion.zoneIsNotAvailable(6)}" ng-click="excursion.centerMapOnZone(6)">n°6</a>
+						<a class="button button-small button-calm" ng-class="{'disabled button-outline': excursion.zoneIsNotAvailable(7)}" ng-click="excursion.centerMapOnZone(7)">n°7</a>
+						<a class="button button-small button-calm" ng-class="{'disabled button-outline': excursion.zoneIsNotAvailable(8)}" ng-click="excursion.centerMapOnZone(8)">n°8</a>
+					</div>
+					<!--<span ng-repeat="zone in excursion.data.zones" class="badge badge-stable" ng-click="excursion.centerMapOnZone(zone)">n°{{zone}}</span>-->
 				</div>
 			</div>
 			<div class="row" ng-if="excursion.data.started_at">
 				<div class="col text-left">Commencée le</div>
-				<div class="col text-right">{{excursion.data.started_at | date:'dd.MM.yyyy'}} à {{excursion.data.started_at |
-					date:'HH:mm'}}
+				<div class="col text-right">{{excursion.data.started_at | date:'dd.MM.yyyy'}} à {{excursion.data.started_at | date:'HH:mm'}}
 				</div>
 			</div>
 			<div class="row" ng-if="excursion.data.finished_at">
 				<div class="col text-left">Terminée le</div>
-				<div class="col text-right">{{excursion.data.finished_at | date:'dd.MM.yyyy'}} à {{excursion.data.finished_at |
-					date:'HH:mm'}}
+				<div class="col text-right">{{excursion.data.finished_at | date:'dd.MM.yyyy'}} à {{excursion.data.finished_at | date:'HH:mm'}}
 				</div>
 			</div>
 			<div class="list list-inset">
-				<a class="item item-icon-right" ui-sref="app.excursion.seenlist({excursionId: excursion.data.id})">
-					Éléments vus
-					<span class="item-note">{{excursion.nbSeenPoi}}/25</span>
-					<i class="icon ion-chevron-right"></i>
-				</a>
 			</div>
-			
-			
+
+
 			<!-- Test downloadzip
 
 			<button ng-if="excursion.data.statut === 'En attente' && excursion.downloadProgress === 'Réussit'" class="button button-balanced button-block button-outline"

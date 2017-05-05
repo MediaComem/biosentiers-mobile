@@ -63,3 +63,7 @@ progress {
       -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
       -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
       box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3); }
+
+.item .badge.excursion-status {
+  position: initial;
+  display: inline-block; }
