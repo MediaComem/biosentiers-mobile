@@ -94,21 +94,5 @@
       $log.debug("ar-view.icons.service.js - getIcon()", type, state, hasBeenSeen, storage, opacity);
       return storage[type];
     }
-
-    // var availableTypes = [
-    //   'default',
-    //   'bird',
-    //   'butterfly',
-    //   'flower',
-    //   'watercourse',
-    //   'territory',
-    //   'greenroof',
-    //   'ecoarea',
-    //   'wetarea',
-    //   'wildlifecorridor',
-    //   'birdterritory',
-    //   'biodivercity',
-    //   'garden'
-    // ];
   }
 })();
