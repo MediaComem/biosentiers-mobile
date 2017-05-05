@@ -85,7 +85,7 @@
             throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
           }
         });
-        storage[type] = new AR.ImageDrawable(img, 2, {
+        storage[type] = new AR.ImageDrawable(img, 1, {
           zOrder : 0,
           opacity: opacity
         });
