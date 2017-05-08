@@ -1,0 +1,36 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">{{base.poi.properties.common_name}}</h1>
+    <div class="buttons">
+      <button class="button button-clear button-primary" ng-click="base.setPoiSeen()">Valider</button>
+      <button class="button button-clear button-primary" ng-click="base.removePoiModal()">Fermer</button>
+    </div>
+  </ion-header-bar>
+  <ion-header-bar class="bar bar-subheader bat-stable">
+    <h2 class="title">Oiseau</h2>
+  </ion-header-bar>
+  <ion-content>
+    <img ng-src="./assets/img/oiseaux/{{base.poi.properties.id_specie}}_700px.jpg" alt="oiseaux" style="width: 100%; height: auto">
+    <div class="list card">
+      <div class="item">Nom Commun<span style="float: right">{{base.poi.properties.common_name}}</span></div>
+      <div class="item">Nom Scientifique<span style="float: right">{{base.poi.properties.scientific_name}}</span></div>
+      <div class="item">Famille<span style="float: right">{{base.poi.properties.name}}</span></div>
+      <div class="item">Observé le<span style="float: right">06 juillet 2015</span></div>
+      <div class="item item-body">
+        <h3>Informations fournies par :</h3>
+        <p>{{base.poi.properties.owner_name}}</p>
+      </div>
+      <div class="item item-body">
+        <h2>Description</h2>
+        <h3>Caractéristiques physiques</h3>
+        <p>
+          {{base.poi.properties.physical_characteristics}}
+        </p>
+        <h3>Caractéristiques de l'habitat</h3>
+        <p>
+          {{base.poi.properties.habitat_characteristics}}
+        </p>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

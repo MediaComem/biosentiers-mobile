@@ -16,7 +16,7 @@
        */
       correct: function(altitude) {
         if (ionic.Platform.isAndroid()) {
-          // altitude += 80;
+          altitude += 50;
         }
         return altitude;
       }
