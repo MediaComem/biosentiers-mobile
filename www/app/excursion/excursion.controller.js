@@ -19,17 +19,17 @@
     excursion.centerMapOnZone = centerMapOnZone;
     excursion.openFabActions = openFabActions;
     excursion.zoneIsNotAvailable = zoneIsNotAvailable;
+    excursion.togglePositionWatch = togglePositionWatch;
 
-    excursion.show = false;
     excursion.data = excursionData;
     excursion.downloadProgress = "Télécharger";
     excursion.map = new ExcursionMapConfig;
-    excursion.positionState = 'searching';
+    excursion.positionState = 'refresh';
     excursion.activeFAB = false;
 
-    $scope.$on('$ionicView.afterEnter', afterViewEnter);
+    // $scope.$on('$ionicView.afterEnter', afterViewEnter);
 
-    $scope.$on('$ionicView.beforeLeave', beforeViewLeave);
+    $scope.$on('$ionicView.beforeLeave', deactivatePositionWatch);
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(loadExcursionData);
 
@@ -49,6 +49,10 @@
     });
 
     ////////////////////
+
+    function togglePositionWatch() {
+      excursion.positionState === 'refresh' ? activatePositionWatch() : deactivatePositionWatch();
+    }
 
     function zoneIsNotAvailable(zoneNb) {
       return !_.includes(excursion.data.zones, zoneNb);
@@ -80,7 +84,7 @@
       excursion.map.setBoundsFromGeoJson(geoData.path);
     }
 
-    function afterViewEnter() {
+    function activatePositionWatch() {
       $log.info('ExcursionCtrl - Activating location watcher');
       positionWatcher = $cordovaGeolocation.watchPosition({
         timeout           : 10000,
@@ -89,9 +93,11 @@
       positionWatcher.then(null, positionError, positionUpdate);
     }
 
-    function beforeViewLeave() {
+    function deactivatePositionWatch() {
       $log.info('ExcursionCtrl - Deactivating location watcher');
       positionWatcher.cancel();
+      delete excursion.map.markers.user;
+      excursion.positionState = 'refresh';
     }
 
     function positionError(error) {
@@ -181,7 +187,7 @@
       ];
 
       return $q.all(promises).then(function(results) {
-        $log.log(results);
+        $log.log('ExcursionCtrl:loadWorldExcursion', results);
         var arData = {
           id             : excursion.data.id,
           themes         : excursion.data.themes,
@@ -190,7 +196,7 @@
           pois           : results[0],
           seen           : results[1]
         };
-        $log.info('loadWorldExcursion - excursion.arData', arData);
+        $log.info('ExcursionCtrl:loadWorldExcursion:excursion.arData', arData);
         WorldActions.execute('loadExcursion', arData);
       });
     }

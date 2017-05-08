@@ -104,7 +104,7 @@
      * @param {GeoJSON} path A GeoJSON object
      */
     function setPath(path) {
-      $log.info('ExcursionMap - setPath', path);
+      $log.info('ExcursionMap:setPath', path);
       if (path) {
         this.geojson.path = {
           data : path,
@@ -121,6 +121,7 @@
      * @param {GeoJSON} zones A GeoJSON object
      */
     function setZones(zones) {
+      $log.log('ExcursionMap:setZones', zones);
       if (zones) {
         this.geojson.zones = {
           data : zones,
@@ -142,6 +143,7 @@
      * @param {{start: GeoJSON, end: GeoJSON}} points An object containing GeoJSON Point objects.
      */
     function setExtremityPoints(points) {
+      $log.log('ExcursionMap:setExtremityPoints', points);
       if (points) {
         this.markers.start = {
           lat: points.start.geometry.coordinates[1],

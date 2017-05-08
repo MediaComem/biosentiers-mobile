@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.biosentiers.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>BioSentiers</name>
-  <description>&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
-        An Ionic Framework and Cordova project.&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
+  <description>&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
+        An Ionic Framework and Cordova project.&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
     </description>
-  <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
-      Media Engineering Institute&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
+  <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
+      Media Engineering Institute&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -81,4 +81,5 @@
   <allow-navigation href="http://10.192.180.184:8100"/>
   <allow-navigation href="http://10.192.114.66:8100"/>
   <allow-navigation href="http://10.192.114.66:8101"/>
+  <allow-navigation href="http://10.192.114.59:8100"/>
 </widget>

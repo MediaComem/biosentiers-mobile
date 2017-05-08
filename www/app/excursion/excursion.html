@@ -6,15 +6,7 @@
 			 geojson="excursion.map.geojson" geojson-nested="true" markers="excursion.map.markers" bounds="excursion.map.bounds">
 
 			</leaflet>
-			<position-badge state="excursion.positionState" show-label="once"></position-badge>
-			<div class="fab-actions" ng-if="excursion.show">
-				<button class="main" ng-click="excursion.openFabActions()">
-					<i class="icon ion-android-locate"></i>
-				</button>
-				<button class="mini" ng-click="excursion.openFabActions()">
-					<i class="icon ion-android-locate"></i>
-				</button>
-			</div>
+			<position-badge state="excursion.positionState" show-label="once" ng-click="excursion.togglePositionWatch()"></position-badge>
 		</div>
 		<div class="list">
 			<div class="item item-button-right">
