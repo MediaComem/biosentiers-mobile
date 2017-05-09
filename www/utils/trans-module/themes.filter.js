@@ -11,7 +11,7 @@
     var convert = {
       fr: {
         bird     : "Oiseaux",
-        flower   : "Flore",
+        flower   : "Fleurs/Plantes",
         butterfly: "Papillons",
         tree     : "Arbres"
       }
