@@ -34,12 +34,16 @@
 				<div class="col text-left">Créée par</div>
 				<div class="col text-right">{{excursion.data.created_by}}</div>
 			</div>
-			<div class="row themes">
-				<div class="col text-left">Thèmes disponibles</div>
-				<div class="col text-right">
-					<span ng-repeat="theme in excursion.data.themes" class="badge badge-stable">{{theme}}</span>
+			<div class="themes">
+				<div class="row">
+					<div class="col text-left">Thèmes disponibles</div>
 				</div>
-			</div>
+				<div class="row">
+					<div class="col text-right">
+						<span ng-repeat="theme in excursion.data.themes" class="badge badge-stable">{{theme}}</span>
+					</div>
+				</div>
+				</div>
 			<div class="row zones">
 				<div class="col text-left">Zones disponibles</div>
 			</div>
