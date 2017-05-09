@@ -25,6 +25,7 @@
     'mini-map-orientation',
     'modals',
     'excursion',
+    'poi-modal',
     'position-badge',
     'seen-tracker',
     'timers-module',
