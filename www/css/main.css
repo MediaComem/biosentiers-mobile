@@ -20,7 +20,7 @@ progress {
   bottom: 0;
   height: 5px; }
 
-.themes .badge:not(:last-of-type), .zones .badge:not(:last-of-type) {
+.themes .badge:not(:last-of-type) {
   margin-right: 5px; }
 
 .excursion-map-container {
