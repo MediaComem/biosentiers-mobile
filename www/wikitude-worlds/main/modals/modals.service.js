@@ -47,6 +47,7 @@
 
     /**
      * Shows a modal dialog to configure filters.
+     * @param $scope The scope to use as the modal scope.
      */
     function showFilters($scope) {
       return $ionicModal.fromTemplateUrl('filters-modal/filters-modal.html', {
@@ -55,8 +56,12 @@
       }).then(loadModal);
     }
 
-    function showPoi(type, $scope) {
-      $ionicModal.fromTemplateUrl(type + '.poi.html', {
+    /**
+     * Shows the modal for the clicked POI depending on its type.
+     * @param $scope The scope to use as the modal scope.
+     */
+    function showPoi($scope) {
+      $ionicModal.fromTemplateUrl('poi-modal/poi-modal.html', {
         scope    : $scope,
         animation: 'slide-in-up'
       }).then(loadModal);

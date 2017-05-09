@@ -1,0 +1,44 @@
+<ion-modal-view ng-controller="PoiModalCtrl as poiCtrl">
+	<ion-header-bar class="bar bar-header {{poiCtrl.barClassForTheme(poiCtrl.poi.properties.theme_name)}}">
+		<h1 class="title">{{poiCtrl.poi.properties.common_name.fr}}</h1>
+		<div class="buttons">
+			<button class="button button-clear button-primary" ng-click="poiCtrl.setPoiSeen()">Valider</button>
+			<button class="button button-clear button-primary" ng-class="{'disabled': !poiCtrl.poi}"
+			        ng-click="poiCtrl.remove()">Fermer
+			</button>
+		</div>
+	</ion-header-bar>
+	<ion-header-bar class="bar bar-subheader bat-stable">
+		<h2 class="title">{{poiCtrl.poi.properties.theme_name | themes}}</h2>
+	</ion-header-bar>
+	<ion-content>
+		<img ng-src="./assets/img/fleur/{{base.poi.properties.id_specie}}_0_grandes.jpg" alt="fleur"
+		     style="width: 100%; height: auto">
+		<div class="list card">
+			<div class="item">Nom Commun<span style="float: right">{{poiCtrl.poi.properties.common_name.fr}}</span></div>
+			<div class="item">Nom Scientifique<span style="float: right">{{poiCtrl.content.scientific_name}}</span></div>
+			<div class="item">Règne<span style="float: right">{{poiCtrl.content.reign_name}}</span></div>
+			<div class="item">Division<span style="float: right">{{poiCtrl.content.division_name}}</span></div>
+			<div class="item">Famille<span style="float: right">{{poiCtrl.content.family_name}}</span></div>
+			<div class="item">Taille<span style="float: right">{{poiCtrl.content.height}}m</span></div>
+			<div class="item">Visible de {{poiCtrl.poi.properties.period_start | periodToMonth}} à
+				{{poiCtrl.poi.properties.period_end | periodToMonth}}
+			</div>
+			<div class="item item-body">
+				<h2>Description</h2>
+				<h3>Caractéristiques physiques</h3>
+				<p>{{poiCtrl.content.physical_characteristics}}</p>
+				<h3>Caractéristiques de l'habitat</h3>
+				<p>{{poiCtrl.content.habitat_characteristics}}</p>
+			</div>
+			<div class="item item-body" ng-if="poiCtrl.content.anecdote">
+				<h2>Anecdote</h2>
+				<p>{{poiCtrl.content.anecdote}}</p>
+			</div>
+			<a class="item item-icon-right" ng-click="poiCtrl.openInBrowser()">Plus d'informations sur le Web<i class="icon ion-share"></i></a>
+		</div>
+		<div class="credit">
+			Information fournie par {{poiCtrl.poi.properties.owner_name}}.
+		</div>
+	</ion-content>
+</ion-modal-view>
