@@ -6,12 +6,7 @@
   function BaseCtrl(AppActions, ArView, Modals, $log, Excursion, $scope, UserLocation) {
     var base = this;
 
-    base.positionStatus = 'searching';
-    base.poi = null;
-    base.poiDetails = null;
     base.hasReachedEnd = false;
-    base.removePoiModal = removePoiModal;
-    base.setPoiSeen = setPoiSeen;
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
@@ -19,22 +14,6 @@
 
     UserLocation.realObs.subscribe(function(position) {
       base.altitude = position.geometry.coordinates[2];
-    });
-
-    // Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-      base.poi = null;
-      base.poiDetails = null;
-    });
-    // Execute action on hide modal
-    $scope.$on('modal.hidden', function() {
-      // Execute action
-      $log.log('modal hidden');
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function() {
-      // Execute action
-      $log.log('modal removed');
     });
 
     Excursion.currentPoiChangeObs.subscribe(showPoiModal);
@@ -64,17 +43,6 @@
 
     function showPoiModal() {
       Modals.showPoi($scope);
-    }
-
-    function removePoiModal() {
-      return Modals.removeCurrent();
-    }
-
-    function setPoiSeen() {
-      var poi = base.poi;
-      removePoiModal().then(function() {
-        ArView.setPoiSeen(poi);
-      });
     }
   }
 })();
