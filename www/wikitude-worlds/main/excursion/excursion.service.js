@@ -81,10 +81,11 @@
 
     function loadCurrentPoi(poi) {
 
-      var params  = {id: poi.properties.id_poi},
+      var params  = {specieId: poi.properties.id_specie, theme: poi.properties.theme_name},
           options = {return: true};
 
       AppActions.execute('loadPoiDetails', params, options).then(function(details) {
+        $log.log('ExcursionService:loadCurrentPoi', details);
 
         currentPoi = poi;
         currentPoiDetails = details;

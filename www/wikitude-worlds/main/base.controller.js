@@ -37,11 +37,7 @@
       $log.log('modal removed');
     });
 
-    Excursion.currentPoiChangeObs.subscribe(function(data) {
-      base.poi = data.poi;
-      base.poiDetails = data.details;
-      showPoiModal(data.poi.properties.theme_name);
-    });
+    Excursion.currentPoiChangeObs.subscribe(showPoiModal);
 
     ArView.excursionEndReachedObs.subscribe(function() {
       base.hasReachedEnd = true;
@@ -66,8 +62,8 @@
       Modals.showFilters($scope);
     }
 
-    function showPoiModal(type) {
-      Modals.showPoi(type, $scope);
+    function showPoiModal() {
+      Modals.showPoi($scope);
     }
 
     function removePoiModal() {

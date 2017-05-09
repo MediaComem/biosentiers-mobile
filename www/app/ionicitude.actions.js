@@ -63,7 +63,7 @@
       }
 
       function loadPoiDetails(service, param) {
-        return PoiContent.getData(param.id);
+        return PoiContent.getPoiData(param.specieId, param.theme);
       }
 
       function toast(service, param) {
