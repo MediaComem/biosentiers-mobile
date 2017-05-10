@@ -18,18 +18,19 @@ var appDir = 'www/app',
     wikitudeDir = 'www/wikitude-worlds';
 
 var paths = {
-  sass: [ './scss/**/*.scss' ],
-  appIndex: 'www/index.html',
-  appSources: { files: [ '**/*.js', '**/*.css' ], cwd: appDir },
-  wikitudeIndex: path.join(wikitudeDir, 'main/index.html'),
+  sass           : [ './scss/**/*.scss' ],
+  sassAr         : ['./scss-ar/**/*.scss'],
+  appIndex       : 'www/index.html',
+  appSources     : { files: [ '**/*.js', '**/*.css' ], cwd: appDir },
+  wikitudeIndex  : path.join(wikitudeDir, 'main/index.html'),
   wikitudeSources: { files: [ '**/*.js', '**/*.css' ], cwd: wikitudeDir }
 };
 
 gulp.task('default', [ 'compile', 'inject', 'watch' ]);
 
-gulp.task('compile', [ 'sass' ]);
+gulp.task('compile', [ 'sass', 'sass-ar' ]);
 gulp.task('inject', [ 'inject:app', 'inject:wikitude' ]);
-gulp.task('watch', [ 'watch:app', 'watch:sass', 'watch:wikitude' ]);
+gulp.task('watch', [ 'watch:app', 'watch:sass', 'watch:sass-ar', 'watch:wikitude' ]);
 
 var injectAppSources = injectSourcesFactory('app', paths.appIndex, paths.appSources),
     injectWikitudeSources = injectSourcesFactory('wikitude', paths.wikitudeIndex, paths.wikitudeSources);
@@ -52,8 +53,20 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
+gulp.task('sass-ar', function(done) {
+  gulp.src('./scss-ar/ar-main.scss')
+    .pipe(sass())
+    .on('error', sass.logError)
+    .pipe(gulp.dest('./www/wikitude-worlds/main/'))
+    .on('end', done);
+});
+
 gulp.task('watch:sass', function() {
   gulp.watch(paths.sass, ['sass']);
+});
+
+gulp.task('watch:sass-ar', function() {
+  gulp.watch(paths.sassAr, ['sass-ar']);
 });
 
 gulp.task('install', ['git-check'], function() {

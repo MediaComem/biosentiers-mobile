@@ -1,10 +1,11 @@
 <ion-view>
-  <ion-content scroll="false" id="login-buttons">
-    <div class="wrapper">
-      <h1 class="text-center">BioSentiers</h1>
-      <p class="text-center">Connexion avec...</p>
-      <button class="button button-block button-balanced" on-tap="auth.doQRCodeLogin()">QR Code</button>
-      <button class="button button-block button-balanced button-outline" on-release="auth.showAccountLoginForm()">Compte personnel</button>
-    </div>
-  </ion-content>
+	<ion-content scroll="false" id="login-buttons">
+		<div class="wrapper">
+			<img src="../../img/logo.jpg" alt="Logo" width="50%">
+			<button class="button button-block button-balanced" on-tap="auth.doQRCodeLogin()">Scanner un QR Code</button>
+			<button class="button button-block button-balanced button-outline" on-release="auth.showAccountLoginForm()">Connexion compte
+				personnel
+			</button>
+		</div>
+	</ion-content>
 </ion-view>
