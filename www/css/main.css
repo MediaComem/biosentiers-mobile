@@ -78,3 +78,6 @@ progress {
 .item .badge.excursion-status {
   position: initial;
   display: inline-block; }
+
+#ar-action i {
+  margin-right: 5px; }
