@@ -6,9 +6,9 @@
 
   angular
     .module('app')
-    .controller('ExcursionsCtrl', ExcursionsCtrl);
+    .controller('ExcursionsListCtrl', ExcursionsListCtrl);
 
-  function ExcursionsCtrl(excursionsData, $scope, $ionicTabsDelegate, $log) {
+  function ExcursionsListCtrl(excursionsData, $scope, $ionicTabsDelegate, $log) {
     var excursions = this;
     // excursions.loading = true;
     $log.log('excursionsData', excursionsData);

@@ -15,9 +15,9 @@
 		<script src="../../lib/jquery/dist/jquery.js"></script>
 		
 		<!-- Ionic -->
+		<link rel="stylesheet" href="../../css/ionic.app.min.css">
 		<script src="architect://architect.js"></script>
 		<script src="../../lib/ionic/js/ionic.bundle.min.js"></script>
-		<link rel="stylesheet" href="../../css/ionic.app.min.css">
 		<script src="../../lib/ngCordova/dist/ng-cordova.min.js"></script>
 		
 		<!-- Turf -->
@@ -25,11 +25,11 @@
 		<script src="../../lib/angular-turf-module/angular-turf-module.js"></script>
 		
 		<!-- Leaflet -->
-		<script src="../../lib/leaflet/dist/leaflet.js"></script>
-		<script src="../../lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 		<link rel="stylesheet" href="../../lib/leaflet/dist/leaflet.css">
 		<link rel="stylesheet" href="../../lib/leaflet.markercluster/dist/MarkerCluster.css">
 		<link rel="stylesheet" href="../../lib/leaflet.markercluster/dist/MarkerCluster.Default.css">
+		<script src="../../lib/leaflet/dist/leaflet.js"></script>
+		<script src="../../lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 		<script src="../../lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
 		
 		<!-- RxJS -->
@@ -45,9 +45,9 @@
 		<script src="../../utils/trans-module/period-to-month.filter.js"></script>
 		
 		<!-- Position Badge Directive -->
+		<link rel="stylesheet" href="../../app/position-badge/position-badge.css">
 		<script src="../../app/position-badge/position-badge.module.js"></script>
 		<script src="../../app/position-badge/position-badge.directive.js"></script>
-		<link rel="stylesheet" href="../../app/position-badge/position-badge.css">
 		
 		<!--
 			ATTENTION: the inject:css and inject:js sections are automatically filled
@@ -112,12 +112,12 @@
 			</button>
 			<h1 class="title">Réalité augmentée</h1>
 		</ion-header-bar>
-		<div class="debug-altitude">GPS altitude : {{base.altitude}}m</div>
+		<div class="debug-altitude balanced-bg">GPS altitude : {{base.altitude}}m</div>
 		<div class="fabs" ng-class="{'with-manual-end-btn': base.hasReachedEnd}">
-			<button class="filters" type="button" data-tap-disabled="true" ng-click="base.showFiltersModal()">
+			<button class="filters calm-bg" type="button" data-tap-disabled="true" ng-click="base.showFiltersModal()">
 				<i class="icon ion-gear-a"></i>
 			</button>
-			<button class="debug" type="button" data-tap-disabled="true" ng-click="base.showDebugModal()">
+			<button class="debug calm-bg" type="button" data-tap-disabled="true" ng-click="base.showDebugModal()">
 				<i class="icon ion-settings"></i>
 			</button>
 		</div>

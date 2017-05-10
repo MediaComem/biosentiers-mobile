@@ -35,22 +35,22 @@
         }
       })
 
-      .state('app.excursions', {
-        url  : '/excursions',
+      .state('app.excursions-list', {
+        url  : '/excursions-list',
         cache: false, //fix issue with other tabs system - species - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
         views: {
           'menuContent': {
-            templateUrl: 'app/excursions/excursions.html'
+            templateUrl: 'app/excursions-list/excursions-list.html'
           }
         }
       })
 
-      .state('app.excursions.all', {
+      .state('app.excursions-list.all', {
         url    : '/all',
         views  : {
           'excursions-all': {
-            templateUrl: 'app/excursions/excursions-all.html',
-            controller : 'ExcursionsCtrl as excursions'
+            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            controller : 'ExcursionsListCtrl as excursions'
           }
         },
         resolve: {
@@ -60,12 +60,12 @@
         }
       })
 
-      .state('app.excursions.pending', {
+      .state('app.excursions-list.pending', {
         url    : '/pending',
         views  : {
           'excursions-pending': {
-            templateUrl: 'app/excursions/excursions-all.html',
-            controller : 'ExcursionsCtrl as excursions'
+            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            controller : 'ExcursionsListCtrl as excursions'
           }
         },
         resolve: {
@@ -75,12 +75,12 @@
         }
       })
 
-      .state('app.excursions.ongoing', {
+      .state('app.excursions-list.ongoing', {
         url    : '/ongoing',
         views  : {
           'excursions-ongoing': {
-            templateUrl: 'app/excursions/excursions-all.html',
-            controller : 'ExcursionsCtrl as excursions'
+            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            controller : 'ExcursionsListCtrl as excursions'
           }
         },
         resolve: {
@@ -90,12 +90,12 @@
         }
       })
 
-      .state('app.excursions.over', {
+      .state('app.excursions-list.over', {
         url    : '/over',
         views  : {
           'excursions-over': {
-            templateUrl: 'app/excursions/excursions-all.html',
-            controller : 'ExcursionsCtrl as excursions'
+            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            controller : 'ExcursionsListCtrl as excursions'
           }
         },
         resolve: {
@@ -171,7 +171,7 @@
       })
 
       .state('app.excursion', {
-        url    : '/excursions/:excursionId',
+        url    : '/excursions-list/:excursionId',
         views  : {
           'menuContent': {
             templateUrl : 'app/excursion/excursion.html',
@@ -239,6 +239,6 @@
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/login');
     // Dev route to access directly the launchAR button
-    $urlRouterProvider.otherwise('/app/excursions');
+    $urlRouterProvider.otherwise('/app/excursions-list');
   }
 })();

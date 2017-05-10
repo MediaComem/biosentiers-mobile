@@ -26,7 +26,6 @@ option.placeholder {
     -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
     -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
     box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
-    background-color: #11c1f3;
     margin-bottom: 16px; }
 
 .button.manual-end {
@@ -52,7 +51,6 @@ option.placeholder {
   right: 0;
   padding: 5px 10px;
   width: calc(20vh + 3px);
-  background-color: #33cd5f;
   color: white; }
 
 .stats {
@@ -112,7 +110,7 @@ option.placeholder {
   top: 0;
   right: 0;
   z-index: 9;
-  border: 2px solid #33cd5f; }
+  border: 2px solid #34c05a; }
 
 .minimap-container .leaflet-container {
   height: 20vh;

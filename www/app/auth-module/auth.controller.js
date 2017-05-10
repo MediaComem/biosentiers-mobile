@@ -60,7 +60,7 @@
            */
           onTap: function() {
             Excursions.createOne(auth.excursion).then(function() {
-              $state.go('app.excursions');
+              $state.go('app.excursions-list');
             })
           }
         }]
@@ -100,7 +100,7 @@
               AuthService.connectUser(auth.account)
                 .then(function() {
                   $log.log('connection réussie !');
-                  $state.go('app.excursions');
+                  $state.go('app.excursions-list');
                 }, function() {
                   $log.log('connection refusée');
                 });
