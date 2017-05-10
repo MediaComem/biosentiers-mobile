@@ -1,13 +1,26 @@
 @import "color-theme";
 
-#login-buttons {
+#login {
   display: flex;
-  height: 100%;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  .wrapper {
-    width: 90%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  button {
+    width: 60vw;
+    &:not(:last-of-type) {
+      margin-bottom: 20px;
+    }
   }
+}
+
+#logo {
+  height: 60vw;
+  margin-bottom: 10vw;
 }
 
 .leaflet-container {

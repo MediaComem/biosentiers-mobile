@@ -79,13 +79,13 @@
         scope      : $scope,
         buttons    : [{
           text : "Annuler",
-          type : "button-assertive",
+          type : "button-assertive button-outline",
           onTap: function() {
             auth.error = null;
           }
         }, {
           text : "Connexion",
-          type : "button-balanced",
+          type : "button-calm",
           /**
            * When this button is tapped, performs the actual login process.
            * @param e

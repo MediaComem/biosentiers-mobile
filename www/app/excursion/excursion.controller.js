@@ -123,7 +123,7 @@
 
     function badgeClassFromStatus(status) {
       var classes = {
-        pending : 'badge-balanced',
+        pending : 'badge-calm',
         ongoing : 'badge-energized',
         finished: 'badge-assertive'
       };

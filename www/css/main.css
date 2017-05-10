@@ -1,10 +1,21 @@
-#login-buttons {
+#login {
   display: flex;
-  height: 100%;
+  flex-direction: column;
   justify-content: center;
-  align-items: center; }
-  #login-buttons .wrapper {
-    width: 90%; }
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+  #login button {
+    width: 60vw; }
+    #login button:not(:last-of-type) {
+      margin-bottom: 20px; }
+
+#logo {
+  height: 60vw;
+  margin-bottom: 10vw; }
 
 .leaflet-container {
   height: 30vh; }

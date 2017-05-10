@@ -3,7 +3,7 @@
     <ion-list ng-if="!excursions.loading && excursions.data.length >= 1">
       <ion-item ng-repeat="excursion in excursions.data" href="#/app/excursions-list/{{excursion.id}}">
         <h2>{{excursion.name}}</h2>
-        <span ng-if="excursion.is_new" class="badge badge-calm">Nouveau</span>
+        <span ng-if="excursion.is_new" class="badge badge-positive">Nouveau</span>
         <p>Date : {{excursion.date | date : 'dd.MM.yyyy'}}</p>
         <p>Créée par {{excursion.created_by}}</p>
         <p>Statut : {{excursion.status | status}}</p>

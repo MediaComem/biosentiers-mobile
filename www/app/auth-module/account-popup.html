@@ -1,14 +1,12 @@
-<div class="list list-inset">
-  <!-- TODO : faire un cadre d'erreur correct -->
-  <div class="card" ng-show="auth.error">
-    <div class="item item-text-wrap">
-      {{auth.error}}
-    </div>
-  </div>
-  <label class="item item-input">
-    <input type="text" placeholder="Nom d'utilisateur" ng-model="auth.account.username">
-  </label>
-  <label class="item item-input">
-    <input type="text" placeholder="Mot de passe" ng-model="auth.account.password">
-  </label>
+<!-- TODO : faire un cadre d'erreur correct -->
+<div class="card" ng-show="auth.error">
+	<div class="item item-text-wrap">
+		{{auth.error}}
+	</div>
 </div>
+<label class="item item-input">
+	<input type="text" placeholder="Nom d'utilisateur" ng-model="auth.account.username">
+</label>
+<label class="item item-input">
+	<input type="text" placeholder="Mot de passe" ng-model="auth.account.password">
+</label>
