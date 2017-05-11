@@ -9,7 +9,7 @@
     .factory('MiniMap', MiniMapService);
 
   function MiniMapService(MapIcons, $log) {
-    var zoom    = 16,
+    var zoom    = 17,
         service = {
           config          : {},
           addPath         : addPath,
