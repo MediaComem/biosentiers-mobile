@@ -24,7 +24,7 @@
       return $http.get(url).then(function(result) {
         $log.log('PoiContent:getPoiData:result', result);
         // TODO : retourner seulement result.data lorsque les données seront correctes
-        return result.data[0];
+        return result.data;
       });
     }
   }
