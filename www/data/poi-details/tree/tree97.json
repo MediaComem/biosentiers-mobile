@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree97"
-,"id_specie":97
-,"scientific_name":"Taxus baccata L."
-,"height":20
-,"physical_characteristics":"L'if est un arbre qui peut mesurer jusqu'à 20 mètres de haut. Son écorce est brun rougeâtre. Ses feuilles sont des aiguilles souples qui s'opposent sur deux rangs. Les aiguilles mesurent 1 à 2 mm de large. "
-,"habitat_characteristics":"Cet arbre aime les pentes boisées, les zones d'ombre. Il est souvent cultivé par l'homme. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/103-taxus-baccata.html"
-,"family_name":"Taxaceae"
-,"division_name":"Conifères"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "97", "common_name" : { "fr" : "If", "de" : "Eibe", "it" : "Tasso comune", "la" : "Taxus baccata" }, "scientific_name" : "Taxus baccata L.", "height" : "20", "period_start" : "3", "period_end" : "4", "physical_characteristics" : "L'if est un arbre qui peut mesurer jusqu'à 20 mètres de haut. Son écorce est brun rougeâtre. Ses feuilles sont des aiguilles souples qui s'opposent sur deux rangs. Les aiguilles mesurent 1 à 2 mm de large. ", "habitat_characteristics" : "Cet arbre aime les pentes boisées, les zones d'ombre. Il est souvent cultivé par l'homme. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/103-taxus-baccata.html", "family_name" : "Taxaceae", "division_name" : "Conifères", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

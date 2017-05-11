@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower123"
-,"id_specie":123
-,"scientific_name":"Cladium mariscus (L.) Pohl"
-,"height":1.2
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 80 et 150 cm, voire 200 cm de haut. Sa tige est creuse. Ses feuilles mesurent 7 à 15 mm de large. Les feuilles sont de couleur vert grisâtre et sont coupantes sur les bords. "
-,"habitat_characteristics":"On peut trouver la marisque dans les marais ou sur les rives. Elle est généralement sous l'eau et dans des endroits lumineux. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/2705-cladium-mariscus.html"
-,"family_name":"Cyperaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "123", "common_name" : { "fr" : "Marisque", "de" : "Schneidebinse", "it" : "Falasco", "la" : "Cladium mariscus" }, "scientific_name" : "Cladium mariscus (L.) Pohl", "height" : "1.2", "period_start" : "6", "period_end" : "6", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 80 et 150 cm, voire 200 cm de haut. Sa tige est creuse. Ses feuilles mesurent 7 à 15 mm de large. Les feuilles sont de couleur vert grisâtre et sont coupantes sur les bords. ", "habitat_characteristics" : "On peut trouver la marisque dans les marais ou sur les rives. Elle est généralement sous l'eau et dans des endroits lumineux. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/2705-cladium-mariscus.html", "family_name" : "Cyperaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

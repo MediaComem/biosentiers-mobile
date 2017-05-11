@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower12"
-,"id_specie":12
-,"scientific_name":"Sedum sexangulare L."
-,"height":0.1
-,"physical_characteristics":"Il s'agit d'une plante d'environ 10 cm de haut. Ses feuilles sont cylindriques, longues d'environ 6 mm et large d'environ 1 mm. Ses fleurs sont jaunes et par groupes de 5 à 10. "
-,"habitat_characteristics":"L'orpin doux se trouve dans des lieux secs comme des murs par exemple. "
-,"anecdote":"Sedum sexangulare signifie à six angles; Cela fait référence à la disposition des feuilles qui sont en six spirales. L'orpin doux aime les endroits secs, mais il supporte les endroits dont l'humidité varie beaucoup. Il apprécie les endroits très lumineux. "
-,"website":"https://www.infoflora.ch/fr/flore/916-sedum-sexangulare.html"
-,"family_name":"Crassulaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "12", "common_name" : { "fr" : "Orpin doux", "de" : "Milder Mauerpfeffer", "it" : "Borracina insipida", "la" : "Sedum sexangulare" }, "scientific_name" : "Sedum sexangulare L.", "height" : "0.1", "period_start" : "6", "period_end" : "8", "physical_characteristics" : "Il s'agit d'une plante d'environ 10 cm de haut. Ses feuilles sont cylindriques, longues d'environ 6 mm et large d'environ 1 mm. Ses fleurs sont jaunes et par groupes de 5 à 10. ", "habitat_characteristics" : "L'orpin doux se trouve dans des lieux secs comme des murs par exemple. ", "anecdote" : "Sedum sexangulare signifie à six angles; Cela fait référence à la disposition des feuilles qui sont en six spirales. L'orpin doux aime les endroits secs, mais il supporte les endroits dont l'humidité varie beaucoup. Il apprécie les endroits très lumineux. ", "website" : "https://www.infoflora.ch/fr/flore/916-sedum-sexangulare.html", "family_name" : "Crassulaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

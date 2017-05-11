@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower103"
-,"id_specie":103
-,"scientific_name":"Capsella bursa-pastoris (L.) Medik."
-,"height":0.4
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 4 et 40 cm, voire 70 cm de haut. La tige a des poils. En bas de la plante, les feuilles sont en rosette. Les pétales sont blancs et mesurent 2 à 3 mm. "
-,"habitat_characteristics":"La capselle bourse à pasteur se trouve dans les champs ou aux bords des chemins. Elle aime les endroits plutôt secs et lumineux. "
-,"anecdote":"Ses fruits ressemblent à un porte-monnaie (une bourse). C'est pourquoi la plante s'appelle bourse à pasteur. "
-,"website":"https://www.infoflora.ch/fr/flore/751-capsella-bursa-pastoris.html"
-,"family_name":"Brassicaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "103", "common_name" : { "fr" : "Capselle bourse à pasteur", "de" : "Gemeines Hirtentäschel", "it" : "Borsapastore comune", "la" : "Capsella bursa-pastoris" }, "scientific_name" : "Capsella bursa-pastoris (L.) Medik.", "height" : "0.4", "period_start" : "3", "period_end" : "11", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 4 et 40 cm, voire 70 cm de haut. La tige a des poils. En bas de la plante, les feuilles sont en rosette. Les pétales sont blancs et mesurent 2 à 3 mm. ", "habitat_characteristics" : "La capselle bourse à pasteur se trouve dans les champs ou aux bords des chemins. Elle aime les endroits plutôt secs et lumineux. ", "anecdote" : "Ses fruits ressemblent à un porte-monnaie (une bourse). C'est pourquoi la plante s'appelle bourse à pasteur. ", "website" : "https://www.infoflora.ch/fr/flore/751-capsella-bursa-pastoris.html", "family_name" : "Brassicaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree104"
-,"id_specie":104
-,"scientific_name":"Hippocrepis emerus (L.) Lassen"
-,"height":1
-,"physical_characteristics":"Cet arbuste mesure entre 0.5 et 2 mètres de haut. Les feuilles mesurent entre 1 et 2 cm de long. Les fleurs sont jaunes. "
-,"habitat_characteristics":"Il s'agit d'une plante qui peut se trouver dans les forêts ou buissons. Elle aime les endroits plutôt secs. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/1187-hippocrepis-emerus.html"
-,"family_name":"Fabaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "104", "common_name" : { "fr" : "Hippocrépide émérus", "de" : "Strauchwicke", "it" : "Erba cornetta", "la" : "Hippocrepis emerus" }, "scientific_name" : "Hippocrepis emerus (L.) Lassen", "height" : "1", "period_start" : "4", "period_end" : "6", "physical_characteristics" : "Cet arbuste mesure entre 0.5 et 2 mètres de haut. Les feuilles mesurent entre 1 et 2 cm de long. Les fleurs sont jaunes. ", "habitat_characteristics" : "Il s'agit d'une plante qui peut se trouver dans les forêts ou buissons. Elle aime les endroits plutôt secs. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/1187-hippocrepis-emerus.html", "family_name" : "Fabaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

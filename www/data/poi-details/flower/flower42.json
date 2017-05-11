@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower42"
-,"id_specie":42
-,"scientific_name":"Carex sylvatica Huds."
-,"height":0.5
-,"physical_characteristics":"Cette plante mesure entre 30 et 70 cm de haut. Sa tige est lisse. Ses feuilles sont vert clair, souples et larges d'environ 5 mm. Ses épis sont d'environ 4 cm de long."
-,"habitat_characteristics":"Le laiche des forêts peut se trouver dans les forêts, car il aime l'ombre et les sols humide. De plus, il supporte les sols dont l'humidité peut beaucoup varier. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/2804-carex-sylvatica.html"
-,"family_name":"Cyperaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "42", "common_name" : { "fr" : "Laiche des forêts", "de" : "Wald-Segge", "it" : "Carice delle selve", "la" : "Carex sylvatica" }, "scientific_name" : "Carex sylvatica Huds.", "height" : "0.5", "period_start" : "5", "period_end" : "6", "physical_characteristics" : "Cette plante mesure entre 30 et 70 cm de haut. Sa tige est lisse. Ses feuilles sont vert clair, souples et larges d'environ 5 mm. Ses épis sont d'environ 4 cm de long.", "habitat_characteristics" : "Le laiche des forêts peut se trouver dans les forêts, car il aime l'ombre et les sols humide. De plus, il supporte les sols dont l'humidité peut beaucoup varier. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/2804-carex-sylvatica.html", "family_name" : "Cyperaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

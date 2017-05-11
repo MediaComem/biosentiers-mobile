@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree164"
-,"id_specie":164
-,"scientific_name":"Populus nigra subsp. pyramidalis Celak."
-,"height":30
-,"physical_characteristics":"Il s'agit d'un grand et fin arbre. Les branches sont toutes dressées. Les feuilles sont généralement plus larges que longues. "
-,"habitat_characteristics":"Le peuplier d'Italie est souvent cultivé par l'homme. Il aime les endroits très humides. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/598-populus-nigra-subsp-pyramidalis.html"
-,"family_name":"Salicaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "164", "common_name" : { "fr" : "Peuplier d'Italie", "de" : "Pyramiden-Schwarz-Pappel", "it" : "Pioppo cipressino", "la" : "Populus nigra subsp. pyramidalis" }, "scientific_name" : "Populus nigra subsp. pyramidalis Celak.", "height" : "30", "period_start" : "3", "period_end" : "4", "physical_characteristics" : "Il s'agit d'un grand et fin arbre. Les branches sont toutes dressées. Les feuilles sont généralement plus larges que longues. ", "habitat_characteristics" : "Le peuplier d'Italie est souvent cultivé par l'homme. Il aime les endroits très humides. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/598-populus-nigra-subsp-pyramidalis.html", "family_name" : "Salicaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

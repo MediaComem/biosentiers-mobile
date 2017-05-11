@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower51"
-,"id_specie":51
-,"scientific_name":"Heracleum sphondylium L. s.l."
-,"height":1
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 50 et 150 cm. Sa tige est dure et poilue. Ses fleurs sont de couleur blanche, vert jaunâtre ou rosée. "
-,"habitat_characteristics":"La berce des prés peut se trouver dans les prés et bois humides. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/10020-heracleum-sphondylium-sl.html"
-,"family_name":"Apiaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "51", "common_name" : { "fr" : "Patte d'ours, Berce des prés", "de" : "Wiesen-Bärenklau", "it" : "Panace comune", "la" : "Heracleum sphondylium s.l." }, "scientific_name" : "Heracleum sphondylium L. s.l.", "height" : "1", "period_start" : "6", "period_end" : "9", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 50 et 150 cm. Sa tige est dure et poilue. Ses fleurs sont de couleur blanche, vert jaunâtre ou rosée. ", "habitat_characteristics" : "La berce des prés peut se trouver dans les prés et bois humides. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/10020-heracleum-sphondylium-sl.html", "family_name" : "Apiaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower27"
-,"id_specie":27
-,"scientific_name":"Lamium galeobdolon subsp. montanum (Pers.) Hayek"
-,"height":0.4
-,"physical_characteristics":"Sa tige est en générale velue. Ses feuilles sont environ 3 fois plus longues que larges. Les feuilles ont une forme de fer de lance et de grandes dents. Ses fleurs sont jaunes. "
-,"habitat_characteristics":"Il se trouve plutôt dans les forêts, car il aime les endroits très ombragés et humides. "
-,"anecdote":"Le lamier des montagnes est surnommé ortie jaune, même si cette plante n'est pas une ortie et ne pique pas. "
-,"website":"https://www.infoflora.ch/fr/flore/1791-lamium-galeobdolon-subsp-montanum.html"
-,"family_name":"Lamiaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "27", "common_name" : { "fr" : "Lamier des montagnes", "de" : "Berg-Goldnessel", "it" : "Ortica montana", "la" : "Lamium galeobdolon subsp. montanum" }, "scientific_name" : "Lamium galeobdolon subsp. montanum (Pers.) Hayek", "height" : "0.4", "period_start" : "5", "period_end" : "7", "physical_characteristics" : "Sa tige est en générale velue. Ses feuilles sont environ 3 fois plus longues que larges. Les feuilles ont une forme de fer de lance et de grandes dents. Ses fleurs sont jaunes. ", "habitat_characteristics" : "Il se trouve plutôt dans les forêts, car il aime les endroits très ombragés et humides. ", "anecdote" : "Le lamier des montagnes est surnommé ortie jaune, même si cette plante n'est pas une ortie et ne pique pas. ", "website" : "https://www.infoflora.ch/fr/flore/1791-lamium-galeobdolon-subsp-montanum.html", "family_name" : "Lamiaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

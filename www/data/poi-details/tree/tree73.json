@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree73"
-,"id_specie":73
-,"scientific_name":"Acer pseudoplatanus L."
-,"height":30
-,"physical_characteristics":"Il s'agit d'un arbre qui peut mesurer jusqu'à 30 mètres de haut. Lorsque l'érable est vieux, son écorce se détache du tronc. Ses feuilles s'opposent. Les feuilles ont 5 lobes et sont vert blanchâtre dessous. Les fleurs sont verdâtres et en grappes allongées et pendantes. "
-,"habitat_characteristics":"L'érable des montagnes peut se trouver dans les forêts, les haies et les pâturages. Il est souvent planté par l'homme. Il aime les endroits humides et les zones d'ombre. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/1437-acer-pseudoplatanus.html"
-,"family_name":"Sapindaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "73", "common_name" : { "fr" : "Erable des montagnes", "de" : "Berg-Ahorn", "it" : "Acero di monte", "la" : "Acer pseudoplatanus" }, "scientific_name" : "Acer pseudoplatanus L.", "height" : "30", "period_start" : "4", "period_end" : "5", "physical_characteristics" : "Il s'agit d'un arbre qui peut mesurer jusqu'à 30 mètres de haut. Lorsque l'érable est vieux, son écorce se détache du tronc. Ses feuilles s'opposent. Les feuilles ont 5 lobes et sont vert blanchâtre dessous. Les fleurs sont verdâtres et en grappes allongées et pendantes. ", "habitat_characteristics" : "L'érable des montagnes peut se trouver dans les forêts, les haies et les pâturages. Il est souvent planté par l'homme. Il aime les endroits humides et les zones d'ombre. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/1437-acer-pseudoplatanus.html", "family_name" : "Sapindaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

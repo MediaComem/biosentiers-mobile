@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree172"
-,"id_specie":172
-,"scientific_name":"Quercus robur L."
-,"height":50
-,"physical_characteristics":"Il s'agit d'un arbre qui peut mesurer jusqu'à 50 mètres de haut. Ses feuilles ont 5 à 7 lobes. "
-,"habitat_characteristics":"Le chêne pédonculé se trouve en générale dans les forêts humides, car il aime les endroits humides. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/271-quercus-robur.html"
-,"family_name":"Fagaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "172", "common_name" : { "fr" : "Chêne pédonculé", "de" : "Stiel-Eiche", "it" : "Quercia comune", "la" : "Quercus robur" }, "scientific_name" : "Quercus robur L.", "height" : "50", "period_start" : "4", "period_end" : "5", "physical_characteristics" : "Il s'agit d'un arbre qui peut mesurer jusqu'à 50 mètres de haut. Ses feuilles ont 5 à 7 lobes. ", "habitat_characteristics" : "Le chêne pédonculé se trouve en générale dans les forêts humides, car il aime les endroits humides. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/271-quercus-robur.html", "family_name" : "Fagaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

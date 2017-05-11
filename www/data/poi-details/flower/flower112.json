@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower112"
-,"id_specie":112
-,"scientific_name":"Ranunculus acris subsp. friesianus (Jord.) Syme"
-,"height":0.7
-,"physical_characteristics":"Ses feuilles sont divisées en 3 à 5 éléments. "
-,"habitat_characteristics":"Cette plante peut se trouver dans les prairies. Elle aime les endroits un peu humides. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/202-ranunculus-acris-subsp-friesianus.html"
-,"family_name":"Ranunculaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "112", "common_name" : { "fr" : "Renoncule de Fries", "de" : "Fries' Scharfer Hahnenfuss", "it" : "Ranuncolo di Fries", "la" : "Ranunculus acris subsp. friesianus" }, "scientific_name" : "Ranunculus acris subsp. friesianus (Jord.) Syme", "height" : "0.7", "period_start" : "4", "period_end" : "9", "physical_characteristics" : "Ses feuilles sont divisées en 3 à 5 éléments. ", "habitat_characteristics" : "Cette plante peut se trouver dans les prairies. Elle aime les endroits un peu humides. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/202-ranunculus-acris-subsp-friesianus.html", "family_name" : "Ranunculaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

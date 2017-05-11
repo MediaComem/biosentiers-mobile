@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower76"
-,"id_specie":76
-,"scientific_name":"Galium mollugo aggr."
-,"height":0.9
-,"physical_characteristics":"Le gaillet commun a une tige qui mesure entre 30 et 150 cm. "
-,"habitat_characteristics":"Cette plante peut se trouver dans les prés et bois. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/9189-galium-mollugo-aggr.html"
-,"family_name":"Rubiaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "76", "common_name" : { "fr" : "Gaillet commun, Gaillet blanc", "de" : "Wiesen-Labkraut", "it" : "Caglio bianco", "la" : "Galium mollugo aggr." }, "scientific_name" : "Galium mollugo aggr.", "height" : "0.9", "period_start" : "5", "period_end" : "7", "physical_characteristics" : "Le gaillet commun a une tige qui mesure entre 30 et 150 cm. ", "habitat_characteristics" : "Cette plante peut se trouver dans les prés et bois. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/9189-galium-mollugo-aggr.html", "family_name" : "Rubiaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

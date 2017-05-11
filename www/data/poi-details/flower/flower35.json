@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower35"
-,"id_specie":35
-,"scientific_name":"Veronica hederifolia L. s.l."
-,"height":0.3
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 5 et 50 cm. Sa tige est poilue. Ses feuilles sont aussi couvertes de poils et sont plus larges que longues. Ses fleurs sont solitaires et ont une couleur bleu clair à lilas. Les fleurs, petites, mesurent moins d'un cm (6 à 9 mm). "
-,"habitat_characteristics":"Cette plante peut pousser dans les champs, les jardins ou les murs. Elle aime les endroits un peu humides. "
-,"anecdote":"L'ensemble de la plante est poilue. "
-,"website":"https://www.infoflora.ch/fr/flore/8577-veronica-hederifolia-sl.html"
-,"family_name":"Plantaginaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "35", "common_name" : { "fr" : "Véronique à feuilles de lierre", "de" : "Efeu-Ehrenpreis", "it" : "Veronica con foglie d'edera", "la" : "Veronica hederifolia s.l." }, "scientific_name" : "Veronica hederifolia L. s.l.", "height" : "0.3", "period_start" : "3", "period_end" : "7", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 5 et 50 cm. Sa tige est poilue. Ses feuilles sont aussi couvertes de poils et sont plus larges que longues. Ses fleurs sont solitaires et ont une couleur bleu clair à lilas. Les fleurs, petites, mesurent moins d'un cm (6 à 9 mm). ", "habitat_characteristics" : "Cette plante peut pousser dans les champs, les jardins ou les murs. Elle aime les endroits un peu humides. ", "anecdote" : "L'ensemble de la plante est poilue. ", "website" : "https://www.infoflora.ch/fr/flore/8577-veronica-hederifolia-sl.html", "family_name" : "Plantaginaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

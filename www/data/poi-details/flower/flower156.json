@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower156"
-,"id_specie":156
-,"scientific_name":"Polygonatum multiflorum (L.) All."
-,"height":0.5
-,"physical_characteristics":"Le sceau de Salomon multiflore mesure entre 30 et 60 cm. Sa tige est cylindrique et penchée. Les feuilles vont du bas au haut de la plante. Elles sont ovales et mises sur deux rangs. Les fleurs sont en grappes pendantes. Les baies sont bleues foncées."
-,"habitat_characteristics":"Cette plante peut être trouvée dans les forêts ou buissons. Elle aime les zones d'ombre. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/3120-polygonatum-multiflorum.html"
-,"family_name":"Asparagaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "156", "common_name" : { "fr" : "Sceau de Salomon multiflore", "de" : "Vielblütiges Salomonssiegel", "it" : "Sigillo di Salomone maggiore", "la" : "Polygonatum multiflorum" }, "scientific_name" : "Polygonatum multiflorum (L.) All.", "height" : "0.5", "period_start" : "5", "period_end" : "7", "physical_characteristics" : "Le sceau de Salomon multiflore mesure entre 30 et 60 cm. Sa tige est cylindrique et penchée. Les feuilles vont du bas au haut de la plante. Elles sont ovales et mises sur deux rangs. Les fleurs sont en grappes pendantes. Les baies sont bleues foncées.", "habitat_characteristics" : "Cette plante peut être trouvée dans les forêts ou buissons. Elle aime les zones d'ombre. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/3120-polygonatum-multiflorum.html", "family_name" : "Asparagaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

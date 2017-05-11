@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower17"
-,"id_specie":17
-,"scientific_name":"Viola reichenbachiana Boreau"
-,"height":0.2
-,"physical_characteristics":"Cette plante fait de 5 à 25 cm de haut. Ses fleurs sont de couleur violette claire. "
-,"habitat_characteristics":"La violette des forêts se trouve dans les bois, car elle préfère les zones d'ombre et la fraîcheur. "
-,"anecdote":"La violette est une des premières fleurs du printemps. C'est une plante très utile qui peut, par exemple, être utiliser contre la toux. "
-,"website":"https://www.infoflora.ch/fr/flore/573-viola-reichenbachiana.html"
-,"family_name":"Violaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "17", "common_name" : { "fr" : "Violette des forêts", "de" : "Wald-Veilchen", "it" : "Viola silvestre", "la" : "Viola reichenbachiana" }, "scientific_name" : "Viola reichenbachiana Boreau", "height" : "0.15", "period_start" : "4", "period_end" : "5", "physical_characteristics" : "Cette plante fait de 5 à 25 cm de haut. Ses fleurs sont de couleur violette claire. ", "habitat_characteristics" : "La violette des forêts se trouve dans les bois, car elle préfère les zones d'ombre et la fraîcheur. ", "anecdote" : "La violette est une des premières fleurs du printemps. C'est une plante très utile qui peut, par exemple, être utiliser contre la toux. ", "website" : "https://www.infoflora.ch/fr/flore/573-viola-reichenbachiana.html", "family_name" : "Violaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower21"
-,"id_specie":21
-,"scientific_name":"Geranium robertianum L. s.l."
-,"height":0.3
-,"physical_characteristics":"Sa tige est fine, fragile et a une couleur rougeâtre. Ses feuilles sont triangulaires-pentagonales, très découpées et palmées. Les feuilles sont en 3 à 5 parties (3 à 5 lobes). Ses fleurs sont roses ou rouges, ont 5 pétales et mesurent environ 2 cm. "
-,"habitat_characteristics":"Cette plante se trouve souvent près des maisons, aux pieds des murs par exemple. Elle aime aussi les bords des chemins, les haies et les bois, car elle apprécie les milieux de l'homme. "
-,"anecdote":"Le Géranium herbe à Robert peut être utilisé pour décorer et couvrir un sol. "
-,"website":"https://www.infoflora.ch/fr/flore/10014-geranium-robertianum-sl.html"
-,"family_name":"Geraniaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "21", "common_name" : { "fr" : "Géranium herbe à Robert", "de" : "Stinkender Storchschnabel", "it" : "Geranio di San Roberto", "la" : "Geranium robertianum s.l." }, "scientific_name" : "Geranium robertianum L. s.l.", "height" : "0.3", "period_start" : "5", "period_end" : "9", "physical_characteristics" : "Sa tige est fine, fragile et a une couleur rougeâtre. Ses feuilles sont triangulaires-pentagonales, très découpées et palmées. Les feuilles sont en 3 à 5 parties (3 à 5 lobes). Ses fleurs sont roses ou rouges, ont 5 pétales et mesurent environ 2 cm. ", "habitat_characteristics" : "Cette plante se trouve souvent près des maisons, aux pieds des murs par exemple. Elle aime aussi les bords des chemins, les haies et les bois, car elle apprécie les milieux de l'homme. ", "anecdote" : "Le Géranium herbe à Robert peut être utilisé pour décorer et couvrir un sol. ", "website" : "https://www.infoflora.ch/fr/flore/10014-geranium-robertianum-sl.html", "family_name" : "Geraniaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

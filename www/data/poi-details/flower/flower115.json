@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower115"
-,"id_specie":115
-,"scientific_name":"Lamium purpureum L."
-,"height":0.2
-,"physical_characteristics":"La plante peut mesurer entre 15 et 25 cm de haut. Ses feuilles ont une forme de cœur et mesurent entre 1 et 2.5 cm de long. Les feuilles sont presque aussi larges que longues. "
-,"habitat_characteristics":"Le lamier rouge peut être trouvé dans les champs, les jardins ou les vignes. Il aime les endroits lumineux. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/1797-lamium-purpureum.html"
-,"family_name":"Lamiaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "115", "common_name" : { "fr" : "Lamier rouge", "de" : "Acker-Taubnessel", "it" : "Falsa ortica purpurea", "la" : "Lamium purpureum" }, "scientific_name" : "Lamium purpureum L.", "height" : "0.2", "period_start" : "2", "period_end" : "11", "physical_characteristics" : "La plante peut mesurer entre 15 et 25 cm de haut. Ses feuilles ont une forme de cur et mesurent entre 1 et 2.5 cm de long. Les feuilles sont presque aussi larges que longues. ", "habitat_characteristics" : "Le lamier rouge peut être trouvé dans les champs, les jardins ou les vignes. Il aime les endroits lumineux. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/1797-lamium-purpureum.html", "family_name" : "Lamiaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower100"
-,"id_specie":100
-,"scientific_name":"Plantago media L."
-,"height":0.3
-,"physical_characteristics":"Cette plante mesure entre 20 et 40 cm de haut. Ses feuilles se trouvent en bas de la tige et en rosette. Les feuilles sont ovales et pointues au bout. L'épi est cylindrique et mesure 2 à 8 cm de long, voire 15 cm lors de la fructification."
-,"habitat_characteristics":"Le plantain moyen peut se trouver dans les prairies ou aux bords des chemins. Il s'agit d'une plante qui aime les endroits plutôt secs et lumineux. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/1830-plantago-media.html"
-,"family_name":"Plantaginaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "100", "common_name" : { "fr" : "Plantain moyen", "de" : "Mittlerer Wegerich", "it" : "Piantaggine pelosa", "la" : "Plantago media" }, "scientific_name" : "Plantago media L.", "height" : "0.3", "period_start" : "5", "period_end" : "7", "physical_characteristics" : "Cette plante mesure entre 20 et 40 cm de haut. Ses feuilles se trouvent en bas de la tige et en rosette. Les feuilles sont ovales et pointues au bout. L'épi est cylindrique et mesure 2 à 8 cm de long, voire 15 cm lors de la fructification.", "habitat_characteristics" : "Le plantain moyen peut se trouver dans les prairies ou aux bords des chemins. Il s'agit d'une plante qui aime les endroits plutôt secs et lumineux. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/1830-plantago-media.html", "family_name" : "Plantaginaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

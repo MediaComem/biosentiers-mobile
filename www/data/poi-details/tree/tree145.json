@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree145"
-,"id_specie":145
-,"scientific_name":"Rhus typhina L. var. laciniata"
-,"height":6
-,"physical_characteristics":"Il s'agit d'un arbre ou arbuste qui peut mesurer jusqu'à 6 mètres de haut. Ses branches ont des poils. Ses feuilles peuvent mesurer jusqu'à 50 cm de long et ont 5 à 15 paires de folioles. Ses fleurs sont verdâtres et mesurent environ 5 mm de large. "
-,"habitat_characteristics":"Le sumac est cultivé par l'homme comme plante de décoration. Il pousse rarement naturellement. C'est un arbre qui aime les endroits lumineux et plutôt secs. "
-,"anecdote":"Le sumac n'est pas originaire de nos régions. Il est originaire du continent nord-américain. Il est apparu dans nos régions en tant que plante de décoration. Les sumacs peuvent former des groupes de végétation très denses qui détruisent notre végétation. Le sumac est donc un danger pour notre végétation; On dit que c'est une plante néophyte."
-,"website":"https://www.infoflora.ch/fr/flore/1441-rhus-typhina.html"
-,"family_name":"Anacardiaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "145", "common_name" : { "fr" : "Sumac", "de" : "Essigbaum", "it" : "Sommacco maggiore", "la" : "Rhus typhina var. laciniata" }, "scientific_name" : "Rhus typhina L. var. laciniata", "height" : "6", "period_start" : "5", "period_end" : "6", "physical_characteristics" : "Il s'agit d'un arbre ou arbuste qui peut mesurer jusqu'à 6 mètres de haut. Ses branches ont des poils. Ses feuilles peuvent mesurer jusqu'à 50 cm de long et ont 5 à 15 paires de folioles. Ses fleurs sont verdâtres et mesurent environ 5 mm de large. ", "habitat_characteristics" : "Le sumac est cultivé par l'homme comme plante de décoration. Il pousse rarement naturellement. C'est un arbre qui aime les endroits lumineux et plutôt secs. ", "anecdote" : "Le sumac n'est pas originaire de nos régions. Il est originaire du continent nord-américain. Il est apparu dans nos régions en tant que plante de décoration. Les sumacs peuvent former des groupes de végétation très denses qui détruisent notre végétation. Le sumac est donc un danger pour notre végétation; On dit que c'est une plante néophyte.", "website" : "https://www.infoflora.ch/fr/flore/1441-rhus-typhina.html", "family_name" : "Anacardiaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

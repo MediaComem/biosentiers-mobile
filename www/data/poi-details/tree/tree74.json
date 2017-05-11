@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree74"
-,"id_specie":74
-,"scientific_name":"Prunus avium L."
-,"height":25
-,"physical_characteristics":"Il s'agit d'un arbre qui peut mesurer jusqu'à 25 mètres de haut. Son tronc est haut et droit. Son écorce est de couleur gris foncé. Ses feuilles sont en forme d'ellipse et ont des dents irrégulières. Les feuilles mesurent entre 6 et 15 cm. "
-,"habitat_characteristics":"On peut trouver le cerisier sauvage dans les lisières, les forêts ou les haies. Il aime les endroits humides. "
-,"anecdote":"Le fruit du cerisier est la cerise. La cerise peut être rouge ou noire. "
-,"website":"https://www.infoflora.ch/fr/flore/1106-prunus-avium.html"
-,"family_name":"Rosaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "74", "common_name" : { "fr" : "Cerisier sauvage", "de" : "Süsskirsche", "it" : "Ciliegio", "la" : "Prunus avium" }, "scientific_name" : "Prunus avium L.", "height" : "25", "period_start" : "4", "period_end" : "5", "physical_characteristics" : "Il s'agit d'un arbre qui peut mesurer jusqu'à 25 mètres de haut. Son tronc est haut et droit. Son écorce est de couleur gris foncé. Ses feuilles sont en forme d'ellipse et ont des dents irrégulières. Les feuilles mesurent entre 6 et 15 cm. ", "habitat_characteristics" : "On peut trouver le cerisier sauvage dans les lisières, les forêts ou les haies. Il aime les endroits humides. ", "anecdote" : "Le fruit du cerisier est la cerise. La cerise peut être rouge ou noire. ", "website" : "https://www.infoflora.ch/fr/flore/1106-prunus-avium.html", "family_name" : "Rosaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

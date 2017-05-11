@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower110"
-,"id_specie":110
-,"scientific_name":"Galium verum L. s.l."
-,"height":0.4
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 10 et 70 cm de haut. Ses fleurs sont jaunes. "
-,"habitat_characteristics":"Le gaillet jaune peut se trouver dans les prairies ou les pelouses. Il aime les sols plutôt secs. "
-,"anecdote":"Cette plante peut être utilisée pour soulager la douleur. "
-,"website":"https://www.infoflora.ch/fr/flore/9607-galium-verum-sl.html"
-,"family_name":"Rubiaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "110", "common_name" : { "fr" : "Gaillet jaune", "de" : "Echtes Labkraut", "it" : "Caglio zolfino", "la" : "Galium verum s.l." }, "scientific_name" : "Galium verum L. s.l.", "height" : "0.4", "period_start" : "6", "period_end" : "9", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 10 et 70 cm de haut. Ses fleurs sont jaunes. ", "habitat_characteristics" : "Le gaillet jaune peut se trouver dans les prairies ou les pelouses. Il aime les sols plutôt secs. ", "anecdote" : "Cette plante peut être utilisée pour soulager la douleur. ", "website" : "https://www.infoflora.ch/fr/flore/9607-galium-verum-sl.html", "family_name" : "Rubiaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree109"
-,"id_specie":109
-,"scientific_name":"Rubus caesius L."
-,"height":1
-,"physical_characteristics":"Il s'agit d'un arbuste qui a de courtes épines. Ses feuilles ont 3 folioles et des dents irrégulières. Les pétales sont blancs et mesurent entre 7 et 10 mm. "
-,"habitat_characteristics":"La ronce bleuâtre peut se trouver dans les forêts humides, les haies ou aux bords des cours d'eau, car elle aime les endroits humides. "
-,"anecdote":"Cette plante produit des fruits comestibles. "
-,"website":"https://www.infoflora.ch/fr/flore/990-rubus-caesius.html"
-,"family_name":"Rosaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "109", "common_name" : { "fr" : "Ronce bleuâtre", "de" : "Blaue Brombeere", "it" : "Rovo bluastro", "la" : "Rubus caesius" }, "scientific_name" : "Rubus caesius L.", "height" : "1", "period_start" : "6", "period_end" : "9", "physical_characteristics" : "Il s'agit d'un arbuste qui a de courtes épines. Ses feuilles ont 3 folioles et des dents irrégulières. Les pétales sont blancs et mesurent entre 7 et 10 mm. ", "habitat_characteristics" : "La ronce bleuâtre peut se trouver dans les forêts humides, les haies ou aux bords des cours d'eau, car elle aime les endroits humides. ", "anecdote" : "Cette plante produit des fruits comestibles. ", "website" : "https://www.infoflora.ch/fr/flore/990-rubus-caesius.html", "family_name" : "Rosaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

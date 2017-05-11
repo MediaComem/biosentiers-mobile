@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower23"
-,"id_specie":23
-,"scientific_name":"Carex hirta L."
-,"height":0.4
-,"physical_characteristics":"Il s'agit d'une plante entre 10 et 60 cm de haut. Ses feuilles sont velues et étroites (2 à 4 mm). Les feuilles sont souvent plus longues que la tige. Sa tige porte 2 à 3 épis de fleurs. Chaque épis mesure 1 à 5 cm de long. "
-,"habitat_characteristics":"La laiche hérisse pousse  aux bords des chemins humides, dans les fossés ou les prairies humides, car elle aime les endroits humides. Elle supporte les endroits dont l'humidité peut beaucoup varier. "
-,"anecdote":"Comme beaucoup d'autres plantes, la laiche hérissée est dite vivace, parce qu'elle revient chaque année. "
-,"website":"https://www.infoflora.ch/fr/flore/2776-carex-hirta.html"
-,"family_name":"Cyperaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "23", "common_name" : { "fr" : "Laiche hérissée", "de" : "Behaarte Segge", "it" : "Carice villosa", "la" : "Carex hirta" }, "scientific_name" : "Carex hirta L.", "height" : "0.4", "period_start" : "4", "period_end" : "6", "physical_characteristics" : "Il s'agit d'une plante entre 10 et 60 cm de haut. Ses feuilles sont velues et étroites (2 à 4 mm). Les feuilles sont souvent plus longues que la tige. Sa tige porte 2 à 3 épis de fleurs. Chaque épis mesure 1 à 5 cm de long. ", "habitat_characteristics" : "La laiche hérisse pousse  aux bords des chemins humides, dans les fossés ou les prairies humides, car elle aime les endroits humides. Elle supporte les endroits dont l'humidité peut beaucoup varier. ", "anecdote" : "Comme beaucoup d'autres plantes, la laiche hérissée est dite vivace, parce qu'elle revient chaque année. ", "website" : "https://www.infoflora.ch/fr/flore/2776-carex-hirta.html", "family_name" : "Cyperaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower47"
-,"id_specie":47
-,"scientific_name":"Stellaria media aggr."
-,"height":0.3
-,"physical_characteristics":"Il s'agit d'une tige ronde qui a une ligne de poils sur un des côtés. Ses feuilles sont ovales et mesurent environ 4 cm de long. Ses pétales sont blancs."
-,"habitat_characteristics":"Cette plante pousse dans les cultures. "
-,"anecdote":"Le nom de mouron des oiseaux vient du fait que les oiseaux aiment beaucoup les graines de cette plantes. "
-,"website":"https://www.infoflora.ch/fr/flore/10033-stellaria-media-aggr.html"
-,"family_name":"Caryophyllaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "47", "common_name" : { "fr" : "Mouron des oiseaux", "de" : "Vogelmiere", "it" : "Centocchio comune", "la" : "Stellaria media aggr." }, "scientific_name" : "Stellaria media aggr.", "height" : "0.3", "period_start" : "1", "period_end" : "12", "physical_characteristics" : "Il s'agit d'une tige ronde qui a une ligne de poils sur un des côtés. Ses feuilles sont ovales et mesurent environ 4 cm de long. Ses pétales sont blancs.", "habitat_characteristics" : "Cette plante pousse dans les cultures. ", "anecdote" : "Le nom de mouron des oiseaux vient du fait que les oiseaux aiment beaucoup les graines de cette plantes. ", "website" : "https://www.infoflora.ch/fr/flore/10033-stellaria-media-aggr.html", "family_name" : "Caryophyllaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

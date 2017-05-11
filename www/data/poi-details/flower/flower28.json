@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower28"
-,"id_specie":28
-,"scientific_name":"Potamogeton coloratus Hornem."
-,"height":0.8
-,"physical_characteristics":"Sa tige mesure moins d'un mètre de long. Ses feuilles flottent. Les feuilles sont environ 2 fois plus longues que larges; La longueur peut être de 8 cm. "
-,"habitat_characteristics":"Cette plante pousse dans les eaux tranquilles, dans les fossés, les mares ou les prairies à roseaux. Elle se trouve sous l'eau. Elle aime les sols pauvre en nutriments. "
-,"anecdote":"Seules les feuilles sont visibles depuis la surface de l'eau, car la plante est sous l'eau et les feuilles flottent à la surface. "
-,"website":"https://www.infoflora.ch/fr/flore/4560-potamogeton-coloratus.html"
-,"family_name":"Potamogetonaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "28", "common_name" : { "fr" : "Potamot plantain", "de" : "Gefärbtes Laichkraut", "it" : "Brasca arrossata", "la" : "Potamogeton coloratus" }, "scientific_name" : "Potamogeton coloratus Hornem.", "height" : "0.8", "period_start" : "7", "period_end" : "9", "physical_characteristics" : "Sa tige mesure moins d'un mètre de long. Ses feuilles flottent. Les feuilles sont environ 2 fois plus longues que larges; La longueur peut être de 8 cm. ", "habitat_characteristics" : "Cette plante pousse dans les eaux tranquilles, dans les fossés, les mares ou les prairies à roseaux. Elle se trouve sous l'eau. Elle aime les sols pauvre en nutriments. ", "anecdote" : "Seules les feuilles sont visibles depuis la surface de l'eau, car la plante est sous l'eau et les feuilles flottent à la surface. ", "website" : "https://www.infoflora.ch/fr/flore/4560-potamogeton-coloratus.html", "family_name" : "Potamogetonaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

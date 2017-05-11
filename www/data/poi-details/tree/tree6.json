@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree6"
-,"id_specie":6
-,"scientific_name":"Alnus incana (L.) Moench"
-,"height":10
-,"physical_characteristics":"Il s'agit d'un arbre. Son écorce est lisse et de couleur grise-argentée. Ses feuilles sont ovales et se terminent brusquement par une pointe fine. Ses fruits sont de petits cônes qui sont directement reliés aux branches (pas de tiges intermédiaires).  "
-,"habitat_characteristics":"Cet arbre se trouve dans des forêts humides et sur des rives, aux abords de cours d'eau, car il aime les sols très humides. "
-,"anecdote":"L'aulne blanchâtre aime les sols très humides. Il supporte les sols dont l'humidité peut beaucoup varier. Il se trouve sur des sols riches en nutriments (azote). "
-,"website":"https://www.infoflora.ch/fr/flore/275-alnus-incana.html"
-,"family_name":"Betulaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "6", "common_name" : { "fr" : "Aulne blanchâtre", "de" : "Grau-Erle", "it" : "Ontano bianco", "la" : "Alnus incana" }, "scientific_name" : "Alnus incana (L.) Moench", "height" : "10", "period_start" : "2", "period_end" : "4", "physical_characteristics" : "Il s'agit d'un arbre. Son écorce est lisse et de couleur grise-argentée. Ses feuilles sont ovales et se terminent brusquement par une pointe fine. Ses fruits sont de petits cônes qui sont directement reliés aux branches (pas de tiges intermédiaires).  ", "habitat_characteristics" : "Cet arbre se trouve dans des forêts humides et sur des rives, aux abords de cours d'eau, car il aime les sols très humides. ", "anecdote" : "L'aulne blanchâtre aime les sols très humides. Il supporte les sols dont l'humidité peut beaucoup varier. Il se trouve sur des sols riches en nutriments (azote). ", "website" : "https://www.infoflora.ch/fr/flore/275-alnus-incana.html", "family_name" : "Betulaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

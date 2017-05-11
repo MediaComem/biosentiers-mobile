@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower168"
-,"id_specie":168
-,"scientific_name":"Sanguisorba minor Scop. s.l."
-,"height":0.3
-,"physical_characteristics":"La petite pimprenelle mesure entre 20 et 50 cm de haut. Ses feuilles sont ovales et ont de grandes dents. Les fleurs sont petites et verdâtres ou rougeâtres. "
-,"habitat_characteristics":"On peut trouver cette plante dans les prairies sèches, car elle aime les endroits lumineux et plutôt secs. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/10141-sanguisorba-minor-sl.html"
-,"family_name":"Rosaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "168", "common_name" : { "fr" : "Petite pimprenelle", "de" : "Kleiner Wiesenknopf", "it" : "Salvastrella minore", "la" : "Sanguisorba minor s.l." }, "scientific_name" : "Sanguisorba minor Scop. s.l.", "height" : "0.3", "period_start" : "5", "period_end" : "8", "physical_characteristics" : "La petite pimprenelle mesure entre 20 et 50 cm de haut. Ses feuilles sont ovales et ont de grandes dents. Les fleurs sont petites et verdâtres ou rougeâtres. ", "habitat_characteristics" : "On peut trouver cette plante dans les prairies sèches, car elle aime les endroits lumineux et plutôt secs. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/10141-sanguisorba-minor-sl.html", "family_name" : "Rosaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

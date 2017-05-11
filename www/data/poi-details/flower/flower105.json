@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower105"
-,"id_specie":105
-,"scientific_name":"Poa annua L."
-,"height":0.2
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 5 et 30 cm de haut. Ses feuilles mesurent 1 à 3 mm de large et sont longues. "
-,"habitat_characteristics":"Le pâturin annuel peut se trouver dans les gazons ou sur les chemins. Il aime les endroits un peu humides et lumineux. "
-,"anecdote":"Cette plante fleurit toute l'année. "
-,"website":"https://www.infoflora.ch/fr/flore/2835-poa-annua.html"
-,"family_name":"Poaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "105", "common_name" : { "fr" : "Pâturin annuel", "de" : "Einjähriges Rispengras", "it" : "Fienarola annuale", "la" : "Poa annua" }, "scientific_name" : "Poa annua L.", "height" : "0.2", "period_start" : "1", "period_end" : "12", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 5 et 30 cm de haut. Ses feuilles mesurent 1 à 3 mm de large et sont longues. ", "habitat_characteristics" : "Le pâturin annuel peut se trouver dans les gazons ou sur les chemins. Il aime les endroits un peu humides et lumineux. ", "anecdote" : "Cette plante fleurit toute l'année. ", "website" : "https://www.infoflora.ch/fr/flore/2835-poa-annua.html", "family_name" : "Poaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

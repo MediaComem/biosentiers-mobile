@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree157"
-,"id_specie":157
-,"scientific_name":"Alnus glutinosa (L.) Gaertn."
-,"height":20
-,"physical_characteristics":"L'aulne glutineux est un arbre qui peut mesurer jusqu'à 20 mètres de haut. "
-,"habitat_characteristics":"On peut trouver cet arbre dans les forêts humides ou sur les rives. Il aime les endroits très très humides. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/274-alnus-glutinosa.html"
-,"family_name":"Betulaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "157", "common_name" : { "fr" : "Aulne glutineux", "de" : "Schwarz-Erle", "it" : "Ontano comune", "la" : "Alnus glutinosa" }, "scientific_name" : "Alnus glutinosa (L.) Gaertn.", "height" : "20", "period_start" : "2", "period_end" : "4", "physical_characteristics" : "L'aulne glutineux est un arbre qui peut mesurer jusqu'à 20 mètres de haut. ", "habitat_characteristics" : "On peut trouver cet arbre dans les forêts humides ou sur les rives. Il aime les endroits très très humides. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/274-alnus-glutinosa.html", "family_name" : "Betulaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

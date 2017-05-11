@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower161"
-,"id_specie":161
-,"scientific_name":"Angelica sylvestris L."
-,"height":1.5
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 50 et 150 cm, voire 200 cm. Sa tige est rougeâtre. Ses feuilles mesurent entre 3 et 8 cm de long. Ses pétales sont blancs ou verdâtres à rosés. "
-,"habitat_characteristics":"L'angélique sauvage peut être trouvée dans les forêts, dans les lieux humides, car elle aime les milieux très humides. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/1566-angelica-sylvestris.html"
-,"family_name":"Apiaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "161", "common_name" : { "fr" : "Angélique sauvage", "de" : "Wilde Brustwurz", "it" : "Angelica selvatica", "la" : "Angelica sylvestris" }, "scientific_name" : "Angelica sylvestris L.", "height" : "1.5", "period_start" : "7", "period_end" : "9", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 50 et 150 cm, voire 200 cm. Sa tige est rougeâtre. Ses feuilles mesurent entre 3 et 8 cm de long. Ses pétales sont blancs ou verdâtres à rosés. ", "habitat_characteristics" : "L'angélique sauvage peut être trouvée dans les forêts, dans les lieux humides, car elle aime les milieux très humides. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/1566-angelica-sylvestris.html", "family_name" : "Apiaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

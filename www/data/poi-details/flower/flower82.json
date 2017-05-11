@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower82"
-,"id_specie":82
-,"scientific_name":"Veronica beccabunga L."
-,"height":0.5
-,"physical_characteristics":"Il s'agit d'une longue tige qui mesure entre 30 et 60 cm. Ses feuilles ont une forme d'ellipse, sont luisantes et font 1 à 4 cm de long et 1 à 2 cm de large. Les fleurs sont en grappes et s'opposent les unes par rapport aux autres. "
-,"habitat_characteristics":"Cette plante peut être trouvée dans les fossés, les prairies ou les ruisseaux. Elle aime les endroits très très humides et est souvent sous l'eau. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/1904-veronica-beccabunga.html"
-,"family_name":"Plantaginaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "82", "common_name" : { "fr" : "Véronique beccabunga", "de" : "Bachbungen-Ehrenpreis", "it" : "Veronica beccabunga", "la" : "Veronica beccabunga" }, "scientific_name" : "Veronica beccabunga L.", "height" : "0.5", "period_start" : "5", "period_end" : "8", "physical_characteristics" : "Il s'agit d'une longue tige qui mesure entre 30 et 60 cm. Ses feuilles ont une forme d'ellipse, sont luisantes et font 1 à 4 cm de long et 1 à 2 cm de large. Les fleurs sont en grappes et s'opposent les unes par rapport aux autres. ", "habitat_characteristics" : "Cette plante peut être trouvée dans les fossés, les prairies ou les ruisseaux. Elle aime les endroits très très humides et est souvent sous l'eau. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/1904-veronica-beccabunga.html", "family_name" : "Plantaginaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower20"
-,"id_specie":20
-,"scientific_name":"Primula acaulis (L.) L."
-,"height":0.1
-,"physical_characteristics":"Il s'agit d'une plante sans tige principale. Ses feuilles sont plutôt allongées, de 15 cm de long et avec des dents irrégulières. Le dessous des feuilles est vert pâle et velu."
-,"habitat_characteristics":"La primevère acaule se trouve dans les vergers, les buissons et les forêts éclairées, car elle aime les endroits éclairés. Elle préfère les sols un peu humides. "
-,"anecdote":"La primevère acaule est aussi appelé primevère sans tige, car cette plante n'a pas de tige principale. "
-,"website":"https://www.infoflora.ch/fr/flore/878-primula-acaulis.html"
-,"family_name":"Primulaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "20", "common_name" : { "fr" : "Primevère acaule", "de" : "Stängellose Schlüsselblume", "it" : "Primula comune", "la" : "Primula acaulis" }, "scientific_name" : "Primula acaulis (L.) L.", "height" : "0.1", "period_start" : "3", "period_end" : "4", "physical_characteristics" : "Il s'agit d'une plante sans tige principale. Ses feuilles sont plutôt allongées, de 15 cm de long et avec des dents irrégulières. Le dessous des feuilles est vert pâle et velu.", "habitat_characteristics" : "La primevère acaule se trouve dans les vergers, les buissons et les forêts éclairées, car elle aime les endroits éclairés. Elle préfère les sols un peu humides. ", "anecdote" : "La primevère acaule est aussi appelé primevère sans tige, car cette plante n'a pas de tige principale. ", "website" : "https://www.infoflora.ch/fr/flore/878-primula-acaulis.html", "family_name" : "Primulaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

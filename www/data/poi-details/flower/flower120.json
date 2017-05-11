@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower120"
-,"id_specie":120
-,"scientific_name":"Ranunculus ficaria L."
-,"height":0.2
-,"physical_characteristics":"Cette plante peut mesurer entre 10 et 30 cm de haut. Ses feuilles sont en forme de cœur. Ses fleurs ont 8 à 11 pétales et sont de couleur jaune. "
-,"habitat_characteristics":"On peut trouver la ficaire dans les vergers ou aux bords des ruisseaux et des flaques, car elle aime les endroits humides. Elle aime aussi les zones d'ombre. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/172-ranunculus-ficaria.html"
-,"family_name":"Ranunculaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "120", "common_name" : { "fr" : "Ficaire", "de" : "Scharbockskraut", "it" : "Ranuncolo favagello", "la" : "Ranunculus ficaria" }, "scientific_name" : "Ranunculus ficaria L.", "height" : "0.2", "period_start" : "3", "period_end" : "4", "physical_characteristics" : "Cette plante peut mesurer entre 10 et 30 cm de haut. Ses feuilles sont en forme de cur. Ses fleurs ont 8 à 11 pétales et sont de couleur jaune. ", "habitat_characteristics" : "On peut trouver la ficaire dans les vergers ou aux bords des ruisseaux et des flaques, car elle aime les endroits humides. Elle aime aussi les zones d'ombre. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/172-ranunculus-ficaria.html", "family_name" : "Ranunculaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

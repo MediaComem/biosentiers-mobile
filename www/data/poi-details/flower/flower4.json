@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower4"
-,"id_specie":4
-,"scientific_name":"Phragmites australis (Cav.) Steud."
-,"height":3
-,"physical_characteristics":"La hauteur du roseau commune se situe entre 1 et 4 mètres. La tige est plutôt fine (1 à 2 cm). Les feuilles sont rigides, longues (30 à 50 cm) et étroites (1 à 3 cm). "
-,"habitat_characteristics":"Cette plante se trouve dans des marais, sur des rives, dans des fossés, car elle aime beaucoup les sols très humides. "
-,"anecdote":"Le roseau commun aime les endroits très très humides. De plus, il supporte les sols dont l'humidité peut beaucoup varier. Il se trouve sur des sols riches en nutriments (azote). "
-,"website":"https://www.infoflora.ch/fr/flore/2985-phragmites-australis.html"
-,"family_name":"Poaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "4", "common_name" : { "fr" : "Roseau commun", "de" : "Schilf", "it" : "Cannuccia di palude", "la" : "Phragmites australis" }, "scientific_name" : "Phragmites australis (Cav.) Steud.", "height" : "3", "period_start" : "8", "period_end" : "9", "physical_characteristics" : "La hauteur du roseau commune se situe entre 1 et 4 mètres. La tige est plutôt fine (1 à 2 cm). Les feuilles sont rigides, longues (30 à 50 cm) et étroites (1 à 3 cm). ", "habitat_characteristics" : "Cette plante se trouve dans des marais, sur des rives, dans des fossés, car elle aime beaucoup les sols très humides. ", "anecdote" : "Le roseau commun aime les endroits très très humides. De plus, il supporte les sols dont l'humidité peut beaucoup varier. Il se trouve sur des sols riches en nutriments (azote). ", "website" : "https://www.infoflora.ch/fr/flore/2985-phragmites-australis.html", "family_name" : "Poaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

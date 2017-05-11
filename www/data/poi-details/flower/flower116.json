@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower116"
-,"id_specie":116
-,"scientific_name":"Artemisia vulgaris L."
-,"height":0.9
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 40 et 140 cm de haut. Sa tige est rougeâtre. Ses feuilles sont de couleur vert foncé dessus et blanchâtre dessous. Les fleurs sont de couleur jaune ou brun rougeâtre. "
-,"habitat_characteristics":"L'armoise commune peut se trouver aux bords des chemins. Elle aime les endroits un peu humides et lumineux. "
-,"anecdote":"Cette plante a une odeur aromatique. "
-,"website":"https://www.infoflora.ch/fr/flore/2313-artemisia-vulgaris.html"
-,"family_name":"Asteraceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "116", "common_name" : { "fr" : "Armoise commune", "de" : "Gemeiner Beifuss", "it" : "Assenzio selvatico", "la" : "Artemisia vulgaris" }, "scientific_name" : "Artemisia vulgaris L.", "height" : "0.9", "period_start" : "7", "period_end" : "9", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 40 et 140 cm de haut. Sa tige est rougeâtre. Ses feuilles sont de couleur vert foncé dessus et blanchâtre dessous. Les fleurs sont de couleur jaune ou brun rougeâtre. ", "habitat_characteristics" : "L'armoise commune peut se trouver aux bords des chemins. Elle aime les endroits un peu humides et lumineux. ", "anecdote" : "Cette plante a une odeur aromatique. ", "website" : "https://www.infoflora.ch/fr/flore/2313-artemisia-vulgaris.html", "family_name" : "Asteraceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

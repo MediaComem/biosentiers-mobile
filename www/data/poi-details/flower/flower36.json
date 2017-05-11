@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower36"
-,"id_specie":36
-,"scientific_name":"Anemone ranunculoides L."
-,"height":0.2
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 10 et 25 cm de haut. Ses feuilles sont au nombre de trois autour de la tige et sont chacune composées de 3 parties (3 lobes). Ses fleurs sont jaunes et ont un diamètre d'environ 2 cm. "
-,"habitat_characteristics":"L'anémone jaune peut pousser dans les forêts humides, les haies ou les vergers. Elle aime les sols un peu humides et les zones d'ombre. "
-,"anecdote":"Cette plante s'appelle aussi anémone fausse renoncule, car ses fleurs ressemblent aux fleurs d'une autre plante, la renoncule."
-,"website":"https://www.infoflora.ch/fr/flore/152-anemone-ranunculoides.html"
-,"family_name":"Ranunculaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "36", "common_name" : { "fr" : "Anémone jaune", "de" : "Gelbes Windröschen", "it" : "Anemone gialla", "la" : "Anemone ranunculoides" }, "scientific_name" : "Anemone ranunculoides L.", "height" : "0.2", "period_start" : "4", "period_end" : "4", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 10 et 25 cm de haut. Ses feuilles sont au nombre de trois autour de la tige et sont chacune composées de 3 parties (3 lobes). Ses fleurs sont jaunes et ont un diamètre d'environ 2 cm. ", "habitat_characteristics" : "L'anémone jaune peut pousser dans les forêts humides, les haies ou les vergers. Elle aime les sols un peu humides et les zones d'ombre. ", "anecdote" : "Cette plante s'appelle aussi anémone fausse renoncule, car ses fleurs ressemblent aux fleurs d'une autre plante, la renoncule.", "website" : "https://www.infoflora.ch/fr/flore/152-anemone-ranunculoides.html", "family_name" : "Ranunculaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

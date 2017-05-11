@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower125"
-,"id_specie":125
-,"scientific_name":"Cirsium palustre (L.) Scop."
-,"height":1.2
-,"physical_characteristics":"Le cirse des marais est une plante qui mesure entre 40 et 150 cm, voire 200 cm de haut. Sa tige est dressée et a des épines. Ses feuilles sont raides. "
-,"habitat_characteristics":"On peut trouver le circe des marais dans les prairies marécageuses. Il aime les endroits très humides. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/2390-cirsium-palustre.html"
-,"family_name":"Asteraceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "125", "common_name" : { "fr" : "Cirse des marais", "de" : "Sumpf-Kratzdistel", "it" : "Cardo di palude", "la" : "Cirsium palustre" }, "scientific_name" : "Cirsium palustre (L.) Scop.", "height" : "1.2", "period_start" : "7", "period_end" : "10", "physical_characteristics" : "Le cirse des marais est une plante qui mesure entre 40 et 150 cm, voire 200 cm de haut. Sa tige est dressée et a des épines. Ses feuilles sont raides. ", "habitat_characteristics" : "On peut trouver le circe des marais dans les prairies marécageuses. Il aime les endroits très humides. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/2390-cirsium-palustre.html", "family_name" : "Asteraceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

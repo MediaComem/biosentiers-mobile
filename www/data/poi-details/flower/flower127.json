@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower127"
-,"id_specie":127
-,"scientific_name":"Iris pseudacorus L."
-,"height":0.8
-,"physical_characteristics":"L'iris jaune mesure entre 50 et 100 cm de haut. Ses feuilles mesurent entre 1 et 3 cm de large et peuvent mesurer jusqu'à 90 cm de long. Les fleurs de cette plante sont jaunes. "
-,"habitat_characteristics":"Il s'agit d'une plante qui peut se trouver dans les fossés ou aux bords des cours d'eau, car elle aime les endroits très très humides. "
-,"anecdote":"L'iris jaune s'appelle aussi l'iris des marais, car elle aime les endroits très très humides. "
-,"website":"https://www.infoflora.ch/fr/flore/3138-iris-pseudacorus.html"
-,"family_name":"Iridaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "127", "common_name" : { "fr" : "Iris jaune", "de" : "Gelbe Schwertlilie", "it" : "Giaggiolo acquatico", "la" : "Iris pseudacorus" }, "scientific_name" : "Iris pseudacorus L.", "height" : "0.8", "period_start" : "6", "period_end" : "6", "physical_characteristics" : "L'iris jaune mesure entre 50 et 100 cm de haut. Ses feuilles mesurent entre 1 et 3 cm de large et peuvent mesurer jusqu'à 90 cm de long. Les fleurs de cette plante sont jaunes. ", "habitat_characteristics" : "Il s'agit d'une plante qui peut se trouver dans les fossés ou aux bords des cours d'eau, car elle aime les endroits très très humides. ", "anecdote" : "L'iris jaune s'appelle aussi l'iris des marais, car elle aime les endroits très très humides. ", "website" : "https://www.infoflora.ch/fr/flore/3138-iris-pseudacorus.html", "family_name" : "Iridaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

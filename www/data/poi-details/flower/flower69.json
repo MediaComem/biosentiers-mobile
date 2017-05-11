@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower69"
-,"id_specie":69
-,"scientific_name":"Alyssum alyssoides (L.) L."
-,"height":0.1
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 5 et 20 cm de haut. La plante est de couleur vert blanchâtre. Ses feuilles mesurent jusqu'à 2 cm de long. Ses pétales sont de couleur jaune pâle, puis blanchâtre. Les pétales mesurent 2 à 4 mm. "
-,"habitat_characteristics":"L'alysson annuel peut se trouver dans les prés secs, car il aime les endroits secs et lumineux. Ses besoins en nourriture sont plutôt faibles. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/722-alyssum-alyssoides.html"
-,"family_name":"Brassicaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "69", "common_name" : { "fr" : "Alysson annuel", "de" : "Kelch-Steinkraut", "it" : "Alisso annuo", "la" : "Alyssum alyssoides" }, "scientific_name" : "Alyssum alyssoides (L.) L.", "height" : "0.1", "period_start" : "4", "period_end" : "5", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 5 et 20 cm de haut. La plante est de couleur vert blanchâtre. Ses feuilles mesurent jusqu'à 2 cm de long. Ses pétales sont de couleur jaune pâle, puis blanchâtre. Les pétales mesurent 2 à 4 mm. ", "habitat_characteristics" : "L'alysson annuel peut se trouver dans les prés secs, car il aime les endroits secs et lumineux. Ses besoins en nourriture sont plutôt faibles. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/722-alyssum-alyssoides.html", "family_name" : "Brassicaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

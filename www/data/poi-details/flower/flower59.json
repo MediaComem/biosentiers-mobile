@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower59"
-,"id_specie":59
-,"scientific_name":"Trifolium repens L. s.l."
-,"height":0.2
-,"physical_characteristics":"Cette plante peut mesurer entre 10 et 40 cm de haut. Ses fleurs sont blanches, parfois jaunâtres ou rosées, puis brunâtres après que la plante ait fleuri. "
-,"habitat_characteristics":"Le trèfle rampant peut se trouver dans les gazons ou aux bords des chemins. Il aime les endroits lumineux. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/9585-trifolium-repens-sl.html"
-,"family_name":"Fabaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "59", "common_name" : { "fr" : "Trèfle rampant", "de" : "Kriechender Klee", "it" : "Trifoglio bianco", "la" : "Trifolium repens s.l." }, "scientific_name" : "Trifolium repens L. s.l.", "height" : "0.2", "period_start" : "5", "period_end" : "9", "physical_characteristics" : "Cette plante peut mesurer entre 10 et 40 cm de haut. Ses fleurs sont blanches, parfois jaunâtres ou rosées, puis brunâtres après que la plante ait fleuri. ", "habitat_characteristics" : "Le trèfle rampant peut se trouver dans les gazons ou aux bords des chemins. Il aime les endroits lumineux. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/9585-trifolium-repens-sl.html", "family_name" : "Fabaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

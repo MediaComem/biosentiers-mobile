@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree175"
-,"id_specie":175
-,"scientific_name":"Hedera helix L."
-,"height":20
-,"physical_characteristics":"Le lierre est un arbuste qui peut mesurer jusqu'à 20 mètres de haut. Le lierre peut être couché ou grimpant sur un support. Ses feuilles ne tombent jamais (elles sont persistantes). Elles sont palmées et ont 3 à 5 lobes de forme triangulaire. Les fleurs sont vert jaunâtre. Les baies sont noires et mesurent entre 8 et 10 mm. "
-,"habitat_characteristics":"Le lierre peut se trouver dans les forêts, vers les murs ou les rochers. Il aime les zones d'ombre. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/1480-hedera-helix.html"
-,"family_name":"Araliaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "175", "common_name" : { "fr" : "Lierre", "de" : "Efeu", "it" : "Edera", "la" : "Hedera helix" }, "scientific_name" : "Hedera helix L.", "height" : "20", "period_start" : "9", "period_end" : "10", "physical_characteristics" : "Le lierre est un arbuste qui peut mesurer jusqu'à 20 mètres de haut. Le lierre peut être couché ou grimpant sur un support. Ses feuilles ne tombent jamais (elles sont persistantes). Elles sont palmées et ont 3 à 5 lobes de forme triangulaire. Les fleurs sont vert jaunâtre. Les baies sont noires et mesurent entre 8 et 10 mm. ", "habitat_characteristics" : "Le lierre peut se trouver dans les forêts, vers les murs ou les rochers. Il aime les zones d'ombre. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/1480-hedera-helix.html", "family_name" : "Araliaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

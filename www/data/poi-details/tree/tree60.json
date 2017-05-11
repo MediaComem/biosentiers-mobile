@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree60"
-,"id_specie":60
-,"scientific_name":"Prunus spinosa L."
-,"height":3
-,"physical_characteristics":"Il s'agit d'un arbuste qui peut mesurer plus de 3 mètres de haut. Ses branches ont des épines. Son écorce est brun noir. Ses feuilles mesurent entre 2 et 4 cm et ont des dents."
-,"habitat_characteristics":"On peut trouver l'épine noire dans les lisières et les haies. Elle aime les endroits peu humides et lumineux. "
-,"anecdote":"L'épine noire s'appelle aussi prunellier et ses fruits, comestibles, se nomment les prunelles. "
-,"website":"https://www.infoflora.ch/fr/flore/1104-prunus-spinosa.html"
-,"family_name":"Rosaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "60", "common_name" : { "fr" : "Epine noire", "de" : "Schwarzdorn", "it" : "Prugnolo", "la" : "Prunus spinosa" }, "scientific_name" : "Prunus spinosa L.", "height" : "3", "period_start" : "4", "period_end" : "4", "physical_characteristics" : "Il s'agit d'un arbuste qui peut mesurer plus de 3 mètres de haut. Ses branches ont des épines. Son écorce est brun noir. Ses feuilles mesurent entre 2 et 4 cm et ont des dents.", "habitat_characteristics" : "On peut trouver l'épine noire dans les lisières et les haies. Elle aime les endroits peu humides et lumineux. ", "anecdote" : "L'épine noire s'appelle aussi prunellier et ses fruits, comestibles, se nomment les prunelles. ", "website" : "https://www.infoflora.ch/fr/flore/1104-prunus-spinosa.html", "family_name" : "Rosaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

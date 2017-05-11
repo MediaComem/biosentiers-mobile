@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower148"
-,"id_specie":148
-,"scientific_name":"Salvia pratensis L."
-,"height":0.5
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 30 et 60 cm de haut. En bas de la plante, les feuilles sont ovales et en forme de cœur. Les fleurs sont bleu violacé."
-,"habitat_characteristics":"La sauge des prés peut se trouver dans les prairies, les talus ou aux bords des champs. Elle aime les endroits lumineux et plutôt secs. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/1815-salvia-pratensis.html"
-,"family_name":"Lamiaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "148", "common_name" : { "fr" : "Sauge des prés", "de" : "Wiesen-Salbei", "it" : "Salvia comune", "la" : "Salvia pratensis" }, "scientific_name" : "Salvia pratensis L.", "height" : "0.5", "period_start" : "5", "period_end" : "8", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 30 et 60 cm de haut. En bas de la plante, les feuilles sont ovales et en forme de cur. Les fleurs sont bleu violacé.", "habitat_characteristics" : "La sauge des prés peut se trouver dans les prairies, les talus ou aux bords des champs. Elle aime les endroits lumineux et plutôt secs. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/1815-salvia-pratensis.html", "family_name" : "Lamiaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

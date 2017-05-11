@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower43"
-,"id_specie":43
-,"scientific_name":"Anthyllis vulneraria L. s.l."
-,"height":0.3
-,"physical_characteristics":"L'anthyllide vulnéraire mesure entre 15 et 40 cm de haut. Ses tiges ont des poils. "
-,"habitat_characteristics":"Cette plante peut se trouver dans les pelouses sèches. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/10006-anthyllis-vulneraria-sl.html"
-,"family_name":"Fabaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "43", "common_name" : { "fr" : "Anthyllide vulnéraire", "de" : "Echter Wundklee", "it" : "Vulneraria comune", "la" : "Anthyllis vulneraria s.l." }, "scientific_name" : "Anthyllis vulneraria L. s.l.", "height" : "0.3", "period_start" : "5", "period_end" : "8", "physical_characteristics" : "L'anthyllide vulnéraire mesure entre 15 et 40 cm de haut. Ses tiges ont des poils. ", "habitat_characteristics" : "Cette plante peut se trouver dans les pelouses sèches. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/10006-anthyllis-vulneraria-sl.html", "family_name" : "Fabaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

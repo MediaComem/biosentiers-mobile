@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower66"
-,"id_specie":66
-,"scientific_name":"Carex riparia Curtis"
-,"height":0.8
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 50 cm et 1 mètre. Sa tige est dure. Ses feuilles sont plutôt étroites (6 à 15 m). "
-,"habitat_characteristics":"La laiche des rives aime les rives des cours d'eau tranquilles. Cette plante se trouve complètement sous l'eau. Elle aime les endroits lumineux. Ses besoins en nourriture sont plutôt grands. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/2800-carex-riparia.html"
-,"family_name":"Cyperaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "66", "common_name" : { "fr" : "Laiche des rives", "de" : "Ufer-Segge", "it" : "Carice spondicola", "la" : "Carex riparia" }, "scientific_name" : "Carex riparia Curtis", "height" : "0.8", "period_start" : "5", "period_end" : "6", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 50 cm et 1 mètre. Sa tige est dure. Ses feuilles sont plutôt étroites (6 à 15 m). ", "habitat_characteristics" : "La laiche des rives aime les rives des cours d'eau tranquilles. Cette plante se trouve complètement sous l'eau. Elle aime les endroits lumineux. Ses besoins en nourriture sont plutôt grands. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/2800-carex-riparia.html", "family_name" : "Cyperaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

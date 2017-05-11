@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower170"
-,"id_specie":170
-,"scientific_name":"Senecio vulgaris L."
-,"height":0.3
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 10 et 40 cm de haut. Ses feuilles sont particulières. Ses fleurs sont jaunes et mesurent environ 4 mm de large. "
-,"habitat_characteristics":"Le séneçon commun peut être trouvé dans les champs ou les jardins. Il aime les endroits lumineux. "
-,"anecdote":"Cette plante fleurit toute l'année. "
-,"website":"https://www.infoflora.ch/fr/flore/2355-senecio-vulgaris.html"
-,"family_name":"Asteraceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "170", "common_name" : { "fr" : "Séneçon commun", "de" : "Gemeines Greiskraut", "it" : "Senecione comune", "la" : "Senecio vulgaris" }, "scientific_name" : "Senecio vulgaris L.", "height" : "0.3", "period_start" : "1", "period_end" : "12", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 10 et 40 cm de haut. Ses feuilles sont particulières. Ses fleurs sont jaunes et mesurent environ 4 mm de large. ", "habitat_characteristics" : "Le séneçon commun peut être trouvé dans les champs ou les jardins. Il aime les endroits lumineux. ", "anecdote" : "Cette plante fleurit toute l'année. ", "website" : "https://www.infoflora.ch/fr/flore/2355-senecio-vulgaris.html", "family_name" : "Asteraceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

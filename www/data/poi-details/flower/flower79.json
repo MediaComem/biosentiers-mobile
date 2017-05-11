@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower79"
-,"id_specie":79
-,"scientific_name":"Dianthus giganteus d'Urv."
-,"height":1
-,"physical_characteristics":"Il peut mesurer jusqu'à 1 mètre de haut."
-,"habitat_characteristics":"L'œillet géant aime les endroits lumineux et plutôt secs. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/13025-dianthus-giganteus.html"
-,"family_name":"Caryophyllaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "79", "common_name" : { "fr" : "Oeillet géant", "de" : "Riesen-Nelke", "it" : "", "la" : "Dianthus giganteus" }, "scientific_name" : "Dianthus giganteus d'Urv.", "height" : "1", "period_start" : "7", "period_end" : "10", "physical_characteristics" : "Il peut mesurer jusqu'à 1 mètre de haut.", "habitat_characteristics" : "L'illet géant aime les endroits lumineux et plutôt secs. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/13025-dianthus-giganteus.html", "family_name" : "Caryophyllaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

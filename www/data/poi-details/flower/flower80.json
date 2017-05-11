@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower80"
-,"id_specie":80
-,"scientific_name":"Capsella rubella Reut."
-,"height":0.3
-,"physical_characteristics":"Il s'agit d'une plante qui mesure au maximum 30 cm de haut. Les pétales sont petits (ils mesurent seulement 2 mm de long) et souvent rougeâtres."
-,"habitat_characteristics":"La capselle rougeâtre peut se trouver dans les champs ou aux abords des chemins. Elle aime les endroits lumineux et plutôt secs. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/752-capsella-rubella.html"
-,"family_name":"Brassicaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "80", "common_name" : { "fr" : "Capselle rougeâtre", "de" : "Rötliches Hirtentäschel", "it" : "Borsapastore annuale", "la" : "Capsella rubella" }, "scientific_name" : "Capsella rubella Reut.", "height" : "0.3", "period_start" : "4", "period_end" : "11", "physical_characteristics" : "Il s'agit d'une plante qui mesure au maximum 30 cm de haut. Les pétales sont petits (ils mesurent seulement 2 mm de long) et souvent rougeâtres.", "habitat_characteristics" : "La capselle rougeâtre peut se trouver dans les champs ou aux abords des chemins. Elle aime les endroits lumineux et plutôt secs. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/752-capsella-rubella.html", "family_name" : "Brassicaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

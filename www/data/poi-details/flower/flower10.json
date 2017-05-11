@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower10"
-,"id_specie":10
-,"scientific_name":"Potentilla collina aggr."
-,"height":0.3
-,"physical_characteristics":"Il s'agit d'une plante qui mesure jusqu'à 30 cm de haut. Ses feuilles ont 5 folioles. "
-,"habitat_characteristics":"Cette plante peut se trouver dans les lieux secs, car elle aime les endroits secs. Elle aime aussi les endroits lumineux. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/3881-potentilla-collina.html"
-,"family_name":"Rosaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "10", "common_name" : { "fr" : "Potentille des collines", "de" : "Hügel-Fingerkraut", "it" : "", "la" : "Potentilla collina aggr." }, "scientific_name" : "Potentilla collina aggr.", "height" : "0.3", "period_start" : "5", "period_end" : "7", "physical_characteristics" : "Il s'agit d'une plante qui mesure jusqu'à 30 cm de haut. Ses feuilles ont 5 folioles. ", "habitat_characteristics" : "Cette plante peut se trouver dans les lieux secs, car elle aime les endroits secs. Elle aime aussi les endroits lumineux. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/3881-potentilla-collina.html", "family_name" : "Rosaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }

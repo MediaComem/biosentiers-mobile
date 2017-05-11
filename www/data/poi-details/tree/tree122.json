@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree122"
-,"id_specie":122
-,"scientific_name":"Berberis thunbergii DC."
-,"height":1
-,"physical_characteristics":"Il s'agit d'un arbuste qui mesurent entre 60 et 200 cm de haut. Ses feuilles mesurent entre 1 et 3 cm. Ses fleurs sont souvent tachées de rouge à l'extérieur. En automne, l'arbuste se colore en rouge. Ses baies sont rouges. "
-,"habitat_characteristics":"Cette plante est en général cultivée par l'homme comme plante de décoration. "
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/12142-berberis-thunbergii.html"
-,"family_name":"Berberidaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "122", "common_name" : { "fr" : "Epine-vinette de Thunberg", "de" : "Thunbergs Berberitze", "it" : "Crespino di Thunberg", "la" : "Berberis thunbergii" }, "scientific_name" : "Berberis thunbergii DC.", "height" : "1", "period_start" : "5", "period_end" : "5", "physical_characteristics" : "Il s'agit d'un arbuste qui mesurent entre 60 et 200 cm de haut. Ses feuilles mesurent entre 1 et 3 cm. Ses fleurs sont souvent tachées de rouge à l'extérieur. En automne, l'arbuste se colore en rouge. Ses baies sont rouges. ", "habitat_characteristics" : "Cette plante est en général cultivée par l'homme comme plante de décoration. ", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/12142-berberis-thunbergii.html", "family_name" : "Berberidaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

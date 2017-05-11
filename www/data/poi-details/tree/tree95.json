@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"tree95"
-,"id_specie":95
-,"scientific_name":"Euonymus europaeus L."
-,"height":3
-,"physical_characteristics":"Il s'agit d'un arbuste qui mesure entre 1 et 5 mètres de haut. Ses feuilles sont ovales et mesurent 3 à 5 cm de long. Ses fleurs ont 4 pétales et mesurent 8 à 10 mm. "
-,"habitat_characteristics":"Le fusain d'Europe peut se trouver dans les forêts ou les lisières. Il aime les sols humides et basiques."
-,"anecdote":null
-,"website":"https://www.infoflora.ch/fr/flore/4835-euonymus-europaeus.html"
-,"family_name":"Celastraceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "95", "common_name" : { "fr" : "Fusain d'Europe", "de" : "Gemeines Pfaffenhütchen", "it" : "Berretto da prete", "la" : "Euonymous europaeus" }, "scientific_name" : "Euonymus europaeus L.", "height" : "3", "period_start" : "6", "period_end" : "7", "physical_characteristics" : "Il s'agit d'un arbuste qui mesure entre 1 et 5 mètres de haut. Ses feuilles sont ovales et mesurent 3 à 5 cm de long. Ses fleurs ont 4 pétales et mesurent 8 à 10 mm. ", "habitat_characteristics" : "Le fusain d'Europe peut se trouver dans les forêts ou les lisières. Il aime les sols humides et basiques.", "anecdote" : "", "website" : "https://www.infoflora.ch/fr/flore/4835-euonymus-europaeus.html", "family_name" : "Celastraceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "tree", "owner_name" : "Alain Jotterand" }

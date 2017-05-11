@@ -1,15 +1,1 @@
-[
-{
-"json_featuretype":"flower29"
-,"id_specie":29
-,"scientific_name":"Ranunculus repens L."
-,"height":0.3
-,"physical_characteristics":"Il s'agit d'une plante qui mesure entre 10 et 50 cm de haut. Ses feuilles sont velues et composées en trois parties (trois lobes). Ses fleurs sont jaunes et mesurent 2 à 3 cm. "
-,"habitat_characteristics":"La renoncule rampante pousse dans les champs, aux bords des chemins, dans des sols humides, car elle aime l'humidité. Elle supporte les sols dont l'humidité peut beaucoup varier. "
-,"anecdote":"La renoncule rampante s'appelle aussi bouton d'or. Le contact de la peau avec cette plante peut provoquer des cloques. Si elle est fraîche, cette plante est toxique. Après séchage, sa toxicité disparaît et elle peut alors être utilisée dans la nourriture pour les animaux. "
-,"website":"https://www.infoflora.ch/fr/flore/211-ranunculus-repens.html"
-,"family_name":"Ranunculaceae"
-,"division_name":"Plantes à fleurs"
-,"reign_name":"Végétaux"
-}
-]
+{ "id_specie" : "29", "common_name" : { "fr" : "Renoncule rampante", "de" : "Kriechender Hahnenfuss", "it" : "Ranuncolo strisciante", "la" : "Ranunculus repens" }, "scientific_name" : "Ranunculus repens L.", "height" : "0.3", "period_start" : "5", "period_end" : "9", "physical_characteristics" : "Il s'agit d'une plante qui mesure entre 10 et 50 cm de haut. Ses feuilles sont velues et composées en trois parties (trois lobes). Ses fleurs sont jaunes et mesurent 2 à 3 cm. ", "habitat_characteristics" : "La renoncule rampante pousse dans les champs, aux bords des chemins, dans des sols humides, car elle aime l'humidité. Elle supporte les sols dont l'humidité peut beaucoup varier. ", "anecdote" : "La renoncule rampante s'appelle aussi bouton d'or. Le contact de la peau avec cette plante peut provoquer des cloques. Si elle est fraîche, cette plante est toxique. Après séchage, sa toxicité disparaît et elle peut alors être utilisée dans la nourriture pour les animaux. ", "website" : "https://www.infoflora.ch/fr/flore/211-ranunculus-repens.html", "family_name" : "Ranunculaceae", "division_name" : "Plantes à fleurs", "reign_name" : "Végétaux", "theme_name" : "flower", "owner_name" : "Alain Jotterand" }
