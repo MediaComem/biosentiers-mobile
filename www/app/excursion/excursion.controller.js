@@ -95,7 +95,7 @@
 
     function deactivatePositionWatch() {
       $log.info('ExcursionCtrl - Deactivating location watcher');
-      positionWatcher.cancel();
+      positionWatcher && positionWatcher.cancel();
       delete excursion.map.markers.user;
       excursion.positionState = 'refresh';
     }
@@ -124,8 +124,8 @@
     function badgeClassFromStatus(status) {
       var classes = {
         pending : 'bio-badge-calm',
-        ongoing : 'badge-energized',
-        finished: 'badge-assertive'
+        ongoing : 'bio-badge-energized',
+        finished: 'bio-badge-assertive'
       };
 
       return classes[status];
