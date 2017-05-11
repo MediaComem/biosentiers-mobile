@@ -1,13 +1,13 @@
 <ion-modal-view id="poi-filters" ng-controller="FiltersModalCtrl as filters">
-	<ion-header-bar class="bar bar-header bar-balanced">
+	<ion-header-bar class="bar bar-header bar-royal">
 		<h1 class="title">Filters</h1>
-		<button class="button button-clear button-primary" ng-click="filters.remove()">Close</button>
+		<button class="button button-clear button-primary" ng-click="filters.remove()">Fermer</button>
 	</ion-header-bar>
 	<ion-content>
 		<ion-list>
 			<li class="item item-toggle">
 				Afficher les éléments déjà vus
-				<label class="toggle">
+				<label class="toggle toggle-calm">
 					<input type="checkbox" ng-model="filters.selected.settings['showSeenPois']">
 					<div class="track">
 						<div class="handle"></div>
@@ -16,7 +16,7 @@
 			</li>
 			<li class="item item-toggle">
 				Afficher les éléments hors-saison
-				<label class="toggle">
+				<label class="toggle toggle-calm">
 					<input type="checkbox" ng-model="filters.selected.settings['showOffSeason']">
 					<div class="track">
 						<div class="handle"></div>

@@ -85,7 +85,7 @@
           }
         }, {
           text : "Connexion",
-          type : "button-calm",
+          type : "button-balanced",
           /**
            * When this button is tapped, performs the actual login process.
            * @param e

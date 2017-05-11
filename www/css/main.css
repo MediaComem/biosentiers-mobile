@@ -79,5 +79,20 @@ progress {
   position: initial;
   display: inline-block; }
 
+.item .bio-badge-calm {
+  background-color: transparent;
+  border: 1px solid #00e3a7;
+  color: #00e3a7; }
+
+.item .bio-badge-energized {
+  background-color: transparent;
+  border: 1px solid #ff8e32;
+  color: #ff8e32; }
+
+.item .bio-badge-assertive {
+  background-color: transparent;
+  border: 1px solid #ed5567;
+  color: #ed5567; }
+
 #ar-action i {
   margin-right: 5px; }

@@ -47,10 +47,10 @@ option.placeholder {
 
 .debug-altitude {
   position: absolute;
-  top: calc(20vh + 4px);
+  top: calc(15vh + 4px);
   right: 0;
   padding: 5px 10px;
-  width: calc(20vh + 3px);
+  width: calc(20vh + 4px);
   color: white; }
 
 .stats {
@@ -110,10 +110,10 @@ option.placeholder {
   top: 0;
   right: 0;
   z-index: 9;
-  border: 2px solid #34c05a; }
+  border: 2px solid #207f8c; }
 
 .minimap-container .leaflet-container {
-  height: 20vh;
+  height: 15vh;
   width: 20vh;
   /*-webkit-border-radius: 100px;*/
   /*-moz-border-radius: 100px;*/
