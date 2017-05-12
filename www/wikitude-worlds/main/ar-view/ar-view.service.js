@@ -181,9 +181,10 @@
      * @param lon The longitude of the new Location
      * @param alt The altitude of the new Location
      */
-    function onLocationChanged(lat, lon, alt) {
+    function onLocationChanged(lat, lon, alt, acc) {
+      $log.log('onLocationChanged', lat, lon, alt, acc);
       $rootScope.$apply(function () {
-        UserLocation.update(lon, lat, alt);
+        UserLocation.update(lon, lat, alt, acc);
       });
     }
 

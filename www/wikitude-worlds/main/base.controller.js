@@ -1,11 +1,27 @@
 (function() {
   angular
     .module('ar')
+    .filter('accValueToText', accValueToText)
     .controller('BaseCtrl', BaseCtrl);
+
+  // TODO : Ce filtre peut être supprimé ou modifié en production
+  function accValueToText() {
+    var text = {
+      1: 'LOW',
+      2: 'MEDIUM',
+      3: 'HIGH'
+    };
+
+    return function(input) {
+      return text[input];
+    }
+  }
 
   function BaseCtrl(AppActions, ArView, Modals, $log, Excursion, $scope, UserLocation) {
     var base = this;
 
+    // TODO : supprimer hors debug
+    base.debugPositionClass = 'royal';
     base.hasReachedEnd = false;
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
@@ -13,7 +29,9 @@
     base.finishExcursion = finishExcursion;
 
     UserLocation.realObs.subscribe(function(position) {
-      base.altitude = position.geometry.coordinates[2];
+      base.altitude = position.alt;
+      base.accuracy = position.acc;
+      updateDebugPositionClass(position.acc);
     });
 
     Excursion.currentPoiChangeObs.subscribe(showPoiModal);
@@ -23,6 +41,19 @@
     });
 
     ////////////////////
+
+    // TODO : Supprimer hors debug
+    function updateDebugPositionClass(acc) {
+      var classes = {
+        1: 'assertive',
+        2: 'energized',
+        3: 'balanced'
+      };
+
+      if (classes.hasOwnProperty(acc)) {
+        base.debugPositionClass = classes[acc];
+      }
+    }
 
     function closeAR() {
       $log.debug('Closing the AR');

@@ -112,7 +112,10 @@
 			</button>
 			<h1 class="title">Réalité augmentée</h1>
 		</ion-header-bar>
-		<div class="debug-altitude royal-bg">GPS altitude : {{base.altitude}}m</div>
+		<div class="debug-altitude {{base.debugPositionClass}}-bg">
+			<p>GPS altitude : {{base.altitude}}m</p>
+			<p>Précision : {{base.accuracy | accValueToText}}</p>
+		</div>
 		<div class="fabs" ng-class="{'with-manual-end-btn': base.hasReachedEnd}">
 			<button class="filters assertive-bg" type="button" data-tap-disabled="true" ng-click="base.showFiltersModal()">
 				<i class="icon ion-gear-a"></i>
