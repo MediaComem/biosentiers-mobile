@@ -19,6 +19,7 @@
     'big-map-modal',
     'debug-position-modal',
     'debug-stats',
+    'excursion-end-popup',
     'filters-modal',
     'map-icons-module',
     'mini-map',

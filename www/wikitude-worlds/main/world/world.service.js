@@ -33,6 +33,7 @@
 
     // Faking the position to be localised in the office.
     // AppActions.execute('setPosition', {lat: 46.78071086, lon: 6.64763376, alt: Altitude.correct(432)});
+    AppActions.execute('setPosition', {lat: 46.783958, lon: 6.656963, alt: Altitude.correct(437)});
 
     return service;
 

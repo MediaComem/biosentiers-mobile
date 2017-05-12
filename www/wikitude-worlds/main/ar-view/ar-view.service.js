@@ -3,32 +3,32 @@
  * This module is responsible for managing the ArView.
  * It initializes it, updates it, etc.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArExtremityMarker, ArMarker, $ionicPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArExtremityMarker, ArMarker, EndPopup, $ionicPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
     // Will store all the ArPoi in the view, by their id.
-    var arPointsById = {},
-      arExtremityPoints = {},
-      reachLimit = 250,
-      minPoiActiveDistance = 20,
-      excursionEndReachedSubject = new rx.ReplaySubject(1),
-      poisChangeSubject = new rx.Subject();
+    var arPointsById               = {},
+        arExtremityPoints          = {},
+        reachLimit                 = 250,
+        minPoiActiveDistance       = 20,
+        excursionEndReachedSubject = new rx.ReplaySubject(1),
+        poisChangeSubject          = new rx.Subject();
 
     var service = {
-      poisChangeObs: poisChangeSubject.asObservable(),
+      poisChangeObs         : poisChangeSubject.asObservable(),
       excursionEndReachedObs: excursionEndReachedSubject.asObservable(),
-      init: init,
-      updateAr: updateAr,
-      loadExtremityPoints: loadExtremityPoints,
-      pauseAr: pauseAr,
-      setPoiSeen: setPoiSeen
+      init                  : init,
+      updateAr              : updateAr,
+      loadExtremityPoints   : loadExtremityPoints,
+      pauseAr               : pauseAr,
+      setPoiSeen            : setPoiSeen
     };
 
     return service;
@@ -92,8 +92,8 @@
         visible: visiblePois
       };
 
-      var newPoiIds = _.map(nearestPois, getPoiId),
-        newVisiblePoiIds = _.map(visiblePois, getPoiId);
+      var newPoiIds        = _.map(nearestPois, getPoiId),
+          newVisiblePoiIds = _.map(visiblePois, getPoiId);
 
       // Remove points that are too far away from the AR.
       // Store the list of removed points.
@@ -127,7 +127,7 @@
     function loadExtremityPoints() {
       arExtremityPoints = {
         start: new ArExtremityMarker(Excursion.getStartPoint()),
-        end: new ArExtremityMarker(Excursion.getEndPoint(), onEnterActionRange)
+        end  : new ArExtremityMarker(Excursion.getEndPoint(), onEnterActionRange)
       }
     }
 
@@ -169,7 +169,7 @@
      * This function is called whenever the user clicks on the screen on the AR View.
      */
     function onScreenClick() {
-      $rootScope.$apply(function () {
+      $rootScope.$apply(function() {
         $log.log('screen clicked');
       });
     }
@@ -180,10 +180,11 @@
      * @param lat The latitude of the new Location
      * @param lon The longitude of the new Location
      * @param alt The altitude of the new Location
+     * @param acc The accuracy of the new Location
      */
     function onLocationChanged(lat, lon, alt, acc) {
       $log.log('onLocationChanged', lat, lon, alt, acc);
-      $rootScope.$apply(function () {
+      $rootScope.$apply(function() {
         UserLocation.update(lon, lat, alt, acc);
       });
     }
@@ -202,41 +203,21 @@
         var dist = arPoi.distanceToUser();
         $log.log("distance to user ", dist);
         if (1 === 1) {
-        // if (dist <= minPoiActiveDistance) {
+          // if (dist <= minPoiActiveDistance) {
           Excursion.loadCurrentPoi(arPoi.poi);
           // if (!arPoi.hasBeenSeen) setPoiSeen();
         } else {
-          AppActions.execute('toast', { message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt." });
+          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
         }
         return true; // Stop propagating the click event
       };
     }
 
     function onEnterActionRange() {
-      var yesButton = {
-        text: 'Oui',
-        type: 'button-positive',
-        onTap: function () {
-          return true;
-        }
-      },
-        noButton = {
-          text: 'Non',
-          type: 'button-outline button-assertive',
-          onTap: function () {
-            return false;
-          }
-        },
-        prompt = $ionicPopup.show({
-          title: 'Fin de sentier',
-          template: '<p>Vous avez atteint la fin de votre sentier.</p><p>Souhaitez-vous mettre fin à votre sortie ?</p>',
-          buttons: [noButton, yesButton]
-        });
-
-      prompt.then(function (validated) {
+      EndPopup.automatic().then(function(validated) {
         $log.log("promptEndOfExcursion - prompt result", validated);
         if (validated) {
-          AppActions.execute('finishExcursion', { excursionId: Excursion.id });
+          AppActions.execute('finishExcursion', {excursionId: Excursion.id});
         } else {
           excursionEndReachedSubject.onNext();
           $log.log('Pas de fin du sentier');
@@ -274,7 +255,7 @@
     function removeFarthestPois(nearestPoiIds) {
       var timer = Timers.start();
 
-      var removed = _.reduce(arPointsById, function (memo, arPoi, id) {
+      var removed = _.reduce(arPointsById, function(memo, arPoi, id) {
         if (!_.includes(nearestPoiIds, id)) {
           memo.push(removeArPoi(id));
         }
@@ -298,7 +279,7 @@
     function hideFilteredPois(visiblePoiIds) {
       var timer = Timers.start();
 
-      var hidden = _.reduce(arPointsById, function (memo, arPoi, id) {
+      var hidden = _.reduce(arPointsById, function(memo, arPoi, id) {
         // if (isArPoiVisible(arPoi) && !_.includes(visiblePoiIds, id)) {
         if (arPoi.isVisible() && !_.includes(visiblePoiIds, id)) {
           memo.push(setArPoiVisible(arPoi, false).poi);
@@ -324,7 +305,7 @@
     function addNewPois(newPois, newVisiblePoiIds) {
       var timer = Timers.start();
 
-      var added = _.filter(newPois, function (poi) {
+      var added = _.filter(newPois, function(poi) {
         if (!isInAr(poi)) {
           var visible = _.includes(newVisiblePoiIds, getPoiId(poi));
           addArPoi(poi, visible);
@@ -344,7 +325,7 @@
     function showVisiblePois(newVisiblePoiIds) {
       var timer = Timers.start();
 
-      var shown = _.reduce(newVisiblePoiIds, function (memo, id) {
+      var shown = _.reduce(newVisiblePoiIds, function(memo, id) {
 
         var arPoi = arPointsById[id];
         // arPoi.updateOpacity(); // Update drawables
@@ -369,7 +350,7 @@
      * @return {Array} Each poi from the pois argument whose ID is in the visiblePoiIds argument.
      */
     function filterVisiblePois(pois, visiblePoiIds) {
-      return _.filter(pois, function (poi) {
+      return _.filter(pois, function(poi) {
         return _.includes(visiblePoiIds, getPoiId(poi));
       });
     }

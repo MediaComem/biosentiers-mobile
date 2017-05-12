@@ -17,7 +17,7 @@
     }
   }
 
-  function BaseCtrl(AppActions, ArView, Modals, $log, Excursion, $scope, UserLocation) {
+  function BaseCtrl(AppActions, ArView, EndPopup, Modals, $log, Excursion, $scope, UserLocation) {
     var base = this;
 
     // TODO : supprimer hors debug
@@ -61,7 +61,9 @@
     }
 
     function finishExcursion() {
-      AppActions.execute('finishExcursion', {excursionId: Excursion.id});
+      EndPopup.manual().then(function(validated) {
+        validated && AppActions.execute('finishExcursion', {excursionId: Excursion.id});
+      });
     }
 
     function showDebugModal() {
