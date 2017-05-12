@@ -2,8 +2,8 @@
 	<ion-content>
 		<div class="excursion-map-container">
 			<div class="white-dropdown" ng-if="excursion.activeFAB"></div>
-			<leaflet id="map" maxbounds="excursion.map.maxbounds" defaults="excursion.map.defaults" tiles="excursion.map.tiles" center="excursion.map.center"
-			 geojson="excursion.map.geojson" geojson-nested="true" markers="excursion.map.markers" bounds="excursion.map.bounds">
+			<leaflet id="map" maxbounds="excursion.mapConfig.maxbounds" defaults="excursion.mapConfig.defaults" tiles="excursion.mapConfig.tiles" center="excursion.mapConfig.center"
+			 geojson="excursion.mapConfig.geojson" geojson-nested="true" markers="excursion.mapConfig.markers" bounds="excursion.mapConfig.bounds">
 
 			</leaflet>
 			<position-badge state="excursion.positionState" show-label="once" ng-click="excursion.togglePositionWatch()"></position-badge>

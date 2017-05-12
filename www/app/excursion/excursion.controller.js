@@ -23,7 +23,7 @@
 
     excursion.data = excursionData;
     excursion.downloadProgress = "Télécharger";
-    excursion.map = new ExcursionMapConfig;
+    excursion.mapConfig = new ExcursionMapConfig;
     excursion.positionState = 'refresh';
     excursion.activeFAB = false;
 
@@ -66,11 +66,11 @@
       $log.log('ExcursionCtrl - center map on zone', zone);
       var zoneGeoJson = getZone(zone);
       $log.log('centerMapOnZone', zoneGeoJson);
-      excursion.map.setBoundsFromGeoJson(zoneGeoJson);
+      excursion.mapConfig.setBoundsFromGeoJson(zoneGeoJson);
     }
 
     function getZone(zoneId) {
-      return _.find(excursion.map.geojson.zones.data.features, function(zone) {
+      return _.find(excursion.mapConfig.geojson.zones.data.features, function(zone) {
         return zone.properties.id_zone === zoneId;
       })
     }
@@ -78,10 +78,10 @@
     function loadExcursionData(excursionData) {
       geoData = excursionData;
       $log.info('getExcursionGeoData -  excursionGeoData', geoData);
-      excursion.map.setPath(geoData.path);
-      excursion.map.setZones(geoData.zones);
-      excursion.map.setExtremityPoints(geoData.extremityPoints);
-      excursion.map.setBoundsFromGeoJson(geoData.path);
+      excursion.mapConfig.setPath(geoData.path);
+      excursion.mapConfig.setZones(geoData.zones);
+      excursion.mapConfig.setExtremityPoints(geoData.extremityPoints);
+      excursion.mapConfig.setBoundsFromGeoJson(geoData.path);
     }
 
     function activatePositionWatch() {
@@ -96,7 +96,7 @@
     function deactivatePositionWatch() {
       $log.info('ExcursionCtrl - Deactivating location watcher');
       positionWatcher && positionWatcher.cancel();
-      delete excursion.map.markers.user;
+      delete excursion.mapConfig.markers.user;
       excursion.positionState = 'refresh';
     }
 
@@ -110,7 +110,7 @@
 
     function positionUpdate(position) {
       $log.info('getCurrentPosition', position);
-      excursion.map.setUserLocation({
+      excursion.mapConfig.setUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
       }, 'never');
