@@ -1,0 +1,13 @@
+.debug-log {
+  position: absolute;
+  top: 90px;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  font-size: 0.8em;
+  padding-left: 5px;
+  max-height: 80%;
+  overflow: auto;
+  p {
+    margin: 0;
+  }
+}
