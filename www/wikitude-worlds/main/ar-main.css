@@ -181,3 +181,15 @@ option.placeholder {
 
 .credit {
   margin-top: 20px; }
+
+.debug-log {
+  position: absolute;
+  top: 90px;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  font-size: 0.8em;
+  padding-left: 5px;
+  max-height: 80%;
+  overflow: auto; }
+  .debug-log p {
+    margin: 0; }

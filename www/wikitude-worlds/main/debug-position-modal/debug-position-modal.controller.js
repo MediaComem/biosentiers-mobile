@@ -3,14 +3,14 @@
  * This is the controller fot the debug position modal.
  * It allows the user to fake his position to either the available ones or a custom one.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('debug-position-modal')
     .controller('DebugCtrl', DebugCtrl);
 
-  function DebugCtrl(AppActions, Modals, $log) {
+  function DebugCtrl(AppActions, Modals, UserLocation, $log) {
     var debug = this;
 
     debug.position = {};
@@ -56,11 +56,13 @@
      * Sets the position to the given coordinates
      */
     function custom() {
-      if (debug.position.hasOwnProperty('lat') && debug.position.hasOwnProperty('lon') && debug.position.hasOwnProperty('alt')) {
-        setPosition(debug.position.lat, debug.position.lon, debug.position.alt)
-      } else {
-        AppActions.execute('toast', {message: "Des champs ne sont pas remplis"});
-      }
+      var pos = {
+        lat: Number(debug.position.lat || UserLocation.real.lat),
+        lon: Number(debug.position.lon || UserLocation.real.lon),
+        alt: Number(debug.position.alt || UserLocation.real.alt)
+      };
+      $log.log('DebugPosition:custom', pos);
+      setPosition(pos.lat, pos.lon, pos.alt);
     }
 
     /**
@@ -89,10 +91,10 @@
      * @param alt The altitude of the faked position
      */
     function setPosition(lat, lon, alt) {
-      Modals.removeCurrent().then(function (success) {
+      Modals.removeCurrent().then(function(success) {
         $log.debug(success);
         AppActions.execute('setPosition', {lat: lat, lon: lon, alt: alt});
-      }).catch(function (error) {
+      }).catch(function(error) {
         $log.error(error);
       });
     }

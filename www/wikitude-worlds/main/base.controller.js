@@ -17,11 +17,13 @@
     }
   }
 
-  function BaseCtrl(AppActions, ArView, EndPopup, Modals, $log, Excursion, $scope, UserLocation) {
+  function BaseCtrl(AppActions, ArView, DebugLog, EndPopup, Modals, $log, Excursion, $scope, UserLocation) {
     var base = this;
 
     // TODO : supprimer hors debug
     base.debugPositionClass = 'royal';
+    base.logs = [];
+
     base.manualEnding = false;
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
@@ -29,7 +31,12 @@
     base.finishExcursion = finishExcursion;
 
     UserLocation.realObs.subscribe(function(position) {
-      base.altitude = position.alt;
+      DebugLog.add('Real User Location Altitude ' + position.alt);
+      if (position.alt === 0 || position.alt === AR.CONST.UNKNOWN_ALTITUDE) {
+        base.altitude = 'Inconnue'
+      } else {
+        base.altitude = position.alt + 'm';
+      }
       base.accuracy = position.acc;
       updateDebugPositionClass(position.acc);
     });
@@ -38,6 +45,10 @@
 
     ArView.activateManualEndingObs.subscribe(function() {
       base.manualEnding = true;
+    });
+
+    ArView.updateArPoisAltitudeObs.subscribe(function() {
+      DebugLog.add("Altitude updated");
     });
 
     ////////////////////

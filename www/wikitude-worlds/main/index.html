@@ -64,6 +64,7 @@
 		<script src="base.controller.js"></script>
 		<script src="main.altitude.correct.js"></script>
 		<script src="main.run.js"></script>
+		<script src="scroll-bottom.directive.js"></script>
 		<script src="app-actions/app-actions.module.js"></script>
 		<script src="app-actions/app-actions.service.js"></script>
 		<script src="ar-view/ar-view.module.js"></script>
@@ -78,6 +79,8 @@
 		<script src="big-map-modal/big-map-modal.controller.js"></script>
 		<script src="big-map/big-map.module.js"></script>
 		<script src="big-map/big-map.service.js"></script>
+		<script src="debug-log/debug-log.module.js"></script>
+		<script src="debug-log/debug-log.directive.js"></script>
 		<script src="debug-position-modal/debug-position-modal.module.js"></script>
 		<script src="debug-position-modal/debug-position-modal.controller.js"></script>
 		<script src="debug-stats/debug-stats.module.js"></script>
@@ -115,7 +118,7 @@
 			<h1 class="title">Réalité augmentée</h1>
 		</ion-header-bar>
 		<div class="debug-altitude {{base.debugPositionClass}}-bg">
-			<p>GPS altitude : {{base.altitude}}m</p>
+			<p>GPS altitude : {{base.altitude}}</p>
 			<p>Précision : {{base.accuracy | accValueToText}}</p>
 		</div>
 		<div class="fabs" ng-class="{'with-manual-end-btn': base.manualEnding}">
@@ -125,6 +128,7 @@
 			<button class="debug assertive-bg" type="button" data-tap-disabled="true" ng-click="base.showDebugModal()">
 				<i class="icon ion-settings"></i>
 			</button>
+			<div class="badge badge-balanced" ng-if="base.messageLog">{{base.messageLog}}</div>
 		</div>
 		<button class="manual-end button button-full button-assertive" ng-click="base.finishExcursion()"
 		        ng-if="base.manualEnding">
@@ -132,5 +136,6 @@
 		</button>
 		<mini-map></mini-map>
 		<debug-stats class="row"></debug-stats>
+		<debug-log></debug-log>
 	</body>
 </html>

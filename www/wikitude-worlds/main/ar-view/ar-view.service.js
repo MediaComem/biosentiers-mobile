@@ -10,7 +10,7 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArExtremityMarker, ArMarker, EndPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArExtremityMarker, ArMarker, DebugLog, EndPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
     // Will store all the ArPoi in the view, by their id.
@@ -20,11 +20,13 @@
         minPoiActiveDistance        = 20,
         activateManualEndingSubject = new rx.ReplaySubject(1),
         poisChangeSubject           = new rx.Subject(),
+        updateArPoisAltitudeSubject = new rx.ReplaySubject(1),
         hasReachEndOnce             = false;
 
     var service = {
       poisChangeObs          : poisChangeSubject.asObservable(),
       activateManualEndingObs: activateManualEndingSubject.asObservable(),
+      updateArPoisAltitudeObs: updateArPoisAltitudeSubject.asObservable(),
       init                   : init,
       updateAr               : updateAr,
       loadExtremityPoints    : loadExtremityPoints,
@@ -32,9 +34,24 @@
       setPoiSeen             : setPoiSeen
     };
 
+    UserLocation.realObs.subscribe(_.debounce(updateArPoisAltitude, 250));
+
     return service;
 
     /* ----- PUBLIC FUNCTIONS ----- */
+
+    function updateArPoisAltitude() {
+      var updateTime = Timers.start();
+      _.each(arPointsById, function(arPoi) {
+        $log.log('ArView:updateArPoisAltitude:previous altitude for POI n°' + arPoi.id, arPoi.altitude);
+        var newAltitude = UserLocation.real.alt + arPoi.relativeAltitudeDelta;
+        $log.log('ArView:updateArPoisAltitude:new altitude', newAltitude);
+        arPoi.altitude = newAltitude;
+        DebugLog.add('POI ' + arPoi.id + ' new altitude ' + newAltitude);
+      });
+      updateArPoisAltitudeSubject.onNext();
+      updateTime.stop('update ArPois altitude');
+    }
 
     /**
      * Initializes the different options of the Wikitude AR Object, such as the constants
@@ -184,7 +201,6 @@
      * @param acc The accuracy of the new Location
      */
     function onLocationChanged(lat, lon, alt, acc) {
-      $log.log('onLocationChanged', lat, lon, alt, acc);
       $rootScope.$apply(function() {
         UserLocation.update(lon, lat, alt, acc);
       });
