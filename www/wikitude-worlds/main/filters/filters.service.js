@@ -10,9 +10,9 @@
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
     var selected = {
-      themes : [],
+      themes  : [],
       settings: {
-        showSeenPois: true,
+        showSeenPois : true,
         showOffSeason: false
       }
     };
@@ -110,7 +110,7 @@
 
     function isOffSeason(poi) {
       var currentMonth = new Date().getMonth() + 1;
-      return poi.properties.period_start >= currentMonth && poi.properties.period_end <= currentMonth;
+      return poi.properties.period_start > currentMonth || poi.properties.period_end < currentMonth;
     }
   }
 })();

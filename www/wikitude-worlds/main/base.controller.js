@@ -22,7 +22,7 @@
 
     // TODO : supprimer hors debug
     base.debugPositionClass = 'royal';
-    base.hasReachedEnd = false;
+    base.manualEnding = false;
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
@@ -36,8 +36,8 @@
 
     Excursion.currentPoiChangeObs.subscribe(showPoiModal);
 
-    ArView.excursionEndReachedObs.subscribe(function() {
-      base.hasReachedEnd = true;
+    ArView.activateManualEndingObs.subscribe(function() {
+      base.manualEnding = true;
     });
 
     ////////////////////

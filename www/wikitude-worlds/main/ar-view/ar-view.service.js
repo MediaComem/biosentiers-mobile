@@ -10,25 +10,26 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArExtremityMarker, ArMarker, EndPopup, $ionicPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
+  function ArViewService(AppActions, ArExtremityMarker, ArMarker, EndPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
 
     // Private data
     // Will store all the ArPoi in the view, by their id.
-    var arPointsById               = {},
-        arExtremityPoints          = {},
-        reachLimit                 = 250,
-        minPoiActiveDistance       = 20,
-        excursionEndReachedSubject = new rx.ReplaySubject(1),
-        poisChangeSubject          = new rx.Subject();
+    var arPointsById                = {},
+        arExtremityPoints           = {},
+        reachLimit                  = 250,
+        minPoiActiveDistance        = 20,
+        activateManualEndingSubject = new rx.ReplaySubject(1),
+        poisChangeSubject           = new rx.Subject(),
+        hasReachEndOnce             = false;
 
     var service = {
-      poisChangeObs         : poisChangeSubject.asObservable(),
-      excursionEndReachedObs: excursionEndReachedSubject.asObservable(),
-      init                  : init,
-      updateAr              : updateAr,
-      loadExtremityPoints   : loadExtremityPoints,
-      pauseAr               : pauseAr,
-      setPoiSeen            : setPoiSeen
+      poisChangeObs          : poisChangeSubject.asObservable(),
+      activateManualEndingObs: activateManualEndingSubject.asObservable(),
+      init                   : init,
+      updateAr               : updateAr,
+      loadExtremityPoints    : loadExtremityPoints,
+      pauseAr                : pauseAr,
+      setPoiSeen             : setPoiSeen
     };
 
     return service;
@@ -214,15 +215,18 @@
     }
 
     function onEnterActionRange() {
-      EndPopup.automatic().then(function(validated) {
-        $log.log("promptEndOfExcursion - prompt result", validated);
-        if (validated) {
-          AppActions.execute('finishExcursion', {excursionId: Excursion.id});
-        } else {
-          excursionEndReachedSubject.onNext();
-          $log.log('Pas de fin du sentier');
-        }
-      });
+      if (!hasReachEndOnce) {
+        EndPopup.automatic().then(function(validated) {
+          $log.log("promptEndOfExcursion - prompt result", validated);
+          if (validated) {
+            AppActions.execute('finishExcursion', {excursionId: Excursion.id});
+          } else {
+            hasReachEndOnce = true;
+            activateManualEndingSubject.onNext();
+            $log.log('Pas de fin du sentier');
+          }
+        });
+      }
       // TODO : À supprimer lorsque cette fonction servira vraiment pour l'ActionRange
       return true;
     }

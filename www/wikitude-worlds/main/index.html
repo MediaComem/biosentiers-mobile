@@ -118,7 +118,7 @@
 			<p>GPS altitude : {{base.altitude}}m</p>
 			<p>Précision : {{base.accuracy | accValueToText}}</p>
 		</div>
-		<div class="fabs" ng-class="{'with-manual-end-btn': base.hasReachedEnd}">
+		<div class="fabs" ng-class="{'with-manual-end-btn': base.manualEnding}">
 			<button class="filters assertive-bg" type="button" data-tap-disabled="true" ng-click="base.showFiltersModal()">
 				<i class="icon ion-gear-a"></i>
 			</button>
@@ -127,7 +127,7 @@
 			</button>
 		</div>
 		<button class="manual-end button button-full button-assertive" ng-click="base.finishExcursion()"
-		        ng-if="base.hasReachedEnd">
+		        ng-if="base.manualEnding">
 			<i class="icon ion-flag"></i> Terminer
 		</button>
 		<mini-map></mini-map>
