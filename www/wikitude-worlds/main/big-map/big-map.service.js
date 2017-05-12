@@ -51,21 +51,6 @@
 							type        : "markercluster",
 							visible     : true,
 							layerOptions: clusterLayerOptions
-						},
-						Oiseaux  : {
-							name   : "Oiseaux",
-							type   : "markercluster",
-							visible: false
-						},
-						Flore    : {
-							name   : "Flore",
-							type   : "markercluster",
-							visible: true
-						},
-						Papillons: {
-							name   : "Papillons",
-							type   : "markercluster",
-							visible: true
 						}
 					}
 				}
