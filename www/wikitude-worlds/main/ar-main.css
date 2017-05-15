@@ -182,6 +182,11 @@ option.placeholder {
 .credit {
   margin-top: 20px; }
 
+#flag-icon {
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
 .debug-log {
   position: absolute;
   top: 90px;

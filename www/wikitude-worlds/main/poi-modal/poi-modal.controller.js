@@ -7,25 +7,19 @@
     .module('poi-modal')
     .controller('PoiModalCtrl', PoiModalCtrlFn);
 
-  function PoiModalCtrlFn(ArView, Excursion, $log, Modals) {
+  function PoiModalCtrlFn(ArView, Excursion, $log, Modals, $ionicPopup) {
     var poiCtrl = this;
 
     poiCtrl.selectedLanguage = 'fr';
     poiCtrl.remove = Modals.removeCurrent;
+    poiCtrl.flagUrl = getFlagIconUrl();
     poiCtrl.setPoiSeen = setPoiSeen;
     poiCtrl.openInBrowser = openInBrowser;
     poiCtrl.classFromTheme = classFromTheme;
     poiCtrl.updateCommomName = updateCommomName;
-    poiCtrl.isSelectedLanguage = function(lang) {
-      $log.log('PoiModalCtrl:isSelectedLanguage', lang, lang === 'fr');
-      return lang === 'fr';
-    };
+    poiCtrl.getFlagIconUrl = getFlagIconUrl;
 
-    poiCtrl.getImageSource = function(id) {
-      var url = "./assets/img/" + id + "a.jpg";
-      $log.log('PoiModalCtrl:getImageSource', id, url);
-      return url;
-    };
+    poiCtrl.getImageSource = getImageSource;
 
     Excursion.currentPoiChangeObs.subscribe(function(data) {
       $log.log('PoiModal:currentPoiChangeObs', data);
@@ -36,6 +30,14 @@
     });
 
     ////////////////////
+
+    function getFlagIconUrl() {
+      return "../../img/flags/" + poiCtrl.selectedLanguage + ".png";
+    }
+
+    function getImageSource(id) {
+      return "./assets/img/" + id + "a.jpg";
+    }
 
     function updateCommomName() {
       $log.log('PoiModalCtrl:updateCommonName', poiCtrl.selectedLanguage);

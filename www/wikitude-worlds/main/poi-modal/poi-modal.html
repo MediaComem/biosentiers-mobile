@@ -14,14 +14,12 @@
 	<ion-content>
 		<img ng-src="{{poiCtrl.getImageSource(poiCtrl.poi.properties.id_specie)}}" alt="photo" class="poi-photo">
 		<div class="list card">
-			<label class="item item-input item-select">
-				<div class="input-label">
-					Nom Commun<span style="float: right">{{poiCtrl.poi.properties.common_name.fr}}</span>
-				</div>
-				<select ng-model="poiCtrl.selectedLanguage" ng-change="poiCtrl.updateCommomName()"
-				        ng-options="lang as lang for lang in poiCtrl.commonNameLanguages"></select>
-			</label>
-			<div class="item">Nom Commun<span style="float: right">{{poiCtrl.poi.properties.common_name.fr}}</span></div>
+			<div class="item item-button-right">
+				Nom Commun<span style="float: right">{{poiCtrl.poi.properties.common_name.fr}}</span>
+				<button class="button button-positive button-small button-clear" ng-click="poiCtrl.updateCommomName()">
+					<img id="flag-icon" ng-src="{{poiCtrl.flagUrl}}" alt="{{poiCtrl.selectedLanguage}}">
+				</button>
+			</div>
 			<div class="item">Nom Scientifique<span style="float: right">{{::poiCtrl.content.scientific_name}}</span></div>
 			<div class="item">Règne<span style="float: right">{{::poiCtrl.content.reign_name}}</span></div>
 			<div class="item">Division<span style="float: right">{{::poiCtrl.content.division_name}}</span></div>
