@@ -16,7 +16,7 @@
     };
   }
 
-  function MiniMapCtrl(ArView, Modals, $log, MiniMap, Excursion, $scope, UserLocation) {
+  function MiniMapCtrl(ArView, Modals, $log, MiniMap, Excursion, $scope, UserLocation, $timeout) {
 
     var minimap = this;
 
@@ -25,11 +25,20 @@
     minimap.isVisible = false;
     minimap.config = MiniMap.config;
 
+    minimap.positionState = 'searching';
+
     minimap.showBigMapModal = showBigMapModal;
 
     Excursion.excursionChangeObs.subscribe(MiniMap.addPath);
 
-    UserLocation.realObs.subscribe(MiniMap.center);
+    UserLocation.realObs.subscribe(function(position) {
+      minimap.positionState = "success";
+      $log.log('MiniMapCtrl:UserLocation:realObs received', minimap.positionState);
+      $timeout(function() {
+        minimap.positionState = 'searching';
+      }, 1000);
+      MiniMap.center(position);
+    });
 
     ArView.poisChangeObs.subscribe(MiniMap.updateMapMarkers);
 

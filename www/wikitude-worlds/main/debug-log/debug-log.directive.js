@@ -48,7 +48,7 @@
 
     function add(log) {
       logs.push({time: Date.now(), content: log});
-      $log.log('DebugLog:add:new log added', log, logs);
+      // $log.log('DebugLog:add:new log added', log, logs);
     }
 
     function removeFirst() {

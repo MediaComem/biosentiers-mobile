@@ -147,26 +147,28 @@ option.placeholder {
   right: 0;
   z-index: 9;
   border: 2px solid #207f8c; }
-
-.minimap-container .leaflet-container {
-  height: 15vh;
-  width: 20vh;
-  /*-webkit-border-radius: 100px;*/
-  /*-moz-border-radius: 100px;*/
-  /*border-radius: 100px;*/
-  /*-webkit-mask-image: url(../assets/mask.svg);*/ }
-
-.minimap-container .leaflet-control-container {
-  display: none; }
-
-.minimap-container .bigmap-opener {
-  background-color: rgba(255, 255, 255, 0);
-  height: 30vw;
-  width: 30vw;
-  position: absolute;
-  z-index: 9;
-  top: 0;
-  right: 0; }
+  .minimap-container .leaflet-container {
+    height: 15vh;
+    width: 20vh;
+    /*-webkit-border-radius: 100px;*/
+    /*-moz-border-radius: 100px;*/
+    /*border-radius: 100px;*/
+    /*-webkit-mask-image: url(../assets/mask.svg);*/ }
+  .minimap-container .leaflet-control-container {
+    display: none; }
+  .minimap-container .bigmap-opener {
+    background-color: rgba(255, 255, 255, 0);
+    height: 30vw;
+    width: 30vw;
+    position: absolute;
+    z-index: 9;
+    top: 0;
+    right: 0; }
+  .minimap-container .position-badge {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    z-index: 1; }
 
 #mini-map-orientation {
   position: fixed;
