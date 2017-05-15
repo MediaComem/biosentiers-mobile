@@ -71,10 +71,10 @@
      * If you pass nothing or 'alway', the map will be centered each time the method is called.
      * You can also pass the value 'once' for the map to be centered only the first time the function is called.
      * @param {{lat: Number, lng: Number}} location An object with a lat and lng property
-     * @param {'always'|'never'|'once'} center An option describing if and how the map should be centered on the user's location.
+     * @param {{center: String}} options An object representing the desired options
      */
-    function setUserLocation(location, center) {
-      if (typeof center === "undefined") center = 'always';
+    function setUserLocation(location, options) {
+      if (typeof options === "undefined" || typeof options.center === 'undefined') options.center = 'always';
       if (typeof location === "undefined") throw new TypeError("ExcursionMapConfig.setUserLocation - mandatory 'location' argument is undefined.");
       $log.info('ExcursionMapConfig - setUserLocation', this, location);
       if (typeof this.markers.user !== "undefined") {
@@ -89,7 +89,7 @@
           icon: MapIcons.user
         };
       }
-      if (center === 'always' || (center === 'once' && !hasBeenCentered)) {
+      if (options.center === 'always' || (options.center === 'once' && !hasBeenCentered)) {
         this.center = {
           lat : location.lat,
           lng : location.lng,

@@ -85,6 +85,7 @@
     }
 
     function activatePositionWatch() {
+      excursion.positionState = "searching";
       $log.info('ExcursionCtrl - Activating location watcher');
       positionWatcher = $cordovaGeolocation.watchPosition({
         timeout           : 10000,
@@ -113,7 +114,7 @@
       excursion.mapConfig.setUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      }, 'never');
+      }, {center: 'once'});
       excursion.positionState = 'success';
       $timeout(function() {
         excursion.positionState = 'searching';
