@@ -29,8 +29,13 @@
      * Then a popup is shown, containing the QR Code information and allowing the user to either accept or deny said info.
      */
     function doQRCodeLogin() {
+      var config = {
+        prompt               : "Placez votre QR Code dans le viseur pour scanner la sortie.",
+        resultDisplayDuration: 0,
+        formats              : "QR_CODE"
+      };
       $cordovaBarcodeScanner
-        .scan()
+        .scan(config)
         .then(function(data) {
           $log.log('AuthCtrl:doQrCodeLogin', data);
           if (!data.cancelled) {
@@ -38,9 +43,6 @@
               auth.excursion = QR.getExcursionData(data);
               $log.log(auth.excursion);
               showQRValidation();
-            } else {
-              $cordovaToast.showShortCenter('Erreur lors du scan du QR Code. Merci de réessayer');
-              doQRCodeLogin();
             }
           }
         }, function(error) {
