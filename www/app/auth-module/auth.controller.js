@@ -13,7 +13,7 @@
   /*
    Controller function
    */
-  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup, AuthService, Excursions, QR, $log) {
+  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $cordovaToast, $ionicPlatform, $ionicPopup, AuthService, Excursions, QR, $log) {
     var auth = this;
 
     $ionicPlatform.ready(function() {
@@ -32,9 +32,17 @@
       $cordovaBarcodeScanner
         .scan()
         .then(function(data) {
-          auth.excursion = QR.getExcursionData(data);
-          $log.log(auth.excursion);
-          showQRValidation();
+          $log.log('AuthCtrl:doQrCodeLogin', data);
+          if (!data.cancelled) {
+            if (data.format === "QR_CODE") {
+              auth.excursion = QR.getExcursionData(data);
+              $log.log(auth.excursion);
+              showQRValidation();
+            } else {
+              $cordovaToast.showShortCenter('Erreur lors du scan du QR Code. Merci de réessayer');
+              doQRCodeLogin();
+            }
+          }
         }, function(error) {
           $log.log(error);
         });
@@ -50,7 +58,7 @@
         scope      : $scope,
         buttons    : [{
           text: "Pas du tout",
-          type: "button-assertive"
+          type: "button-assertive button-outline"
         }, {
           text : "C'est ça !",
           type : "button-balanced",
