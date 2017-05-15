@@ -193,3 +193,10 @@ option.placeholder {
   overflow: auto; }
   .debug-log p {
     margin: 0; }
+
+#debug-toggle {
+  height: 60px;
+  width: 60px;
+  position: absolute;
+  bottom: 0;
+  left: 0; }

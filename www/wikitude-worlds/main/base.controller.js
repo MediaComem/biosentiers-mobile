@@ -23,6 +23,20 @@
     // TODO : supprimer hors debug
     base.debugPositionClass = 'royal';
     base.logs = [];
+    base.showDebugLog = false;
+    var debugCount = 0;
+    base.manageDebugLog = function() {
+      if (base.showDebugLog) {
+        base.showDebugLog = false;
+        debugCount = 0;
+      } else {
+        debugCount += 1;
+        $log.log('BaseCtrl:manageDebugLog', debugCount);
+        if (debugCount === 7) {
+          base.showDebugLog = true;
+        }
+      }
+    };
 
     base.manualEnding = false;
     base.closeAR = closeAR;

@@ -136,6 +136,7 @@
 		</button>
 		<mini-map></mini-map>
 		<debug-stats class="row"></debug-stats>
-		<debug-log></debug-log>
+		<debug-log ng-show="base.showDebugLog"></debug-log>
+		<debug-toggle ng-click="base.manageDebugLog()"></debug-toggle>
 	</body>
 </html>

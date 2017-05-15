@@ -7,8 +7,17 @@
   angular
     .module('debug-log')
     .directive('debugLog', debugLogFn)
+    .directive('debugToggle', debugToggleFn)
     .service('DebugLog', DebugLog)
     .controller('DebugLogCtrl', DebugLogCtrlFn);
+
+  function debugToggleFn() {
+    return {
+      restrict    : 'E',
+      replace     : true,
+      template : '<div id="debug-toggle"></div>'
+    }
+  }
 
   function debugLogFn() {
     return {
@@ -20,12 +29,9 @@
     };
   }
 
-  function DebugLogCtrlFn($interval, DebugLog) {
+  function DebugLogCtrlFn(DebugLog) {
     var debLog = this;
     debLog.logs = DebugLog.logs;
-    $interval(function() {
-      DebugLog.removeFirst();
-    }, 2000);
   }
 
   function DebugLog($log) {
