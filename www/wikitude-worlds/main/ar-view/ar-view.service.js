@@ -22,6 +22,7 @@
         activateManualEndingSubject = new rx.ReplaySubject(1),
         poisChangeSubject           = new rx.Subject(),
         hasReachEndOnce             = false,
+        latestAltitude              = 0,
         updateAltitudeThrottle      = _.throttle(updateArPoisAltitude, updateAltitudeTime, {leading: false});
 
     var service = {
@@ -208,7 +209,7 @@
         DebugLog.add('POI clicked - ' + arPoi.id);
         DebugLog.add('POI distance to user - ' + dist + 'm');
         if (1 === 1) {
-        // if (dist <= minPoiActiveDistance) {
+          // if (dist <= minPoiActiveDistance) {
           DebugLog.add('POI showing the details');
           Excursion.loadCurrentPoi(arPoi.poi);
           // if (!arPoi.hasBeenSeen) setPoiSeen();
@@ -241,15 +242,22 @@
 
     /**
      * Updates the relative altitude of all currently visible arPois in the ArView, based on the received altitude.
-     * @param {{lat: Number, lng: Number, alt: Number, acc: Number}} position The new position given by Wikitude
+     * This updates occurs only if the received altitude has changed compared to the latest received.
      */
-    function updateArPoisAltitude(position) {
+    function updateArPoisAltitude() {
       // This timeout without delay is used to ensure that the code is executed within an angular digest cycle.
       $timeout(function() {
-        $log.log('ArView:updateArPoisAltitude:User position', position);
-        var updateTime = Timers.start();
-        _.each(arPointsById, Altitude.setFixedAltitude);
-        DebugLog.add('Updating POIs altitude took ' + updateTime.stop('update ArPois altitude') / 1000 + 's.');
+        var currentAltitude = UserLocation.real.alt;
+        $log.log('ArView:updateArPoiAltitude:altitudes', currentAltitude, latestAltitude);
+        if (currentAltitude === latestAltitude) {
+          DebugLog.add('Same current and latest altitude - no updates');
+        } else {
+          $log.log('ArView:updateArPoisAltitude:User position', UserLocation.real);
+          var updateTime = Timers.start();
+          _.each(arPointsById, Altitude.setFixedAltitude);
+          DebugLog.add('Updating POIs altitude took ' + updateTime.stop('update ArPois altitude') / 1000 + 's.');
+          latestAltitude = currentAltitude;
+        }
       });
     }
 
