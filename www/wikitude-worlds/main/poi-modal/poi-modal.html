@@ -1,6 +1,6 @@
 <ion-modal-view ng-controller="PoiModalCtrl as poiCtrl">
-	<ion-header-bar class="bar bar-header bar-{{::poiCtrl.classFromTheme(poiCtrl.poi.properties.theme_name)}}">
-		<h1 class="title">{{::poiCtrl.poi.properties.common_name.fr}}</h1>
+	<ion-header-bar class="bar bar-header bar-{{::poiCtrl.classFromTheme(poiCtrl.content.theme_name)}}">
+		<h1 class="title">{{::poiCtrl.content.common_name.fr}}</h1>
 		<div class="buttons">
 			<button class="button button-clear button-primary" ng-click="poiCtrl.setPoiSeen()">Valider</button>
 			<button class="button button-clear button-primary" ng-class="{'disabled': !poiCtrl.poi}"
@@ -9,13 +9,15 @@
 		</div>
 	</ion-header-bar>
 	<ion-header-bar class="bar bar-subheader bat-stable">
-		<h2 class="title">{{::poiCtrl.poi.properties.theme_name | themes}}</h2>
+		<h2 class="title">{{::poiCtrl.content.theme_name | themes}}</h2>
 	</ion-header-bar>
 	<ion-content>
-		<img ng-src="{{poiCtrl.getImageSource(poiCtrl.poi.properties.id_specie)}}" alt="photo" class="poi-photo">
+		<div class="img-wrapper">
+			<img ng-src="{{poiCtrl.getImageSource(poiCtrl.content.id_specie)}}" alt="photo" class="poi-photo">
+		</div>
 		<div class="list card">
 			<div class="item item-button-right">
-				Nom Commun<span style="float: right">{{poiCtrl.poi.properties.common_name.fr}}</span>
+				Nom Commun<span style="float: right">{{poiCtrl.content.common_name.fr}}</span>
 				<button class="button button-positive button-small button-clear" ng-click="poiCtrl.updateCommomName()">
 					<img id="flag-icon" ng-src="{{poiCtrl.flagUrl}}" alt="{{poiCtrl.selectedLanguage}}">
 				</button>
@@ -25,8 +27,8 @@
 			<div class="item">Division<span style="float: right">{{::poiCtrl.content.division_name}}</span></div>
 			<div class="item">Famille<span style="float: right">{{::poiCtrl.content.family_name}}</span></div>
 			<div class="item">Taille<span style="float: right">{{::poiCtrl.content.height}}m</span></div>
-			<div class="item">Visible de {{::poiCtrl.poi.properties.period_start | periodToMonth}} à
-				{{::poiCtrl.poi.properties.period_end | periodToMonth}}
+			<div class="item">Visible de {{::poiCtrl.content.period_start | periodToMonth}} à
+				{{::poiCtrl.content.period_end | periodToMonth}}
 			</div>
 			<div class="item item-body">
 				<h2>Description</h2>
@@ -44,8 +46,8 @@
 			<a class="item item-icon-right positive" ng-click="poiCtrl.openInBrowser()">Plus d'informations sur le Web<i
 					class="icon ion-share"></i></a>
 		</div>
-		<div class="credit text-right padding {{::poiCtrl.classFromTheme(poiCtrl.poi.properties.theme_name)}}">
-			Information fournie par {{::poiCtrl.poi.properties.owner_name}}.
+		<div class="credit text-right padding {{::poiCtrl.classFromTheme(poiCtrl.content.theme_name)}}">
+			Information fournie par {{::poiCtrl.content.owner_name}}.
 		</div>
 	</ion-content>
 </ion-modal-view>
