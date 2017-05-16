@@ -41,16 +41,6 @@
 
     /* ----- PUBLIC FUNCTIONS ----- */
 
-    function updateArPoisAltitude(position) {
-      // This timeout without delay is used to ensure that the code is executed within an angular digest cycle.
-      $timeout(function() {
-        $log.log('ArView:updateArPoisAltitude:User position', position);
-        var updateTime = Timers.start();
-        _.each(arPointsById, Altitude.setFixedAltitude);
-        DebugLog.add('Updating POIs altitude took ' + updateTime.stop('update ArPois altitude') / 1000 + 's.');
-      });
-    }
-
     /**
      * Initializes the different options of the Wikitude AR Object, such as the constants
      * that impacts the way the ArMarker are shown on the screen.
@@ -224,7 +214,7 @@
           // if (!arPoi.hasBeenSeen) setPoiSeen();
         } else {
           DebugLog.add('POI is too far away');
-          AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
+          AppActions.execute('toast', {message: "Vous êtes " + Math.ceil(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
         }
         return true; // Stop propagating the click event
       };
@@ -248,6 +238,20 @@
     }
 
     /* ----- PRIVATE FUNCTIONS ----- */
+
+    /**
+     * Updates the relative altitude of all currently visible arPois in the ArView, based on the received altitude.
+     * @param {{lat: Number, lng: Number, alt: Number, acc: Number}} position The new position given by Wikitude
+     */
+    function updateArPoisAltitude(position) {
+      // This timeout without delay is used to ensure that the code is executed within an angular digest cycle.
+      $timeout(function() {
+        $log.log('ArView:updateArPoisAltitude:User position', position);
+        var updateTime = Timers.start();
+        _.each(arPointsById, Altitude.setFixedAltitude);
+        DebugLog.add('Updating POIs altitude took ' + updateTime.stop('update ArPois altitude') / 1000 + 's.');
+      });
+    }
 
     /**
      * Given a certain array of GeoJSON poi objects, returns an array with only the pois
