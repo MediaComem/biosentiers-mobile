@@ -18,6 +18,7 @@
           stop: function(action) {
             var duration = new Date().getTime() - startDate.getTime();
             $log.debug('Time' + (action ? ' to ' + action : '') + ':', (duration / 1000) + 's');
+            return duration;
           }
         };
       },
