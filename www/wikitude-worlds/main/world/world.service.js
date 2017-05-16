@@ -8,7 +8,7 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(Altitude, AppActions, ArView, DeviceOrientation, Filters, $log, Excursion, UserLocation, $timeout) {
+  function WorldService(Altitude, AppActions, ArView, DeviceOrientation, Filters, $log, Excursion, UserLocation, $timeout, rx) {
 
     var service = {
       startup                : true,
@@ -29,7 +29,9 @@
     // Display a message when the user location is first detected.
     UserLocation.realObs.first().subscribe(notifyUserLocated);
 
-    Excursion.excursionChangeObs.first().subscribe(ArView.loadExtremityPoints);
+    rx.Observable.combineLatest(UserLocation.realObs, Excursion.excursionChangeObs).first().subscribe(ArView.loadExtremityPoints);
+
+    // Excursion.excursionChangeObs.first().subscribe(ArView.loadExtremityPoints);
 
     // Faking the position to be localised in the office.
     // AppActions.execute('setPosition', {lat: 46.78071086, lon: 6.64763376, alt: Altitude.correct(432)});
