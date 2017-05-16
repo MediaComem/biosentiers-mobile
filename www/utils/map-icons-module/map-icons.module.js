@@ -44,6 +44,8 @@
          * @returns Object
          */
         get user() {return angular.copy(icons.user);},
+        get start() {return angular.copy(icons.start);},
+        get end() {return angular.copy(icons.end)},
         get: getIcon
       };
 

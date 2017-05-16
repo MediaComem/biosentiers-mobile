@@ -20,6 +20,16 @@
 				    lat : UserLocation.real.lat,
 				    lng : UserLocation.real.lon,
 				    icon: MapIcons.user
+			    },
+			    start: {
+			    	lat: Excursion.getStartPoint().geometry.coordinates[1],
+				    lng: Excursion.getStartPoint().geometry.coordinates[0],
+						icon: MapIcons.start
+			    },
+			    end: {
+			    	lat: Excursion.getEndPoint().geometry.coordinates[1],
+				    lng: Excursion.getEndPoint().geometry.coordinates[0],
+						icon: MapIcons.end
 			    }
 		    },
 		    clusterLayerOptions = {
