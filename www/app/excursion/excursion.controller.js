@@ -195,7 +195,7 @@
           path           : geoData.path,
           extremityPoints: geoData.extremityPoints,
           pois           : results[0],
-          seen           : results[1]
+          seen           : _.map(results[1], 'poi_id')
         };
         $log.info('ExcursionCtrl:loadWorldExcursion:excursion.arData', arData);
         WorldActions.execute('loadExcursion', arData);

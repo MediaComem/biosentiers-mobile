@@ -60,7 +60,7 @@
      * @return {boolean} True if the POI has been seen, False if the POI remains to be seen.
      */
     function hasBeenSeen(poi) {
-      var seen = !!_.find(seenPois, {poi_id: poi.properties.id_poi});
+      var seen = _.includes(seenPois, poi.properties.id_poi);
       $log.log('SeenTracker:hasBeenSeen', poi, seenPois, seen);
       return seen;
     }
