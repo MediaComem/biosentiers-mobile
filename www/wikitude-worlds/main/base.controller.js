@@ -17,7 +17,7 @@
     }
   }
 
-  function BaseCtrl(AppActions, ArView, DebugLog, EndPopup, Modals, $log, Excursion, $scope, UserLocation) {
+  function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, Modals, $log, Excursion, $scope, UserLocation) {
     var base = this;
 
     // TODO : supprimer hors debug
@@ -37,6 +37,18 @@
         }
       }
     };
+    base.upArPois = function() {
+      // _.each(ArView.arPointsById, function(arPoi) {
+      //   $log.log('upArPois:arPoi current altitude', arPoi.location.altitude);
+      //   if (arPoi.location.altitude !== Altitude.unknown) {
+      //     arPoi.location.altitude += 10;
+      //     $log.log('upArPois:arPoi updated altitude', arPoi.location.altitude);
+      //     DebugLog.add('Update')
+      //   } else {
+      //     DebugLog.add('POI with unknow altitude - update canceled')
+      //   }
+      // });
+    };
 
     base.manualEnding = false;
     base.closeAR = closeAR;
@@ -46,7 +58,7 @@
 
     UserLocation.realObs.subscribe(function(position) {
       DebugLog.add('Real User Location Altitude ' + position.alt);
-      if (position.alt === 0 || position.alt === AR.CONST.UNKNOWN_ALTITUDE) {
+      if (position.alt === 0 || position.alt === Altitude.unknown) {
         base.altitude = 'Inconnue'
       } else {
         base.altitude = position.alt + 'm';
@@ -59,10 +71,6 @@
 
     ArView.activateManualEndingObs.subscribe(function() {
       base.manualEnding = true;
-    });
-
-    ArView.updateArPoisAltitudeObs.subscribe(function() {
-      DebugLog.add("Altitude updated");
     });
 
     ////////////////////

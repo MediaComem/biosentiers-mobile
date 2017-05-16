@@ -23,17 +23,13 @@
       self.relativeAltitudeDelta = Altitude.getRelativeDelta(self.poi.properties.theme_name);
 
       $log.debug('ArBaseMarker -> self', self);
-      self.location = new AR.GeoLocation(self.poi.geometry.coordinates[1], self.poi.geometry.coordinates[0], Altitude.getFixedAltitude(self.relativeAltitudeDelta));
+      self.location = new AR.GeoLocation(self.poi.geometry.coordinates[1], self.poi.geometry.coordinates[0]);
+      Altitude.setFixedAltitude(self);
 
       self.geoObject = new AR.GeoObject(self.location, {
         enabled: enabled
       });
     }
-
-    Object.defineProperty(ArBaseMarker.prototype, 'altitude', {
-      get: getAltitude,
-      set: setAltitude
-    });
 
     /**
      * Return the straight distance between the ArPoi and the user, in meters
@@ -72,15 +68,5 @@
     };
 
     return ArBaseMarker;
-
-    ////////////////////
-
-    function getAltitude() {
-      return this.location.altitude
-    }
-
-    function setAltitude(altitude) {
-      if (isNaN(altitude) && altitude > 0) this.location.altitude = altitude;
-    }
   }
 })();

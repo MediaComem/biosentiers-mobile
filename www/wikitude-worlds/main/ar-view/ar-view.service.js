@@ -10,23 +10,23 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(AppActions, ArExtremityMarker, ArMarker, DebugLog, EndPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation) {
+  function ArViewService(Altitude, AppActions, ArExtremityMarker, ArMarker, DebugLog, EndPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation, $timeout) {
 
     // Private data
     // Will store all the ArPoi in the view, by their id.
     var arPointsById                = {},
         arExtremityPoints           = {},
         reachLimit                  = 250,
-        minPoiActiveDistance        = 20,
+        minPoiActiveDistance        = 10,
+        updateAltitudeTime          = 1000,
         activateManualEndingSubject = new rx.ReplaySubject(1),
         poisChangeSubject           = new rx.Subject(),
-        updateArPoisAltitudeSubject = new rx.ReplaySubject(1),
-        hasReachEndOnce             = false;
+        hasReachEndOnce             = false,
+        updateAltitudeThrottle      = _.throttle(updateArPoisAltitude, updateAltitudeTime, {leading: false});
 
     var service = {
       poisChangeObs          : poisChangeSubject.asObservable(),
       activateManualEndingObs: activateManualEndingSubject.asObservable(),
-      updateArPoisAltitudeObs: updateArPoisAltitudeSubject.asObservable(),
       init                   : init,
       updateAr               : updateAr,
       loadExtremityPoints    : loadExtremityPoints,
@@ -34,23 +34,21 @@
       setPoiSeen             : setPoiSeen
     };
 
-    UserLocation.realObs.subscribe(_.debounce(updateArPoisAltitude, 250));
+    // Updates the POIs altitude at a maximum of one time during 1000 ms
+    UserLocation.realObs.subscribe(updateAltitudeThrottle);
 
     return service;
 
     /* ----- PUBLIC FUNCTIONS ----- */
 
-    function updateArPoisAltitude() {
-      var updateTime = Timers.start();
-      _.each(arPointsById, function(arPoi) {
-        $log.log('ArView:updateArPoisAltitude:previous altitude for POI n°' + arPoi.id, arPoi.altitude);
-        var newAltitude = UserLocation.real.alt + arPoi.relativeAltitudeDelta;
-        $log.log('ArView:updateArPoisAltitude:new altitude', newAltitude);
-        arPoi.altitude = newAltitude;
-        DebugLog.add('POI ' + arPoi.id + ' new altitude ' + newAltitude);
+    function updateArPoisAltitude(position) {
+      // This timeout without delay is used to ensure that the code is executed within an angular digest cycle.
+      $timeout(function() {
+        $log.log('ArView:updateArPoisAltitude:User position', position);
+        var updateTime = Timers.start();
+        _.each(arPointsById, Altitude.setFixedAltitude);
+        DebugLog.add('Updating POIs altitude took ' + updateTime.stop('update ArPois altitude') / 1000 + 's.');
       });
-      updateArPoisAltitudeSubject.onNext();
-      updateTime.stop('update ArPois altitude');
     }
 
     /**
@@ -219,11 +217,15 @@
         $log.log('POI clicked', arPoi);
         var dist = arPoi.distanceToUser();
         $log.log("distance to user ", dist);
+        DebugLog.add('POI clicked - ' + arPoi.id);
+        DebugLog.add('POI distance to user - ' + dist + 'm');
         if (1 === 1) {
-          // if (dist <= minPoiActiveDistance) {
+        // if (dist <= minPoiActiveDistance) {
+          DebugLog.add('POI showing the details');
           Excursion.loadCurrentPoi(arPoi.poi);
           // if (!arPoi.hasBeenSeen) setPoiSeen();
         } else {
+          DebugLog.add('POI is too far away');
           AppActions.execute('toast', {message: "Vous êtes " + Math.round(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
         }
         return true; // Stop propagating the click event

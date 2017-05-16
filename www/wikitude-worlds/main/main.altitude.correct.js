@@ -8,20 +8,23 @@
     .service('Altitude', Altitude);
 
   function Altitude(UserLocation, $log) {
-    var service = {
+    var altitude = {
+      unknown         : AR.CONST.UNKNOWN_ALTITUDE,
       correct         : correct,
-      getFixedAltitude: getFixedAltitude,
-      getRelativeDelta: getRelativeDelta
+      getRelativeDelta: getRelativeDelta,
+      setFixedAltitude: setFixedAltitude
     };
 
     var altitudeModifiers = {
       'bird'     : 10,
       'flower'   : -1,
       'tree'     : 0,
-      'butterfly': 1
+      'butterfly': 1,
+      'start'    : altitude.unknown,
+      'end'      : altitude.unknown
     };
 
-    return service;
+    return altitude;
 
     ////////////////////
 
@@ -37,16 +40,27 @@
       return altitude;
     }
 
-    function getFixedAltitude(delta) {
-      $log.log('Altitude:getFixedAltitude:UserLocation current altitude', UserLocation.real.alt);
-      $log.log('Altitude:getFixedAltitude:Altitude delta', delta);
-      var fixedAlt = UserLocation.real.alt + delta;
-      $log.log('Altitude:getFixedAltitude:Fixed altitude', fixedAlt);
-      return fixedAlt;
-    }
-
+    /**
+     * Gets the specific relative altitude delta for the given theme.
+     * @param {String} theme The name of the theme for which the detla should be retrievfetched
+     * @return {number} The relative altitude delta
+     */
     function getRelativeDelta(theme) {
       return altitudeModifiers.hasOwnProperty(theme) ? altitudeModifiers[theme] : 0;
+    }
+
+    /**
+     * Sets the altitude relative to the user for the given arPoi.
+     * @param {ArBaseMarker} arPoi The ArPoi whose altitude should be changed.
+     */
+    function setFixedAltitude(arPoi) {
+      $log.log('ArView:updateArPoisAltitude:previous altitude for POI n°' + arPoi.id, arPoi.location.altitude);
+      if (UserLocation.real.alt === altitude.unknown || arPoi.relativeAltitudeDelta === altitude.unknown) {
+        arPoi.location.altitude = altitude.unknown;
+      } else {
+        arPoi.location.altitude = UserLocation.real.alt + arPoi.relativeAltitudeDelta;
+      }
+      $log.log('ArView:updateArPoisAltitude:new altitude', arPoi.location.altitude);
     }
   }
 })();

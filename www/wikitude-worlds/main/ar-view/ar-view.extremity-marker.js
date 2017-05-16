@@ -7,7 +7,7 @@
     .module('ar-view')
     .service('ArExtremityMarker', ArExtremityMarkerClass);
 
-  function ArExtremityMarkerClass(ArBaseMarker, ArIcons, $ionicPopup, $log) {
+  function ArExtremityMarkerClass(ArBaseMarker, ArIcons, $log) {
     /**
      * This class represent a point at the extremity of a path (namely the start point and the end point).
      * If the onEnterActionRange argument is passed, the point will have an ActionRange that will trigger the function.
@@ -25,7 +25,7 @@
         });
       }
 
-      $log.debug("ar-view.extremity.class.js - ArExtremityMarker", self.distanceToUser());
+      $log.debug('ArExtremityMarker:distanceToUser', self.distanceToUser());
 
       if (self.distanceToUser() > AR.context.scene.minPoiActiveDistance) {
         self.icon = ArIcons.getInactive(self.properties.type);
