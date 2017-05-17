@@ -6,9 +6,10 @@
   angular.module('app')
     .config(configApp);
 
-  function configApp($compileProvider, MapIconsProvider) {
+  function configApp($compileProvider, MapIconsProvider, PoiCardServiceProvider) {
     //Allow to use cdvfile protocol with images
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|blob|cdvfile):|data:image\//);
     MapIconsProvider.setIconBaseUrl('img/icons');
+    PoiCardServiceProvider.setImgBaseUrl('img/');
   }
 })();

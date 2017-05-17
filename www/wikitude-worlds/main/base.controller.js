@@ -37,18 +37,6 @@
         }
       }
     };
-    base.upArPois = function() {
-      // _.each(ArView.arPointsById, function(arPoi) {
-      //   $log.log('upArPois:arPoi current altitude', arPoi.location.altitude);
-      //   if (arPoi.location.altitude !== Altitude.unknown) {
-      //     arPoi.location.altitude += 10;
-      //     $log.log('upArPois:arPoi updated altitude', arPoi.location.altitude);
-      //     DebugLog.add('Update')
-      //   } else {
-      //     DebugLog.add('POI with unknow altitude - update canceled')
-      //   }
-      // });
-    };
 
     base.manualEnding = false;
     base.closeAR = closeAR;

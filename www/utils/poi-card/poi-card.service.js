@@ -5,36 +5,47 @@
   'use strict';
   angular
     .module('poi-card-module')
-    .factory('PoiCardService', PoiCardServiceFn);
+    .provider('PoiCardService', PoiCardProviderFn);
 
-  function PoiCardServiceFn($log) {
-    return {
-      setup: function(ctrl, content) {
-        ctrl.content = content;
-        ctrl.selectedLanguage = 'fr';
-        ctrl.classFromTheme = classFromTheme;
-        ctrl.flagUrl = getFlagIconUrl(ctrl);
-        ctrl.updateCommomName = updateCommonNameFactory(ctrl);
-        ctrl.openInBrowser = openInBrowserFactory(ctrl);
-      }
+  function PoiCardProviderFn() {
+
+    var imgBaseUrl;
+
+    this.setImgBaseUrl = setImgBaseUrl;
+
+    this.$get = function() {
+      return {
+        setup: function(ctrl, content) {
+          ctrl.content = content;
+          ctrl.selectedLanguage = 'fr';
+          ctrl.classFromTheme = classFromTheme;
+          ctrl.flagUrl = getFlagIconUrl(ctrl);
+          ctrl.updateCommomName = updateCommonNameFactory(ctrl);
+          ctrl.openInBrowser = openInBrowserFactory(ctrl);
+        }
+      };
     };
 
     ////////////////////
 
+    function setImgBaseUrl(url) {
+      if (typeof url !== 'string') throw new TypeError('The setImgBaseUrl method from the PoiCardServiceProvider needs a string value as its only parameter. ' + typeof url + ' given.');
+      imgBaseUrl = url;
+    }
+
     function getFlagIconUrl(ctrl) {
-      return "../../img/flags/" + ctrl.selectedLanguage + ".png";
+      return imgBaseUrl + "flags/" + ctrl.selectedLanguage + ".png";
     }
 
     function updateCommonNameFactory(ctrl) {
       return function updateCommomName() {
-        $log.log('PoiModalCtrl:updateCommonName', ctrl.selectedLanguage);
+        console.log('PoiModalCtrl:updateCommonName', ctrl.selectedLanguage);
       }
     }
 
     function openInBrowserFactory(ctrl) {
       if (typeof AR === 'undefined') {
         return function openInBrowser() {
-          $log.log(window.open);
           window.open(ctrl.content.website, '_system');
           return false;
         };
