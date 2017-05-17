@@ -15,7 +15,6 @@
 
     debug.position = {};
     debug.remove = Modals.removeCurrent;
-    debug.balises = balises;
     debug.gare = gare;
     debug.office = office;
     debug.heig = heig;
