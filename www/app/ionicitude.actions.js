@@ -90,7 +90,7 @@
 
       function addSeenPoi(service, param) {
         $log.log('adding seen poi');
-        $log.log('addSeenPoi', SeenPoisData.addOne(param.excursionId, param.poiId));
+        $log.log('addSeenPoi', SeenPoisData.addOne(param.excursionId, param.poiId, param.poiData));
       }
 
       function finishExcursion(service, param) {

@@ -11,7 +11,7 @@
     var seenPois = [],
         service  = {
           getSeenPois: getSeenPois,
-          addSeenId  : addSeenId,
+          addSeenPoi : addSeenPoi,
           hasBeenSeen: hasBeenSeen
         };
 
@@ -32,14 +32,15 @@
 
     /**
      * Set that the POI with the ID passed as argument has been seen by the user.
-     * @param poiId The ID of the POI to mark as seen.
+     * @param poi The POI to save as seen.
      */
-    function addSeenId(poiId) {
-      if (!_.includes(seenPois, poiId)) {
-        seenPois.push(poiId);
+    function addSeenPoi(poi) {
+      if (!_.includes(seenPois, poi.properties.id_poi)) {
+        seenPois.push(poi.properties.id_poi);
         $log.log(seenPois);
         var param = {
-          poiId: poiId,
+          poiId: poi.properties.id_poi,
+          poiData: poi,
           excursionId: Excursion.id
         };
         AppActions.execute('addSeenPoi', param);

@@ -159,9 +159,9 @@
      */
     function setPoiSeen(poi) {
       $log.log('setPoiSeen:poi', poi);
+      SeenTracker.addSeenPoi(poi);
       var arPoi = arPointsById[getPoiId(poi)];
       $log.log('setPoiSeen:arPointsById', arPointsById);
-      SeenTracker.addSeenId(arPoi.id);
       arPoi.setSeen();
       if (Filters.getSelected().settings.showSeenPois === false) {
         arPoi.setVisible(false);
