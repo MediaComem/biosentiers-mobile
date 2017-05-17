@@ -175,8 +175,7 @@
         views  : {
           'menuContent': {
             templateUrl : 'app/excursion/excursion.html',
-            controller  : 'ExcursionCtrl',
-            controllerAs: 'excursion'
+            controller  : 'ExcursionCtrl as excursion'
           }
         },
         resolve: {
@@ -191,13 +190,7 @@
         views  : {
           'menuContent@app': {
             templateUrl : 'app/excursion/excursion-seen.html',
-            controller  : 'ExcursionSeenCtrl',
-            controllerAs: 'excursionSeen'
-          }
-        },
-        resolve: {
-          seenPois: function(SeenPoisData, $stateParams) {
-            return SeenPoisData.getAll($stateParams.excursionId);
+            controller  : 'ExcursionSeenCtrl as excursionSeen'
           }
         }
       })

@@ -7,12 +7,15 @@
     .module('app')
     .controller('ExcursionSeenCtrl', ExcursionSeenCtrl);
 
-  function ExcursionSeenCtrl(excursionData, seenPois, $log) {
+  function ExcursionSeenCtrl(excursionData, SeenPoisData, $log) {
     var excursionSeen = this;
-
-    $log.log(seenPois);
-
     excursionSeen.excursion = excursionData;
-    excursionSeen.seenPois = seenPois;
+
+    SeenPoisData
+      .getAll(excursionSeen.excursion.id)
+      .then(function(data) {
+        $log.log('ExcursionSeenCtrl:seenPois', data);
+        excursionSeen.seenPois = data;
+      });
   }
 })();
