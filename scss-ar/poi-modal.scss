@@ -1,22 +1,28 @@
-.credit {
-  margin-top: 20px;
-}
+.poi-modal {
+  .button.button-outline.white-bg {
+    background-color: white;
+  }
 
-#flag-icon {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
+  .credit {
+    margin-top: 20px;
+  }
 
-.img-wrapper {
-  height: 40%;
-  overflow: hidden;
-  background-color: gray;
-  img {
-    height: 100%;
+  #flag-icon {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    box-shadow: 0 0 2px 0 black;
+  }
+
+  .img-wrapper {
+    height: 40%;
+    overflow: hidden;
+    background-color: gray;
+    img {
+      height: 100%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 2px 0 black;
+    }
   }
 }

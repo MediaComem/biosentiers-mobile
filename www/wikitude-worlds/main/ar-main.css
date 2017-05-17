@@ -1,34 +1,34 @@
-.bar.bar-royal.ligther {
+.bar.bar-royal.lighter {
   background-color: #2592a1; }
 
 .bar.bar-royal.darker {
   background-color: #1b6c77; }
 
-.bar.bar-positive.ligther {
+.bar.bar-positive.lighter {
   background-color: #56a2ed; }
 
 .bar.bar-positive.darker {
   background-color: #2888e7; }
 
-.bar.bar-balanced.ligther {
+.bar.bar-balanced.lighter {
   background-color: #42cc67; }
 
 .bar.bar-balanced.darker {
   background-color: #2fac51; }
 
-.bar.bar-calm.ligther {
+.bar.bar-calm.lighter {
   background-color: #00fdba; }
 
 .bar.bar-calm.darker {
   background-color: #00ca94; }
 
-.bar.bar-assertive.ligther {
+.bar.bar-assertive.lighter {
   background-color: #ef6c7c; }
 
 .bar.bar-assertive.darker {
   background-color: #eb3e52; }
 
-.bar.bar-energized.ligther {
+.bar.bar-energized.lighter {
   background-color: #ff9c4c; }
 
 .bar.bar-energized.darker {
@@ -181,19 +181,22 @@ option.placeholder {
     width: 140px;
     height: 140px; }
 
-.credit {
+.poi-modal .button.button-outline.white-bg {
+  background-color: white; }
+
+.poi-modal .credit {
   margin-top: 20px; }
 
-#flag-icon {
+.poi-modal #flag-icon {
   display: block;
   margin-left: auto;
   margin-right: auto; }
 
-.img-wrapper {
+.poi-modal .img-wrapper {
   height: 40%;
   overflow: hidden;
   background-color: gray; }
-  .img-wrapper img {
+  .poi-modal .img-wrapper img {
     height: 100%;
     display: block;
     margin-left: auto;

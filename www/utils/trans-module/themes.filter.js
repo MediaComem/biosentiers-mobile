@@ -13,7 +13,7 @@
         bird     : "Oiseaux",
         flower   : "Fleurs/Plantes",
         butterfly: "Papillons",
-        tree     : "Arbres"
+        tree     : "Arbres/Arbustes"
       }
     };
 

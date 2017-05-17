@@ -1,14 +1,15 @@
-<ion-modal-view ng-controller="PoiModalCtrl as poiCtrl">
+<ion-modal-view ng-controller="PoiModalCtrl as poiCtrl" class="poi-modal">
 	<ion-header-bar class="bar bar-header bar-{{::poiCtrl.classFromTheme(poiCtrl.content.theme_name)}}">
+		<button class="button back-button button-icon" ng-class="{'disabled': !poiCtrl.poi}" ng-click="poiCtrl.remove()">
+			<i class="icon ion-android-arrow-back"></i>
+		</button>
 		<h1 class="title">{{::poiCtrl.content.common_name.fr}}</h1>
-		<div class="buttons">
-			<button class="button button-clear button-primary" ng-click="poiCtrl.setPoiSeen()">Valider</button>
-			<button class="button button-clear button-primary" ng-class="{'disabled': !poiCtrl.poi}"
-			        ng-click="poiCtrl.remove()">Fermer
-			</button>
-		</div>
+		<button class="button button-balanced" ng-click="poiCtrl.setPoiSeen()">
+			<i class="icon ion-checkmark"></i>
+			Vu !
+		</button>
 	</ion-header-bar>
-	<ion-header-bar class="bar bar-subheader bat-stable">
+	<ion-header-bar class="bar bar-subheader bar-{{::poiCtrl.classFromTheme(poiCtrl.content.theme_name)}} lighter">
 		<h2 class="title">{{::poiCtrl.content.theme_name | themes}}</h2>
 	</ion-header-bar>
 	<ion-content>
@@ -27,8 +28,8 @@
 			<div class="item">Division<span style="float: right">{{::poiCtrl.content.division_name}}</span></div>
 			<div class="item">Famille<span style="float: right">{{::poiCtrl.content.family_name}}</span></div>
 			<div class="item">Taille<span style="float: right">{{::poiCtrl.content.height}}m</span></div>
-			<div class="item">Visible de {{::poiCtrl.content.period_start | periodToMonth}} à
-				{{::poiCtrl.content.period_end | periodToMonth}}
+			<div class="item">Floraison<span style="float: right">{{::poiCtrl.content.period_start | periodToMonth}} à
+				{{::poiCtrl.content.period_end | periodToMonth}}</span>
 			</div>
 			<div class="item item-body">
 				<h2>Description</h2>
@@ -43,7 +44,7 @@
 			</div>
 		</div>
 		<div class="list card">
-			<a class="item item-icon-right positive" ng-click="poiCtrl.openInBrowser()">Plus d'informations sur le Web<i
+			<a class="item item-icon-right positive" ng-click="poiCtrl.openInBrowser()">Plus sur le Web<i
 					class="icon ion-share"></i></a>
 		</div>
 		<div class="credit text-right padding {{::poiCtrl.classFromTheme(poiCtrl.content.theme_name)}}">
