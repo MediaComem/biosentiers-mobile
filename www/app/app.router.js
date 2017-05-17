@@ -90,10 +90,10 @@
         }
       })
 
-      .state('app.excursions-list.over', {
-        url    : '/over',
+      .state('app.excursions-list.finished', {
+        url    : '/finished',
         views  : {
-          'excursions-over': {
+          'excursions-finished': {
             templateUrl: 'app/excursions-list/excursions-list-tab.html',
             controller : 'ExcursionsListCtrl as excursions'
           }
