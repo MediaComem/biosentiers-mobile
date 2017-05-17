@@ -1,14 +1,14 @@
 /**
  * Created by Mathias on 01.09.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('mini-map')
     .factory('MiniMap', MiniMapService);
 
-  function MiniMapService(MapIcons, $log) {
+  function MiniMapService(MapIcons, $log, Excursion) {
     var zoom    = 17,
         service = {
           config          : {},
@@ -18,6 +18,19 @@
         };
 
     initialize();
+
+    Excursion.excursionChangeObs.first().subscribe(function() {
+      service.config.markers.start = {
+        lat : Excursion.getStartPoint().geometry.coordinates[1],
+        lng : Excursion.getStartPoint().geometry.coordinates[0],
+        icon: MapIcons.start
+      };
+      service.config.markers.end = {
+        lat : Excursion.getEndPoint().geometry.coordinates[1],
+        lng : Excursion.getEndPoint().geometry.coordinates[0],
+        icon: MapIcons.end
+      };
+    });
 
     return service;
 
@@ -83,10 +96,10 @@
      */
     function updateMapMarkers(mapMarkerChanges) {
       $log.log(mapMarkerChanges);
-      _.each(mapMarkerChanges.hidden, function (marker) {
+      _.each(mapMarkerChanges.hidden, function(marker) {
         delete service.config.markers[marker.properties.id_poi];
       });
-      _.each(mapMarkerChanges.shown, function (marker) {
+      _.each(mapMarkerChanges.shown, function(marker) {
         service.config.markers[marker.properties.id_poi] = {
           lat : marker.geometry.coordinates[1],
           lng : marker.geometry.coordinates[0],
