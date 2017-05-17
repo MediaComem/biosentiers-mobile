@@ -1,13 +1,17 @@
 <ion-view title="{{excursionSeen.excursion.name}}">
 	<div class="bar bar-subheader bar-royal ligther">
-		<h2 class="title">Éléments vus {{excursionSeen.seenPois.length}}/25</h2>
-		<progress max="25" value="{{excursionSeen.seenPois.length}}"></progress>
+		<h2 class="title">
+			{{excursionSeen.seenPois.length || 'Aucun'}} {{excursionSeen.seenPois.length > 0 ? 'É' : 'é'}}lément{{excursionSeen.seenPois.length > 0 ? 's' : ''}} vu{{excursionSeen.seenPois.length > 0 ? 's' : ''}}
+		</h2>
+		<!--<progress max="25" value="{{excursionSeen.seenPois.length}}"></progress>-->
 	</div>
 	<ion-content class="has-subheader">
 		<div class="padding">
 			<ion-list>
-				<ion-item ng-repeat="seenPoi in excursionSeen.seenPois" ui-sref="app.excursion.seenlist.poi({poiId: seenPoi.poi_id})">
-					Vu le {{seenPoi.seen_at | date:'dd.MM.yyyy'}} à {{seenPoi.seen_at | date:'HH:mm:ss'}}
+				<ion-item ng-repeat="seenPoi in excursionSeen.seenPois" ui-sref="app.excursion.seenlist.poi({theme: seenPoi.poi_data.properties.theme_name,specieId: seenPoi.poi_data.properties.id_specie})" class="item-icon-right">
+					{{seenPoi.poi_data.properties.common_name.fr}}
+					<span class="item-note">Vu le {{seenPoi.seen_at | date:'dd.MM.yyyy'}} à {{seenPoi.seen_at | date:'HH:mm:ss'}}</span>
+					<i class="icon ion-chevron-right"></i>
 				</ion-item>
 			</ion-list>
 		</div>

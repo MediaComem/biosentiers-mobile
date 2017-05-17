@@ -19,6 +19,7 @@
     'poi-module',
     'map-icons-module',
     'excursions-module',
+    'poi-card-module',
     'position-badge',
     'seen-pois-data-module',
     'species-modules',

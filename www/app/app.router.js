@@ -196,10 +196,11 @@
       })
 
       .state('app.excursion.seenlist.poi', {
-        url  : '/poi/:poiId',
+        url  : '/:theme/:specieId',
         views: {
           'menuContent@app': {
-            templateUrl: 'app/specie/specie.html'
+            templateUrl: 'app/excursion/excursion-seen-poi.html',
+            controller: 'ExcursionSeenPoiCtrl as poiCtrl'
           }
         }
       })

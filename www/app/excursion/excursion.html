@@ -64,8 +64,8 @@
 			</div>
 			<div class="list list-inset">
 				<a class="item item-icon-right" ui-sref="app.excursion.seenlist({excursionId: excursion.data.id})">
-					Éléments vus
-					<span class="item-note">{{excursion.nbSeenPoi}}/25</span>
+					{{excursion.nbSeenPoi || 'Aucun'}} {{excursion.nbSeenPoi > 0 ? 'É' : 'é'}}lément{{excursion.nbSeenPoi > 0 ? 's' : ''}} vu{{excursion.nbSeenPoi > 0 ? 's' : ''}}
+					<!--<span class="item-note">{{excursion.nbSeenPoi}}</span>-->
 					<i class="icon ion-chevron-right"></i>
 				</a>
 			</div>

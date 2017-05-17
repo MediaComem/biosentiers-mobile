@@ -59,7 +59,8 @@
     },
     "cordova-plugin-file-transfer",
     "cordova-plugin-network-information",
-    "cordova-plugin-zip"
+    "cordova-plugin-zip",
+    "cordova-plugin-inappbrowser"
   ],
   "cordovaPlatforms": [
     {
