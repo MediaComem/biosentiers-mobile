@@ -29,7 +29,7 @@
     };
   }
 
-  function DebugLogCtrlFn(DebugLog) {
+  function DebugLogCtrlFn(DebugLog, $timeout) {
     var debLog = this;
     debLog.logs = DebugLog.logs;
   }
@@ -48,6 +48,7 @@
 
     function add(log) {
       logs.push({time: Date.now(), content: log});
+      logs.length >= 100 && removeFirst();
       // $log.log('DebugLog:add:new log added', log, logs);
     }
 
