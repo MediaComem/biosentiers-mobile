@@ -67,6 +67,10 @@
       updateDebugPositionClass(position.acc);
     });
 
+    Excursion.excursionChangeObs.first().subscribe(function(data) {
+      base.excursionName = data.name;
+    });
+
     Excursion.currentPoiChangeObs.subscribe(showPoiModal);
 
     ArView.activateManualEndingObs.subscribe(function() {

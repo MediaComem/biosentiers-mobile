@@ -179,6 +179,7 @@
       return $q.all(promises).then(function(results) {
         $log.log('ExcursionCtrl:loadWorldExcursion', results);
         var arData = {
+          name           : excursion.data.name,
           id             : excursion.data.id,
           themes         : excursion.data.themes,
           path           : geoData.path,
