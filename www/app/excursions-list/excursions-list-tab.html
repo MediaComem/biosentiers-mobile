@@ -9,7 +9,10 @@
         <p>Statut : {{excursion.status | status}}</p>
       </ion-item>
     </ion-list>
-    <p ng-if="!excursions.loading && excursions.data.length == 0">Aucune sortie existante</p>
+    <div ng-if="!excursions.loading && excursions.data.length == 0" id="no-excursion">
+	    <i class="icon ion-leaf"></i>
+      <span>Aucune sortie correspondante...</span>
+    </div>
 	  <p ng-if="excursions.loading">Chargement</p>
   </ion-content>
 </ion-view>

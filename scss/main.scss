@@ -120,3 +120,19 @@ progress {
     margin-right: 5px;
   }
 }
+
+#no-excursion {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  color: $positive-light;
+  opacity: 0.5;
+  i.ion-leaf {
+    opacity: 0.2;
+    font-size: 6em;
+    margin-bottom: 50px;
+  }
+}
