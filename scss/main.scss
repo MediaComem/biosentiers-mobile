@@ -98,17 +98,17 @@ progress {
     position: initial;
     display: inline-block;
   }
-  .bio-badge-calm {
+  .bio-badge-pending {
     background-color: transparent;
     border: 1px solid $calm;
     color: $calm;
   }
-  .bio-badge-energized {
+  .bio-badge-ongoing {
     background-color: transparent;
     border: 1px solid $energized;
     color: $energized;
   }
-  .bio-badge-assertive {
+  .bio-badge-finished {
     background-color: transparent;
     border: 1px solid $assertive;
     color: $assertive;
@@ -134,5 +134,11 @@ progress {
     opacity: 0.2;
     font-size: 6em;
     margin-bottom: 50px;
+  }
+}
+
+.excursions-list {
+  ion-item:last-of-type {
+    margin-bottom: 10px;
   }
 }

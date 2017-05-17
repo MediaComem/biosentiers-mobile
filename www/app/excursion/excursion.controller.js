@@ -15,7 +15,6 @@
     var geoData, positionWatcher;
 
     excursion.actionButtonClick = actionButtonClick;
-    excursion.badgeClassFromStatus = badgeClassFromStatus;
     excursion.centerMapOnZone = centerMapOnZone;
     excursion.openFabActions = openFabActions;
     excursion.zoneIsNotAvailable = zoneIsNotAvailable;
@@ -120,16 +119,6 @@
         excursion.positionState = 'searching';
       }, 1000);
       $log.info(positionWatcher);
-    }
-
-    function badgeClassFromStatus(status) {
-      var classes = {
-        pending : 'bio-badge-calm',
-        ongoing : 'bio-badge-energized',
-        finished: 'bio-badge-assertive'
-      };
-
-      return classes[status];
     }
 
     function actionButtonClick() {
