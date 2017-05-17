@@ -16,6 +16,8 @@
     debug.position = {};
     debug.remove = Modals.removeCurrent;
     debug.balises = balises;
+    debug.gare = gare;
+    debug.office = office;
     debug.heig = heig;
     debug.plage = plage;
     debug.cheseaux = cheseaux;
@@ -53,6 +55,20 @@
     }
 
     /**
+     * Sets the position to Champ Pitter
+     */
+    function gare() {
+      setPosition(46.781025850072695, 6.641159078988079, 431);
+    }
+
+    /**
+     * Sets the position to Champ Pitter
+     */
+    function office() {
+      setPosition(46.780397285829991, 6.643032521127623, 431);
+    }
+
+    /**
      * Sets the position to the given coordinates
      */
     function custom() {
@@ -63,25 +79,6 @@
       };
       $log.log('DebugPosition:custom', pos);
       setPosition(pos.lat, pos.lon, pos.alt);
-    }
-
-    /**
-     * Sets the position to one a the beacon in the path.
-     * The first beacon (num = 1) is located at the train station
-     * The second beacon (num = 2) is located at the tourism office
-     * @param num The number of the beacon to set position at
-     */
-    function balises(num) {
-      switch (num) {
-        case 1:
-          setPosition(46.781025850072695, 6.641159078988079, 431);
-          break;
-        case 2:
-          setPosition(46.780397285829991, 6.643032521127623, 431);
-          break;
-        default:
-          throw new TypeError('Numéro inconnu');
-      }
     }
 
     /**
