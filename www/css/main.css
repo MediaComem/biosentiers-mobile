@@ -149,3 +149,7 @@ progress {
 
 .excursions-list ion-item:last-of-type {
   margin-bottom: 10px; }
+
+.poi-seen-list img {
+  height: 50%;
+  position: absolute; }
