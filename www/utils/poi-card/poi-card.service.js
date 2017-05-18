@@ -59,7 +59,7 @@
       }
 
       function getImageSourceButterfly() {
-        return imgBaseUrl + "photos/butterfly" + ctrl.content.id_specie + ".jpg";
+        return imgBaseUrl + "photos/butterfly/" + ctrl.content.id_specie + ".jpg";
       }
     }
 
