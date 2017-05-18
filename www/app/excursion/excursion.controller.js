@@ -11,6 +11,10 @@
   function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, $log, ExcursionMapConfig, Excursions, excursionData, PoiGeo, $q, SeenPoisData, $scope, $timeout, WorldActions) {
     $log.log('excursion data', excursionData);
 
+    $scope.$on('$ionicView.beforeEnter', function(event, viewData) {
+      viewData.enableBack = true;
+    });
+
     var excursion = this;
     var geoData, positionWatcher;
 

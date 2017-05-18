@@ -9,6 +9,5 @@
     .controller('MenuCtrl', MenuCtrl);
 
   function MenuCtrl() {
-
   }
 })();
