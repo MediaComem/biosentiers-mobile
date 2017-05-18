@@ -8,24 +8,34 @@
     .module('app')
     .controller('ExcursionsListCtrl', ExcursionsListCtrl);
 
-  function ExcursionsListCtrl(excursionsData, $scope, $ionicTabsDelegate, $log) {
+  function ExcursionsListCtrl(excursionsData, $scope, $ionicSideMenuDelegate, $ionicTabsDelegate, $log) {
     var excursions = this;
     // excursions.loading = true;
     $log.log('excursionsData', excursionsData);
     excursions.data = excursionsData;
 
     $scope.goForward = function() {
-      var selected = $ionicTabsDelegate.selectedIndex();
-      if (selected != -1) {
-        $ionicTabsDelegate.select(selected + 1);
+      if (menuIsNotOpening()) {
+        var selected = $ionicTabsDelegate.selectedIndex();
+        if (selected !== -1) {
+          $ionicTabsDelegate.select(selected + 1);
+        }
       }
     };
 
     $scope.goBack = function() {
-      var selected = $ionicTabsDelegate.selectedIndex();
-      if (selected != -1 && selected != 0) {
-        $ionicTabsDelegate.select(selected - 1);
+      if (menuIsNotOpening()) {
+        var selected = $ionicTabsDelegate.selectedIndex();
+        if (selected !== -1 && selected !== 0) {
+          $ionicTabsDelegate.select(selected - 1);
+        }
       }
     };
+
+    ////////////////////
+
+    function menuIsNotOpening() {
+      return $ionicSideMenuDelegate.getOpenRatio() === 0;
+    }
   }
 })();
