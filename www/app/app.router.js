@@ -205,16 +205,16 @@
         }
       })
 
-      .state('app.specie', {
-        url    : '/encyclopedia/:specieId',
+      .state('app.encyclopedia.species', {
+        url    : '/:specieId',
         views  : {
           'menuContent': {
             templateUrl: 'app/species/species.html',
-            controller : 'SpeciesCtrl as specie'
+            controller : 'SpeciesCtrl as species'
           }
         },
         resolve: {
-          specieData: function(Species, $stateParams) {
+          speciesData: function(Species, $stateParams) {
             return Species.getOne($stateParams.specieId);
           }
         }

@@ -8,7 +8,7 @@
     .module('app')
     .controller('SpeciesCtrl', SpeciesCtrl);
 
-  function SpeciesCtrl(MapIcons, leafletData, $log, specieData, $scope) {
+  function SpeciesCtrl(MapIcons, leafletData, $log, speciesData, $scope) {
     var species = this,
         UserPosition = {
           lat: 46.781001,
@@ -20,7 +20,7 @@
 
         var markersArray = [];
 
-    species.data = specieData;
+    species.data = speciesData;
 
     species.map = {
       maxbounds: {
@@ -87,8 +87,8 @@
     $scope.$on("$ionicView.enter", function() {
       leafletData.getMap('map').then(function(map) {
         //$log.debug(map);
-        markersArray = addMapMarkers(specieData);
-        map.fitBounds(addMapMarkers(specieData));
+        markersArray = addMapMarkers(speciesData);
+        map.fitBounds(addMapMarkers(speciesData));
       }).catch(function(error) {
         $log.warn(error);
       });
