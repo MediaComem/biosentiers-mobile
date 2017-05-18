@@ -44,8 +44,8 @@
     function getPoints() {
       // return $http.get('data/flowers_birds_150m.json');
       var data = [
-        $http.get(dataPath + 'flower.json'),
-        $http.get(dataPath + 'tree.json'),
+        $http.get(dataPath + 'flower_all.json'),
+        $http.get(dataPath + 'tree_all.json'),
         $http.get(dataPath + 'bird.json'),
         $http.get(dataPath + 'butterfly.json')
       ];

@@ -1,11 +1,11 @@
 <ion-view title="{{excursionSeen.excursion.name}}">
-	<div class="bar bar-subheader bar-royal lighter">
-		<h2 class="title">
+	<ion-subheader-bar class="bar bar-subheader bar-royal lighter">
+		<h2 class="title title-left">
 			{{excursionSeen.seenPois.length || 'Aucun'}} {{excursionSeen.seenPois.length > 0 ? 'É' :
 			'é'}}lément{{excursionSeen.seenPois.length > 0 ? 's' : ''}} vu{{excursionSeen.seenPois.length > 0 ? 's' : ''}}
 		</h2>
-		<!--<progress max="25" value="{{excursionSeen.seenPois.length}}"></progress>-->
-	</div>
+		<!--<button class="button button-icon icon ion-funnel"></button>-->
+	</ion-subheader-bar>
 	<ion-content class="has-subheader">
 		<div class="padding">
 			<ion-list class="poi-seen-list">

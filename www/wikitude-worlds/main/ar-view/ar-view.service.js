@@ -18,7 +18,7 @@
         arExtremityPoints           = {},
         reachLimit                  = 250,
         minPoiActiveDistance        = 10,
-        updateAltitudeTime          = 1000,
+        updateAltitudeTime          = 500,
         activateManualEndingSubject = new rx.ReplaySubject(1),
         poisChangeSubject           = new rx.Subject(),
         hasReachEndOnce             = false,
