@@ -9,6 +9,7 @@
     .factory('PoiGeo', PoiGeoService);
 
   function PoiGeoService($http, $log, themesFilter, $q, turf) {
+    var dataPath = "data/partial/";
 
     var service = {
       getPath            : getPath,
@@ -43,8 +44,10 @@
     function getPoints() {
       // return $http.get('data/flowers_birds_150m.json');
       var data = [
-        $http.get('data/flower.json'),
-        $http.get('data/tree.json')
+        $http.get(dataPath + 'flower.json'),
+        $http.get(dataPath + 'tree.json'),
+        $http.get(dataPath + 'bird.json'),
+        $http.get(dataPath + 'butterfly.json')
       ];
 
       return $q.all(data).then(function(result) {

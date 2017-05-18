@@ -22,6 +22,7 @@
           ctrl.flagUrl = getFlagIconUrl(ctrl);
           ctrl.updateCommomName = updateCommonNameFactory(ctrl);
           ctrl.openInBrowser = openInBrowserFactory(ctrl);
+          ctrl.getImageSource = getImageSourceFactory(ctrl);
         }
       };
     };
@@ -37,6 +38,31 @@
       return imgBaseUrl + "flags/" + ctrl.selectedLanguage + ".png";
     }
 
+    function getImageSourceFactory(ctrl) {
+      var funcs = {
+        bird: getImageSourceBird,
+        butterfly: getImageSourceButterfly,
+        flower: getImageSourceFlora,
+        tree: getImageSourceFlora
+      };
+
+      return funcs[ctrl.content.theme_name];
+
+      ////////////////////
+
+      function getImageSourceFlora() {
+        return imgBaseUrl + "photos/flora/" + ctrl.content.id_specie + "a.jpg";
+      }
+
+      function getImageSourceBird() {
+        return imgBaseUrl + "photos/bird/" + ctrl.content.id_specie + "_700px.png";
+      }
+
+      function getImageSourceButterfly() {
+        return imgBaseUrl + "photos/butterfly" + ctrl.content.id_specie + ".jpg";
+      }
+    }
+
     function updateCommonNameFactory(ctrl) {
       return function updateCommomName() {
         console.log('PoiModalCtrl:updateCommonName', ctrl.selectedLanguage);
@@ -44,14 +70,19 @@
     }
 
     function openInBrowserFactory(ctrl) {
+      var url = ctrl.content.website;
       if (typeof AR === 'undefined') {
         return function openInBrowser() {
-          window.open(ctrl.content.website, '_system');
+          var pattern = /http(s)*:\/\/.*/;
+          if (!pattern.test(url)) {
+            url = 'http://' + url;
+          }
+          window.open(url, '_system');
           return false;
         };
       } else {
         return function openInBrowser() {
-          AR.context.openInBrowser(ctrl.content.website, true);
+          AR.context.openInBrowser(url, true);
         };
       }
     }

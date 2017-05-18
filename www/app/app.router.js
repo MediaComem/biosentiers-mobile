@@ -37,7 +37,7 @@
 
       .state('app.excursions-list', {
         url  : '/excursions-list',
-        cache: false, //fix issue with other tabs system - species - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
+        cache: false, //fix issue with other tabs system - encyclopedia - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
         views: {
           'menuContent': {
             templateUrl: 'app/excursions-list/excursions-list.html'
@@ -105,56 +105,56 @@
         }
       })
 
-      .state('app.species', {
-        url  : '/species',
+      .state('app.encyclopedia', {
+        url  : '/encyclopedia',
         cache: false, //fix issue with other tabs system - excursions
         views: {
           'menuContent': {
-            templateUrl: 'app/species/species.html'
+            templateUrl: 'app/encyclopedia/encyclopedia.html'
           }
         }
       })
 
-      .state('app.species.flora', {
+      .state('app.encyclopedia.flora', {
         url    : '/flora',
         views  : {
-          'species-flora': {
-            templateUrl: 'app/species/species-flora.html',
-            controller : 'SpeciesCtrl as ctrl'
+          'encyclopedia-flora': {
+            templateUrl: 'app/encyclopedia/encyclopedia-flora.html',
+            controller : 'EncyclopediaCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function(Species) {
+          encyclopediaData: function(Species) {
             return Species.getAll('Flore');
           }
         }
       })
 
-      .state('app.species.birds', {
+      .state('app.encyclopedia.birds', {
         url    : '/birds',
         views  : {
-          'species-birds': {
-            templateUrl: 'app/species/species-birds.html',
-            controller : 'SpeciesCtrl as ctrl'
+          'encyclopedia-birds': {
+            templateUrl: 'app/encyclopedia/encyclopedia-birds.html',
+            controller : 'EncyclopediaCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function(Species) {
+          encyclopediaData: function(Species) {
             return Species.getAll('Oiseaux');
           }
         }
       })
 
-      .state('app.species.butterflies', {
+      .state('app.encyclopedia.butterflies', {
         url    : '/butterflies',
         views  : {
-          'species-butterflies': {
-            templateUrl: 'app/species/species-butterflies.html',
-            controller : 'SpeciesCtrl as ctrl'
+          'encyclopedia-butterflies': {
+            templateUrl: 'app/encyclopedia/encyclopedia-butterflies.html',
+            controller : 'EncyclopediaCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function(Species) {
+          encyclopediaData: function(Species) {
             return Species.getAll('Papillons');
           }
         }
@@ -206,11 +206,11 @@
       })
 
       .state('app.specie', {
-        url    : '/species/:specieId',
+        url    : '/encyclopedia/:specieId',
         views  : {
           'menuContent': {
-            templateUrl: 'app/specie/specie.html',
-            controller : 'SpecieCtrl as specie'
+            templateUrl: 'app/species/species.html',
+            controller : 'SpeciesCtrl as specie'
           }
         },
         resolve: {

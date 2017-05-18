@@ -22,7 +22,7 @@
     'poi-card-module',
     'position-badge',
     'seen-pois-data-module',
-    'species-modules',
+    'encyclopedia-module',
     'qr-module',
     'timers-module',
     'trans-module',
