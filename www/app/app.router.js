@@ -50,7 +50,7 @@
         views  : {
           'excursions-all': {
             templateUrl: 'app/excursions-list/excursions-list-tab.html',
-            controller : 'ExcursionsListCtrl as excursions'
+            controller : 'ExcursionsListTabCtrl as tab'
           }
         },
         resolve: {
@@ -65,7 +65,7 @@
         views  : {
           'excursions-pending': {
             templateUrl: 'app/excursions-list/excursions-list-tab.html',
-            controller : 'ExcursionsListCtrl as excursions'
+            controller : 'ExcursionsListTabCtrl as tab'
           }
         },
         resolve: {
@@ -80,7 +80,7 @@
         views  : {
           'excursions-ongoing': {
             templateUrl: 'app/excursions-list/excursions-list-tab.html',
-            controller : 'ExcursionsListCtrl as excursions'
+            controller : 'ExcursionsListTabCtrl as tab'
           }
         },
         resolve: {
@@ -95,7 +95,7 @@
         views  : {
           'excursions-finished': {
             templateUrl: 'app/excursions-list/excursions-list-tab.html',
-            controller : 'ExcursionsListCtrl as excursions'
+            controller : 'ExcursionsListTabCtrl as tab'
           }
         },
         resolve: {

@@ -16,6 +16,7 @@
       getPending       : getPending,
       getOngoing       : getOngoing,
       getFinished      : getFinished,
+      getStats         : getStats,
       updateOne        : updateOne,
       setOngoingStatus : setOngoingStatus,
       setFinishedStatus: setFinishedStatus,
@@ -95,6 +96,14 @@
     function getFinished() {
       return BioDb.getCollection(COLL_NAME)
         .then(function(coll) { return coll.chain().find({status: "finished"}).simplesort('id').data(); })
+        .catch(handleError);
+    }
+
+    function getStats() {
+      return BioDb.getCollection(COLL_NAME)
+        .then(function(coll) {
+
+        })
         .catch(handleError);
     }
 

@@ -1,7 +1,7 @@
 <ion-view view-title="Mes Sorties">
-	<ion-content class="padding" on-swipe-right="excursions.nextTab()" on-swipe-left="excursions.previousTab()">
-		<ion-list ng-if="!excursions.loading && excursions.data.length >= 1" class="excursions-list">
-			<ion-item ng-repeat="excursion in excursions.data" href="#/app/excursions-list/{{excursion.id}}">
+	<ion-content class="padding" on-swipe-right="tab.nextTab()" on-swipe-left="tab.previousTab()">
+		<ion-list ng-if="!tab.loading && tab.data.length >= 1" class="excursions-list">
+			<ion-item ng-repeat="excursion in tab.data" href="#/app/excursions-list/{{excursion.id}}">
 				<h2>{{excursion.name}}</h2>
 				<span ng-if="excursion.is_new" class="badge badge-positive">Nouveau</span>
 				<p>Date : {{excursion.date | date : 'dd.MM.yyyy'}}</p>
@@ -11,10 +11,10 @@
 				</p>
 			</ion-item>
 		</ion-list>
-		<div ng-if="!excursions.loading && excursions.data.length == 0" id="no-excursion">
+		<div ng-if="!tab.loading && tab.data.length == 0" id="no-excursion">
 			<i class="icon ion-leaf"></i>
 			<span>Aucune sortie correspondante...</span>
 		</div>
-		<p ng-if="excursions.loading">Chargement</p>
+		<p ng-if="tab.loading">Chargement</p>
 	</ion-content>
 </ion-view>
