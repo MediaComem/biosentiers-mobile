@@ -65,6 +65,14 @@
       base.manualEnding = true;
     });
 
+    $scope.$on('modal.hidden', function(data) {
+      $log.log('modal destroyed', data);
+    });
+
+    $scope.$on('modal.removed', function(data) {
+      $log.log('modal removed', data);
+    });
+
     ////////////////////
 
     // TODO : Supprimer hors debug

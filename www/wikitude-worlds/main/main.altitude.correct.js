@@ -20,8 +20,8 @@
       'flower'   : -1,
       'tree'     : 0,
       'butterfly': 1,
-      'start'    : altitude.unknown,
-      'end'      : altitude.unknown
+      'start'    : -1,
+      'end'      : -1
     };
 
     return altitude;
