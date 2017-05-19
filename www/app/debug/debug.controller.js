@@ -17,7 +17,7 @@
     function resetDb() {
       $q.when()
         .then(BioDb.reset)
-        .then(Excursions.getAll())
+        // .then(Excursions.getAll())
         .then(function() {
           $cordovaToast.showShortTop('Base de données réinitialisée !');
         })

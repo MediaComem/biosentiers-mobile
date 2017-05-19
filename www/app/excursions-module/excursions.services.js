@@ -40,10 +40,10 @@
         .then(function(coll) {
           $log.log('Excursion:collection', coll);
           var res = coll.chain().find().simplesort('date', true).data();
-          if (res.length === 0) {
-            populateDb(coll);
-            res = coll.chain().find().simplesort('date', true).data();
-          }
+          // if (res.length === 0) {
+          //   populateDb(coll);
+          //   res = coll.chain().find().simplesort('date', true).data();
+          // }
           $log.log('Excursion:getAll', res);
           return res;
         }).catch(handleError);
