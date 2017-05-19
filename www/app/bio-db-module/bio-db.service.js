@@ -43,15 +43,17 @@
 
     /**
      * Get a collection from the DB, based on its name.
-     * If the required collection doesn't exist, it will be created, then returned.
+     * If the required collection doesn't exist, it will be created with the given options, then returned.
      * @param name The name of the collection to access (or create if not existing)
+     * @param options Options to be applied to the collection when created.
      */
-    function getCollection(name) {
+    function getCollection(name, options) {
       return start().then(function() {
         // db.removeCollection(name);
         var coll = db.getCollection(name);
         if (coll) return coll;
-        coll = db.addCollection(name);
+        $log.log('BioDb:getCollection:' + name + ' options', options);
+        coll = db.addCollection(name, options);
         return save().then(function() {
           return coll;
         });
@@ -76,7 +78,10 @@
       return start().then(function() {
         db.removeCollection('excursions');
         db.removeCollection('seen-pois');
-        return save();
+        $log.log('BioDb:reset', db);
+        save().then(function() {
+          db = null;
+        });
       })
     }
   }

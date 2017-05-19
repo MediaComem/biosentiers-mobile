@@ -10,6 +10,9 @@
 
   function Excursions(ExcursionClass, BioDb, $log, $q) {
     var COLL_NAME = 'excursions';
+    var COLL_OPTIONS = {
+      unique: ['id']
+    };
     var service = {
       getAll           : getAll,
       getOne           : getOne,
@@ -33,13 +36,15 @@
      * @return {Promise} A promise of an array of Excursions
      */
     function getAll() {
-      return BioDb.getCollection(COLL_NAME)
+      return getCollection()
         .then(function(coll) {
+          $log.log('Excursion:collection', coll);
           var res = coll.chain().find().simplesort('date', true).data();
           // if (res.length === 0) {
           //   populateDb(coll);
           //   res = coll.chain().find().simplesort('date', true).data();
           // }
+          $log.log('Excursion:getAll', res);
           return res;
         }).catch(handleError);
     }
@@ -50,8 +55,9 @@
      * @return {Promise} A promise of a new Excursion
      */
     function createOne(newExcursionData) {
-      return BioDb.getCollection(COLL_NAME)
+      return getCollection()
         .then(function(coll) {
+          $log.log('Excursions:newExcursionData', newExcursionData);
           var newExcursion = ExcursionClass.fromQrCodeData(newExcursionData);
           $log.log(newExcursion);
           coll.insert(newExcursion);
@@ -64,7 +70,7 @@
      * @return {Promise} A promise of a single Excursion object.
      */
     function getOne(excursionId) {
-      return BioDb.getCollection(COLL_NAME)
+      return getCollection()
         .then(function(coll) { return coll.findOne({id: excursionId}); })
         .catch(handleError);
     }
@@ -74,7 +80,7 @@
      * @return {Promise} A promise of an array of Excursions
      */
     function getPending() {
-      return BioDb.getCollection(COLL_NAME)
+      return getCollection()
         .then(function(coll) { return coll.chain().find({status: "pending"}).simplesort('id').data(); })
         .catch(handleError);
     }
@@ -84,7 +90,7 @@
      * @return {Promise} A promise of an array of Excursions
      */
     function getOngoing() {
-      return BioDb.getCollection(COLL_NAME)
+      return getCollection()
         .then(function(coll) { return coll.chain().find({status: "ongoing"}).simplesort('id').data(); })
         .catch(handleError)
     }
@@ -94,7 +100,7 @@
      * @return {Promise} A promise of an array of Excursions
      */
     function getFinished() {
-      return BioDb.getCollection(COLL_NAME)
+      return getCollection()
         .then(function(coll) { return coll.chain().find({status: "finished"}).simplesort('id').data(); })
         .catch(handleError);
     }
@@ -105,7 +111,7 @@
      * @return {Promise}
      */
     function getStats() {
-      return BioDb.getCollection(COLL_NAME)
+      return getCollection()
         .then(function(coll) {
           return coll.chain().find().mapReduce(statsMap, statsReduce);
         })
@@ -150,7 +156,7 @@
      * @return {Promise} A promise of an updated document.
      */
     function updateOne(doc) {
-      return BioDb.getCollection(COLL_NAME)
+      return getCollection()
         .then(function(coll) { coll.update(doc); })
         .then(BioDb.save)
         .catch(handleError);
@@ -228,6 +234,10 @@
         new ExcursionClass('Mathias', '5', new Date('2016.10.22'), 'Deuxième sortie de classe', participant, themes, zones)
       ]);
       BioDb.save();
+    }
+
+    function getCollection() {
+      return BioDb.getCollection(COLL_NAME, COLL_OPTIONS);
     }
   }
 })();
