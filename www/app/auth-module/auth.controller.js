@@ -69,9 +69,18 @@
            * @returns {boolean}
            */
           onTap: function() {
-            Excursions.createOne(auth.excursion).then(function() {
-              $state.go('app.excursions-list');
-            })
+            Excursions.createOne(auth.excursion)
+              .then(function() {
+                $state.go('app.excursions-list');
+              })
+              .catch(function(error) {
+                if (/Duplicate key for property.*/.test(error.message)) {
+                  $cordovaToast.showLongTop('La sortie que vous avez scanné existe déjà sur cet appareil.');
+                } else {
+                  $log.error(error);
+                  $cordovaToast.showLongTop('Une erreur inconnue est survenue. Merci de réessayer.');
+                }
+              });
           }
         }]
       });
