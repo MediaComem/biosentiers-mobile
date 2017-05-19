@@ -36,10 +36,10 @@
       return BioDb.getCollection(COLL_NAME)
         .then(function(coll) {
           var res = coll.chain().find().simplesort('date', true).data();
-          if (res.length === 0) {
-            populateDb(coll);
-            res = coll.chain().find().simplesort('date', true).data();
-          }
+          // if (res.length === 0) {
+          //   populateDb(coll);
+          //   res = coll.chain().find().simplesort('date', true).data();
+          // }
           return res;
         }).catch(handleError);
     }

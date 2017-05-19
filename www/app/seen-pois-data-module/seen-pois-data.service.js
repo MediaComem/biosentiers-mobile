@@ -33,10 +33,10 @@
       return BioDb.getCollection(collName)
         .then(function(coll) {
           var res = coll.find({excursion_id: excursionId});
-          if (res.length === 0) {
-            populate(coll, excursionId);
-            res = coll.find({excursion_id: excursionId});
-          }
+          // if (res.length === 0) {
+          //   populate(coll, excursionId);
+          //   res = coll.find({excursion_id: excursionId});
+          // }
           return res;
         })
         .catch(handleError);
