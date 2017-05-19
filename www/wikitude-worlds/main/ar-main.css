@@ -104,35 +104,38 @@ option.placeholder {
   .stats .total {
     color: blue; }
 
-.modal {
+.bigmap-modal {
   width: 100%;
   height: 100%;
   top: 0;
   left: 0; }
-
-.bigmap-container {
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%; }
-  .bigmap-container .leaflet-container {
+  .bigmap-modal .position-badge-wrapper {
+    display: flex;
+    align-items: center;
+    position: absolute;
     height: 100%;
-    width: 100%; }
-  .bigmap-container .leaflet-control-container {
-    display: none; }
-
-.buttons {
-  margin: auto; }
-
-.red {
-  border-radius: 120px;
-  opacity: .75;
-  background-color: #FF0000; }
-
-.blue {
-  border-radius: 120px;
-  opacity: .75;
-  background-color: #0000FF; }
+    top: 0;
+    right: 10px; }
+  .bigmap-modal .bigmap-container {
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%; }
+    .bigmap-modal .bigmap-container .leaflet-container {
+      height: 100%;
+      width: 100%; }
+    .bigmap-modal .bigmap-container .leaflet-control-container {
+      display: none; }
+  .bigmap-modal .buttons {
+    margin: auto; }
+  .bigmap-modal .red {
+    border-radius: 120px;
+    opacity: .75;
+    background-color: #FF0000; }
+  .bigmap-modal .blue {
+    border-radius: 120px;
+    opacity: .75;
+    background-color: #0000FF; }
 
 #poi-filters .poi-theme img {
   position: absolute;

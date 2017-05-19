@@ -13,7 +13,7 @@
         service = {
           config          : {},
           addPath         : addPath,
-          center          : center,
+          centerOnUser    : centerOnUser,
           updateMapMarkers: updateMapMarkers
         };
 
@@ -113,7 +113,7 @@
      * Centers the mini-map and the user marker to the real user's location.
      * @param realLocation The current user's Location
      */
-    function center(realLocation) {
+    function centerOnUser(realLocation) {
       if (service.config.hasOwnProperty('center')) {
         $log.debug('Updating the minimap center');
         service.config.center.lat = realLocation.lat;

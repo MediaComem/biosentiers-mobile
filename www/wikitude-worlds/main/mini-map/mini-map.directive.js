@@ -37,7 +37,7 @@
       $timeout(function() {
         minimap.positionState = 'searching';
       }, 1000);
-      MiniMap.center(position);
+      MiniMap.centerOnUser(position);
     });
 
     ArView.poisChangeObs.subscribe(MiniMap.updateMapMarkers);
