@@ -232,14 +232,14 @@
         $log.log("distance to user ", dist);
         DebugLog.add('POI clicked - ' + arPoi.id);
         DebugLog.add('POI distance to user - ' + dist + 'm');
-        if (1 === 1) {
-          // if (dist <= minPoiActiveDistance) {
+        // if (1 === 1) {
+        if (dist <= arPoi.minActiveDistance) {
           DebugLog.add('POI showing the details');
           Excursion.loadCurrentPoi(arPoi.poi);
           // if (!arPoi.hasBeenSeen) setPoiSeen();
         } else {
           DebugLog.add('POI is too far away');
-          AppActions.execute('toast', {message: "Vous êtes " + Math.ceil(dist - minPoiActiveDistance) + "m trop loin du point d'intérêt."});
+          AppActions.execute('toast', {message: "Rapprochez-vous encore de " + Math.ceil(dist - arPoi.minActiveDistance) + "m."});
         }
         return true; // Stop propagating the click event
       };
@@ -279,6 +279,7 @@
           $log.log('ArView:updateArPoisAltitude:User position', UserLocation.real);
           var updateTime = Timers.start();
           _.each(arPointsById, Altitude.setFixedAltitude);
+          _.each(arExtremityPoints, Altitude.setFixedAltitude);
           DebugLog.add('Updating POIs altitude took ' + updateTime.stop('update ArPois altitude') / 1000 + 's.');
           latestAltitude = currentAltitude;
         }
