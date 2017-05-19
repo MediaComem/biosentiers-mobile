@@ -19,8 +19,12 @@
 			</div>
 			<div class="item" ng-if="::poiCtrl.content.height">Taille<span
 					style="float: right">{{::poiCtrl.content.height}}m</span></div>
-			<div class="item">Floraison<span style="float: right">{{::poiCtrl.content.period_start | periodToMonth}} à
-				{{::poiCtrl.content.period_end | periodToMonth}}</span>
+			<div class="item">
+				{{(poiCtrl.content.theme_name === 'bird' || poiCtrl.content.theme_name === 'butterfly') ? 'Visible' :
+				'Floraison'}}
+				<span style="float: right">
+					{{::poiCtrl.content.period_start | periodToMonth}} à {{::poiCtrl.content.period_end | periodToMonth}}
+				</span>
 			</div>
 			<div class="item item-body">
 				<h2>Description</h2>
