@@ -8,6 +8,22 @@
     .module('app')
     .controller('MenuCtrl', MenuCtrl);
 
-  function MenuCtrl() {
+  function MenuCtrl($log) {
+    var menu = this,
+        debugCount = 0;
+
+    menu.showDebug = false;
+    menu.manageDebugLog = function() {
+      if (menu.showDebug) {
+        menu.showDebug = false;
+        debugCount = 0;
+      } else {
+        debugCount += 1;
+        $log.log('BaseCtrl:manageDebugLog', debugCount);
+        if (debugCount === 7) {
+          menu.showDebug = true;
+        }
+      }
+    }
   }
 })();

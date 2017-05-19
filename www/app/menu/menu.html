@@ -30,13 +30,16 @@
         <ion-item menu-close ui-sref="app.encyclopedia">
           Encyclopédie
         </ion-item>
-        <ion-item menu-close href="#/app/settings">
+        <ion-item menu-close ui-sref="app.settings">
           Paramètres
         </ion-item>
-        <ion-item menu-close href="#/app/debug">
+        <ion-item menu-close ui-sref="app.debug" ng-show="menu.showDebug">
           Debug
         </ion-item>
       </ion-list>
+      <ion-footer-bar id="numver" ng-click="menu.manageDebugLog()">
+        v1.0.0
+      </ion-footer-bar>
     </ion-content>
   </ion-side-menu>
 </ion-side-menus>

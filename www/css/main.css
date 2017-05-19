@@ -165,3 +165,11 @@ progress {
 .poi-seen-list img {
   height: 50%;
   position: absolute; }
+
+#numver {
+  font-size: 0.8em;
+  color: #ef6c7c;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 16px; }
