@@ -31,7 +31,7 @@
       init                   : init,
       updateAr               : updateAr,
       loadExtremityPoints    : loadExtremityPoints,
-      pauseAr                : pauseAr,
+      manageAr               : manageAr,
       setPoiSeen             : setPoiSeen
     };
 
@@ -139,16 +139,40 @@
     }
 
     /**
-     * Pauses or resume the AR, depending on the valuer of state.
-     * If true is passed, then the AR is paused, meaning that the camera and sensors are disabled to spare resources and battery consumption.
-     * This should be the case whenever a fullscreen HTML is shown, effectively hiding the AR View from the user.
-     * If false is passed, then the AR is resumed, meaning that the camera and sensors are enabled.
-     * @param {Boolean} state The state in which the AR should be. True is paused, False is resumed.
+     * Manages the states of the camera and sensors for the AR, depending on the properties' value of options.
+     * * options.all: if set to truthy value, both camera and sensors will be activated. If set to falsy value, both will be deactivated.
+     * * options.camera: if set to truthy value, the camera will be activated. If set to falsy value, it will be deactivated. In both cases, the sensors state won't change.
+     * * options.sensors: if set to truthy value, the sensors will be activated. If set to falsy value, they will be deactivated. In both cases, the camera state won't change.
+     * @param {{all, camera, sensors}} options The options to apply to the AR Hardware components
      */
-    function pauseAr(state) {
-      $log.debug((state ? 'Pausing' : 'Resuming') + 'the AR (camera and sensors)');
-      AR.hardware.camera.enabled = !state;
-      AR.hardware.sensors.enabled = !state;
+    function manageAr(options) {
+      if (!!options) {
+        if (options.hasOwnProperty('all')) {
+          arHardwareStates({camera: options.all, sensors: options.all});
+        } else if (options.hasOwnProperty('camera')) {
+          arHardwareStates({camera: options.camera});
+        } else if (options.hasOwnProperty('sensors')) {
+          arHardwareStates({sensors: options.sensors});
+        }
+      }
+    }
+
+    /**
+     * Changes the states of the hardware components for the AR, namely the camera and sensors.
+     * When a truthy value is passed, the hardware is enabled. It's disabled when a falsy value is passed
+     * If one of the options is ommitted, the corresponding state won't change
+     * @param {{camera, sensors}} options
+     */
+    function arHardwareStates(options) {
+      $log.log('ArView:arHardwareStates', options);
+      if (options.hasOwnProperty('camera')) {
+        $log.log('ArView:arHardwareStates:' + (options.camera ? 'activating' : 'deactivating') + ' the camera.');
+        AR.hardware.camera.enabled = !!options.camera;
+      }
+      if (options.hasOwnProperty('sensors')) {
+        $log.log('ArView:arHardwareStates:' + (options.sensors ? 'activating' : 'deactivating') + ' the sensors.');
+        AR.hardware.sensors.enabled = !!options.sensors;
+      }
     }
 
     /**

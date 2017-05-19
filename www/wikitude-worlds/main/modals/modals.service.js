@@ -31,7 +31,9 @@
       return $ionicModal.fromTemplateUrl('big-map-modal/big-map-modal.html', {
         scope    : $scope,
         animation: 'slide-in-up'
-      }).then(loadModal);
+      }).then(function(modal) {
+        loadModal(modal, {camera: false});
+      });
     }
 
     /**
@@ -69,14 +71,17 @@
 
     /**
      * Sets the received modal as the current modal, and opens it.
-     * While doing so, deactivate the camera and sensors for the AR to spare resources.
+     * While doing so, apply the given options to the Ar hardware components.
+     * If options is omitted, it will be set to {all: true}.
      * @param modal The modal to set as current.
+     * @param {{all, camera, sensors}} options The options to apply to the AR Hardware components. (defaults to: {all: true})
      */
-    function loadModal(modal) {
+    function loadModal(modal, options) {
       if (modal) {
         return modal.show().then(function() {
           current = modal;
-          ArView.pauseAr(true);
+          if (typeof options === 'undefined') options = {all: false};
+          ArView.manageAr(options);
         });
       } else {
         return $q.reject('No modal to show');
@@ -90,7 +95,7 @@
      */
     function hideModal() {
       if (current !== null) {
-        ArView.pauseAr(false);
+        ArView.manageAr({all: true});
         return current.hide();
       } else {
         return $q.reject('No active modal to close');
@@ -104,7 +109,7 @@
      */
     function removeModal() {
       if (current !== null) {
-        ArView.pauseAr(false);
+        ArView.manageAr({all: true});
         return current.remove();
       } else {
         return $q.reject('No active modal to remove');
