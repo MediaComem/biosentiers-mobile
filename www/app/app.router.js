@@ -40,7 +40,8 @@
         cache: false, //fix issue with other tabs system - encyclopedia - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
         views: {
           'menuContent': {
-            templateUrl: 'app/excursions-list/excursions-list.html'
+            templateUrl: 'app/excursions-list/excursions-list.html',
+            controller: 'ExcursionsListCtrl as list'
           }
         }
       })

@@ -5,9 +5,15 @@
   'use strict';
   angular
     .module('app')
-    .factory('ExcursionsListCtrl', ExcursionsListCtrlFn);
+    .controller('ExcursionsListCtrl', ExcursionsListCtrlFn);
 
-  function ExcursionsListCtrlFn() {
+  function ExcursionsListCtrlFn(Excursions, $log) {
+    var list = this;
 
+    Excursions.getStats()
+      .then(function(stats) {
+        $log.log('ExcursionsListCtrl:stats', stats);
+        list.stats = stats;
+      });
   }
 })();

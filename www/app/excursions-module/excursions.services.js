@@ -99,12 +99,46 @@
         .catch(handleError);
     }
 
+    /**
+     * Returns information about the excursions as an object with the properties all, pending, ongoing and finished.
+     * Each of these properties's value will be the number of corresponding excursions.
+     * @return {Promise}
+     */
     function getStats() {
       return BioDb.getCollection(COLL_NAME)
         .then(function(coll) {
-
+          return coll.chain().find().mapReduce(statsMap, statsReduce);
         })
         .catch(handleError);
+
+      ////////////////////
+
+      /**
+       * Maps the received elements to their corresponding status.
+       * @param element The current element
+       */
+      function statsMap(element) {
+        return element.status;
+      }
+
+      /**
+       * Aggregate the statutes as an object of count.
+       * @param statuses An array of all the excursions statuses.
+       * @return {{all, pending: number, ongoing: number, finished: number}}
+       */
+      function statsReduce(statuses) {
+        var stats = {
+          all: statuses.length,
+          pending: 0,
+          ongoing: 0,
+          finished: 0
+        };
+        statuses.forEach(function(element) {
+          $log.log('element', element);
+          stats[element] += 1;
+        });
+        return stats;
+      }
     }
 
     /**
