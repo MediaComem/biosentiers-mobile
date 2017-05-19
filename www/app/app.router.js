@@ -180,7 +180,8 @@
           }
         },
         resolve: {
-          excursionData: function(Excursions, $stateParams) {
+          excursionData: function(Excursions, $stateParams, $log) {
+            $log.log('AppRouter:app.excursion state:', $stateParams);
             return Excursions.getOne($stateParams.excursionId);
           }
         }

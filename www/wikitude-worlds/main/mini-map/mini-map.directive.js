@@ -42,17 +42,6 @@
 
     ArView.poisChangeObs.subscribe(MiniMap.updateMapMarkers);
 
-    // Execute action on hide modal
-    $scope.$on('modal.hidden', function () {
-      // Execute action
-      $log.log('modal hidden');
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function () {
-      // Execute action
-      $log.log('modal removed');
-    });
-
     // Show the minimap when loading things is done
     minimap.isVisible = true;
     $log.info('minimap should now be visible');
