@@ -80,12 +80,12 @@
       }
 
       if (!storage[type] || storage[type].destroyed) {
-        var img = new AR.ImageResource("assets/" + type + (hasBeenSeen ? "Vu.png" : ".png"), {
+        var img = new AR.ImageResource("assets/icons/" + type + (hasBeenSeen ? "_seen.png" : ".png"), {
           onError: function() {
             throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
           }
         });
-        storage[type] = new AR.ImageDrawable(img, 2, {
+        storage[type] = new AR.ImageDrawable(img, 1, {
           zOrder : 0,
           opacity: opacity
         });
@@ -94,21 +94,5 @@
       $log.debug("ar-view.icons.service.js - getIcon()", type, state, hasBeenSeen, storage, opacity);
       return storage[type];
     }
-
-    // var availableTypes = [
-    //   'default',
-    //   'bird',
-    //   'butterfly',
-    //   'flower',
-    //   'watercourse',
-    //   'territory',
-    //   'greenroof',
-    //   'ecoarea',
-    //   'wetarea',
-    //   'wildlifecorridor',
-    //   'birdterritory',
-    //   'biodivercity',
-    //   'garden'
-    // ];
   }
 })();

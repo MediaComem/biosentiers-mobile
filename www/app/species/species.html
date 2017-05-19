@@ -1,13 +1,29 @@
-<ion-tabs class="tabs-icon-top tabs-color-active-positive">
-  <ion-tab title="Flore" href="#/app/species/flora">
-    <ion-nav-view name="species-flora"></ion-nav-view>
-  </ion-tab>
+<ion-view view-title="{{species.data[0].properties.common_name}}">
+  <ion-content>
+    <div>
+      <leaflet id="map" maxbounds="specie.map.maxbounds" defaults="specie.map.defaults" tiles="specie.map.tiles"
+               center="specie.map.center" geojson="specie.map.path" markers="specie.map.markers" layers="specie.map.layers"></leaflet>
+    </div>
+    <div class="padding">
 
-  <ion-tab title="Oiseaux" href="#/app/species/birds">
-    <ion-nav-view name="species-birds"></ion-nav-view>
-  </ion-tab>
-
-  <ion-tab title="Papillons" href="#/app/species/butterflies">
-    <ion-nav-view name="species-butterflies"></ion-nav-view>
-  </ion-tab>
-</ion-tabs>
+      <div class="row">
+        <div class="col text-left">Nom latin</div>
+        <div class="col text-right">{{species.data[0].properties.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col text-left">Nom scientifique</div>
+        <div class="col text-right">{{species.data[0].properties.scientific_name}}</div>
+      </div>
+      <div class="row">
+        <div class="col text-left">Habitat</div>
+        <div class="col text-right">{{species.data[0].properties.habitat_characteristics}}</div>
+      </div>
+      <div class="row">
+        <p>{{species.data[0].properties.physical_characteristics}}</p>
+      </div>
+      <div class="row">
+        <p>{{species.data[0].properties.lien_url}}</p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

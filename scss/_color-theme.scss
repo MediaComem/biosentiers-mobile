@@ -1,0 +1,75 @@
+// Raw colors
+$royal: #207f8c;
+$positive: #3f95ea;
+$balanced: #34c05a;
+$calm: #00e3a7;
+$assertive: #ed5567;
+$energized: #ff8e32;
+
+// Lighter
+$royal-light: lighten($royal, 5%);
+$positive-light: lighten($positive, 5%);
+$balanced-light: lighten($balanced, 5%);
+$calm-light: lighten($calm, 5%);
+$assertive-light: lighten($assertive, 5%);
+$energized-light: lighten($energized, 5%);
+
+// Darker
+$royal-dark: darken($royal, 5%);
+$positive-dark: darken($positive, 5%);
+$balanced-dark: darken($balanced, 5%);
+$calm-dark: darken($calm, 5%);
+$assertive-dark: darken($assertive, 5%);
+$energized-dark: darken($energized, 5%);
+
+// Bar
+.bar {
+  &.bar-royal {
+    &.lighter {
+      background-color: $royal-light;
+    }
+    &.darker {
+      background-color: $royal-dark;
+    }
+  }
+  &.bar-positive {
+    &.lighter {
+      background-color: $positive-light;
+    }
+    &.darker {
+      background-color: $positive-dark;
+    }
+  }
+  &.bar-balanced {
+    &.lighter {
+      background-color: $balanced-light;
+    }
+    &.darker {
+      background-color: $balanced-dark;
+    }
+  }
+  &.bar-calm {
+    &.lighter {
+      background-color: $calm-light;
+    }
+    &.darker {
+      background-color: $calm-dark;
+    }
+  }
+  &.bar-assertive {
+    &.lighter {
+      background-color: $assertive-light;
+    }
+    &.darker {
+      background-color: $assertive-dark;
+    }
+  }
+  &.bar-energized {
+    &.lighter {
+      background-color: $energized-light;
+    }
+    &.darker {
+      background-color: $energized-dark;
+    }
+  }
+}

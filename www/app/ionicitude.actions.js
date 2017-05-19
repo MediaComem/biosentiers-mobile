@@ -14,7 +14,7 @@
                       Ionicitude,
                       $cordovaToast,
                       $log,
-                      Outings,
+                      Excursions,
                       PoiContent,
                       $q,
                       SeenPoisData,
@@ -25,8 +25,8 @@
 
     $ionicPlatform.ready(function() {
       Ionicitude.init()
-        .then(function(success) { console.log(success); })
-        .catch(function(error) { console.log(error); });
+        .then(function(success) { $log.log(success); })
+        .catch(function(error) { $log.log(error); });
 
       /**
        * Register Ionicitude Actions
@@ -37,7 +37,7 @@
       addIonicitudeAction(setPosition);
       addIonicitudeAction(close);
       addIonicitudeAction(addSeenPoi);
-      addIonicitudeAction(finishOuting);
+      addIonicitudeAction(finishExcursion);
 
       Ionicitude.listLibActions();
 
@@ -63,7 +63,7 @@
       }
 
       function loadPoiDetails(service, param) {
-        return PoiContent.getData(param.id);
+        return PoiContent.getPoiData(param.specieId, param.theme);
       }
 
       function toast(service, param) {
@@ -71,7 +71,7 @@
       }
 
       function setPosition(service, param) {
-        console.log('setting position :', param);
+        $log.log('setting position :', param);
         service.setLocation(param.lat, param.lon, param.alt, 1);
       }
 
@@ -90,13 +90,13 @@
 
       function addSeenPoi(service, param) {
         $log.log('adding seen poi');
-        console.log('addSeenPoi', SeenPoisData.addOne(param.outingId, param.poiId));
+        $log.log('addSeenPoi', SeenPoisData.addOne(param.excursionId, param.poiId, param.poiData));
       }
 
-      function finishOuting(service, param) {
-        return $q.when(param.outingId)
-          .then(Outings.getOne)
-          .then(Outings.setFinishedStatus)
+      function finishExcursion(service, param) {
+        return $q.when(param.excursionId)
+          .then(Excursions.getOne)
+          .then(Excursions.setFinishedStatus)
           .then(_.partial(close, service))
           .catch(function(error) {
             $log.error(error);

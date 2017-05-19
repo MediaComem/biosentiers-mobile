@@ -47,7 +47,7 @@
      * @return {string} The path to the theme's image
      */
     function getThemeImageUrl(theme) {
-      return 'assets/' + theme + '.png';
+      return 'assets/icons/' + theme + '.png';
     }
 
     /**

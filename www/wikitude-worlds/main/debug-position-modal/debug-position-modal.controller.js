@@ -3,19 +3,20 @@
  * This is the controller fot the debug position modal.
  * It allows the user to fake his position to either the available ones or a custom one.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('debug-position-modal')
     .controller('DebugCtrl', DebugCtrl);
 
-  function DebugCtrl(AppActions, Modals, $log) {
+  function DebugCtrl(AppActions, Modals, UserLocation, $log) {
     var debug = this;
 
     debug.position = {};
     debug.remove = Modals.removeCurrent;
-    debug.balises = balises;
+    debug.gare = gare;
+    debug.office = office;
     debug.heig = heig;
     debug.plage = plage;
     debug.cheseaux = cheseaux;
@@ -53,33 +54,30 @@
     }
 
     /**
-     * Sets the position to the given coordinates
+     * Sets the position to Champ Pitter
      */
-    function custom() {
-      if (debug.position.hasOwnProperty('lat') && debug.position.hasOwnProperty('lon') && debug.position.hasOwnProperty('alt')) {
-        setPosition(debug.position.lat, debug.position.lon, debug.position.alt)
-      } else {
-        AppActions.execute('toast', {message: "Des champs ne sont pas remplis"});
-      }
+    function gare() {
+      setPosition(46.781025850072695, 6.641159078988079, 431);
     }
 
     /**
-     * Sets the position to one a the beacon in the path.
-     * The first beacon (num = 1) is located at the train station
-     * The second beacon (num = 2) is located at the tourism office
-     * @param num The number of the beacon to set position at
+     * Sets the position to Champ Pitter
      */
-    function balises(num) {
-      switch (num) {
-        case 1:
-          setPosition(46.781025850072695, 6.641159078988079, 431);
-          break;
-        case 2:
-          setPosition(46.780397285829991, 6.643032521127623, 431);
-          break;
-        default:
-          throw new TypeError('Numéro inconnu');
-      }
+    function office() {
+      setPosition(46.780397285829991, 6.643032521127623, 431);
+    }
+
+    /**
+     * Sets the position to the given coordinates
+     */
+    function custom() {
+      var pos = {
+        lat: Number(debug.position.lat || UserLocation.real.lat),
+        lon: Number(debug.position.lon || UserLocation.real.lon),
+        alt: Number(debug.position.alt || UserLocation.real.alt)
+      };
+      $log.log('DebugPosition:custom', pos);
+      setPosition(pos.lat, pos.lon, pos.alt);
     }
 
     /**
@@ -89,10 +87,10 @@
      * @param alt The altitude of the faked position
      */
     function setPosition(lat, lon, alt) {
-      Modals.removeCurrent().then(function (success) {
+      Modals.removeCurrent().then(function(success) {
         $log.debug(success);
         AppActions.execute('setPosition', {lat: lat, lon: lon, alt: alt});
-      }).catch(function (error) {
+      }).catch(function(error) {
         $log.error(error);
       });
     }

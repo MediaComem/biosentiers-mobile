@@ -1,0 +1,17 @@
+<ion-tabs class="tabs-background-light tabs-color-positive">
+	<ion-tab title="Toutes {{list.stats.all ? '(' + list.stats.all + ')' : ''}}" ui-sref="app.excursions-list.all">
+		<ion-nav-view name="excursions-all"></ion-nav-view>
+	</ion-tab>
+	
+	<ion-tab title="En attente {{list.stats.pending ? '(' + list.stats.pending + ')' : ''}}" ui-sref="app.excursions-list.pending">
+		<ion-nav-view name="excursions-pending"></ion-nav-view>
+	</ion-tab>
+	
+	<ion-tab title="En cours {{list.stats.ongoing ? '(' + list.stats.ongoing + ')' : ''}}" ui-sref="app.excursions-list.ongoing">
+		<ion-nav-view name="excursions-ongoing"></ion-nav-view>
+	</ion-tab>
+	
+	<ion-tab title="Terminées {{list.stats.finished ? '(' + list.stats.finished + ')' : ''}}" ui-sref="app.excursions-list.finished">
+		<ion-nav-view name="excursions-finished"></ion-nav-view>
+	</ion-tab>
+</ion-tabs>

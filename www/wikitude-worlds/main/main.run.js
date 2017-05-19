@@ -9,8 +9,9 @@
     .config(config)
     .run(run);
 
-  function config(MapIconsProvider) {
+  function config(MapIconsProvider, PoiCardServiceProvider) {
     MapIconsProvider.setIconBaseUrl('../../img/icons');
+    PoiCardServiceProvider.setImgBaseUrl('../../img/');
   }
 
   function run(AppActions, ArView, $window, World) {

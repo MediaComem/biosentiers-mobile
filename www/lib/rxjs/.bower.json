@@ -29,6 +29,7 @@
     "commit": "11a7158efd3372d453484d60bc4f4f19c8d525e4"
   },
   "_source": "https://github.com/Reactive-Extensions/RxJS.git",
-  "_target": "*",
-  "_originalSource": "rxjs"
+  "_target": "^4.1.0",
+  "_originalSource": "rxjs",
+  "_direct": true
 }

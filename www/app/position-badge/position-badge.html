@@ -1,0 +1,9 @@
+<div class="position-badge">
+	<div class="pos-icon">
+		<ion-spinner icon="ripple" class="spinner-assertive" ng-if="posbadge.data.spinner"></ion-spinner>
+		<i class="icon ion-android-checkmark-circle balanced" ng-if="posbadge.data.success"></i>
+		<i class="icon ion-android-cancel assertive" ng-if="posbadge.data.error"></i>
+		<i class="icon ion-loop positive" ng-if="posbadge.data.refresh"></i>
+	</div>
+	<div class="pos-label" ng-if="posbadge.data.label.visible">{{ posbadge.data.label.text }}</div>
+</div>

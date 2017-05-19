@@ -23,12 +23,12 @@
       self.id = poi.properties.id_poi;
       self.hasBeenSeen = hasBeenSeen;
 
-      self.actionRange = new AR.ActionRange(self.location, AR.context.scene.minPoiActiveDistance, {
+      self.actionRange = new AR.ActionRange(self.location, self.minActiveDistance, {
         onEnter: setActive(self),
         onExit : setInactive(self)
       });
 
-      if (self.distanceToUser() > AR.context.scene.minPoiActiveDistance) {
+      if (self.distanceToUser() > self.minActiveDistance) {
         self.icon = ArIcons.getInactive(self.properties.theme_name, self.hasBeenSeen);
       } else {
         self.icon = ArIcons.getActive(self.properties.theme_name, self.hasBeenSeen);

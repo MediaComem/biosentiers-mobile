@@ -20,9 +20,12 @@
 
       self.poi = poi;
       self.properties = poi.properties;
+      self.relativeAltitudeDelta = Altitude.getRelativeDelta(self.poi.properties.theme_name);
+      self.minActiveDistance = getMinActiveDistance(self.properties.theme_name);
 
       $log.debug('ArBaseMarker -> self', self);
-      self.location = new AR.GeoLocation(self.poi.geometry.coordinates[1], self.poi.geometry.coordinates[0], Altitude.correct(self.poi.geometry.coordinates[2]));
+      self.location = new AR.GeoLocation(self.poi.geometry.coordinates[1], self.poi.geometry.coordinates[0]);
+      Altitude.setFixedAltitude(self);
 
       self.geoObject = new AR.GeoObject(self.location, {
         enabled: enabled
@@ -66,5 +69,18 @@
     };
 
     return ArBaseMarker;
+
+    ////////////////////
+
+    function getMinActiveDistance(theme) {
+      var distances = {
+        'bird': 40,
+        'butterfly': 40
+      };
+
+      var res = distances.hasOwnProperty(theme) ? distances[theme] : AR.context.scene.minPoiActiveDistance;
+      $log.log('ArBaseMarker:minActiveDistance', res);
+      return res;
+    }
   }
 })();

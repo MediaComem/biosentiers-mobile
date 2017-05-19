@@ -8,7 +8,7 @@
     .module('qr-module')
     .factory('QR', QRService);
 
-  function QRService() {
+  function QRService($log) {
 
     var service = {
       getExcursionData: getExcursionData
@@ -24,7 +24,7 @@
      * @return {excursion|{creatorName, id, date, name, participant, types, zones}|*}
      */
     function getExcursionData(qrCodeData) {
-      console.log('QR CODE raw data', qrCodeData);
+      $log.log('QR CODE raw data', qrCodeData);
       var decodedData = bioqr.decode(qrCodeData.text, {format: 'numeric', zones: base1});
       switch (decodedData.version) {
         case 1:

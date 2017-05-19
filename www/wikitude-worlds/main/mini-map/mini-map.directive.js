@@ -16,7 +16,7 @@
     };
   }
 
-  function MiniMapCtrl(ArView, Modals, $log, MiniMap, Outing, $scope, UserLocation) {
+  function MiniMapCtrl(ArView, Modals, $log, MiniMap, Excursion, $scope, UserLocation, $timeout) {
 
     var minimap = this;
 
@@ -25,24 +25,22 @@
     minimap.isVisible = false;
     minimap.config = MiniMap.config;
 
+    minimap.positionState = 'searching';
+
     minimap.showBigMapModal = showBigMapModal;
 
-    Outing.outingChangeObs.subscribe(MiniMap.addPath);
+    Excursion.excursionChangeObs.subscribe(MiniMap.addPath);
 
-    UserLocation.realObs.subscribe(MiniMap.center);
+    UserLocation.realObs.subscribe(function(position) {
+      minimap.positionState = "success";
+      $log.log('MiniMapCtrl:UserLocation:realObs received', minimap.positionState);
+      $timeout(function() {
+        minimap.positionState = 'searching';
+      }, 1000);
+      MiniMap.centerOnUser(position);
+    });
 
     ArView.poisChangeObs.subscribe(MiniMap.updateMapMarkers);
-
-    // Execute action on hide modal
-    $scope.$on('modal.hidden', function () {
-      // Execute action
-      console.log('modal hidden');
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function () {
-      // Execute action
-      console.log('modal removed');
-    });
 
     // Show the minimap when loading things is done
     minimap.isVisible = true;

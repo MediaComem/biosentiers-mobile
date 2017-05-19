@@ -1,56 +1,102 @@
 (function() {
   angular
     .module('ar')
+    .filter('accValueToText', accValueToText)
     .controller('BaseCtrl', BaseCtrl);
 
-  function BaseCtrl(AppActions, ArView, Modals, $log, Outing, $scope) {
+  // TODO : Ce filtre peut être supprimé ou modifié en production
+  function accValueToText() {
+    var text = {
+      1: 'LOW',
+      2: 'MEDIUM',
+      3: 'HIGH'
+    };
+
+    return function(input) {
+      return text[input];
+    }
+  }
+
+  function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, Modals, $log, Excursion, $scope, UserLocation) {
     var base = this;
 
-    base.poi = null;
-    base.poiDetails = null;
-    base.hasReachedEnd = false;
-    base.removePoiModal = removePoiModal;
-    base.setPoiSeen = setPoiSeen;
+    // TODO : supprimer hors debug
+    base.debugPositionClass = 'royal';
+    base.logs = [];
+    base.showDebug = false;
+    var debugCount = 0;
+    base.manageDebugLog = function() {
+      if (base.showDebug) {
+        base.showDebug = false;
+        debugCount = 0;
+      } else {
+        debugCount += 1;
+        $log.log('BaseCtrl:manageDebugLog', debugCount);
+        if (debugCount === 7) {
+          base.showDebug = true;
+        }
+      }
+    };
+
+    base.manualEnding = false;
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
-    base.finishOuting = finishOuting;
+    base.finishExcursion = finishExcursion;
 
-    // Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-      base.poi = null;
-      base.poiDetails = null;
-    });
-    // Execute action on hide modal
-    $scope.$on('modal.hidden', function() {
-      // Execute action
-      console.log('modal hidden');
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function() {
-      // Execute action
-      console.log('modal removed');
+    UserLocation.realObs.subscribe(function(position) {
+      DebugLog.add('Real User Location Altitude ' + position.alt);
+      if (position.alt === 0 || position.alt === Altitude.unknown) {
+        base.altitude = 'Inconnue'
+      } else {
+        base.altitude = position.alt + 'm';
+      }
+      base.accuracy = position.acc;
+      updateDebugPositionClass(position.acc);
     });
 
-    Outing.currentPoiChangeObs.subscribe(function(data) {
-      base.poi = data.poi;
-      base.poiDetails = data.details;
-      showPoiModal(data.poi.properties.theme_name);
+    Excursion.excursionChangeObs.first().subscribe(function(data) {
+      base.excursionName = data.name;
     });
 
-    ArView.outingEndReachedObs.subscribe(function() {
-      base.hasReachedEnd = true;
+    Excursion.currentPoiChangeObs.subscribe(showPoiModal);
+
+    ArView.activateManualEndingObs.subscribe(function() {
+      base.manualEnding = true;
+    });
+
+    $scope.$on('modal.hidden', function(data) {
+      $log.log('modal destroyed', data);
+    });
+
+    $scope.$on('modal.removed', function(data) {
+      $log.log('modal removed', data);
     });
 
     ////////////////////
+
+    // TODO : Supprimer hors debug
+    function updateDebugPositionClass(acc) {
+      var classes = {
+        1: 'assertive',
+        2: 'energized',
+        3: 'balanced'
+      };
+
+      if (classes.hasOwnProperty(acc)) {
+        base.debugPositionClass = classes[acc];
+      }
+    }
 
     function closeAR() {
       $log.debug('Closing the AR');
       AppActions.execute('close');
     }
 
-    function finishOuting() {
-      AppActions.execute('finishOuting', {outingId: Outing.id});
+    function finishExcursion() {
+      EndPopup.manual().then(function(validated) {
+        validated && AppActions.execute('finishExcursion', {excursionId: Excursion.id});
+      });
     }
 
     function showDebugModal() {
@@ -61,19 +107,8 @@
       Modals.showFilters($scope);
     }
 
-    function showPoiModal(type) {
-      Modals.showPoi(type, $scope);
-    }
-
-    function removePoiModal() {
-      return Modals.removeCurrent();
-    }
-
-    function setPoiSeen() {
-      var poi = base.poi;
-      removePoiModal().then(function() {
-        ArView.setPoiSeen(poi);
-      });
+    function showPoiModal() {
+      Modals.showPoi($scope);
     }
   }
 })();

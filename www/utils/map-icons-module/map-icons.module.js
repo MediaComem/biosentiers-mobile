@@ -44,6 +44,8 @@
          * @returns Object
          */
         get user() {return angular.copy(icons.user);},
+        get start() {return angular.copy(icons.start);},
+        get end() {return angular.copy(icons.end)},
         get: getIcon
       };
 
@@ -51,9 +53,10 @@
         user     : new IconConf('user', 20, 10),
         start    : new IconConf('start', 16, 8),
         end      : new IconConf('end', 16, 8),
-        Oiseaux  : new IconConf('Oiseaux', 16, 8),
-        Flore    : new IconConf('Flore', 16, 8),
-        Papillons: new IconConf('Papillons', 16, 8)
+        bird     : new IconConf('bird', 16, 8),
+        flower   : new IconConf('flower', 16, 8),
+        butterfly: new IconConf('butterfly', 16, 8),
+        tree     : new IconConf('tree', 16, 8)
       };
 
       return service;

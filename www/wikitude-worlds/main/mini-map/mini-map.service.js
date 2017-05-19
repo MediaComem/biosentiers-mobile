@@ -1,23 +1,36 @@
 /**
  * Created by Mathias on 01.09.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('mini-map')
     .factory('MiniMap', MiniMapService);
 
-  function MiniMapService(MapIcons, $log) {
-    var zoom    = 16,
+  function MiniMapService(MapIcons, $log, Excursion) {
+    var zoom    = 17,
         service = {
           config          : {},
           addPath         : addPath,
-          center          : center,
+          centerOnUser    : centerOnUser,
           updateMapMarkers: updateMapMarkers
         };
 
     initialize();
+
+    Excursion.excursionChangeObs.first().subscribe(function() {
+      service.config.markers.start = {
+        lat : Excursion.getStartPoint().geometry.coordinates[1],
+        lng : Excursion.getStartPoint().geometry.coordinates[0],
+        icon: MapIcons.start
+      };
+      service.config.markers.end = {
+        lat : Excursion.getEndPoint().geometry.coordinates[1],
+        lng : Excursion.getEndPoint().geometry.coordinates[0],
+        icon: MapIcons.end
+      };
+    });
 
     return service;
 
@@ -65,11 +78,11 @@
 
     /**
      * Adds the received path as a geojson layer on the config object for the minimap.
-     * @param outing A GeoJSON object containing a path property that reprensents the path to add.
+     * @param excursion A GeoJSON object containing a path property that reprensents the path to add.
      */
-    function addPath(outing) {
+    function addPath(excursion) {
       service.config.geojson.path = {
-        data : outing.path,
+        data : excursion.path,
         style: {
           color : 'red',
           weigth: 6
@@ -83,10 +96,10 @@
      */
     function updateMapMarkers(mapMarkerChanges) {
       $log.log(mapMarkerChanges);
-      _.each(mapMarkerChanges.hidden, function (marker) {
+      _.each(mapMarkerChanges.hidden, function(marker) {
         delete service.config.markers[marker.properties.id_poi];
       });
-      _.each(mapMarkerChanges.shown, function (marker) {
+      _.each(mapMarkerChanges.shown, function(marker) {
         service.config.markers[marker.properties.id_poi] = {
           lat : marker.geometry.coordinates[1],
           lng : marker.geometry.coordinates[0],
@@ -100,7 +113,7 @@
      * Centers the mini-map and the user marker to the real user's location.
      * @param realLocation The current user's Location
      */
-    function center(realLocation) {
+    function centerOnUser(realLocation) {
       if (service.config.hasOwnProperty('center')) {
         $log.debug('Updating the minimap center');
         service.config.center.lat = realLocation.lat;

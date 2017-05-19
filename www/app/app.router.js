@@ -35,126 +35,127 @@
         }
       })
 
-      .state('app.outings', {
-        url  : '/outings',
-        cache: false, //fix issue with other tabs system - species - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
+      .state('app.excursions-list', {
+        url  : '/excursions-list',
+        cache: false, //fix issue with other tabs system - encyclopedia - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
         views: {
           'menuContent': {
-            templateUrl: 'app/outings/outings.html'
+            templateUrl: 'app/excursions-list/excursions-list.html',
+            controller: 'ExcursionsListCtrl as list'
           }
         }
       })
 
-      .state('app.outings.all', {
+      .state('app.excursions-list.all', {
         url    : '/all',
         views  : {
-          'outings-all': {
-            templateUrl: 'app/outings/outings-all.html',
-            controller : 'OutingsCtrl as ctrl'
+          'excursions-all': {
+            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            controller : 'ExcursionsListTabCtrl as tab'
           }
         },
         resolve: {
-          outingsData: function(Outings) {
-            return Outings.getAll();
+          excursionsData: function(Excursions) {
+            return Excursions.getAll();
           }
         }
       })
 
-      .state('app.outings.pending', {
+      .state('app.excursions-list.pending', {
         url    : '/pending',
         views  : {
-          'outings-pending': {
-            templateUrl: 'app/outings/outings-all.html',
-            controller : 'OutingsCtrl as ctrl'
+          'excursions-pending': {
+            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            controller : 'ExcursionsListTabCtrl as tab'
           }
         },
         resolve: {
-          outingsData: function(Outings) {
-            return Outings.getPending();
+          excursionsData: function(Excursions) {
+            return Excursions.getPending();
           }
         }
       })
 
-      .state('app.outings.ongoing', {
+      .state('app.excursions-list.ongoing', {
         url    : '/ongoing',
         views  : {
-          'outings-ongoing': {
-            templateUrl: 'app/outings/outings-all.html',
-            controller : 'OutingsCtrl as ctrl'
+          'excursions-ongoing': {
+            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            controller : 'ExcursionsListTabCtrl as tab'
           }
         },
         resolve: {
-          outingsData: function(Outings) {
-            return Outings.getOngoing();
+          excursionsData: function(Excursions) {
+            return Excursions.getOngoing();
           }
         }
       })
 
-      .state('app.outings.over', {
-        url    : '/over',
+      .state('app.excursions-list.finished', {
+        url    : '/finished',
         views  : {
-          'outings-over': {
-            templateUrl: 'app/outings/outings-all.html',
-            controller : 'OutingsCtrl as ctrl'
+          'excursions-finished': {
+            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            controller : 'ExcursionsListTabCtrl as tab'
           }
         },
         resolve: {
-          outingsData: function(Outings) {
-            return Outings.getFinished();
+          excursionsData: function(Excursions) {
+            return Excursions.getFinished();
           }
         }
       })
 
-      .state('app.species', {
-        url  : '/species',
-        cache: false, //fix issue with other tabs system - outings
+      .state('app.encyclopedia', {
+        url  : '/encyclopedia',
+        cache: false, //fix issue with other tabs system - excursions
         views: {
           'menuContent': {
-            templateUrl: 'app/species/species.html'
+            templateUrl: 'app/encyclopedia/encyclopedia.html'
           }
         }
       })
 
-      .state('app.species.flora', {
+      .state('app.encyclopedia.flora', {
         url    : '/flora',
         views  : {
-          'species-flora': {
-            templateUrl: 'app/species/species-flora.html',
-            controller : 'SpeciesCtrl as ctrl'
+          'encyclopedia-flora': {
+            templateUrl: 'app/encyclopedia/encyclopedia-flora.html',
+            controller : 'EncyclopediaCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function(Species) {
+          encyclopediaData: function(Species) {
             return Species.getAll('Flore');
           }
         }
       })
 
-      .state('app.species.birds', {
+      .state('app.encyclopedia.birds', {
         url    : '/birds',
         views  : {
-          'species-birds': {
-            templateUrl: 'app/species/species-birds.html',
-            controller : 'SpeciesCtrl as ctrl'
+          'encyclopedia-birds': {
+            templateUrl: 'app/encyclopedia/encyclopedia-birds.html',
+            controller : 'EncyclopediaCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function(Species) {
+          encyclopediaData: function(Species) {
             return Species.getAll('Oiseaux');
           }
         }
       })
 
-      .state('app.species.butterflies', {
+      .state('app.encyclopedia.butterflies', {
         url    : '/butterflies',
         views  : {
-          'species-butterflies': {
-            templateUrl: 'app/species/species-butterflies.html',
-            controller : 'SpeciesCtrl as ctrl'
+          'encyclopedia-butterflies': {
+            templateUrl: 'app/encyclopedia/encyclopedia-butterflies.html',
+            controller : 'EncyclopediaCtrl as ctrl'
           }
         },
         resolve: {
-          speciesData: function(Species) {
+          encyclopediaData: function(Species) {
             return Species.getAll('Papillons');
           }
         }
@@ -170,57 +171,52 @@
         }
       })
 
-      .state('app.outing', {
-        url    : '/outings/:outingId',
+      .state('app.excursion', {
+        url    : '/excursions-list/:excursionId',
         views  : {
           'menuContent': {
-            templateUrl : 'app/outing/outing.html',
-            controller  : 'OutingCtrl',
-            controllerAs: 'outing'
+            templateUrl : 'app/excursion/excursion.html',
+            controller  : 'ExcursionCtrl as excursion'
           }
         },
         resolve: {
-          outingData: function(Outings, $stateParams) {
-            return Outings.getOne($stateParams.outingId);
+          excursionData: function(Excursions, $stateParams, $log) {
+            $log.log('AppRouter:app.excursion state:', $stateParams);
+            return Excursions.getOne($stateParams.excursionId);
           }
         }
       })
 
-      .state('app.outing.seenlist', {
+      .state('app.excursion.seenlist', {
         url    : '/seen',
         views  : {
           'menuContent@app': {
-            templateUrl : 'app/outing/outing-seen.html',
-            controller  : 'OutingSeenCtrl',
-            controllerAs: 'outingSeen'
-          }
-        },
-        resolve: {
-          seenPois: function(SeenPoisData, $stateParams) {
-            return SeenPoisData.getAll($stateParams.outingId);
+            templateUrl : 'app/excursion/excursion-seen.html',
+            controller  : 'ExcursionSeenCtrl as excursionSeen'
           }
         }
       })
 
-      .state('app.outing.seenlist.poi', {
-        url  : '/poi/:poiId',
+      .state('app.excursion.seenlist.poi', {
+        url  : '/:theme/:specieId',
         views: {
           'menuContent@app': {
-            templateUrl: 'app/specie/specie.html'
+            templateUrl: 'app/excursion/excursion-seen-poi.html',
+            controller: 'ExcursionSeenPoiCtrl as poiCtrl'
           }
         }
       })
 
-      .state('app.specie', {
-        url    : '/species/:specieId',
+      .state('app.encyclopedia.species', {
+        url    : '/:specieId',
         views  : {
           'menuContent': {
-            templateUrl: 'app/specie/specie.html',
-            controller : 'SpecieCtrl as specie'
+            templateUrl: 'app/species/species.html',
+            controller : 'SpeciesCtrl as species'
           }
         },
         resolve: {
-          specieData: function(Species, $stateParams) {
+          speciesData: function(Species, $stateParams) {
             return Species.getOne($stateParams.specieId);
           }
         }
@@ -239,6 +235,6 @@
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/login');
     // Dev route to access directly the launchAR button
-    $urlRouterProvider.otherwise('/app/outings');
+    $urlRouterProvider.otherwise('/app/excursions-list');
   }
 })();

@@ -1,11 +1,27 @@
-#login-buttons {
+@import "color-theme";
+@import "../scss-ar/poi-card";
+
+#login {
   display: flex;
-  height: 100%;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  .wrapper {
-    width: 90%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  button {
+    width: 60vw;
+    &:not(:last-of-type) {
+      margin-bottom: 20px;
+    }
   }
+}
+
+#logo {
+  height: 60vw;
+  margin-bottom: 10vw;
 }
 
 .leaflet-container {
@@ -25,8 +41,119 @@ progress {
   height: 5px;
 }
 
-.themes, .zones {
+.themes {
   .badge:not(:last-of-type) {
     margin-right: 5px;
   }
+}
+
+.excursion-map-container {
+  position: relative;
+  .position-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 2;
+  }
+  .white-dropdown {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: grey;
+    z-index: 1;
+    opacity: 0.5;
+  }
+  .fab-actions {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    .main {
+      z-index: 2;
+      border: none;
+      font-size: 2em;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+      -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+      box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+    }
+    .mini {
+      z-index: 2;
+      border: none;
+      font-size: 2em;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+      -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+      box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+    }
+  }
+}
+
+.item {
+  .badge.excursion-status {
+    position: initial;
+    display: inline-block;
+  }
+  .bio-badge-pending {
+    background-color: transparent;
+    border: 1px solid $calm;
+    color: $calm;
+  }
+  .bio-badge-ongoing {
+    background-color: transparent;
+    border: 1px solid $energized;
+    color: $energized;
+  }
+  .bio-badge-finished {
+    background-color: transparent;
+    border: 1px solid $assertive;
+    color: $assertive;
+  }
+}
+
+#ar-action {
+  i {
+    margin-right: 5px;
+  }
+}
+
+#no-excursion {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  color: $positive-light;
+  opacity: 0.5;
+  i.ion-leaf {
+    opacity: 0.2;
+    font-size: 6em;
+    margin-bottom: 50px;
+  }
+}
+
+.excursions-list {
+  ion-item:last-of-type {
+    margin-bottom: 10px;
+  }
+}
+
+.poi-seen-list img {
+  height: 50%;
+  position: absolute;
+}
+
+#numver {
+  font-size: 0.8em;
+  color: $assertive-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 16px;
 }

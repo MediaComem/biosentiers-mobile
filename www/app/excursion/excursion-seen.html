@@ -1,0 +1,25 @@
+<ion-view title="{{excursionSeen.excursion.name}}">
+	<ion-subheader-bar class="bar bar-subheader bar-royal lighter">
+		<h2 class="title title-left">
+			{{excursionSeen.seenPois.length || 'Aucun'}} {{excursionSeen.seenPois.length > 0 ? 'É' :
+			'é'}}lément{{excursionSeen.seenPois.length > 0 ? 's' : ''}} vu{{excursionSeen.seenPois.length > 0 ? 's' : ''}}
+		</h2>
+		<!--<button class="button button-icon icon ion-funnel"></button>-->
+	</ion-subheader-bar>
+	<ion-content class="has-subheader">
+		<div class="padding">
+			<ion-list class="poi-seen-list">
+				<ion-item ng-repeat="seenPoi in excursionSeen.seenPois"
+				          ui-sref="app.excursion.seenlist.poi({theme: seenPoi.poi_data.properties.theme_name,specieId: seenPoi.poi_data.properties.id_specie})"
+				          class="item-icon-left item-icon-right">
+					<i class="icon">
+						<img class="poi-seen-icon" ng-src="{{excursionSeen.getIconPathForTheme(seenPoi.poi_data.properties.theme_name)}}" alt="">
+					</i>
+					{{seenPoi.poi_data.properties.common_name.fr}}
+					<span class="item-note">Vu le {{seenPoi.seen_at | date:'dd.MM.yyyy'}} à {{seenPoi.seen_at | date:'HH:mm:ss'}}</span>
+					<i class="icon ion-chevron-right"></i>
+				</ion-item>
+			</ion-list>
+		</div>
+	</ion-content>
+</ion-view>

@@ -1,0 +1,21 @@
+.stats {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  background-color: white;
+  width: 45vh;
+  span {
+    text-align: center;
+  }
+  .plus {
+    color: green;
+  }
+
+  .moins {
+    color: red;
+  }
+
+  .total {
+    color: blue;
+  }
+}

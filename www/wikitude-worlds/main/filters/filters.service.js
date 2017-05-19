@@ -5,14 +5,14 @@
     .module('filters')
     .factory('Filters', FiltersService);
 
-  function FiltersService($log, Outing, rx, SeenTracker) {
+  function FiltersService($log, Excursion, rx, SeenTracker) {
 
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
     var selected = {
-      themes : [],
+      themes  : [],
       settings: {
-        showSeenPois: true,
+        showSeenPois : true,
         showOffSeason: false
       }
     };
@@ -28,7 +28,7 @@
     };
 
     // Update available choices when the data changes.
-    Outing.outingChangeObs.subscribe(updateAvailableChoices);
+    Excursion.excursionChangeObs.subscribe(updateAvailableChoices);
 
     return service;
 
@@ -39,7 +39,7 @@
      */
     function updateAvailableChoices() {
 
-      var themes = Outing.getThemes();
+      var themes = Excursion.getThemes();
       service.themes = themes;
       selected.themes = themes.slice();
 
@@ -110,7 +110,7 @@
 
     function isOffSeason(poi) {
       var currentMonth = new Date().getMonth() + 1;
-      return poi.properties.period_start >= currentMonth && poi.properties.period_end <= currentMonth;
+      return poi.properties.period_start > currentMonth || poi.properties.period_end < currentMonth;
     }
   }
 })();

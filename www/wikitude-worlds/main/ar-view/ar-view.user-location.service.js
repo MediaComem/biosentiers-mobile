@@ -31,13 +31,13 @@
       return !_.isNil(service.real);
     }
 
-    function update(lon, lat, alt) {
+    function update(lon, lat, alt, acc) {
 
       var firstLocation = !hasLocation();
 
       // Always update the real location.
 
-      service.real = new Location(lon, lat, alt);
+      service.real = new Location(lon, lat, alt, acc);
       realLocationSubject.onNext(service.real);
 
       // Only update the spaced location the first time, or if the user has moved beyond the threshold.
@@ -51,13 +51,12 @@
         }
       }
 
-      var message = 'User location changed to longitude ' + service.real.lon + ', latitude ' + service.real.lat + ', altitude ' + service.real.alt;
+      var message = 'User location changed to longitude ' + service.real.lon + ', latitude ' + service.real.lat + ', altitude ' + service.real.alt + ', with an accuracy of ' + service.real.acc;
       if (distance) {
         message += ' (moved ' + distance + 'm from the last spaced position)';
       }
 
       $log.debug(message);
-
     }
 
     function movingDistance() {

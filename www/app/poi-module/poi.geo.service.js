@@ -9,6 +9,7 @@
     .factory('PoiGeo', PoiGeoService);
 
   function PoiGeoService($http, $log, themesFilter, $q, turf) {
+    var dataPath = "data/partial/";
 
     var service = {
       getPath            : getPath,
@@ -42,7 +43,23 @@
 
     function getPoints() {
       // return $http.get('data/flowers_birds_150m.json');
-      return $http.get('data/flore.json');
+      var data = [
+        $http.get(dataPath + 'flower_all.json'),
+        $http.get(dataPath + 'tree_all.json'),
+        $http.get(dataPath + 'bird.json'),
+        $http.get(dataPath + 'butterfly.json')
+      ];
+
+      return $q.all(data).then(function(result) {
+        $log.log('PoiGeo:getPoints:promise results', result);
+        var features = [];
+        for (var i = 0; i < result.length; i++) {
+          features = _.concat(features, result[i].data.features);
+        }
+        var res = turf.helpers.featureCollection(features);
+        $log.log('PoiGeo:getPoints:return result', res);
+        return res;
+      })
     }
 
     function getPath() {
@@ -63,16 +80,18 @@
     }
 
     function getExtremityPoints(zonesGeoData) {
+      $log.log('PoiGeo:getExtremityPoints', zonesGeoData);
       var indexedZones = [], start, end;
       zonesGeoData.features.forEach(function(zoneFeature) {
         indexedZones[zoneFeature.properties.id_zone] = zoneFeature;
       });
-      $log.info(indexedZones);
-      start = indexedZones.find(defined).properties.start;
+      $log.info('PoiGeo:indexedZones', indexedZones);
+      start = _.find(indexedZones, defined).properties.start;
       end = _.last(indexedZones).properties.end;
+      $log.log('PoiGeo:extremityPoints', start, end);
       return {
-        start: turf.helpers.point([start.lng, start.lat, start.alt], start),
-        end  : turf.helpers.point([end.lng, end.lat, end.alt], end)
+        start: start,
+        end  : end
       };
 
       function defined(element) {
@@ -81,30 +100,21 @@
     }
 
     function getFilteredPoints(zones, themes) {
-      themes = convertThemes(themes);
-      $log.log(themes);
       return getPoints()
         .then(filterPoints);
 
       ////////////////////
 
       function filterPoints(res) {
-        $log.log('Total number of points', res.data.features.length);
-        var pois = _.filter(res.data.features, matchesFilter);
-        $log.log(pois.length + ' filtered points base on', zones, themes);
+        $log.log('PoiGeo:getFilteredPoints:Total number of points', res.features.length);
+        var pois = _.filter(res.features, matchesFilter);
+        $log.log('PoiGeo:getFilteredPoints:' + pois.length + ' filtered points base on', zones, themes);
         return pois;
       }
 
       function matchesFilter(point) {
         return _.includes(zones, point.properties.id_zone) && _.includes(themes, point.properties.theme_name);
       }
-    }
-
-// TODO : fonction temporaire en attendant que le GeoJSON contienne les bonnes valeurs pour theme_name
-    function convertThemes(themes) {
-      return _.map(themes, function(type) {
-        return themesFilter(type);
-      })
     }
   }
 })
