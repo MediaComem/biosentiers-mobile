@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.biosentiers.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>BioSentiers</name>
-  <description>&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
-        An Ionic Framework and Cordova project.&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
-    </description>
-  <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
-      Media Engineering Institute&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;&#xD;
-    </author>
+  <description>Découvrez la biodiversité grâce à une application de réalité augmentée, en suivant un parcours allant de la gare d’Yverdon-les-Bains au centre Champ-Pittet.</description>
+  <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">Media Engineering Institute</author>
   <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>
