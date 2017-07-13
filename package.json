@@ -1,6 +1,6 @@
 {
     "name": "biosentiers",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "BioSentiers: An Ionic project",
     "dependencies": {
         "com.wikitude.phonegap.WikitudePlugin": "https://github.com/Wikitude/wikitude-cordova-plugin.git",

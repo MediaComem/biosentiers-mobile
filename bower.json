@@ -1,6 +1,6 @@
 {
   "name": "HelloIonic",
-  "private": "true",
+  "private": true,
   "devDependencies": {
     "angular-mocks": "1.4.3",
     "platform.js": "platform#^1.3.1",

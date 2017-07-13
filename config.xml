@@ -1,10 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.biosentiers.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.biosentiers.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>BioSentiers</name>
     <description>Découvrez la biodiversité grâce à une application de réalité augmentée, en suivant un parcours allant de la gare d’Yverdon-les-Bains au centre Champ-Pittet.</description>
     <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">Media Engineering Institute</author>
-    <content original-src="index.html" src="http://10.192.114.17:8100" />
+    <content src="index.html" />
     <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
@@ -72,6 +74,7 @@
     <allow-navigation href="*" />
     <allow-navigation href="http://10.192.114.17:8101" />
     <allow-navigation href="http://10.192.114.17:8100" />
+    <allow-navigation href="http://localhost:35729" />
     <engine name="android" spec="^6.2.3" />
     <plugin name="com.wikitude.phonegap.WikitudePlugin" spec="https://github.com/Wikitude/wikitude-cordova-plugin.git" />
     <plugin name="cordova-plugin-compat" spec="~1.0.0" />
