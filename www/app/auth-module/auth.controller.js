@@ -19,6 +19,14 @@
     $ionicPlatform.ready(function() {
       auth.doQRCodeLogin = doQRCodeLogin;
       auth.showAccountLoginForm = showAccountLoginForm;
+      Excursions.getAll()
+        .then(function (data) {
+          $log.log('AuthCtrl : ', data);
+          data.length > 0 && $state.go('app.excursions-list');
+        })
+        .catch(function (error) {
+          $log.error(error);
+        });
     });
 
     ////////////////////
