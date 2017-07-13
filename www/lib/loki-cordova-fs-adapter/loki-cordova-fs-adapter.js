@@ -148,4 +148,4 @@ var LokiCordovaFSAdapter = (function () {
     return LokiCordovaFSAdapter;
 })();
 
-module.exports = LokiCordovaFSAdapter;
+// module.exports = LokiCordovaFSAdapter;
