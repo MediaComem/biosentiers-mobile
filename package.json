@@ -24,7 +24,7 @@
     "ionic-plugin-keyboard": "~2.2.1",
     "ionicitude": "^1.0.0",
     "loki-cordova-fs-adapter": "^1.0.2",
-    "phonegap-plugin-barcodescanner": "~4.1.0"
+    "phonegap-plugin-barcodescanner": "^6.0.7"
   },
   "scripts": {
     "postinstall": "./node_modules/.bin/install-ionicitude"
@@ -82,7 +82,7 @@
     "cordova-plugin-inappbrowser",
     "cordova-plugin-fastrde-downloader",
     "cordova-plugin-fastrde-md5",
-    "cordova-plugin-whitelist"
+    "phonegap-plugin-barcodescanner"
   ],
   "cordovaPlatforms": [
     {
@@ -117,8 +117,8 @@
       "cordova-plugin-zip": {},
       "cordova.plugins.diagnostic": {},
       "ionic-plugin-keyboard": {},
-      "phonegap-plugin-barcodescanner": {},
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "phonegap-plugin-barcodescanner": {}
     }
   }
 }
