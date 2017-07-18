@@ -5,7 +5,21 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform, $log) {
+  function run($ionicPlatform, $log, $rootScope, $state, Excursions) {
+    // This event is used to prevent the excursion list of being showned when no excursion exists.
+    // If the user tries to go to the excursion list and he has no excursion yet, he's redirected to the login page, in order to scan a QR Code.
+    $rootScope.$on('$stateChangeStart', function(e, toState) {
+      // This pattern should match any state name that starts with 'app.excursion-lists'
+      var listPattern = new RegExp("^app[.]excursions-list([.].*)?$");
+      if (listPattern.test(toState.name)) {
+        Excursions.countAll().then(function(res) {
+          console.log('Excursion count', res);
+          // Go to the login if there's no Excursion in the DB
+          res === 0 && $state.go('login');
+        })
+      }
+    });
+
     $ionicPlatform.ready(function() {
       ionicInitialize();
       grantAndroidPermissions();

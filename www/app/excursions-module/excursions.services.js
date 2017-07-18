@@ -24,7 +24,8 @@
       setOngoingStatus : setOngoingStatus,
       setFinishedStatus: setFinishedStatus,
       isNotNew         : isNotNew,
-      createOne        : createOne
+      createOne        : createOne,
+      countAll         : countAll
     };
 
     return service;
@@ -106,6 +107,16 @@
     }
 
     /**
+     * Counts the number of Excursions in the database
+     * @return {Promise} A promise of the number of Excursions in the DB
+     */
+    function countAll() {
+      return getCollection()
+        .then(function(coll) { return coll.count(); })
+        .catch(handleError);
+    }
+
+    /**
      * Returns information about the excursions as an object with the properties all, pending, ongoing and finished.
      * Each of these properties's value will be the number of corresponding excursions.
      * @return {Promise}
@@ -134,9 +145,9 @@
        */
       function statsReduce(statuses) {
         var stats = {
-          all: statuses.length,
-          pending: 0,
-          ongoing: 0,
+          all     : statuses.length,
+          pending : 0,
+          ongoing : 0,
           finished: 0
         };
         statuses.forEach(function(element) {
@@ -207,6 +218,11 @@
       return updateOne(excursion);
     }
 
+    /**
+     * TODO: Comment this function
+     * @param excursion
+     * @return {Promise}
+     */
     function isNotNew(excursion) {
       if (!excursion) throw new TypeError('Excursions : isNotNew needs an Excursion object as its first argument, none given');
       if (!excursion.is_new) return $q.resolve();
@@ -236,6 +252,10 @@
       BioDb.save();
     }
 
+    /**
+     * TODO: Comment this function
+     * @return {*|Collection}
+     */
     function getCollection() {
       return BioDb.getCollection(COLL_NAME, COLL_OPTIONS);
     }
