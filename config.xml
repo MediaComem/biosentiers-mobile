@@ -5,20 +5,31 @@
     <author email="mei@heig-vd.ch" href="http://mei.heig-vd.ch/">Media Engineering Institute</author>
     <content original-src="index.html" src="http://10.192.114.17:8100" />
     <access origin="*" />
+    <allow-navigation href="http://ionic.local/*" />
+    <allow-navigation href="http://10.192.114.17:8100" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="15" />
     <preference name="BackupWebStorage" value="none" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="android-permission" value="ACCESS_COARSE_LOCATION" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="FadeSplashScreenDuration" value="300" />
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
     <platform name="android">
+        <allow-intent href="market:*" />
         <icon density="ldpi" src="resources\android\icon\drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources\android\icon\drawable-mdpi-icon.png" />
         <icon density="hdpi" src="resources\android\icon\drawable-hdpi-icon.png" />
@@ -39,6 +50,8 @@
         <splash density="port-xxxhdpi" src="resources\android\splash\drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources\ios\icon\icon.png" width="57" />
         <icon height="114" src="resources\ios\icon\icon@2x.png" width="114" />
         <icon height="40" src="resources\ios\icon\icon-40.png" width="40" />
@@ -69,20 +82,6 @@
         <splash height="480" src="resources\ios\splash\Default~iphone.png" width="320" />
     </platform>
     <icon src="resources\android\icon\drawable-xhdpi-icon.png" />
-    <allow-navigation href="http://10.192.114.37:8100" />
-    <allow-navigation href="http://10.192.114.91:8100" />
-    <allow-navigation href="http://10.192.114.241:8100" />
-    <allow-navigation href="http://10.192.116.83:8100" />
-    <allow-navigation href="http://10.192.180.184:8100" />
-    <allow-navigation href="http://10.192.114.66:8100" />
-    <allow-navigation href="http://10.192.114.66:8101" />
-    <allow-navigation href="http://10.192.114.59:8100" />
-    <allow-navigation href="http://10.192.114.59:8101" />
-    <allow-navigation href="http://10.192.180.110:8100" />
-    <allow-navigation href="http://10.192.114.21:8100" />
-    <allow-navigation href="http://10.192.92.85:8100" />
-    <allow-navigation href="http://10.192.114.17:8100" />
-    <allow-navigation href="http://localhost:35729" />
     <plugin name="com.wikitude.phonegap.WikitudePlugin" spec="~6.1.0" />
     <plugin name="cordova-plugin-compat" spec="~1.0.0" />
     <plugin name="cordova-plugin-console" spec="~1.0.4" />
