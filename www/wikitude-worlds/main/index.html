@@ -113,31 +113,50 @@
 		<!-- endinject -->
 	</head>
 	<body ng-app="ar" ng-controller="BaseCtrl as base" id="ar-view">
+		<!-- Header Bar -->
 		<ion-header-bar class="bar-royal">
 			<button class="button back-button button-icon" ng-click="base.closeAR()">
 				<i class="icon ion-android-arrow-back"></i>
 			</button>
 			<h1 class="title">{{base.excursionName}}</h1>
 		</ion-header-bar>
+		
+		<!-- Debug Stats -->
 		<debug-stats class="row" ng-show="base.showDebug"></debug-stats>
+		
+		<!-- Debug Log -->
 		<debug-log ng-show="base.showDebug"></debug-log>
+		
+		<!-- Mini Map -->
 		<mini-map></mini-map>
+		
+		<!-- Debug GPS data -->
 		<div class="debug-altitude {{base.debugPositionClass}}-bg" ng-show="base.showDebug">
 			<p>GPS altitude : {{base.altitude}}</p>
 			<p>Précision : {{base.accuracy | accValueToText}}</p>
 		</div>
+		
+		<!-- Action buttons-->
 		<div class="fabs" ng-class="{'with-manual-end-btn': base.manualEnding}">
+			
+			<!-- AR Options -->
 			<button class="filters assertive-bg" type="button" data-tap-disabled="true" ng-click="base.showFiltersModal()">
 				<i class="icon ion-android-options"></i>
 			</button>
+			
+			<!-- Debug Options -->
 			<button class="debug assertive-bg" type="button" data-tap-disabled="true" ng-click="base.showDebugModal()" ng-show="base.showDebug">
 				<i class="icon ion-settings"></i>
 			</button>
 		</div>
+		
+		<!-- Manual Ending Button -->
 		<button class="manual-end button button-full button-assertive" ng-click="base.finishExcursion()"
 		        ng-if="base.manualEnding">
 			<i class="icon ion-flag"></i> Terminer
 		</button>
+		
+		<!-- Debug Toggle -->
 		<debug-toggle ng-click="base.manageDebugLog()"></debug-toggle>
 	</body>
 </html>

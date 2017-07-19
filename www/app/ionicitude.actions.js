@@ -39,7 +39,7 @@
       addIonicitudeAction(addSeenPoi);
       addIonicitudeAction(finishExcursion);
 
-      Ionicitude.listLibActions();
+      // Ionicitude.listLibActions();
 
       ////////////////////
 

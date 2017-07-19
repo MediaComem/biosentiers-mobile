@@ -17,32 +17,26 @@
     }
   }
 
-  function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, Modals, $log, Excursion, $scope, UserLocation, $timeout) {
+  function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, $ionicLoading, Modals, $log, Excursion, $scope, UserLocation, $timeout) {
     var base = this;
+    var debugCount = 0;
 
     // TODO : supprimer hors debug
     base.debugPositionClass = 'royal';
     base.logs = [];
     base.showDebug = false;
-    var debugCount = 0;
-    base.manageDebugLog = function() {
-      if (base.showDebug) {
-        base.showDebug = false;
-        debugCount = 0;
-      } else {
-        debugCount += 1;
-        $log.log('BaseCtrl:manageDebugLog', debugCount);
-        if (debugCount === 7) {
-          base.showDebug = true;
-        }
-      }
-    };
-
+    base.locatingUser = true;
     base.manualEnding = false;
+
     base.closeAR = closeAR;
     base.showDebugModal = showDebugModal;
     base.showFiltersModal = showFiltersModal;
     base.finishExcursion = finishExcursion;
+    base.manageDebugLog = manageDebugLog;
+
+    $ionicLoading.show({
+      template: "Recherche de votre position."
+    });
 
     UserLocation.realObs.subscribe(function(position) {
       DebugLog.add('Real User Location Altitude ' + position.alt);
@@ -53,6 +47,10 @@
       }
       base.accuracy = position.acc;
       updateDebugPositionClass(position.acc);
+    });
+
+    UserLocation.realObs.subscribe(function() {
+      $ionicLoading.hide();
     });
 
     Excursion.excursionChangeObs.first().subscribe(function(data) {
@@ -76,6 +74,20 @@
     });
 
     ////////////////////
+
+    // TODO : Supprimer hors debug
+    function manageDebugLog() {
+      if (base.showDebug) {
+        base.showDebug = false;
+        debugCount = 0;
+      } else {
+        debugCount += 1;
+        $log.log('BaseCtrl:manageDebugLog', debugCount);
+        if (debugCount === 7) {
+          base.showDebug = true;
+        }
+      }
+    }
 
     // TODO : Supprimer hors debug
     function updateDebugPositionClass(acc) {
