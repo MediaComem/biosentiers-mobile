@@ -253,6 +253,7 @@ The version included in the project is buit using the [turf-builder tool][tbt] w
 * distance
 * helpers
 * inside
+* center
 
 ## Ionic platforms
 

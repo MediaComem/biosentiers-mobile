@@ -5,7 +5,7 @@
     .module('excursion')
     .factory('Excursion', ExcursionService);
 
-  function ExcursionService(AppActions, $log, rx) {
+  function ExcursionService(AppActions, $log, rx, turf) {
 
     var excursion,
         currentPoi,
@@ -15,8 +15,8 @@
 
     var service = {
       get id() { return getId() },
-      get startPoint() { return getStartPoint() },
-      get endpoint() { return getEndPoint() },
+      get startPoint() { return getStartPoint(); },
+      get endPoint() { return getEndPoint(); },
       // Excursion functions
       hasExcursion          : hasExcursion,
       setExcursion          : setExcursion,

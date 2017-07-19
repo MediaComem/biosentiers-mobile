@@ -17,19 +17,14 @@
 
     var map                 = null,
         defaultMarkers      = {
-          user : {
-            lat : UserLocation.real.lat,
-            lng : UserLocation.real.lon,
-            icon: MapIcons.user
-          },
           start: {
-            lat : Excursion.getStartPoint().geometry.coordinates[1],
-            lng : Excursion.getStartPoint().geometry.coordinates[0],
+            lat : Excursion.startPoint.geometry.coordinates[1],
+            lng : Excursion.startPoint.geometry.coordinates[0],
             icon: MapIcons.start
           },
           end  : {
-            lat : Excursion.getEndPoint().geometry.coordinates[1],
-            lng : Excursion.getEndPoint().geometry.coordinates[0],
+            lat : Excursion.endPoint.geometry.coordinates[1],
+            lng : Excursion.endPoint.geometry.coordinates[0],
             icon: MapIcons.end
           }
         },
@@ -37,7 +32,28 @@
           disableClusteringAtZoom: 18
         };
 
+    $log.log('BigMapService:defaultMarkers', angular.copy(defaultMarkers));
+
+    $log.log('Turf Center of Path', turf.center(Excursion.getPathGeoJson()));
+
     initialize();
+
+    // On the first real location, updates the defaultMarkers object to add the user marker
+    UserLocation.realObs.first().subscribe(function() {
+      angular.extend(defaultMarkers, {
+        user: {
+          lat : UserLocation.real.lat,
+          lng : UserLocation.real.lon,
+          icon: MapIcons.user
+        }
+      });
+
+      // Change the center of the bigmap to the user's position
+      bigMap.config.center.lat = UserLocation.real.lat;
+      bigMap.config.center.lng = UserLocation.real.lon;
+    });
+
+    UserLocation.realObs.subscribe(updateUserMarker);
 
     return bigMap;
 
@@ -47,14 +63,14 @@
      * Sets the config property of the service
      */
     function initialize() {
-      bigMap.config = {
+      angular.extend(bigMap.config, {
+        markers: defaultMarkers,
+        // By default, the map center is the starting point
         center : {
-          lat : UserLocation.real.lat,
-          lng : UserLocation.real.lon,
+          lng : Excursion.startPoint.geometry.coordinates[0],
+          lat : Excursion.startPoint.geometry.coordinates[1],
           zoom: 17
         },
-        markers: defaultMarkers,
-        geojson: {},
         layers : {
           overlays: {
             markers: {
@@ -65,7 +81,7 @@
             }
           }
         }
-      };
+      });
     }
 
     /**

@@ -3,7 +3,7 @@
  * This is the controller for the Big Map modal.
  * It handles showing the points, and further interaction with the bigmap.
  */
-(function () {
+(function() {
   'use strict';
   angular
     .module('big-map-modal')
@@ -20,8 +20,8 @@
 
     // var debouncedUpdatePoints = _.debounce(BigMap.updateMapMarkers, 500);
 
-    leafletData.getMap('bigmap').then(function (result) {
-      BigMap.setMap(result);
+    leafletData.getMap('bigmap').then(function(map) {
+      BigMap.setMap(map);
       BigMap.updateMapMarkers();
       $scope.$on('leafletDirectiveMap.bigmap.moveend', BigMap.updateMapMarkers);
       UserLocation.realObs.subscribe(function() {
@@ -29,9 +29,8 @@
         $timeout(function() {
           bigmap.positionState = 'searching';
         }, 1000);
-        BigMap.updateUserMarker();
       });
-    }).catch(function (error) {
+    }).catch(function(error) {
       $log.error(error);
     });
   }
