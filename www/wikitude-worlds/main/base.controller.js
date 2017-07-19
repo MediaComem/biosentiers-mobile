@@ -17,7 +17,7 @@
     }
   }
 
-  function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, Modals, $log, Excursion, $scope, UserLocation) {
+  function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, Modals, $log, Excursion, $scope, UserLocation, $timeout) {
     var base = this;
 
     // TODO : supprimer hors debug
@@ -56,7 +56,9 @@
     });
 
     Excursion.excursionChangeObs.first().subscribe(function(data) {
-      base.excursionName = data.name;
+      $timeout(function() {
+        base.excursionName = data.name;
+      })
     });
 
     Excursion.currentPoiChangeObs.subscribe(showPoiModal);
