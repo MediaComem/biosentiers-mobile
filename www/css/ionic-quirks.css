@@ -1,0 +1,22 @@
+.platform-android .action-sheet .action-sheet-group {
+  padding-bottom: 8px; }
+
+.platform-android .action-sheet .action-sheet-title {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  height: 56px;
+  color: rgba(0, 0, 0, 0.54); }
+
+.platform-android .action-sheet .button {
+  color: rgba(0, 0, 0, 0.87); }
+  .platform-android .action-sheet .button.destructive:hover {
+    color: inherit; }
+  .platform-android .action-sheet .button .icon {
+    min-width: 24px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.38); }
+  .platform-android .action-sheet .button:active .icon {
+    color: rgba(0, 0, 0, 0.54); }
+  .platform-android .action-sheet .button:active:focus .icon {
+    color: rgba(0, 0, 0, 0.87); }

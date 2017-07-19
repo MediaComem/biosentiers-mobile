@@ -173,3 +173,27 @@ progress {
   align-items: center;
   justify-content: space-between;
   padding-left: 16px; }
+
+.popover.active {
+  opacity: 1; }
+
+#excursions-menu {
+  top: 70px;
+  left: initial;
+  right: 10px;
+  height: 58px; }
+
+.excursions-list .list.card:first-of-type {
+  margin-top: 10px; }
+
+.excursions-list .col {
+  display: flex;
+  align-items: center; }
+  .excursions-list .col.action-buttons {
+    justify-content: flex-end; }
+
+@keyframes popover-in {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }

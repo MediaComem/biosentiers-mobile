@@ -44,6 +44,7 @@
       this.paused_at = null;
       this.finished_at = null;
       this.is_new = true;
+      this.archived_at = null;
     }
 
     /**

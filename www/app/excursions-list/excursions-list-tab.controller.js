@@ -8,7 +8,7 @@
     .module('app')
     .controller('ExcursionsListTabCtrl', ExcursionsListTabCtrl);
 
-  function ExcursionsListTabCtrl(excursionsData, $ionicSideMenuDelegate, $ionicTabsDelegate, $log) {
+  function ExcursionsListTabCtrl(Excursions, excursionsData, $ionicActionSheet, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, $log) {
     var tab = this;
     // tab.loading = true;
     $log.log('excursionsData', excursionsData);
@@ -16,8 +16,50 @@
 
     tab.nextTab = nextTab;
     tab.previousTab = previousTab;
+    tab.openPopOver = openPopOver;
+
+    $ionicPopover
+      .fromTemplateUrl('app/excursions-list-menu/excursions-list-menu.html')
+      .then(function(popover) {
+        $log.log(popover);
+        tab.popover = popover;
+      });
+
+    tab.showActions = function(excursion) {
+      var buttons = [];
+      var fns = [
+        excursion.is_new ? Excursions.setNotNew : Excursions.setNew
+      ];
+      var newButton = { text: excursion.is_new ? 'Marquer comme vu' : 'Marquer comme nouveau'};
+      if (excursion.status === 'pending') buttons.push(newButton);
+
+      // Show the action sheet
+      $ionicActionSheet.show({
+        buttons                 : buttons,
+        titleText               : excursion.name,
+        destructiveText         : '<i class="icon ion-archive"></i> Archiver',
+        cancelText              : 'Annuler',
+        cancel                  : function() {
+          console.log('Canceled the Action Sheet');
+        },
+        buttonClicked           : function(index) {
+          console.log('button index', index);
+          fns[index](excursion);
+          return true;
+        },
+        destructiveButtonClicked: function() {
+          console.log('destructive button clicked');
+          return true;
+        }
+      });
+    };
 
     ////////////////////
+
+    function openPopOver() {
+      $log.log('Opening Popover', tab.popover);
+      tab.popover.show();
+    }
 
     /**
      * Returns true if the Side Menu is not being open, and false otherwise.

@@ -8,7 +8,7 @@
     .module('excursions-module')
     .factory('Excursions', Excursions);
 
-  function Excursions(ExcursionClass, BioDb, $log, $q) {
+  function Excursions(ExcursionClass, ExcursionsSettings, BioDb, $log, $q) {
     var COLL_NAME = 'excursions';
     var COLL_OPTIONS = {
       unique: ['id']
@@ -23,7 +23,8 @@
       updateOne        : updateOne,
       setOngoingStatus : setOngoingStatus,
       setFinishedStatus: setFinishedStatus,
-      isNotNew         : isNotNew,
+      setNotNew        : setNotNew,
+      setNew           : setNew,
       createOne        : createOne,
       countAll         : countAll
     };
@@ -223,10 +224,23 @@
      * @param excursion
      * @return {Promise}
      */
-    function isNotNew(excursion) {
-      if (!excursion) throw new TypeError('Excursions : isNotNew needs an Excursion object as its first argument, none given');
+    function setNotNew(excursion) {
+      if (!excursion) throw new TypeError('Excursions : setNotNew needs an Excursion object as its first argument, none given');
       if (!excursion.is_new) return $q.resolve();
       excursion.is_new = false;
+      return updateOne(excursion);
+    }
+
+    /**
+     * Set the given excursion as "new".
+     * This can only be done if the excursion is not already "new" and is in a "pending" state.
+     * @param excursion
+     * @return {Promise}
+     */
+    function setNew(excursion) {
+      if (!excursion) throw new TypeError('Excursions : setNew needs an Excursion object as its first argument, none given');
+      if (excursion.is_new || excursion.status !== 'pending') return $q.resolve();
+      excursion.is_new = true;
       return updateOne(excursion);
     }
 

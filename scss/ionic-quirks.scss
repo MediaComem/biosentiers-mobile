@@ -1,0 +1,40 @@
+.platform-android .action-sheet {
+
+  .action-sheet-group {
+    padding-bottom: 8px;
+  }
+
+  .action-sheet-title {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    height: 56px;
+    color: rgba(#000, 0.54);
+  }
+
+  .button {
+    color: rgba(#000, 0.87);
+
+    &.destructive:hover {
+      color: inherit;
+    }
+
+    .icon {
+      min-width: 24px;
+      text-align: center;
+      color: rgba(#000, 0.38);
+    }
+
+    &:active {
+      .icon {
+        color: rgba(#000, 0.54);
+      }
+    }
+
+    &:active:focus {
+      .icon {
+        color: rgba(#000, 0.87);
+      }
+    }
+  }
+}

@@ -36,7 +36,7 @@
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(loadExcursionData);
 
-    Excursions.isNotNew(excursion.data);
+    Excursions.setNotNew(excursion.data);
 
     leafletData.getMap('map').then(function(map) {
       $log.info(map);

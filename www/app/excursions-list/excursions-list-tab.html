@@ -1,16 +1,29 @@
 <ion-view view-title="Mes Sorties">
+	<ion-nav-buttons side="secondary">
+		<button class="button" ng-click="tab.openPopOver()">
+			<i class="icon ion-android-more-vertical"></i>
+		</button>
+	</ion-nav-buttons>
 	<ion-content class="padding" on-swipe-right="tab.nextTab()" on-swipe-left="tab.previousTab()">
-		<ion-list ng-if="!tab.loading && tab.data.length >= 1" class="excursions-list">
-			<ion-item ng-repeat="excursion in tab.data" href="#/app/excursions-list/{{excursion.id}}">
-				<h2>{{excursion.name}}</h2>
-				<span ng-if="excursion.is_new" class="badge badge-positive">Nouveau</span>
-				<p>Date : {{excursion.date | date : 'dd.MM.yyyy'}}</p>
-				<p><i class="icon ion-person"></i> {{excursion.participant.name}}</p>
-				<p>
-					<span class="bio-badge-{{excursion.status}} badge excursion-status">{{excursion.status | status}}</span>
-				</p>
-			</ion-item>
-		</ion-list>
+		<div ng-if="!tab.loading && tab.data.length >= 1" class="excursions-list">
+			<div class="list card" ng-repeat="excursion in tab.data">
+				<a class="item item-icon-right" href="#/app/excursions-list/{{excursion.id}}">
+					<h2>{{ ::excursion.name }}</h2>
+					<p>{{ ::excursion.date | date : 'dd.MM.yyyy' }}</p>
+					<span ng-if="excursion.is_new" class="badge badge-positive">Nouveau</span>
+				</a>
+				<div class="item item-body row">
+					<div class="col"><i class="icon ion-person"></i> {{excursion.participant.name}}</div>
+					<div class="col"><span class="bio-badge-{{excursion.status}} badge excursion-status">{{excursion.status | status}}</span>
+					</div>
+					<div class="col action-buttons">
+						<button class="button button-clear button-small pull-right" ng-click="tab.showActions(excursion)">
+							<i class="icon ion-android-more-horizontal"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div ng-if="!tab.loading && tab.data.length == 0" id="no-excursion">
 			<i class="icon ion-leaf"></i>
 			<span>Aucune sortie correspondante...</span>
