@@ -8,13 +8,13 @@
     .module('app')
     .controller('ExcursionsListTabCtrl', ExcursionsListTabCtrl);
 
-  function ExcursionsListTabCtrl(Excursions, excursionsData, ExcursionListContextMenu, ExcursionsSettings, $ionicActionSheet, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, $log, $state, $timeout) {
+  function ExcursionsListTabCtrl(DbExcursions, excursionsData, ExcursionListContextMenu, ExcursionsSettings, $ionicActionSheet, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, $log, $state, $timeout) {
     var tab = this;
     // tab.loading = true;
     $log.log('excursionsData', excursionsData);
     tab.data = excursionsData;
 
-    ExcursionsSettings.withArchiveChangeObs.subscribe(function(value) {
+    ExcursionsSettings.withArchive.changeObs.subscribe(function(value) {
       $timeout(function() { tab.withArchive = value; });
       !!tab.excursionMenu && closeExcursionsMenu();
     });
@@ -22,6 +22,7 @@
     tab.nextTab = nextTab;
     tab.previousTab = previousTab;
     tab.openExcursionsMenu = openExcursionsMenu;
+    tab.showExcursionActions = ExcursionListContextMenu.showMenu;
 
     $ionicPopover
       .fromTemplateUrl('app/excursions-list-menu/excursions-list-menu.html')
@@ -29,7 +30,6 @@
         tab.excursionMenu = popover;
       });
 
-    tab.showExcursionActions = ExcursionListContextMenu.trigger;
 
     ////////////////////
 
@@ -95,14 +95,14 @@
         options.destructiveText = '<i class="icon ion-android-archive"></i> Archiver';
         options.destructiveButtonClicked = function() {
           console.log('destructive button clicked');
-          Excursions.archiveOne(excursion);
+          DbExcursions.archiveOne(excursion);
           return true;
         };
       } else {
         options.destructiveText = '<i class="icon ion-android-add-circle"></i> Restaurer';
         options.destructiveButtonClicked = function() {
           console.log('destructive button clicked');
-          Excursions.restoreOne(excursion);
+          DbExcursions.restoreOne(excursion);
           return true;
         };
       }
@@ -116,7 +116,7 @@
         var setNotNewText = '<i class="icon ion-android-checkmark-circle"></i> Marquer comme vu';
         var setNewText = '<i class="icon ion-android-radio-button-off"></i> Marquer comme nouveau';
         buttons.push({text: excursion.is_new ? setNotNewText : setNewText});
-        fns.push(excursion.is_new ? Excursions.setNotNew : Excursions.setNew);
+        fns.push(excursion.is_new ? DbExcursions.setNotNew : DbExcursions.setNew);
       }
 
       buttons.push({text: '<i class="icon ion-code-working"></i> Debug sortie'});

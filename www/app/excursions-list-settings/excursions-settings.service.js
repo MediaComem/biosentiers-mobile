@@ -15,6 +15,11 @@
         withArchiveSubject = new rx.BehaviorSubject(withArchive);
 
     var settings = {
+      withArchive: {
+        value: withArchive,
+        changeObs: withArchiveSubject.asObservable(),
+        toggle: toggleWithArchive
+      },
       withArchiveChangeObs: withArchiveSubject.asObservable(),
       toggleWithArchive   : toggleWithArchive
     };
@@ -24,8 +29,8 @@
     ////////////////////
 
     function toggleWithArchive() {
-      withArchive = !withArchive;
-      withArchiveSubject.onNext(withArchive);
+      settings.withArchive.value = !settings.withArchive.value;
+      withArchiveSubject.onNext(settings.withArchive.value);
     }
   }
 })();

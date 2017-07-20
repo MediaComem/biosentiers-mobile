@@ -3,5 +3,5 @@
  */
 (function () {
   'use strict';
-  angular.module('excursions-module', []);
+  angular.module('db-excursions-module', []);
 })();

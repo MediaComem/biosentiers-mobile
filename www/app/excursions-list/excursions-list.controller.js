@@ -7,10 +7,10 @@
     .module('app')
     .controller('ExcursionsListCtrl', ExcursionsListCtrlFn);
 
-  function ExcursionsListCtrlFn(Excursions, $log) {
+  function ExcursionsListCtrlFn(DbExcursions, $log) {
     var list = this;
 
-    Excursions.getStats()
+    DbExcursions.getStats()
       .then(function(stats) {
         $log.log('ExcursionsListCtrl:stats', stats);
         list.stats = stats;

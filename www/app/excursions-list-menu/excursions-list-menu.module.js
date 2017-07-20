@@ -12,12 +12,12 @@
   function ExcursionsMenuCtrlFn(ExcursionsSettings, $timeout) {
     var menu = this;
 
-    ExcursionsSettings.withArchiveChangeObs.first().subscribe(function(value) {
+    ExcursionsSettings.withArchive.changeObs.first().subscribe(function(value) {
       $timeout(function() {
         menu.withArchive = value;
       });
     });
 
-    menu.toggleWithArchive = ExcursionsSettings.toggleWithArchive;
+    menu.toggleWithArchive = ExcursionsSettings.withArchive.toggle;
   }
 })();

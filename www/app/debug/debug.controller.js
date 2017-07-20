@@ -7,7 +7,7 @@
     .module('app')
     .controller('DebugCtrl', DebugCtrl);
 
-  function DebugCtrl(BioDb, Excursions, $cordovaToast, $q) {
+  function DebugCtrl(DbBio, DbExcursions, $cordovaToast, $q) {
     var ctrl = this;
 
     ctrl.resetDb = resetDb;
@@ -16,8 +16,8 @@
 
     function resetDb() {
       $q.when()
-        .then(BioDb.reset)
-        .then(Excursions.getAll())
+        .then(DbBio.reset)
+        .then(DbExcursions.getAll())
         .then(function() {
           $cordovaToast.showShortTop('Base de données réinitialisée !');
         })

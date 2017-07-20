@@ -7,10 +7,10 @@
     .module('excursion-context-menus')
     .factory('ExcursionListContextMenu', ExcursionListContextMenuFn);
 
-  function ExcursionListContextMenuFn(Excursions, $ionicActionSheet, $state) {
+  function ExcursionListContextMenuFn(DbExcursions, $ionicActionSheet, $state) {
 
     var service = {
-          trigger: trigger
+          showMenu: showMenu
         },
         excursion;
 
@@ -18,7 +18,7 @@
 
     ////////////////////
 
-    function trigger(excursionArg) {
+    function showMenu(excursionArg) {
       if (!!excursionArg) {
         excursion = excursionArg;
 
@@ -86,7 +86,7 @@
       opt.destructiveText = '<i class="icon ion-android-add-circle"></i> Restaurer';
       opt.destructiveButtonClicked = function() {
         console.log('destructive button clicked');
-        Excursions.restoreOne(excursion);
+        DbExcursions.restoreOne(excursion);
         return true;
       };
     }
@@ -100,7 +100,7 @@
       opt.destructiveText = '<i class="icon ion-android-archive"></i> Archiver';
       opt.destructiveButtonClicked = function() {
         console.log('destructive button clicked');
-        Excursions.archiveOne(excursion);
+        DbExcursions.archiveOne(excursion);
         return true;
       };
 
@@ -108,7 +108,7 @@
         var setNotNewText = '<i class="icon ion-android-checkmark-circle"></i> Marquer comme vu';
         var setNewText = '<i class="icon ion-android-radio-button-off"></i> Marquer comme nouveau';
         opt.buttons.push({text: excursion.is_new ? setNotNewText : setNewText});
-        opt.actions.push(excursion.is_new ? Excursions.setNotNew : Excursions.setNew);
+        opt.actions.push(excursion.is_new ? DbExcursions.setNotNew : DbExcursions.setNew);
       }
     }
   }

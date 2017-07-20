@@ -4,10 +4,10 @@
 (function() {
   'use strict';
   angular
-    .module('seen-pois-data-module')
-    .factory('SeenPoisData', SeenPoisDataService);
+    .module('db-seen-pois-module')
+    .factory('DbSeenPois', DbSeenPoisService);
 
-  function SeenPoisDataService(BioDb, $log, Loki, $q, rx) {
+  function DbSeenPoisService(DbBio, $log, $q, rx) {
 
     var deferred       = $q.defer(),
         db,
@@ -30,13 +30,10 @@
      * @return {Promise} A promise of an Array containing the POIs that have been seen for the specified Excursion
      */
     function getAll(excursionId) {
-      return BioDb.getCollection(collName)
+      return DbBio.getCollection(collName)
         .then(function(coll) {
           var res = coll.find({excursion_id: excursionId});
-          if (res.length === 0) {
-            populate(coll, excursionId);
-            res = coll.find({excursion_id: excursionId});
-          }
+          console.log('DbSeenPois:getAll:result', res);
           return res;
         })
         .catch(handleError);
@@ -44,7 +41,7 @@
 
     function countFor(excursionId) {
       $log.log('countFor id', excursionId);
-      return BioDb.getCollection(collName)
+      return DbBio.getCollection(collName)
         .then(function(coll) {
           $log.log('coutnFor collection', coll);
           return coll.count({excursion_id: excursionId});
@@ -58,16 +55,16 @@
      * @param poiData The GeoJSON object of the seen POI.
      */
     function addOne(excursionId, poiId, poiData) {
-      return BioDb.getCollection(collName)
+      return DbBio.getCollection(collName)
         .then(function(coll) {
           var res = coll.insertOne(new Seen(excursionId, poiId, poiData));
-          if ('undefined' === typeof res) throw new Error("SeenPoisData:addOne: An error occured while trying to save that the POI n°" + poiId + " had been seen in the excursion n°" + excursionId);
+          if ('undefined' === typeof res) throw new Error("DbSeenPois:addOne: An error occured while trying to save that the POI n°" + poiId + " had been seen in the excursion n°" + excursionId);
           return countFor(excursionId);
         })
         .then(function(count) {
           seenPoiSubject.onNext({excursionId: excursionId, nbSeen: count});
         })
-        .then(BioDb.save)
+        .then(DbBio.save)
         .catch(handleError);
     }
 
@@ -109,7 +106,7 @@
         new Seen(excursionId, 5018, poiData),
         new Seen(excursionId, 5347, poiData)
       ]);
-      BioDb.save();
+      DbBio.save();
     }
 
     /**

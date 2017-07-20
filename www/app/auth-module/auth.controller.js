@@ -13,7 +13,7 @@
   /*
    Controller function
    */
-  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $cordovaToast, $ionicPlatform, $ionicPopup, AuthService, Excursions, QR, $log) {
+  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, $cordovaToast, $ionicPlatform, $ionicPopup, AuthService, DbExcursions, QR, $log) {
     var auth = this;
 
     $ionicPlatform.ready(function() {
@@ -69,7 +69,7 @@
            * @returns {boolean}
            */
           onTap: function() {
-            Excursions.createOne(auth.excursion)
+            DbExcursions.createOne(auth.excursion)
               .then(function() {
                 $state.go('app.excursions-list');
               })

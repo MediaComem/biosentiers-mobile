@@ -7,12 +7,12 @@
     .module('app')
     .controller('ExcursionSeenCtrl', ExcursionSeenCtrl);
 
-  function ExcursionSeenCtrl(excursionData, $scope, SeenPoisData, $log, $ionicSideMenuDelegate) {
+  function ExcursionSeenCtrl(excursionData, $scope, DbSeenPois, $log, $ionicSideMenuDelegate) {
     var excursionSeen = this;
     excursionSeen.excursion = excursionData;
     excursionSeen.getIconPathForTheme = getIconPathForTheme;
 
-    SeenPoisData
+    DbSeenPois
       .getAll(excursionSeen.excursion.id)
       .then(function(data) {
         $log.log('ExcursionSeenCtrl:seenPois', data);

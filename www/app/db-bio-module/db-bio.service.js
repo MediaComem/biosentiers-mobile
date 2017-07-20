@@ -4,10 +4,10 @@
 (function() {
   'use strict';
   angular
-    .module('bio-db-module')
-    .service('BioDb', BioDbService);
+    .module('db-bio-module')
+    .service('DbBio', DbBioService);
 
-  function BioDbService($ionicPlatform, $log, Loki, $q) {
+  function DbBioService($ionicPlatform, $log, Loki, $q) {
     var deferred = $q.defer(),
         db,
         service  = {
@@ -21,7 +21,7 @@
     ////////////////////
 
     /**
-     * Initializes the BioDb
+     * Initializes the DbBio
      */
     function start() {
       if (!db) {
@@ -52,7 +52,7 @@
         // db.removeCollection(name);
         var coll = db.getCollection(name);
         if (coll) return coll;
-        $log.log('BioDb:getCollection:' + name + ' options', options);
+        $log.log('DbBio:getCollection:' + name + ' options', options);
         coll = db.addCollection(name, options);
         return save().then(function() {
           return coll;
@@ -78,7 +78,7 @@
       return start().then(function() {
         db.removeCollection('excursions');
         db.removeCollection('seen-pois');
-        $log.log('BioDb:reset', db);
+        $log.log('DbBio:reset', db);
         save().then(function() {
           db = null;
         });

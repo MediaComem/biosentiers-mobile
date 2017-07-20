@@ -8,7 +8,7 @@
     .module('app')
     .controller('ExcursionCtrl', ExcursionCtrl);
 
-  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, $log, ExcursionMapConfig, Excursions, excursionData, PoiGeo, $q, SeenPoisData, $scope, $timeout, WorldActions) {
+  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, $scope, $timeout, WorldActions) {
     $log.log('excursion data', excursionData);
 
     $scope.$on('$ionicView.beforeEnter', function(event, viewData) {
@@ -36,18 +36,18 @@
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(loadExcursionData);
 
-    Excursions.setNotNew(excursion.data);
+    DbExcursions.setNotNew(excursion.data);
 
     leafletData.getMap('map').then(function(map) {
       $log.info(map);
     }).catch(handleError);
 
-    SeenPoisData.countFor(excursion.data.id).then(function(res) {
+    DbSeenPois.countFor(excursion.data.id).then(function(res) {
       excursion.nbSeenPoi = res;
     }).catch(handleError);
 
-    SeenPoisData.seenPoiObs.subscribe(function(data) {
-      $log.info('SeenPoisData: catched event - new poi has been seen', data);
+    DbSeenPois.seenPoiObs.subscribe(function(data) {
+      $log.info('DbSeenPois: catched event - new poi has been seen', data);
       if (excursion.data.id === data.excursionId) excursion.nbSeenPoi = data.nbSeen;
     });
 
@@ -140,7 +140,7 @@
       return $q.when()
         .then(Ionicitude.launchAR)
         .then(loadWorldExcursion)
-        .then(_.partial(Excursions.setOngoingStatus, excursion.data))
+        .then(_.partial(DbExcursions.setOngoingStatus, excursion.data))
         .catch(handleError);
     }
 
@@ -177,7 +177,7 @@
 
       var promises = [
         PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
-        SeenPoisData.getAll(excursion.data.id)
+        DbSeenPois.getAll(excursion.data.id)
       ];
 
       return $q.all(promises).then(function(results) {

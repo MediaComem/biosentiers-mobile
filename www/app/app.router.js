@@ -55,8 +55,8 @@
           }
         },
         resolve: {
-          excursionsData: function(Excursions) {
-            return Excursions.getAll();
+          excursionsData: function(DbExcursions) {
+            return DbExcursions.getAll();
           }
         }
       })
@@ -70,8 +70,8 @@
           }
         },
         resolve: {
-          excursionsData: function(Excursions) {
-            return Excursions.getPending();
+          excursionsData: function(DbExcursions) {
+            return DbExcursions.getPending();
           }
         }
       })
@@ -85,8 +85,8 @@
           }
         },
         resolve: {
-          excursionsData: function(Excursions) {
-            return Excursions.getOngoing();
+          excursionsData: function(DbExcursions) {
+            return DbExcursions.getOngoing();
           }
         }
       })
@@ -100,8 +100,8 @@
           }
         },
         resolve: {
-          excursionsData: function(Excursions) {
-            return Excursions.getFinished();
+          excursionsData: function(DbExcursions) {
+            return DbExcursions.getFinished();
           }
         }
       })
@@ -180,9 +180,9 @@
           }
         },
         resolve: {
-          excursionData: function(Excursions, $stateParams, $log) {
+          excursionData: function(DbExcursions, $stateParams, $log) {
             $log.log('AppRouter:app.excursion state:', $stateParams);
-            return Excursions.getOne($stateParams.excursionId);
+            return DbExcursions.getOne($stateParams.excursionId);
           }
         }
       })

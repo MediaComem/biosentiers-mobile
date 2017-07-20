@@ -8,16 +8,16 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude(BioDb,
+  function ionicitude(DbBio,
                       $cordovaDeviceOrientation,
                       $ionicPlatform,
                       Ionicitude,
                       $cordovaToast,
                       $log,
-                      Excursions,
+                      DbExcursions,
                       PoiContent,
                       $q,
-                      SeenPoisData,
+                      DbSeenPois,
                       WorldActions) {
 
     var deviceOrientationWatch,
@@ -85,18 +85,18 @@
           $log.warn('No devices orientation updates to stop');
         }
         service.close();
-        BioDb.save();
+        DbBio.save();
       }
 
       function addSeenPoi(service, param) {
         $log.log('adding seen poi');
-        $log.log('addSeenPoi', SeenPoisData.addOne(param.excursionId, param.poiId, param.poiData));
+        $log.log('addSeenPoi', DbSeenPois.addOne(param.excursionId, param.poiId, param.poiData));
       }
 
       function finishExcursion(service, param) {
         return $q.when(param.excursionId)
-          .then(Excursions.getOne)
-          .then(Excursions.setFinishedStatus)
+          .then(DbExcursions.getOne)
+          .then(DbExcursions.setFinishedStatus)
           .then(_.partial(close, service))
           .catch(function(error) {
             $log.error(error);

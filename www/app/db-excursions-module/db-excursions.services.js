@@ -5,10 +5,10 @@
 (function() {
   'use strict';
   angular
-    .module('excursions-module')
-    .factory('Excursions', Excursions);
+    .module('db-excursions-module')
+    .factory('DbExcursions', DbExcursions);
 
-  function Excursions(ExcursionClass, ExcursionsSettings, BioDb, $log, $q) {
+  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, $log, $q) {
     var COLL_NAME = 'excursions';
     var COLL_OPTIONS = {
       unique: ['id']
@@ -40,15 +40,13 @@
      * @return {Promise} A promise of an array of Excursions
      */
     function getAll() {
+      var options = ExcursionsSettings.withArchive.value ? {} : {archived_at: {$not: null}};
       return getCollection()
         .then(function(coll) {
           $log.log('Excursion:collection', coll);
-          var res = coll.chain().find().simplesort('date', true).data();
-          if (res.length === 0) {
-            populateDb(coll);
-            res = coll.chain().find().simplesort('date', true).data();
-          }
+          var res = coll.chain().find(options).simplesort('date', true).data();
           $log.log('Excursion:getAll', res);
+          console.log('ExcursionService:getAll:result', res);
           return res;
         }).catch(handleError);
     }
@@ -61,7 +59,7 @@
     function createOne(newExcursionData) {
       return getCollection()
         .then(function(coll) {
-          $log.log('Excursions:newExcursionData', newExcursionData);
+          $log.log('DbExcursions:newExcursionData', newExcursionData);
           var newExcursion = ExcursionClass.fromQrCodeData(newExcursionData);
           $log.log(newExcursion);
           coll.insert(newExcursion);
@@ -172,7 +170,7 @@
     function updateOne(doc) {
       return getCollection()
         .then(function(coll) { coll.update(doc); })
-        .then(BioDb.save)
+        .then(DbBio.save)
         .catch(handleError);
     }
 
@@ -184,7 +182,7 @@
      * @return {Promise}
      */
     function archiveOne(excursion) {
-      if (!excursion) throw new TypeError('Excursions : archiveOne needs an Excursion object as its first argument, none given');
+      if (!excursion) throw new TypeError('DbExcursions : archiveOne needs an Excursion object as its first argument, none given');
       if (excursion.archived_at !== null) return $q.resolve();
       excursion.archived_at = Date.now();
       return updateOne(excursion);
@@ -198,7 +196,7 @@
      * @return {Promise}
      */
     function restoreOne(excursion) {
-      if (!excursion) throw new TypeError('Excursions : restoreOne needs an Excursion object as its first argument, none given');
+      if (!excursion) throw new TypeError('DbExcursions : restoreOne needs an Excursion object as its first argument, none given');
       if (excursion.archived_at === null) return $q.resolve();
       excursion.archived_at = null;
       return updateOne(excursion);
@@ -225,7 +223,7 @@
      * @return {Promise} A promise of an updated Excursion
      */
     function setOngoingStatus(excursion) {
-      if (!excursion) throw new TypeError('Excursions : setOngoingStatus needs an Excursion object as its first argument, none given');
+      if (!excursion) throw new TypeError('DbExcursions : setOngoingStatus needs an Excursion object as its first argument, none given');
       if (excursion.status !== 'pending') return $q.resolve();
       excursion.status = 'ongoing';
       excursion.started_at = Date.now();
@@ -242,7 +240,7 @@
      * @return {Promise} A promise of an updated Excursion
      */
     function setFinishedStatus(excursion) {
-      if (!excursion) throw new TypeError('Excursions : setFinishedStatus needs an Excursion object as its first argument, none given');
+      if (!excursion) throw new TypeError('DbExcursions : setFinishedStatus needs an Excursion object as its first argument, none given');
       if (excursion.status !== 'ongoing') return $q.resolve();
       excursion.status = 'finished';
       excursion.finished_at = Date.now();
@@ -255,7 +253,7 @@
      * @return {Promise}
      */
     function setNotNew(excursion) {
-      if (!excursion) throw new TypeError('Excursions : setNotNew needs an Excursion object as its first argument, none given');
+      if (!excursion) throw new TypeError('DbExcursions : setNotNew needs an Excursion object as its first argument, none given');
       if (!excursion.is_new) return $q.resolve();
       excursion.is_new = false;
       return updateOne(excursion);
@@ -268,7 +266,7 @@
      * @return {Promise}
      */
     function setNew(excursion) {
-      if (!excursion) throw new TypeError('Excursions : setNew needs an Excursion object as its first argument, none given');
+      if (!excursion) throw new TypeError('DbExcursions : setNew needs an Excursion object as its first argument, none given');
       if (excursion.is_new || excursion.status !== 'pending') return $q.resolve();
       excursion.is_new = true;
       return updateOne(excursion);
@@ -293,7 +291,7 @@
         new ExcursionClass('Mr Harnold', '2', new Date('2016.03.10'), 'Première sortie de classe', participant, themes, zones),
         new ExcursionClass('Mathias', '5', new Date('2016.10.22'), 'Deuxième sortie de classe', participant, themes, zones)
       ]);
-      BioDb.save();
+      DbBio.save();
     }
 
     /**
@@ -301,7 +299,7 @@
      * @return {*|Collection}
      */
     function getCollection() {
-      return BioDb.getCollection(COLL_NAME, COLL_OPTIONS);
+      return DbBio.getCollection(COLL_NAME, COLL_OPTIONS);
     }
   }
 })();
