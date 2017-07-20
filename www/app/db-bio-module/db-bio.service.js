@@ -23,10 +23,10 @@
     /**
      * Initializes the DbBio
      */
-    function start() {
+    function start(name) {
       if (!db) {
         $ionicPlatform.ready(function() {
-          $log.log('initializing Loki');
+          $log.log('initializing Loki for', name);
           db = new Loki('db', {
             autosave        : true,
             autosaveInterval: 10000,
@@ -48,7 +48,7 @@
      * @param options Options to be applied to the collection when created.
      */
     function getCollection(name, options) {
-      return start().then(function() {
+      return start(name).then(function() {
         // db.removeCollection(name);
         var coll = db.getCollection(name);
         if (coll) return coll;
@@ -65,7 +65,7 @@
      * @return {Promise} A promise of the database saved.
      */
     function save() {
-      $log.log('saving database');
+      $log.info('DbBio:save: initiating the database save');
       var deferred = $q.defer();
       db.saveDatabase(function(err) {
         err ? deferred.reject() : deferred.resolve();

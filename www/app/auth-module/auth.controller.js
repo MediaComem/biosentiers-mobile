@@ -32,7 +32,8 @@
       var config = {
         prompt               : "Placez votre QR Code dans le viseur pour scanner la sortie.",
         resultDisplayDuration: 0,
-        formats              : "QR_CODE"
+        formats              : "QR_CODE",
+        // orientation          : "landscape"
       };
       $cordovaBarcodeScanner
         .scan(config)

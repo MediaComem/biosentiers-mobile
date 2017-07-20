@@ -43,6 +43,14 @@
             templateUrl: 'app/excursions-list/excursions-list.html',
             controller: 'ExcursionsListCtrl as list'
           }
+        },
+        onEnter: function(DbExcursions, $state) {
+          console.log('App:Router:Checking if there\'s any excursion');
+          DbExcursions.countAll()
+            .then(function(value) {
+              console.log("App:router:Number of excursions", value);
+              if (value === 0) $state.go('login');
+            })
         }
       })
 
@@ -55,8 +63,9 @@
           }
         },
         resolve: {
-          excursionsData: function(DbExcursions) {
-            return DbExcursions.getAll();
+          excursionFilter: function() {
+            // An empty object is returned so that all the excursions are fetched.
+            return {};
           }
         }
       })
@@ -70,8 +79,8 @@
           }
         },
         resolve: {
-          excursionsData: function(DbExcursions) {
-            return DbExcursions.getPending();
+          excursionFilter: function() {
+            return {status: 'pending'};
           }
         }
       })
@@ -85,8 +94,8 @@
           }
         },
         resolve: {
-          excursionsData: function(DbExcursions) {
-            return DbExcursions.getOngoing();
+          excursionFilter: function() {
+            return {status: 'ongoing'};
           }
         }
       })
@@ -100,8 +109,8 @@
           }
         },
         resolve: {
-          excursionsData: function(DbExcursions) {
-            return DbExcursions.getFinished();
+          excursionFilter: function() {
+            return {status: 'finished'};
           }
         }
       })

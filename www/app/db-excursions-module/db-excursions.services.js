@@ -16,9 +16,6 @@
     var service = {
       getAll           : getAll,
       getOne           : getOne,
-      getPending       : getPending,
-      getOngoing       : getOngoing,
-      getFinished      : getFinished,
       getStats         : getStats,
       updateOne        : updateOne,
       archiveOne       : archiveOne,
@@ -37,17 +34,18 @@
 
     /**
      * Retrieve all the saved Excursions
+     * @param {Object} options An option object respecting the MongoDB syntax that will be used to filter the excursions.
      * @return {Promise} A promise of an array of Excursions
      */
-    function getAll() {
-      var options = ExcursionsSettings.withArchive.value ? {} : {archived_at: {$not: null}};
+    function getAll(options) {
+      // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archived_at value.
+      if (!ExcursionsSettings.withArchive.value) {
+        options.archived_at = {$eq: null};
+      }
       return getCollection()
         .then(function(coll) {
-          $log.log('Excursion:collection', coll);
-          var res = coll.chain().find(options).simplesort('date', true).data();
-          $log.log('Excursion:getAll', res);
-          console.log('ExcursionService:getAll:result', res);
-          return res;
+          console.log('DbExcursions:getAll', coll, options);
+          return coll.chain().find(options).simplesort('date', true).data();
         }).catch(handleError);
     }
 
@@ -74,36 +72,6 @@
     function getOne(excursionId) {
       return getCollection()
         .then(function(coll) { return coll.findOne({id: excursionId}); })
-        .catch(handleError);
-    }
-
-    /**
-     * Retrieve all the saved Excursions that are in a 'pending' state.
-     * @return {Promise} A promise of an array of Excursions
-     */
-    function getPending() {
-      return getCollection()
-        .then(function(coll) { return coll.chain().find({status: "pending"}).simplesort('id').data(); })
-        .catch(handleError);
-    }
-
-    /**
-     * Retrieves all the saved Excursions taht are in a 'ongoing' state.
-     * @return {Promise} A promise of an array of Excursions
-     */
-    function getOngoing() {
-      return getCollection()
-        .then(function(coll) { return coll.chain().find({status: "ongoing"}).simplesort('id').data(); })
-        .catch(handleError)
-    }
-
-    /**
-     * Retrieves all the saved Excursions that are in a 'finished' state.
-     * @return {Promise} A promise of an array of Excursions
-     */
-    function getFinished() {
-      return getCollection()
-        .then(function(coll) { return coll.chain().find({status: "finished"}).simplesort('id').data(); })
         .catch(handleError);
     }
 

@@ -8,11 +8,16 @@
     .module('app')
     .controller('ExcursionsListTabCtrl', ExcursionsListTabCtrl);
 
-  function ExcursionsListTabCtrl(DbExcursions, excursionsData, ExcursionListContextMenu, ExcursionsSettings, $ionicActionSheet, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, $log, $state, $timeout) {
+  function ExcursionsListTabCtrl(DbExcursions, excursionFilter, ExcursionListContextMenu, ExcursionsSettings, $ionicActionSheet, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, $log, $state, $timeout) {
     var tab = this;
-    // tab.loading = true;
-    $log.log('excursionsData', excursionsData);
-    tab.data = excursionsData;
+    tab.loading = true;
+    $log.log('excursionFilter', excursionFilter);
+    DbExcursions.getAll(excursionFilter)
+      .then(function(excursions) {
+        console.log('ExcursionListTabCtrl:excursions with status ' + excursionFilter.status, excursions);
+        tab.data = excursions;
+        tab.loading = false;
+      });
 
     ExcursionsSettings.withArchive.changeObs.subscribe(function(value) {
       $timeout(function() { tab.withArchive = value; });
