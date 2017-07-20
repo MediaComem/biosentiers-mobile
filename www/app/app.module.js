@@ -20,6 +20,8 @@
     'map-icons-module',
     'excursions-module',
     'excursions-list-menu',
+    'excursions-list-settings',
+    'excursion-context-menus',
     'poi-card-module',
     'position-badge',
     'seen-pois-data-module',

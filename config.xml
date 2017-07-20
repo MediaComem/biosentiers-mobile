@@ -7,6 +7,8 @@
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
     <allow-navigation href="http://10.192.114.17:8100" />
+    <allow-navigation href="http://*" />
+    <allow-navigation href="http://locahost:35729" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />

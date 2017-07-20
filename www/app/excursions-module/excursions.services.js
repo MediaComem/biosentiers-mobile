@@ -21,6 +21,8 @@
       getFinished      : getFinished,
       getStats         : getStats,
       updateOne        : updateOne,
+      archiveOne       : archiveOne,
+      restoreOne       : restoreOne,
       setOngoingStatus : setOngoingStatus,
       setFinishedStatus: setFinishedStatus,
       setNotNew        : setNotNew,
@@ -172,6 +174,34 @@
         .then(function(coll) { coll.update(doc); })
         .then(BioDb.save)
         .catch(handleError);
+    }
+
+    /**
+     * Archive the given excursion.
+     * This means setting its 'archived_at' property to the current datetime.
+     * This is only possible if this property has not already been set before.
+     * @param excursion
+     * @return {Promise}
+     */
+    function archiveOne(excursion) {
+      if (!excursion) throw new TypeError('Excursions : archiveOne needs an Excursion object as its first argument, none given');
+      if (excursion.archived_at !== null) return $q.resolve();
+      excursion.archived_at = Date.now();
+      return updateOne(excursion);
+    }
+
+    /**
+     * Restore the given excursion.
+     * This means setting its 'archived_at' property to null.
+     * This is only possible if this property is not already equal to null.
+     * @param excursion
+     * @return {Promise}
+     */
+    function restoreOne(excursion) {
+      if (!excursion) throw new TypeError('Excursions : restoreOne needs an Excursion object as its first argument, none given');
+      if (excursion.archived_at === null) return $q.resolve();
+      excursion.archived_at = null;
+      return updateOne(excursion);
     }
 
     /**

@@ -9,9 +9,15 @@
     .module('excursions-list-menu')
     .controller('ExcursionsMenuCtrl', ExcursionsMenuCtrlFn);
 
-  function ExcursionsMenuCtrlFn(ExcursionsSettings) {
+  function ExcursionsMenuCtrlFn(ExcursionsSettings, $timeout) {
     var menu = this;
 
-    menu.withArchive = ExcursionsSettings.withArchive;
+    ExcursionsSettings.withArchiveChangeObs.first().subscribe(function(value) {
+      $timeout(function() {
+        menu.withArchive = value;
+      });
+    });
+
+    menu.toggleWithArchive = ExcursionsSettings.toggleWithArchive;
   }
 })();
