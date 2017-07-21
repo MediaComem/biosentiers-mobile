@@ -207,50 +207,61 @@ describe('testing destructured serialization/deserialization', function () {
 });
 
 describe('testing adapter functionality', function () {
-  it('verify basic memory adapter functionality works', function() {
+  it('verify basic memory adapter functionality works', function(done) {
     var idx, options, result;
 
     var memAdapter = new loki.LokiMemoryAdapter();
     var ddb = new loki("test.db", { adapter: memAdapter });
 
     var coll = ddb.addCollection("testcoll");
-    coll.insert({
-      name : "test1",
-      val: 100
-    });
-    coll.insert({
-      name : "test2",
-      val: 101
-    });
-    coll.insert({
-      name : "test3",
-      val: 102
-    });
+    coll.insert({ name : "test1", val: 100 });
+    coll.insert({ name : "test2", val: 101 });
+    coll.insert({ name : "test3", val: 102 });
 
     var coll2 = ddb.addCollection("another");
-    coll2.insert({
-      a: 1,
-      b: 2
-    });
+    coll2.insert({ a: 1,  b: 2 });
 
     ddb.saveDatabase(function(err) {
       expect(memAdapter.hashStore.hasOwnProperty("test.db")).toEqual(true);
       expect(memAdapter.hashStore["test.db"].savecount).toEqual(1);
+
+      // although we are mostly using callbacks, memory adapter is essentially synchronous with callbacks
+
+      var cdb = new loki("test.db", { adapter: memAdapter });
+      cdb.loadDatabase({}, function() {
+        expect(cdb.collections.length).toEqual(2);
+        expect(cdb.getCollection("testcoll").findOne({name:"test2"}).val).toEqual(101);
+        expect(cdb.collections[0].data.length).toEqual(3);
+        expect(cdb.collections[1].data.length).toEqual(1);
+        
+        done();
+      });
+
     });
-    
-    // although we are mostly using callbacks, memory adapter is essentially synchronous with callbacks
-    
-    var cdb = new loki("test.db", { adapter: memAdapter });
-    cdb.loadDatabase({}, function() {
-      expect(cdb.collections.length).toEqual(2);
-      expect(cdb.getCollection("testcoll").findOne({name:"test2"}).val).toEqual(101);
-      expect(cdb.collections[0].data.length).toEqual(3);
-      expect(cdb.collections[1].data.length).toEqual(1);
-    });
-    
   });
 
-  it('verify partioning adapter works', function() {
+  it('verify loki deleteDatabase works', function (done) {
+    var memAdapter = new loki.LokiMemoryAdapter({ asyncResponses: true });
+    var ddb = new loki("test.db", { adapter: memAdapter });
+
+    var coll = ddb.addCollection("testcoll");
+    coll.insert({ name : "test1", val: 100 });
+    coll.insert({ name : "test2", val: 101 });
+    coll.insert({ name : "test3", val: 102 });
+    
+    ddb.saveDatabase(function(err) {
+      expect(memAdapter.hashStore.hasOwnProperty("test.db")).toEqual(true);
+      expect(memAdapter.hashStore["test.db"].savecount).toEqual(1);
+      
+      ddb.deleteDatabase(function(err) {
+        expect(memAdapter.hashStore.hasOwnProperty("test.db")).toEqual(false);
+        done();
+      });
+    });
+
+  });
+
+  it('verify partioning adapter works', function(done) {
     var mem = new loki.LokiMemoryAdapter();
     var adapter = new loki.LokiPartitioningAdapter(mem);
 
@@ -266,45 +277,51 @@ describe('testing adapter functionality', function () {
     var another = db.addCollection('another');
     var ai = another.insert({ a:1, b:2 });
 
+    // make sure maxId was restored correctly over partitioned save/load cycle
+    var itemMaxId = items.maxId;
+
     // for purposes of our memory adapter it is pretty much synchronous
-    db.saveDatabase();
+    db.saveDatabase(function(err) {
+      // should have partitioned the data
+      expect(Object.keys(mem.hashStore).length).toEqual(3);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db")).toEqual(true);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db.0")).toEqual(true);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db.1")).toEqual(true);
+      // all partitions should have been saved once each
+      expect(mem.hashStore["sandbox.db"].savecount).toEqual(1);
+      expect(mem.hashStore["sandbox.db.0"].savecount).toEqual(1);
+      expect(mem.hashStore["sandbox.db.1"].savecount).toEqual(1);
 
-    // should have partitioned the data
-    expect(Object.keys(mem.hashStore).length).toEqual(3);
-    expect(mem.hashStore.hasOwnProperty("sandbox.db")).toEqual(true);
-    expect(mem.hashStore.hasOwnProperty("sandbox.db.0")).toEqual(true);
-    expect(mem.hashStore.hasOwnProperty("sandbox.db.1")).toEqual(true);
-    // all partitions should have been saved once each
-    expect(mem.hashStore["sandbox.db"].savecount).toEqual(1);
-    expect(mem.hashStore["sandbox.db.0"].savecount).toEqual(1);
-    expect(mem.hashStore["sandbox.db.1"].savecount).toEqual(1);
+      // so let's go ahead and update one of our collections to make it dirty
+      ai.b = 3;
+      another.update(ai);
 
-    // so let's go ahead and update one of our collections to make it dirty
-    ai.b = 3;
-    another.update(ai);
+      // and save again to ensure lastsave is different on for db container and that one collection
+      db.saveDatabase(function(err) {
+        // db container always gets saved since we currently have no 'dirty' flag on it to check
+        expect(mem.hashStore["sandbox.db"].savecount).toEqual(2);
+        // we didn't change this
+        expect(mem.hashStore["sandbox.db.0"].savecount).toEqual(1);
+        // we updated this collection so it should have been saved again
+        expect(mem.hashStore["sandbox.db.1"].savecount).toEqual(2);
 
-    // and save again to ensure lastsave is different on for db container and that one collection
-    db.saveDatabase();
-
-    // db container always gets saved since we currently have no 'dirty' flag on it to check
-    expect(mem.hashStore["sandbox.db"].savecount).toEqual(2);
-    // we didn't change this
-    expect(mem.hashStore["sandbox.db.0"].savecount).toEqual(1);
-    // we updated this collection so it should have been saved again
-    expect(mem.hashStore["sandbox.db.1"].savecount).toEqual(2);
-
-    // ok now lets load from it
-    var db2 = new loki('sandbox.db', { adapter: adapter});
-    db2.loadDatabase();
-
-    expect(db2.collections.length).toEqual(2);
-    expect(db2.collections[0].data.length).toEqual(4);
-    expect(db2.collections[1].data.length).toEqual(1);
-    expect(db2.getCollection("items").findOne({ name : 'gungnir'}).owner).toEqual("odin");
-    expect(db2.getCollection("another").findOne({ a: 1}).b).toEqual(3);
+        // ok now lets load from it
+        var db2 = new loki('sandbox.db', { adapter: adapter});
+        db2.loadDatabase({}, function(err) {
+          expect(db2.getCollection("items").maxId).toEqual(itemMaxId);
+          expect(db2.collections.length).toEqual(2);
+          expect(db2.collections[0].data.length).toEqual(4);
+          expect(db2.collections[1].data.length).toEqual(1);
+          expect(db2.getCollection("items").findOne({ name : 'gungnir'}).owner).toEqual("odin");
+          expect(db2.getCollection("another").findOne({ a: 1}).b).toEqual(3);
+          
+          done();
+        });
+      });
+    });
   });
 
-  it('verify partioning adapter with paging mode enabled works', function() {
+  it('verify partioning adapter with paging mode enabled works', function(done) {
     var mem = new loki.LokiMemoryAdapter();
 
     // we will use an exceptionally low page size (128bytes) to test with small dataset
@@ -323,75 +340,77 @@ describe('testing adapter functionality', function () {
     var ai = another.insert({ a:1, b:2 });
 
     // for purposes of our memory adapter it is pretty much synchronous
-    db.saveDatabase();
+    db.saveDatabase(function(err) {
+      // should have partitioned the data
+      expect(Object.keys(mem.hashStore).length).toEqual(4);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db")).toEqual(true);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db.0.0")).toEqual(true);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db.0.1")).toEqual(true);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db.1.0")).toEqual(true);
+      // all partitions should have been saved once each
+      expect(mem.hashStore["sandbox.db"].savecount).toEqual(1);
+      expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(1);
+      expect(mem.hashStore["sandbox.db.0.1"].savecount).toEqual(1);
+      expect(mem.hashStore["sandbox.db.1.0"].savecount).toEqual(1);
 
-    // should have partitioned the data
-    expect(Object.keys(mem.hashStore).length).toEqual(4);
-    expect(mem.hashStore.hasOwnProperty("sandbox.db")).toEqual(true);
-    expect(mem.hashStore.hasOwnProperty("sandbox.db.0.0")).toEqual(true);
-    expect(mem.hashStore.hasOwnProperty("sandbox.db.0.1")).toEqual(true);
-    expect(mem.hashStore.hasOwnProperty("sandbox.db.1.0")).toEqual(true);
-    // all partitions should have been saved once each
-    expect(mem.hashStore["sandbox.db"].savecount).toEqual(1);
-    expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(1);
-    expect(mem.hashStore["sandbox.db.0.1"].savecount).toEqual(1);
-    expect(mem.hashStore["sandbox.db.1.0"].savecount).toEqual(1);
+      // so let's go ahead and update one of our collections to make it dirty
+      ai.b = 3;
+      another.update(ai);
 
-    // so let's go ahead and update one of our collections to make it dirty
-    ai.b = 3;
-    another.update(ai);
+      // and save again to ensure lastsave is different on for db container and that one collection
+      db.saveDatabase(function(err) {
+        // db container always gets saved since we currently have no 'dirty' flag on it to check
+        expect(mem.hashStore["sandbox.db"].savecount).toEqual(2);
+        // we didn't change this
+        expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(1);
+        expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(1);
+        // we updated this collection so it should have been saved again
+        expect(mem.hashStore["sandbox.db.1.0"].savecount).toEqual(2);
 
-    // and save again to ensure lastsave is different on for db container and that one collection
-    db.saveDatabase();
+        // now update a multi page items collection and verify both pages were saved
+        tyr.maker = "elves";
+        items.update(tyr);
+        db.saveDatabase();
+        expect(mem.hashStore["sandbox.db"].savecount).toEqual(3);
+        expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(2);
+        expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(2);
+        expect(mem.hashStore["sandbox.db.1.0"].savecount).toEqual(2);
 
-    // db container always gets saved since we currently have no 'dirty' flag on it to check
-    expect(mem.hashStore["sandbox.db"].savecount).toEqual(2);
-    // we didn't change this
-    expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(1);
-    expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(1);
-    // we updated this collection so it should have been saved again
-    expect(mem.hashStore["sandbox.db.1.0"].savecount).toEqual(2);
+        // ok now lets load from it
+        var db2 = new loki('sandbox.db', { adapter: adapter});
+        db2.loadDatabase();
 
-    // now update a multi page items collection and verify both pages were saved
-    tyr.maker = "elves";
-    items.update(tyr);
-    db.saveDatabase();
-    expect(mem.hashStore["sandbox.db"].savecount).toEqual(3);
-    expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(2);
-    expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(2);
-    expect(mem.hashStore["sandbox.db.1.0"].savecount).toEqual(2);
+        expect(db2.collections.length).toEqual(2);
+        expect(db2.collections[0].data.length).toEqual(4);
+        expect(db2.collections[1].data.length).toEqual(1);
+        expect(db2.getCollection("items").findOne({ name : 'tyrfing'}).maker).toEqual("elves");
+        expect(db2.getCollection("another").findOne({ a: 1}).b).toEqual(3);
 
-    // ok now lets load from it
-    var db2 = new loki('sandbox.db', { adapter: adapter});
-    db2.loadDatabase();
+        // verify empty collection saves with paging
+        db.addCollection("extracoll");
+        db.saveDatabase(function(err) {
+          expect(mem.hashStore["sandbox.db"].savecount).toEqual(4);
+          expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(2);
+          expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(2);
+          expect(mem.hashStore["sandbox.db.1.0"].savecount).toEqual(2);
+          expect(mem.hashStore["sandbox.db.2.0"].savecount).toEqual(1);
 
-    expect(db2.collections.length).toEqual(2);
-    expect(db2.collections[0].data.length).toEqual(4);
-    expect(db2.collections[1].data.length).toEqual(1);
-    expect(db2.getCollection("items").findOne({ name : 'tyrfing'}).maker).toEqual("elves");
-    expect(db2.getCollection("another").findOne({ a: 1}).b).toEqual(3);
+          // now verify loading empty collection works with paging codepath
+          db2 = new loki('sandbox.db', { adapter: adapter});
+          db2.loadDatabase();
+
+          expect(db2.collections.length).toEqual(3);
+          expect(db2.collections[0].data.length).toEqual(4);
+          expect(db2.collections[1].data.length).toEqual(1);
+          expect(db2.collections[2].data.length).toEqual(0);
+        });
+      });
+    });
     
-    // verify empty collection saves with paging
-    db.addCollection("extracoll");
-    db.saveDatabase();
-    expect(mem.hashStore["sandbox.db"].savecount).toEqual(4);
-    expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(2);
-    expect(mem.hashStore["sandbox.db.0.0"].savecount).toEqual(2);
-    expect(mem.hashStore["sandbox.db.1.0"].savecount).toEqual(2);
-    expect(mem.hashStore["sandbox.db.2.0"].savecount).toEqual(1);
-
-    // now verify loading empty collection works with paging codepath
-    db2 = new loki('sandbox.db', { adapter: adapter});
-    db2.loadDatabase();
-
-    expect(db2.collections.length).toEqual(3);
-    expect(db2.collections[0].data.length).toEqual(4);
-    expect(db2.collections[1].data.length).toEqual(1);
-    expect(db2.collections[2].data.length).toEqual(0);
-    
+    setTimeout(done, 700);
   });
 
-  it('verify reference adapters get db reference which is copy and serializable-safe', function() {
+  it('verify reference adapters get db reference which is copy and serializable-safe', function(done) {
     // Current loki functionality with regards to reference mode adapters:
     // Since we don't use serializeReplacer on reference mode adapters, we make 
     // lightweight clone, cloning only db container and collection containers (object refs are same).
@@ -446,12 +465,286 @@ describe('testing adapter functionality', function () {
       expect(db2.collections[0].name).toEqual("n1");
       expect(db2.collections[1].name).toEqual("n2");
       expect(db2.getCollection("n1").findOne({m:9}).n).toEqual(8);
+      
+      done();
     });
   });  
 });
 
+describe('async adapter tests', function() {
+  it('verify throttled async drain works', function(done) {
+    var mem = new loki.LokiMemoryAdapter({ asyncResponses: true, asyncTimeout: 50 });
+    var db = new loki('sandbox.db', {adapter: mem, throttledSaves: true});
+
+    // Add a collection to the database
+    var items = db.addCollection('items');
+    var mjol = items.insert({ name : 'mjolnir', owner: 'thor', maker: 'dwarves' });
+    var gun = items.insert({ name : 'gungnir', owner: 'odin', maker: 'elves' });
+    var tyr = items.insert({ name : 'tyrfing', owner: 'Svafrlami', maker: 'dwarves' });
+    var drau = items.insert({ name : 'draupnir', owner: 'odin', maker: 'elves' });
+
+    var another = db.addCollection('another');
+    var ai = another.insert({ a:1, b:2 });
+
+    // this should immediately kick off the first save
+    db.saveDatabase();
+
+    // the following saves (all async) should coalesce into one save
+    ai.b = 3;
+    another.update(ai);
+    db.saveDatabase();
+
+    tyr.owner = "arngrim";
+    items.update(tyr);
+    db.saveDatabase();
+
+    drau.maker = 'dwarves';
+    items.update(drau);
+    db.saveDatabase();
+
+    db.throttledSaveDrain(function () {
+      // Wait until saves are complete and then loading the database and make
+      // sure all saves are complete and includes their changes
+      var db2 = new loki('sandbox.db', { adapter: mem });
+
+      db2.loadDatabase({}, function() {
+        // total of 2 saves should have occurred
+        expect(mem.hashStore["sandbox.db"].savecount).toEqual(2);
+
+        // verify the saved database contains all expected changes
+        expect(db2.getCollection("another").findOne({a:1}).b).toEqual(3);
+        expect(db2.getCollection("items").findOne({name:'tyrfing'}).owner).toEqual('arngrim');
+        expect(db2.getCollection("items").findOne({name:'draupnir'}).maker).toEqual('dwarves');
+        done();
+      });
+    });
+  });
+
+  it('verify throttledSaveDrain with duration timeout works', function(done) {
+    var mem = new loki.LokiMemoryAdapter({ asyncResponses: true, asyncTimeout: 100 });
+    var db = new loki('sandbox.db', { adapter: mem });
+
+    // Add a collection to the database
+    var items = db.addCollection('items');
+    var mjol = items.insert({ name : 'mjolnir', owner: 'thor', maker: 'dwarves' });
+    var gun = items.insert({ name : 'gungnir', owner: 'odin', maker: 'elves' });
+    var tyr = items.insert({ name : 'tyrfing', owner: 'Svafrlami', maker: 'dwarves' });
+    var drau = items.insert({ name : 'draupnir', owner: 'odin', maker: 'elves' });
+
+    var another = db.addCollection('another');
+    var ai = another.insert({ a:1, b:2 });
+
+    // this should immediately kick off the first save (~100ms)
+    db.saveDatabase();
+
+    // now queue up a sequence to be run one after the other, at ~50ms each (~300ms total) when first completes
+    ai.b = 3;
+    another.update(ai);
+    db.saveDatabase(function() {
+      tyr.owner = "arngrim";
+      items.update(tyr);
+
+      db.saveDatabase(function() {
+        drau.maker = 'dwarves';
+        items.update(drau);
+
+        db.saveDatabase();
+      });
+    });
+
+    expect(db.throttledSaves).toEqual(true);
+    expect(db.throttledSavePending).toEqual(true);
+
+    // we want this to fail so above they should be bootstrapping several
+    // saves which take about 400ms to complete.  
+    // The full drain can take one save/callback cycle longer than duration (~100ms).
+    db.throttledSaveDrain(function (success) {
+      expect(success).toEqual(false);
+      done();
+    }, { recursiveWaitLimit: true, recursiveWaitLimitDuration: 200 });
+  });
+
+  it('verify throttled async throttles', function(done) {
+    var mem = new loki.LokiMemoryAdapter({ asyncResponses: true, asyncTimeout: 50 });
+    var db = new loki('sandbox.db', { adapter: mem });
+
+    // Add a collection to the database
+    var items = db.addCollection('items');
+    var mjol = items.insert({ name : 'mjolnir', owner: 'thor', maker: 'dwarves' });
+    var gun = items.insert({ name : 'gungnir', owner: 'odin', maker: 'elves' });
+    var tyr = items.insert({ name : 'tyrfing', owner: 'Svafrlami', maker: 'dwarves' });
+    var drau = items.insert({ name : 'draupnir', owner: 'odin', maker: 'elves' });
+
+    var another = db.addCollection('another');
+    var ai = another.insert({ a:1, b:2 });
+
+    // this should immediately kick off the first save
+    db.saveDatabase();
+
+    // the following saves (all async) should coalesce into one save
+    ai.b = 3;
+    another.update(ai);
+    db.saveDatabase();
+
+    tyr.owner = "arngrim";
+    items.update(tyr);
+    db.saveDatabase();
+
+    drau.maker = 'dwarves';
+    items.update(drau);
+    db.saveDatabase();
+
+    // give all async saves time to complete and then verify outcome
+    db.throttledSaveDrain(function () {
+      // total of 2 saves should have occurred
+      expect(mem.hashStore["sandbox.db"].savecount).toEqual(2);
+
+      // verify the saved database contains all expected changes
+      var db2 = new loki('sandbox.db', { adapter: mem });
+      db2.loadDatabase({}, function() {
+        expect(db2.getCollection("another").findOne({a:1}).b).toEqual(3);
+        expect(db2.getCollection("items").findOne({name:'tyrfing'}).owner).toEqual('arngrim');
+        expect(db2.getCollection("items").findOne({name:'draupnir'}).maker).toEqual('dwarves');
+        done();
+      });
+    });
+  });
+
+  it('verify throttled async works as expected', function(done) {
+    var mem = new loki.LokiMemoryAdapter({ asyncResponses: true, asyncTimeout: 50 });
+    var adapter = new loki.LokiPartitioningAdapter(mem);
+    var throttled = true;
+    var db = new loki('sandbox.db', {adapter: adapter, throttledSaves: throttled});
+
+    // Add a collection to the database
+    var items = db.addCollection('items');
+    items.insert({ name : 'mjolnir', owner: 'thor', maker: 'dwarves' });
+    items.insert({ name : 'gungnir', owner: 'odin', maker: 'elves' });
+    var tyr = items.insert({ name : 'tyrfing', owner: 'Svafrlami', maker: 'dwarves' });
+    items.insert({ name : 'draupnir', owner: 'odin', maker: 'elves' });
+
+    var another = db.addCollection('another');
+    var ai = another.insert({ a:1, b:2 });
+
+    db.saveDatabase(function(err) {
+      // should have partitioned the data
+      expect(Object.keys(mem.hashStore).length).toEqual(3);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db")).toEqual(true);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db.0")).toEqual(true);
+      expect(mem.hashStore.hasOwnProperty("sandbox.db.1")).toEqual(true);
+      // all partitions should have been saved once each
+      expect(mem.hashStore["sandbox.db"].savecount).toEqual(1);
+      expect(mem.hashStore["sandbox.db.0"].savecount).toEqual(1);
+      expect(mem.hashStore["sandbox.db.1"].savecount).toEqual(1);
+
+      // so let's go ahead and update one of our collections to make it dirty
+      ai.b = 3;
+      another.update(ai);
+
+      // and save again to ensure lastsave is different on for db container and that one collection
+      db.saveDatabase(function(err) {
+        // db container always gets saved since we currently have no 'dirty' flag on it to check
+        expect(mem.hashStore["sandbox.db"].savecount).toEqual(2);
+        // we didn't change this
+        expect(mem.hashStore["sandbox.db.0"].savecount).toEqual(1);
+        // we updated this collection so it should have been saved again
+        expect(mem.hashStore["sandbox.db.1"].savecount).toEqual(2);
+
+        // now update a multi page items collection and verify both pages were saved
+        tyr.maker = "elves";
+        items.update(tyr);
+        db.saveDatabase(function(err) {
+          expect(mem.hashStore["sandbox.db"].savecount).toEqual(3);
+          expect(mem.hashStore["sandbox.db.0"].savecount).toEqual(2);
+          expect(mem.hashStore["sandbox.db.1"].savecount).toEqual(2);
+
+          // ok now lets load from it
+          var db2 = new loki('sandbox.db', { adapter: adapter, throttledSaves: throttled});
+          db2.loadDatabase({}, function(err) {
+            done();
+            expect(db2.collections.length).toEqual(2);
+            expect(db2.collections[0].data.length).toEqual(4);
+            expect(db2.collections[1].data.length).toEqual(1);
+            expect(db2.getCollection("items").findOne({ name : 'tyrfing'}).maker).toEqual("elves");
+            expect(db2.getCollection("another").findOne({ a: 1}).b).toEqual(3);
+
+            // verify empty collection saves with paging
+            db.addCollection("extracoll");
+            db.saveDatabase(function(err) {
+              expect(mem.hashStore["sandbox.db"].savecount).toEqual(4);
+              expect(mem.hashStore["sandbox.db.0"].savecount).toEqual(2);
+              expect(mem.hashStore["sandbox.db.1"].savecount).toEqual(2);
+              expect(mem.hashStore["sandbox.db.2"].savecount).toEqual(1);
+
+              // now verify loading empty collection works with paging codepath
+              db2 = new loki('sandbox.db', { adapter: adapter, throttledSaves: throttled});
+              db2.loadDatabase({}, function() {
+                expect(db2.collections.length).toEqual(3);
+                expect(db2.collections[0].data.length).toEqual(4);
+                expect(db2.collections[1].data.length).toEqual(1);
+                expect(db2.collections[2].data.length).toEqual(0);
+
+                // since async calls are being used, use jasmine done() to indicate test finished
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('verify loadDatabase in the middle of throttled saves will wait for queue to drain first', function(done) {
+    var mem = new loki.LokiMemoryAdapter({ asyncResponses: true, asyncTimeout: 75 });
+    var db = new loki('sandbox.db', { adapter: mem });
+
+    // Add a collection to the database
+    var items = db.addCollection('items');
+    var mjol = items.insert({ name : 'mjolnir', owner: 'thor', maker: 'dwarves' });
+    var gun = items.insert({ name : 'gungnir', owner: 'odin', maker: 'elves' });
+    var tyr = items.insert({ name : 'tyrfing', owner: 'Svafrlami', maker: 'dwarves' });
+    var drau = items.insert({ name : 'draupnir', owner: 'odin', maker: 'elves' });
+
+    var another = db.addCollection('another');
+    var ai = another.insert({ a:1, b:2 });
+
+    // this should immediately kick off the first save (~100ms)
+    db.saveDatabase();
+
+    // now queue up a sequence to be run one after the other, at ~50ms each (~300ms total) when first completes
+    ai.b = 3;
+    another.update(ai);
+    db.saveDatabase(function() {
+      tyr.owner = "arngrim";
+      items.update(tyr);
+
+      db.saveDatabase(function() {
+        drau.maker = 'dwarves';
+        items.update(drau);
+
+        db.saveDatabase();
+      });
+    });
+
+    expect(db.throttledSaves).toEqual(true);
+    expect(db.throttledSavePending).toEqual(true);
+
+    // at this point, several rounds of saves should be triggered...
+    // a load at this scope (possibly simulating script run from different code path) 
+    // should wait until any pending saves are complete, then freeze saves (queue them ) while loading,
+    // then re-enable saves
+    db.loadDatabase({}, function (success) {
+      expect(db.getCollection('another').findOne({a:1}).b).toEqual(3);
+      expect(db.getCollection('items').findOne({name:'tyrfing'}).owner).toEqual('arngrim');
+      expect(db.getCollection('items').findOne({name:'draupnir'}).maker).toEqual('dwarves');
+      done();
+    });
+  });
+
+});
+
 describe('testing changesAPI', function() {
-  it('verify pending changes persist across save/load cycle', function() {
+  it('verify pending changes persist across save/load cycle', function(done) {
     var mem = new loki.LokiMemoryAdapter();
     var db = new loki('sandbox.db', { adapter: mem });
 
@@ -470,21 +763,22 @@ describe('testing changesAPI', function() {
     items.update(tyrfing);
 
     // memory adapter is synchronous so i will not bother with callbacks
-    db.saveDatabase();
+    db.saveDatabase(function(err) {
+      var db2 = new loki('sandbox.db', { adapter: mem });
+      db2.loadDatabase({});
 
-    var db2 = new loki('sandbox.db', { adapter: mem });
-    db2.loadDatabase({});
+      var result = JSON.parse(db2.serializeChanges());
+      expect(result.length).toEqual(5);
 
-    var result = JSON.parse(db2.serializeChanges());
-    expect(result.length).toEqual(5);
+      expect(result[0].name).toEqual("items");
+      expect(result[0].operation).toEqual("I");
+      expect(result[0].obj.name).toEqual("mjolnir");
 
-    expect(result[0].name).toEqual("items");
-    expect(result[0].operation).toEqual("I");
-    expect(result[0].obj.name).toEqual("mjolnir");
-
-    expect(result[4].name).toEqual("items");
-    expect(result[4].operation).toEqual("U");
-    expect(result[4].obj.name).toEqual("tyrfing");
+      expect(result[4].name).toEqual("items");
+      expect(result[4].operation).toEqual("U");
+      expect(result[4].obj.name).toEqual("tyrfing");
+      
+      done();
+    });
   });
 });
-

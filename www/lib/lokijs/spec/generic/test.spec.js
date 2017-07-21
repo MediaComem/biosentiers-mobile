@@ -206,6 +206,69 @@ describe('loki', function () {
     })
   });
 
+  describe('meta validation', function() {
+    it('meta set on returned objects', function() {
+      var tdb = new loki('test.db');
+      var coll = tdb.addCollection('tc');
+      var now = (new Date()).getTime();
+
+      // verify single insert return objs have meta set properly
+      var obj = coll.insert({a:1, b:2});
+      expect(obj.hasOwnProperty('meta')).toEqual(true);
+      expect(obj.hasOwnProperty('$loki')).toEqual(true);
+      expect(obj.meta.hasOwnProperty('revision')).toEqual(true);
+      expect(obj.meta.hasOwnProperty('version')).toEqual(true);
+      expect(obj.meta.hasOwnProperty('created')).toEqual(true);
+      expect(obj.meta.created).not.toBeLessThan(now);
+
+      // verify batch insert return objs have meta set properly
+      var objs = coll.insert([ { a:2, b:3}, { a:3, b:4}]);
+      expect(Array.isArray(objs));
+      objs.forEach(function(o) {
+        expect(o.hasOwnProperty('meta')).toEqual(true);
+        expect(o.hasOwnProperty('$loki')).toEqual(true);
+        expect(o.meta.hasOwnProperty('revision')).toEqual(true);
+        expect(o.meta.hasOwnProperty('version')).toEqual(true);
+        expect(o.meta.hasOwnProperty('created')).toEqual(true);
+        expect(o.meta.created).not.toBeLessThan(now);
+      });
+    });
+
+    it('meta set on events', function(done) {
+      var tdb = new loki('test.db');
+      var coll = tdb.addCollection('tc');
+      var now = (new Date()).getTime();
+
+      coll.on('insert', function(o) {
+        if (Array.isArray(o)) {
+          o.forEach(function(obj) {
+            expect(obj.hasOwnProperty('meta')).toEqual(true);
+            expect(obj.hasOwnProperty('$loki')).toEqual(true);
+            expect(obj.meta.hasOwnProperty('revision')).toEqual(true);
+            expect(obj.meta.hasOwnProperty('version')).toEqual(true);
+            expect(obj.meta.hasOwnProperty('created')).toEqual(true);
+            expect(obj.meta.created).not.toBeLessThan(now);
+          });
+          done();
+        }
+        else {
+          expect(o.hasOwnProperty('meta')).toEqual(true);
+          expect(o.hasOwnProperty('$loki')).toEqual(true);
+          expect(o.meta.hasOwnProperty('revision')).toEqual(true);
+          expect(o.meta.hasOwnProperty('version')).toEqual(true);
+          expect(o.meta.hasOwnProperty('created')).toEqual(true);
+          expect(o.meta.created).not.toBeLessThan(now);
+        }
+      });
+
+      // verify single inserts emit with obj which has meta set properly
+      coll.insert({a:1, b:2});
+
+      // verify batch inserts emit with objs which have meta set properly
+      coll.insert([ { a:2, b:3}, { a:3, b:4}]);
+    });
+  });
+
   describe('dot notation', function () {
     it('works', function () {
       var dnc = db.addCollection('dncoll');
@@ -780,7 +843,7 @@ describe('loki', function () {
         'testFloat': 2.2
       }); //7
 
-      // coll.find $and
+      // coll.find explicit $and
       expect(eic.find({
         '$and': [{
           'testid': 1
@@ -789,13 +852,25 @@ describe('loki', function () {
         }]
       }).length).toEqual(1);
 
-      // resultset.find $and
+      // coll.find implicit '$and'
+      expect(eic.find({
+        'testid': 1,
+        'testString': 'bbb'
+      }).length).toEqual(1);
+
+      // resultset.find explicit $and
       expect(eic.chain().find({
         '$and': [{
           'testid': 1
         }, {
           'testString': 'bbb'
         }]
+      }).data().length).toEqual(1);
+
+      // resultset.find implicit $and
+      expect(eic.chain().find({
+        'testid': 1,
+        'testString': 'bbb'
       }).data().length).toEqual(1);
 
       // resultset.find explicit operators
@@ -929,6 +1004,116 @@ describe('loki', function () {
 
       db.removeCollection('eic');
     })
+  });
+
+  describe('resultset unfiltered simplesort works', function() {
+    it('works', function() {
+      var ssdb = new loki('sandbox.db');
+
+      // Add a collection to the database
+      var items = ssdb.addCollection('items', { indices: ['name'] });
+
+      // Add some documents to the collection
+      items.insert({ name : 'mjolnir', owner: 'thor', maker: 'dwarves' });
+      items.insert({ name : 'gungnir', owner: 'odin', maker: 'elves' });
+      items.insert({ name : 'tyrfing', owner: 'svafrlami', maker: 'dwarves' });
+      items.insert({ name : 'draupnir', owner: 'odin', maker: 'elves' });
+      
+      // simplesort without filters on prop with index should work
+      var results = items.chain().simplesort('name').data();
+      expect(results.length).toEqual(4);
+      expect(results[0].name).toEqual('draupnir');
+      expect(results[1].name).toEqual('gungnir');
+      expect(results[2].name).toEqual('mjolnir');
+      expect(results[3].name).toEqual('tyrfing');
+      
+      // simplesort without filters on prop without index should work
+      results = items.chain().simplesort('owner').data();
+      expect(results.length).toEqual(4);
+      expect(results[0].owner).toEqual('odin');
+      expect(results[1].owner).toEqual('odin');
+      expect(results[2].owner).toEqual('svafrlami');
+      expect(results[3].owner).toEqual('thor');
+    });
+  });
+
+  describe('resultset data removeMeta works', function() {
+    it('works', function() {
+      var idb = new loki('sandbox.db');
+
+      // Add a collection to the database
+      var items = idb.addCollection('items', { indices: ['owner'] });
+
+      // Add some documents to the collection
+      items.insert({ name : 'mjolnir', owner: 'thor', maker: 'dwarves' });
+      items.insert({ name : 'gungnir', owner: 'odin', maker: 'elves' });
+      items.insert({ name : 'tyrfing', owner: 'svafrlami', maker: 'dwarves' });
+      items.insert({ name : 'draupnir', owner: 'odin', maker: 'elves' });
+
+      // unfiltered with strip meta
+      var result = items.chain().data({removeMeta:true});
+      expect(result.length).toEqual(4);
+      expect(result[0].hasOwnProperty('$loki')).toEqual(false);
+      expect(result[0].hasOwnProperty('meta')).toEqual(false);
+      expect(result[1].hasOwnProperty('$loki')).toEqual(false);
+      expect(result[1].hasOwnProperty('meta')).toEqual(false);
+      expect(result[2].hasOwnProperty('$loki')).toEqual(false);
+      expect(result[2].hasOwnProperty('meta')).toEqual(false);
+      expect(result[3].hasOwnProperty('$loki')).toEqual(false);
+      expect(result[3].hasOwnProperty('meta')).toEqual(false);
+
+      // indexed sort with strip meta
+      result = items.chain().simplesort('owner').limit(2).data({removeMeta:true});
+      expect(result.length).toEqual(2);
+      expect(result[0].owner).toEqual('odin');
+      expect(result[0].hasOwnProperty('$loki')).toEqual(false);
+      expect(result[0].hasOwnProperty('meta')).toEqual(false);
+      expect(result[1].owner).toEqual('odin');
+      expect(result[1].hasOwnProperty('$loki')).toEqual(false);
+      expect(result[1].hasOwnProperty('meta')).toEqual(false);
+
+      // unindexed find strip meta
+      result = items.chain().find({maker: 'elves'}).data({removeMeta: true});
+      expect(result.length).toEqual(2);
+      expect(result[0].maker).toEqual('elves');
+      expect(result[0].hasOwnProperty('$loki')).toEqual(false);
+      expect(result[0].hasOwnProperty('meta')).toEqual(false);
+      expect(result[1].maker).toEqual('elves');      
+      expect(result[1].hasOwnProperty('$loki')).toEqual(false);
+      expect(result[1].hasOwnProperty('meta')).toEqual(false);
+
+      // now try unfiltered without strip meta and ensure loki and meta are present
+      result = items.chain().data();
+      expect(result.length).toEqual(4);
+      expect(result[0].hasOwnProperty('$loki')).toEqual(true);
+      expect(result[0].hasOwnProperty('meta')).toEqual(true);
+      expect(result[1].hasOwnProperty('$loki')).toEqual(true);
+      expect(result[1].hasOwnProperty('meta')).toEqual(true);
+      expect(result[2].hasOwnProperty('$loki')).toEqual(true);
+      expect(result[2].hasOwnProperty('meta')).toEqual(true);
+      expect(result[3].hasOwnProperty('$loki')).toEqual(true);
+      expect(result[3].hasOwnProperty('meta')).toEqual(true);
+
+      // now try without strip meta and ensure loki and meta are present
+      result = items.chain().simplesort('owner').limit(2).data();
+      expect(result.length).toEqual(2);
+      expect(result[0].owner).toEqual('odin');
+      expect(result[0].hasOwnProperty('$loki')).toEqual(true);
+      expect(result[0].hasOwnProperty('meta')).toEqual(true);
+      expect(result[1].owner).toEqual('odin');
+      expect(result[1].hasOwnProperty('$loki')).toEqual(true);
+      expect(result[1].hasOwnProperty('meta')).toEqual(true);
+
+      // unindexed find strip meta
+      result = items.chain().find({maker: 'elves'}).data();
+      expect(result.length).toEqual(2);
+      expect(result[0].maker).toEqual('elves');
+      expect(result[0].hasOwnProperty('$loki')).toEqual(true);
+      expect(result[0].hasOwnProperty('meta')).toEqual(true);
+      expect(result[1].maker).toEqual('elves');      
+      expect(result[1].hasOwnProperty('$loki')).toEqual(true);
+      expect(result[1].hasOwnProperty('meta')).toEqual(true);
+    });
   });
 
   describe('chained removes', function() {
@@ -1159,31 +1344,6 @@ describe('loki', function () {
       });
       it('no results found', function () {
         expect(resultsWithIndex.length).toEqual(0);
-      });
-    });
-  });
-
-  describe('stepDynamicViewPersistence', function () {
-    it('works', function testAnonym() {
-      var coll = db.anonym([{
-        name: 'joe'
-      }, {
-        name: 'jack'
-      }], ['name']);
-      it('Anonym collection', function () {
-        expect(coll.data.length).toEqual(2);
-      });
-      it('Collection not found', function () {
-        expect(db.getCollection('anonym')).toEqual(null);
-      });
-      coll.name = 'anonym';
-      db.loadCollection(coll);
-      it('Anonym collection loaded', function () {
-        expect(!!db.getCollection('anonym') === true).toBeTruthy();
-      });
-      coll.clear();
-      it('No data after coll.clear()', function () {
-        expect(0).toEqual(coll.data.length)
       });
     });
   });

@@ -38,6 +38,11 @@
       {
         color: #99F;
       }
+      
+      select {
+        font-size:12pt;
+      }
+      
       input.vpatel[type=radio], input.vpatel[type=checkbox] {
         display:none;
       }
@@ -139,6 +144,23 @@
 
   <table width="100%" style="table-layout:fixed">
     <tr>
+      <td colspan="2" align='right'>
+        <label>Github sample gists : </label>
+        <select id="selSamples" style="min-width:200px" onchange="selSamplesChanged()">
+          <option value=""></option>
+          <option value="https://gist.githubusercontent.com/obeliskos/f62fc11049c6264f90951fad6d3c487b/raw/71c57b9b3643ab0a94bd96801f9c3c00b6ea80bf/web-quickstart1">Quickstart 1</option>
+          <option value="https://gist.githubusercontent.com/obeliskos/3acee5f8d70e24d66fe306bfdcd724d1/raw/2ebdb7df0ccc3097de2216cd84c1dcf89d29e8ee/web-quickstart2">Quickstart 2</option>
+          <option value="https://gist.githubusercontent.com/obeliskos/b3b50f3589596218da68b6252ed236bd/raw/6a6349810f8af36abb0e0c82d11e473318a9606b/web-quickstart3">Quickstart 3</option>
+          <option value="https://gist.githubusercontent.com/obeliskos/fa0bda5c722bf225c6527c5187ab1ea7/raw/d51d09ba05f6d7eda7b7364c6748b413ce1e344c/web-quickstart4">Quickstart 4</option>
+          <option value="https://gist.githubusercontent.com/obeliskos/32e0e730e1d2e1ac5e84f7363331b498/raw/267b2f8023499208ed06514524921acbc1841fcc/web-quickstart-core">Quickstart (Core)</option>
+          <option value="https://gist.githubusercontent.com/obeliskos/7c52ded5a5bffd68c1ca2e0b91980173/raw/26c86e0c1ced72993dafae6202dc881b24a3330b/web-quickstart-chaining">Quickstart (Chaining)</option>
+          <option value="https://gist.githubusercontent.com/obeliskos/59c4c64e3b8c4609fbf2d7ba9fc0264a/raw/fe5e8291a5af21395a7282ddc9d329f7e163803a/web-quickstart-dynview">Quickstart (DynView)</option>
+          <option value="https://gist.githubusercontent.com/obeliskos/4a7a3db8f46c49fd051c54af0104da22/raw/266faaa464bb78635f36ef29414b1acff2791d97/web-quickstart-transforms">Quickstart (Transforms)</option>
+          <option value="https://gist.githubusercontent.com/obeliskos/6335093d15e2f12838e642248a8179b9/raw/c0828d72a32130cde5a58c916c4dcc653a1dbb79/loki%2520sort%2520order">Loki Sort Ordering</option>
+        </select>
+      </td>
+      
+    <tr>
       <td width="50%" valign="top">
         <h2 style="font-family:'Segoe UI', 'sans-serif'">Sandbox Editor</h2>
         <div id="divLokiEditor">
@@ -164,7 +186,7 @@
           <br/>
           <button class="minimal" onclick="console.log(db)" style="width:220px">Log db to Console</button>
         </div>
-        <div id="divSaveLoad" style="display:none; padding: 20px">
+        <div id="divSaveLoad" style="display:none;">
           <h2>Save / Load</h2>
           <br/>
           <table width="100%">
@@ -184,7 +206,7 @@
             </tr>
           </table>
         </div>
-        <div id="divAbout" style="display:none; padding: 20px">
+        <div id="divAbout" style="display:none;">
           <h2>About Loki Sandbox 0.2.0</h2>
           <p style="font-size:18px">
               Loki Sandbox is a simple utility web page which lets you experiment with LokiJS using a browser environment.
@@ -227,6 +249,14 @@
       editorJS: null,
       editorOutput: null,
     }
+    
+    function selSamplesChanged() {
+      var url = $("#selSamples").val();
+      if (url && url !== "") {
+        clearOutput();
+        loadGist(url);
+      }
+    }
 
     // used to retrieve hash (#) parameters 
     function getHashParameter (sParam) {
@@ -240,7 +270,13 @@
         }
       }
     }
-    
+
+/*    
+    window.onhashchange = function () {
+        // Probably better (cleaner) to just clean slate and force page reload
+        location.reload();
+    };
+*/    
     // let's user go to different tabs via 
     function tabMode(mode) {
       $("#divTextOutput").hide();
@@ -277,6 +313,17 @@
       // if the user specifies a rawgist hash parameter, attempt to load and run that gist (url)
       var rawgist = getHashParameter("rawgist");
       if (rawgist && rawgist !== "") {
+        loadGist(rawgist);
+      }
+      else {
+        setTimeout(function() {
+          windowResize();
+          runloki();
+        }, 250);
+      }
+    });
+    
+    function loadGist(rawgist) {
         if (rawgist.indexOf("https://gist.githubusercontent.com") !== 0) {
           console.log("only allowing ajax fetch to gist.githubusercontent.com");
         }
@@ -287,14 +334,7 @@
         oReq.addEventListener("load", gistLoaded);
         oReq.open("GET", rawgist);
         oReq.send();
-      }
-      else {
-        setTimeout(function() {
-          windowResize();
-          runloki();
-        }, 250);
-      }
-    });
+    }
 
     function loadScriptList() {
       if (!sandboxAdapter.checkAvailability()) {
@@ -342,21 +382,24 @@
       alertify.log("deleted");
       setTimeout(loadScriptList, 200);
     }
-    
+
+    function clearOutput() {
+      //sbv.editorJS.setValue("");
+      sbv.editorOutput.setValue("Click run to launch script");
+      //setTimeout(windowResize, 100);
+    }
+
     function gistLoaded () {
       sbv.editorJS.setValue(this.responseText);
       
-      setTimeout(function() {
-        windowResize();
-        runloki();
-      }, 100);
+      setTimeout(windowResize, 100);
     }
     
     function windowResize() {
       setTimeout(function() {
         try {
-          sbv.editorJS.setSize("100%", $(window).height() - 250);
-          sbv.editorOutput.setSize("100%", $(window).height() - 250);
+          sbv.editorJS.setSize("100%", $(window).height() - 270);
+          sbv.editorOutput.setSize("100%", $(window).height() - 270);
         }
         catch(err) {
         }
@@ -457,41 +500,44 @@
       initCode += "inspectObject(db);\r\n";
 
       sbv.editorJS.setValue(initCode);
-      sbv.editorOutput.setValue('Welcome to loki sandbox 0.1.0\r\n');
+      sbv.editorOutput.setValue("Welcome to loki sandbox 0.1.0\r\nClick 'Run' to launch your script.");
     }
 
-    function logDatabase() {
-      logObject(db, false);
-    }
-
-    function logText(message) {
+    var sandbox = {
+      // Dump database as json to output
+      logDatabase : function() {
+        logObject(db, false);
+      },
+      // Dump message to output
+      logText : function(message) {
         var oldText = sbv.editorOutput.getValue();
         oldText += message + "\r\n";
         sbv.editorOutput.setValue(oldText);
-    }
-
-    function logObject(obj, isPretty) {
-      if (typeof(isPretty) === 'undefined') {
-        isPretty = true;
-      }
-      
-      var oldText = sbv.editorOutput.getValue();
-      
-      if (isPretty) {
-        oldText += JSON.stringify(obj, undefined, 2) + "\r\n";
-      }
-      else {
-        oldText += JSON.stringify(obj) + "\r\n";
-      }
-      
-      sbv.editorOutput.setValue(oldText);
-    }
-
-    function inspectObject(obj) {
+      },
+      // Dump object as serialized json to output
+      logObject : function(obj, isPretty) {
+        if (typeof(isPretty) === 'undefined') {
+          isPretty = true;
+        }
+        
+        var oldText = sbv.editorOutput.getValue();
+        oldText += (isPretty)?(JSON.stringify(obj, undefined, 2) + "\r\n"):(JSON.stringify(obj) + "\r\n");
+        
+        sbv.editorOutput.setValue(oldText);
+      },
+      // send an object to the inspector
+      inspectObject : function(obj) {
         $("#divInspect").empty();
         var tbl = prettyPrint(obj, { /* options such as maxDepth, etc. */ });
         $("#divInspect").append(tbl);
-    }
+      }
+    };
+
+    // alias globals for b/w compat
+    var logDatabase = sandbox.logDatabase;
+    var logText = sandbox.logText;
+    var logObject = sandbox.logObject;
+    var inspectObject = sandbox.inspectObject;
 
     function runloki() {
         $("#divLokiCode").empty();
@@ -517,10 +563,7 @@
 
     function toggleVisibility(id) {
         var e = document.getElementById(id);
-        if (e.style.display == 'block')
-            e.style.display = 'none';
-        else
-            e.style.display = 'block';
+        e.style.display = (e.style.display == 'block')?'none':'block';
     }
 
     var hookScripts = function (url, src) {
