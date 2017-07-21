@@ -8,26 +8,30 @@
     .module('db-excursions-module')
     .factory('DbExcursions', DbExcursions);
 
-  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, $log, $q) {
-    var COLL_NAME = 'excursions';
-    var COLL_OPTIONS = {
-      unique: ['id']
-    };
-    var service = {
-      getAll           : getAll,
-      getOne           : getOne,
-      countAll         : countAll,
-      getStats         : getStats,
-      createOne        : createOne,
-      updateOne        : updateOne,
-      archiveOne       : archiveOne,
-      deleteOne        : deleteOne,
-      restoreOne       : restoreOne,
-      setOngoingStatus : setOngoingStatus,
-      setFinishedStatus: setFinishedStatus,
-      setNotNew        : setNotNew,
-      setNew           : setNew
-    };
+  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, $log, $q, rx) {
+    var COLL_NAME       = 'excursions',
+        COLL_OPTIONS    = {
+          unique: ['id']
+        },
+        archivedSubject = new rx.ReplaySubject(1),
+        removedSubject  = new rx.ReplaySubject(1),
+        service         = {
+          getAll           : getAll,
+          getOne           : getOne,
+          countAll         : countAll,
+          getStats         : getStats,
+          createOne        : createOne,
+          updateOne        : updateOne,
+          archiveOne       : archiveOne,
+          removeOne        : removeOne,
+          restoreOne       : restoreOne,
+          setOngoingStatus : setOngoingStatus,
+          setFinishedStatus: setFinishedStatus,
+          setNotNew        : setNotNew,
+          setNew           : setNew,
+          archivedObs      : archivedSubject.asObservable(),
+          removedObs       : removedSubject.asObservable()
+        };
 
     return service;
 
@@ -156,11 +160,22 @@
       if (!excursion) throw new TypeError('DbExcursions : archiveOne needs an Excursion object as its first argument, none given');
       if (excursion.archived_at !== null) return $q.resolve();
       excursion.archived_at = Date.now();
-      return updateOne(excursion);
+      return updateOne(excursion).then(function() { archivedSubject.onNext(excursion) });
     }
 
-    function deleteOne(excursion) {
-
+    /**
+     * Removes the given excursion from the database.
+     * This can only be done if the given excursion has been archvied.
+     * @param excursion
+     */
+    function removeOne(excursion) {
+      if (!excursion) throw new TypeError('DbExcursions : removeOne needs an Excursion object as its first argument, none given');
+      if (excursion.archived_at === null) throw new Error('DbExcursions: removeOne can only remove an excursion if it has previously been archived.');
+      return getCollection()
+      .then(function(coll) { coll.remove(excursion); })
+        .then(function() { removedSubject.onNext(excursion); })
+        .then(DbBio.save)
+        .catch(handleError);
     }
 
     /**

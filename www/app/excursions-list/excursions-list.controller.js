@@ -8,14 +8,15 @@
     .module('app')
     .controller('ExcursionsListCtrl', ExcursionsListCtrlFn);
 
-  function ExcursionsListCtrlFn(DbExcursions, ExcursionsSettings, $log, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate) {
+  function ExcursionsListCtrlFn(DbExcursions, ExcursionsSettings, $log, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, rx) {
     var list = this;
+    var RefreshStatsObs = rx.Observable.merge(ExcursionsSettings.withArchive.changeObs, DbExcursions.archivedObs, DbExcursions.removedObs);
 
     list.nextTab = nextTab;
     list.previousTab = previousTab;
     list.openExcursionsMenu = openExcursionsMenu;
 
-    ExcursionsSettings.withArchive.changeObs.subscribe(function() {
+    RefreshStatsObs.subscribe(function() {
       closeExcursionsMenu();
       DbExcursions.getStats().then(setStats);
     });

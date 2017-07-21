@@ -6,18 +6,17 @@
 	</ion-nav-buttons>
 	<ion-content class="padding" on-swipe-right="list.nextTab()" on-swipe-left="list.previousTab()">
 		<div ng-if="!tab.loading && tab.data.length >= 1" class="excursions-list">
-			<div class="list card" ng-repeat="excursion in tab.data" ng-class="{'archived': excursion.archived_at !== null}">
+			<div class="list card" ng-repeat="excursion in tab.data" ng-class="{'archived': excursion.archived_at !== null, 'new': excursion.is_new}">
 				<a class="item" href="#/app/excursions-list/{{excursion.id}}">
 					<h2><i class="icon ion-android-archive" ng-if="excursion.archived_at !== null"></i>{{ ::excursion.name }}</h2>
 					<p>{{ ::excursion.date | date : 'dd.MM.yyyy' }}</p>
-					<span ng-if="excursion.is_new" class="badge badge-positive">Nouveau</span>
 				</a>
 				<div class="item item-body">
 					<div><i class="icon ion-person"></i> {{excursion.participant.name}}</div>
 					<span class="bio-badge-{{excursion.status}} badge excursion-status">{{excursion.status | status}}</span>
 					<div class="action-buttons">
-						<button class="button button-clear button-small pull-right" ng-click="tab.showExcursionActions(excursion)">
-							<i class="icon ion-android-more-horizontal"></i>
+						<button class="button button-clear button-small" ng-click="tab.showExcursionActions(excursion)">
+							<i class="icon ion-chevron-down"></i>
 						</button>
 					</div>
 				</div>
@@ -25,7 +24,7 @@
 		</div>
 		<div ng-if="!tab.loading && tab.data.length == 0" id="no-excursion">
 			<i class="icon ion-leaf"></i>
-			<span>Aucune sortie correspondante...</span>
+			<span>Aucune sortie correspondante.</span>
 		</div>
 		<p ng-if="tab.loading">Chargement</p>
 	</ion-content>

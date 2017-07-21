@@ -8,13 +8,14 @@
     .module('app')
     .controller('ExcursionsListTabCtrl', ExcursionsListTabCtrl);
 
-  function ExcursionsListTabCtrl(DbExcursions, excursionFilter, ExcursionListContextMenu, ExcursionsSettings, $log) {
+  function ExcursionsListTabCtrl(DbExcursions, excursionFilter, ExcursionListContextMenu, ExcursionsSettings, $log, rx) {
     var tab = this;
+    var RefreshObs = rx.Observable.merge(ExcursionsSettings.withArchive.changeObs, DbExcursions.archivedObs, DbExcursions.removedObs);
 
     tab.loading = true;
     tab.showExcursionActions = ExcursionListContextMenu.showMenu;
 
-    ExcursionsSettings.withArchive.changeObs.subscribe(function() {
+    RefreshObs.subscribe(function() {
       DbExcursions.getAll(excursionFilter).then(setData);
     });
 

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .bar.bar-royal.lighter {
   background-color: #2592a1; }
 
@@ -184,7 +185,11 @@ progress {
   height: 58px; }
 
 .excursions-list .list.card {
-  margin-top: 0; }
+  margin-top: 0;
+  margin-bottom: 10px; }
+  .excursions-list .list.card > .item:first-child {
+    padding-bottom: 10px;
+    padding-top: 10px; }
 
 .excursions-list .item.item-body {
   display: flex;
@@ -192,16 +197,43 @@ progress {
   justify-content: space-between;
   padding-top: 5px;
   padding-bottom: 5px; }
-  .excursions-list .item.item-body.action-buttons {
+  .excursions-list .item.item-body .action-buttons {
     justify-content: flex-end; }
+    .excursions-list .item.item-body .action-buttons a.button {
+      color: initial;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      justify-content: flex-end; }
 
-.archived .item {
+.list.card.archived::before, .list.card.new::before {
+  color: white;
+  padding: 0 10px;
+  position: absolute;
+  font-size: 10px;
+  z-index: 3;
+  top: 2px;
+  right: 2px;
+  border-bottom-left-radius: 2px;
+  border-top-right-radius: 2px;
+  line-height: 22px;
+  height: 20px; }
+
+.list.card.new::before {
+  content: "Nouvelle";
+  background-color: #3f95ea; }
+
+.list.card.archived::before {
+  opacity: 0.54;
+  content: "Archivée";
+  background-color: #ff8e32; }
+
+.list.card.archived .item > * {
   opacity: 0.38; }
-  .archived .item:not(.activated) {
-    background-color: rgba(0, 0, 0, 0.05); }
-  .archived .item h2 > i {
-    margin-right: 5px;
-    opacity: 0.38; }
+
+.list.card.archived .item h2 > i {
+  margin-right: 5px;
+  opacity: 0.38; }
 
 @keyframes popover-in {
   from {
