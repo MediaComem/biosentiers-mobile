@@ -1,6 +1,6 @@
 <ion-view view-title="Mes Sorties">
 	<ion-nav-buttons side="secondary">
-		<button class="button" ng-click="list.openExcursionsMenu()">
+		<button class="button" ng-click="list.openExcursionsMenu($event)">
 			<i class="icon ion-android-more-vertical"></i>
 		</button>
 	</ion-nav-buttons>
@@ -12,10 +12,11 @@
 					<p>{{ ::excursion.date | date : 'dd.MM.yyyy' }}</p>
 				</a>
 				<div class="item item-body">
-					<div><i class="icon ion-person"></i> {{excursion.participant.name}}</div>
-					<span class="bio-badge-{{excursion.status}} badge excursion-status">{{excursion.status | status}}</span>
+					<div><i class="icon ion-person" ng-click="list.openExcursionsMenu($event)"></i> {{excursion.participant.name}}</div>
+					<span class="bio-badge-{{excursion.status}} badge excursion-status" ng-click="list.openExcursionsMenu($event)">{{excursion.status | status}}</span>
 					<div class="action-buttons">
-						<button class="button button-clear button-small" ng-click="tab.showExcursionActions(excursion)">
+						<!--<button class="button button-clear button-small" ng-click="tab.showExcursionActions(excursion)">-->
+						<button class="button button-clear button-small" ng-click="list.openExcursionsMenu($event)">
 							<i class="icon ion-chevron-down"></i>
 						</button>
 					</div>

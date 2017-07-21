@@ -13,6 +13,8 @@
 
     $scope.$on('$ionicView.beforeEnter', function(event, viewData) {
       viewData.enableBack = true;
+      $log.log('before entering excursion sheet');
+      excursion.map && excursion.map._onResize();
     });
 
     var excursion = this;
@@ -39,8 +41,9 @@
 
     DbExcursions.setNotNew(excursion.data);
 
-    leafletData.getMap('map').then(function(map) {
-      $log.info(map);
+    leafletData.getMap(excursion.data.id).then(function(map) {
+      $log.info('Excursion Map', map);
+      excursion.map = map;
     }).catch(handleError);
 
     DbSeenPois.countFor(excursion.data.id).then(function(res) {

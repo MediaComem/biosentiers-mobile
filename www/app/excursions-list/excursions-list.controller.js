@@ -32,8 +32,8 @@
     /**
      * Opens the contextual menu for the excursion list page
      */
-    function openExcursionsMenu() {
-      list.excursionMenu.show();
+    function openExcursionsMenu($event) {
+      list.excursionMenu.show($event);
     }
 
     /**
