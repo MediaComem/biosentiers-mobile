@@ -200,7 +200,7 @@
         url    : '/seen',
         views  : {
           'menuContent@app': {
-            templateUrl : 'app/excursion/excursion-seen.html',
+            templateUrl : 'app/excursion-seen-list/excursion-seen.html',
             controller  : 'ExcursionSeenCtrl as excursionSeen'
           }
         }
@@ -210,7 +210,7 @@
         url  : '/:theme/:specieId',
         views: {
           'menuContent@app': {
-            templateUrl: 'app/excursion/excursion-seen-poi.html',
+            templateUrl: 'app/excursion-seen-poi/excursion-seen-poi.html',
             controller: 'ExcursionSeenPoiCtrl as poiCtrl'
           }
         }

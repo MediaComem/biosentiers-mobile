@@ -8,7 +8,7 @@
     .module('app')
     .controller('ExcursionCtrl', ExcursionCtrl);
 
-  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, $scope, $timeout, WorldActions) {
+  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, $scope, $state, $timeout, WorldActions) {
     $log.log('excursion data', excursionData);
 
     $scope.$on('$ionicView.beforeEnter', function(event, viewData) {
@@ -23,6 +23,7 @@
     excursion.openFabActions = openFabActions;
     excursion.zoneIsNotAvailable = zoneIsNotAvailable;
     excursion.togglePositionWatch = togglePositionWatch;
+    excursion.goToSeenList = goToSeenList;
 
     excursion.data = excursionData;
     excursion.downloadProgress = "Télécharger";
@@ -194,6 +195,10 @@
         $log.info('ExcursionCtrl:loadWorldExcursion:excursion.arData', arData);
         WorldActions.execute('loadExcursion', arData);
       });
+    }
+
+    function goToSeenList() {
+      excursion.nbSeenPoi > 0 && $state.go('app.excursion.seenlist', {excursionId: excursion.data.id});
     }
 
 
