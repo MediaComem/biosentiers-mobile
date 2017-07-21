@@ -176,10 +176,10 @@
     function loadWorldExcursion() {
       $log.debug('World loaded');
 
-      var promises = [
-        PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
-        DbSeenPois.getAll(excursion.data.id)
-      ];
+      var promises = {
+        pois    : PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
+        seenPois: DbSeenPois.getAll(excursion.data.id)
+      };
 
       return $q.all(promises).then(function(results) {
         $log.log('ExcursionCtrl:loadWorldExcursion', results);
@@ -189,8 +189,8 @@
           themes         : excursion.data.themes,
           path           : geoData.path,
           extremityPoints: geoData.extremityPoints,
-          pois           : results[0],
-          seen           : _.map(results[1], 'poi_id')
+          pois           : results.pois,
+          seen           : _.map(results.seenPois, 'poi_id')
         };
         $log.info('ExcursionCtrl:loadWorldExcursion:excursion.arData', arData);
         WorldActions.execute('loadExcursion', arData);
