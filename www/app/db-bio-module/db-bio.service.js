@@ -8,7 +8,7 @@
     .service('DbBio', DbBioService);
 
   function DbBioService($ionicPlatform, $log, Loki, $q) {
-    var deferred = $q.defer(),
+    var deferred,
         db,
         service  = {
           getCollection: getCollection,
@@ -24,7 +24,8 @@
      * Initializes the DbBio
      */
     function start(name) {
-      if (!db) {
+      if (!deferred) {
+        deferred = $q.defer();
         $ionicPlatform.ready(function() {
           $log.log('initializing Loki for', name);
           db = new Loki('db', {
@@ -33,7 +34,8 @@
             adapter         : new LokiCordovaFSAdapter({'prefix': 'biosentiers'})
           });
 
-          db.loadDatabase({}, function() {
+          db.loadDatabase({}, function(result) {
+            $log.warn(TAG('loadDatabase:result'), result);
             deferred.resolve();
           });
         });
@@ -83,6 +85,14 @@
           db = null;
         });
       })
+    }
+
+    /**
+     * @param content
+     * @return {string}
+     */
+    function TAG(content) {
+      return "DbBio:" + content;
     }
   }
 })();

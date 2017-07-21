@@ -16,16 +16,17 @@
     var service = {
       getAll           : getAll,
       getOne           : getOne,
+      countAll         : countAll,
       getStats         : getStats,
+      createOne        : createOne,
       updateOne        : updateOne,
       archiveOne       : archiveOne,
+      deleteOne        : deleteOne,
       restoreOne       : restoreOne,
       setOngoingStatus : setOngoingStatus,
       setFinishedStatus: setFinishedStatus,
       setNotNew        : setNotNew,
-      setNew           : setNew,
-      createOne        : createOne,
-      countAll         : countAll
+      setNew           : setNew
     };
 
     return service;
@@ -38,29 +39,15 @@
      * @return {Promise} A promise of an array of Excursions
      */
     function getAll(options) {
+      options = angular.copy(options);
       // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archived_at value.
-      if (!ExcursionsSettings.withArchive.value) {
-        options.archived_at = {$eq: null};
+      if (ExcursionsSettings.withArchive.value === false) {
+        options.archived_at = null;
       }
       return getCollection()
         .then(function(coll) {
           console.log('DbExcursions:getAll', coll, options);
           return coll.chain().find(options).simplesort('date', true).data();
-        }).catch(handleError);
-    }
-
-    /**
-     * Creates a new Excursion in the database, based on the data provided through newExcursionData
-     * @param newExcursionData An object representing the data for the new Excursion
-     * @return {Promise} A promise of a new Excursion
-     */
-    function createOne(newExcursionData) {
-      return getCollection()
-        .then(function(coll) {
-          $log.log('DbExcursions:newExcursionData', newExcursionData);
-          var newExcursion = ExcursionClass.fromQrCodeData(newExcursionData);
-          $log.log(newExcursion);
-          coll.insert(newExcursion);
         }).catch(handleError);
     }
 
@@ -91,9 +78,11 @@
      * @return {Promise}
      */
     function getStats() {
+      // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archived_at value.
+      var options = ExcursionsSettings.withArchive.value === false ? {archived_at: null} : {};
       return getCollection()
         .then(function(coll) {
-          return coll.chain().find().mapReduce(statsMap, statsReduce);
+          return coll.chain().find(options).mapReduce(statsMap, statsReduce);
         })
         .catch(handleError);
 
@@ -120,11 +109,25 @@
           finished: 0
         };
         statuses.forEach(function(element) {
-          $log.log('element', element);
           stats[element] += 1;
         });
         return stats;
       }
+    }
+
+    /**
+     * Creates a new Excursion in the database, based on the data provided through newExcursionData
+     * @param newExcursionData An object representing the data for the new Excursion
+     * @return {Promise} A promise of a new Excursion
+     */
+    function createOne(newExcursionData) {
+      return getCollection()
+        .then(function(coll) {
+          $log.log('DbExcursions:newExcursionData', newExcursionData);
+          var newExcursion = ExcursionClass.fromQrCodeData(newExcursionData);
+          $log.log(newExcursion);
+          coll.insert(newExcursion);
+        }).catch(handleError);
     }
 
     /**
@@ -156,6 +159,10 @@
       return updateOne(excursion);
     }
 
+    function deleteOne(excursion) {
+
+    }
+
     /**
      * Restore the given excursion.
      * This means setting its 'archived_at' property to null.
@@ -168,17 +175,6 @@
       if (excursion.archived_at === null) return $q.resolve();
       excursion.archived_at = null;
       return updateOne(excursion);
-    }
-
-    /**
-     * Determines how to react to an error when a query is executed.
-     * Right now, this does nothing more than logging said error and returning it as a rejected Promise.
-     * @param {*} error
-     * @return {Promise} A rejected promise whose value is the received error.
-     */
-    function handleError(error) {
-      $log.error(error);
-      return $q.reject(error);
     }
 
     /**
@@ -238,6 +234,19 @@
       if (excursion.is_new || excursion.status !== 'pending') return $q.resolve();
       excursion.is_new = true;
       return updateOne(excursion);
+    }
+
+    /* ----- PRIVATE FUNCTIONS ----- */
+
+    /**
+     * Determines how to react to an error when a query is executed.
+     * Right now, this does nothing more than logging said error and returning it as a rejected Promise.
+     * @param {*} error
+     * @return {Promise} A rejected promise whose value is the received error.
+     */
+    function handleError(error) {
+      $log.error(error);
+      return $q.reject(error);
     }
 
     /**

@@ -1,12 +1,12 @@
 <ion-view view-title="Mes Sorties">
 	<ion-nav-buttons side="secondary">
-		<button class="button" ng-click="tab.openExcursionsMenu()">
+		<button class="button" ng-click="list.openExcursionsMenu()">
 			<i class="icon ion-android-more-vertical"></i>
 		</button>
 	</ion-nav-buttons>
-	<ion-content class="padding" on-swipe-right="tab.nextTab()" on-swipe-left="tab.previousTab()">
+	<ion-content class="padding" on-swipe-right="list.nextTab()" on-swipe-left="list.previousTab()">
 		<div ng-if="!tab.loading && tab.data.length >= 1" class="excursions-list">
-			<div class="list card" ng-repeat="excursion in tab.data" ng-class="{'archived': excursion.archived_at !== null}" ng-show="tab.withArchive || excursion.archived_at === null">
+			<div class="list card" ng-repeat="excursion in tab.data" ng-class="{'archived': excursion.archived_at !== null}">
 				<a class="item" href="#/app/excursions-list/{{excursion.id}}">
 					<h2><i class="icon ion-android-archive" ng-if="excursion.archived_at !== null"></i>{{ ::excursion.name }}</h2>
 					<p>{{ ::excursion.date | date : 'dd.MM.yyyy' }}</p>
