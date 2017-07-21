@@ -10,7 +10,7 @@
   function DbBioService($ionicPlatform, $log, Loki, $q) {
     var deferred,
         db,
-        service  = {
+        service = {
           getCollection: getCollection,
           reset        : reset,
           save         : save
@@ -31,12 +31,12 @@
           db = new Loki('db', {
             autosave        : true,
             autosaveInterval: 10000,
-            adapter         : new LokiCordovaFSAdapter({'prefix': 'biosentiers'})
-          });
-
-          db.loadDatabase({}, function(result) {
-            $log.warn(TAG('loadDatabase:result'), result);
-            deferred.resolve();
+            adapter         : new LokiCordovaFSAdapter({'prefix': 'biosentiers'}),
+            autoload        : true,
+            autoloadCallback: function(result) {
+              $log.warn(TAG('loadDatabase:result'), result);
+              deferred.resolve();
+            }
           });
         });
       }

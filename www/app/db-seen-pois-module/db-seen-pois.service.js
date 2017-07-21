@@ -9,15 +9,14 @@
 
   function DbSeenPoisService(DbBio, $log, $q, rx) {
 
-    var deferred       = $q.defer(),
-        db,
-        collName       = 'seen-pois',
+    var collName       = 'seen-pois',
         seenPoiSubject = new rx.ReplaySubject(1),
         service        = {
-          getAll    : getAll,
-          countFor  : countFor,
-          addOne    : addOne,
-          seenPoiObs: seenPoiSubject.asObservable()
+          getAll      : getAll,
+          countFor    : countFor,
+          addOne      : addOne,
+          removeAllFor: removeAllFor,
+          seenPoiObs  : seenPoiSubject.asObservable()
         };
 
     return service;
@@ -39,13 +38,14 @@
         .catch(handleError);
     }
 
+    /**
+     * Counts the number of Seen Poi for the excursion whose ID matches the one received in argument.
+     * @param excursionId
+     */
     function countFor(excursionId) {
-      $log.log('countFor id', excursionId);
       return DbBio.getCollection(collName)
-        .then(function(coll) {
-          $log.log('coutnFor collection', coll);
-          return coll.count({excursion_id: excursionId});
-        }).catch(handleError);
+        .then(function(coll) { return coll.count({excursion_id: excursionId}); })
+        .catch(handleError);
     }
 
     /**
@@ -68,6 +68,20 @@
         .catch(handleError);
     }
 
+    /**
+     * Remove all the SeenPoi from the database whose excursion_id matches the given excursionId parameter.
+     * @param excursionId
+     */
+    function removeAllFor(excursionId) {
+      return DbBio.getCollection(collName)
+        .then(function(coll) {
+          $log.debug('DbSeenPois:removeAllFor:collection before removing:', excursionId, angular.copy(coll));
+          var res = coll.removeWhere({excursion_id: excursionId});
+          $log.debug('DbSeenPois:removeAllFor:collection after removing:', angular.copy(coll));
+          return res;
+        })
+        .catch(handleError);
+    }
 
     // TODO : supprimer en prod
     function populate(coll, excursionId) {

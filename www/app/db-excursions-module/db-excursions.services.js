@@ -8,7 +8,7 @@
     .module('db-excursions-module')
     .factory('DbExcursions', DbExcursions);
 
-  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, $log, $q, rx) {
+  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $log, $q, rx) {
     var COLL_NAME       = 'excursions',
         COLL_OPTIONS    = {
           unique: ['id']
@@ -153,6 +153,7 @@
      * Archive the given excursion.
      * This means setting its 'archived_at' property to the current datetime.
      * This is only possible if this property has not already been set before.
+     * If a 'new' excursion is archived, it's setted to 'not new', then archived
      * @param excursion
      * @return {Promise}
      */
@@ -160,11 +161,11 @@
       if (!excursion) throw new TypeError('DbExcursions : archiveOne needs an Excursion object as its first argument, none given');
       if (excursion.archived_at !== null) return $q.resolve();
       excursion.archived_at = Date.now();
-      return updateOne(excursion).then(function() { archivedSubject.onNext(excursion) });
+      return setNotNew(excursion).then(function() { archivedSubject.onNext(excursion) });
     }
 
     /**
-     * Removes the given excursion from the database.
+     * Removes the given excursion from the database. This will also remove all the SeenPoi for this excursion from the database.
      * This can only be done if the given excursion has been archvied.
      * @param excursion
      */
@@ -172,7 +173,8 @@
       if (!excursion) throw new TypeError('DbExcursions : removeOne needs an Excursion object as its first argument, none given');
       if (excursion.archived_at === null) throw new Error('DbExcursions: removeOne can only remove an excursion if it has previously been archived.');
       return getCollection()
-      .then(function(coll) { coll.remove(excursion); })
+        .then(function(coll) { coll.remove(excursion); })
+        .then(function() { DbSeenPois.removeAllFor(excursion.id); })
         .then(function() { removedSubject.onNext(excursion); })
         .then(DbBio.save)
         .catch(handleError);
@@ -233,7 +235,7 @@
      */
     function setNotNew(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : setNotNew needs an Excursion object as its first argument, none given');
-      if (!excursion.is_new) return $q.resolve();
+      if (!excursion.is_new) return $q.resolve(excursion);
       excursion.is_new = false;
       return updateOne(excursion);
     }
