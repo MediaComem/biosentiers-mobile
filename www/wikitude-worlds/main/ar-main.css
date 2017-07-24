@@ -116,12 +116,10 @@ option.placeholder {
   top: 0;
   left: 0; }
   .bigmap-modal .position-badge-wrapper {
-    display: flex;
-    align-items: center;
     position: absolute;
-    height: 100%;
-    top: 0;
-    right: 10px; }
+    top: 10px;
+    right: 10px;
+    z-index: 1; }
   .bigmap-modal .bigmap-container {
     top: 0;
     right: 0;
@@ -159,6 +157,8 @@ option.placeholder {
   .minimap-container .leaflet-container {
     height: 15vh;
     width: 20vh;
+    min-height: 100px;
+    min-width: 150px;
     /*-webkit-border-radius: 100px;*/
     /*-moz-border-radius: 100px;*/
     /*border-radius: 100px;*/
@@ -175,8 +175,8 @@ option.placeholder {
     right: 0; }
   .minimap-container .position-badge {
     position: absolute;
-    bottom: 5px;
-    left: 5px;
+    top: 5px;
+    right: 5px;
     z-index: 1; }
 
 #mini-map-orientation {
