@@ -128,3 +128,4 @@ fabric.properties
 
 # sftp configuration file
 sftp-config.json
+npm-debug.log
