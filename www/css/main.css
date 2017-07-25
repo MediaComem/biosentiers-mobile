@@ -232,10 +232,13 @@ progress {
   margin-right: 5px;
   opacity: 0.38; }
 
-#excursion-sheet .disabled {
+#excursion-details .disabled {
   opacity: 0.54; }
-  #excursion-sheet .disabled .icon {
+  #excursion-details .disabled .icon {
     visibility: hidden; }
+
+#excursion-details .excursion-map-container + .list {
+  margin-bottom: 0; }
 
 @keyframes popover-in {
   from {

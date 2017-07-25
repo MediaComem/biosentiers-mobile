@@ -252,13 +252,17 @@ progress {
   }
 }
 
-#excursion-sheet {
+#excursion-details {
   .disabled {
     opacity: 0.54;
 
     .icon {
       visibility: hidden;
     }
+  }
+
+  .excursion-map-container + .list {
+    margin-bottom: 0;
   }
 }
 
