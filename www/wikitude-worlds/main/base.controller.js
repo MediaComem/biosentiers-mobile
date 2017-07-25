@@ -53,7 +53,8 @@
       $ionicLoading.hide();
     });
 
-    Excursion.excursionChangeObs.first().subscribe(function(data) {
+    Excursion.excursionChangeObs.subscribe(function(data) {
+    // Excursion.excursionChangeObs.first().subscribe(function(data) {
       $timeout(function() {
         base.excursionName = data.name;
       })

@@ -19,7 +19,8 @@
 
     initialize();
 
-    Excursion.excursionChangeObs.first().subscribe(function() {
+    Excursion.excursionChangeObs.subscribe(function() {
+    // Excursion.excursionChangeObs.first().subscribe(function() {
       service.config.markers.start = {
         lat : Excursion.getStartPoint().geometry.coordinates[1],
         lng : Excursion.getStartPoint().geometry.coordinates[0],

@@ -12,10 +12,13 @@
       config          : {},
       updateMapMarkers: updateMapMarkers,
       setMap          : setMap,
-      updateUserMarker: updateUserMarker
+      updateUserMarker: updateUserMarker,
+      centerOnUser    : centerOnUser,
+      fitOnPath       : fitOnPath
     };
 
-    var map                 = null,
+    var pathBounds          = null,
+        map                 = null,
         defaultMarkers      = {
           start: {
             lat : Excursion.startPoint.geometry.coordinates[1],
@@ -173,6 +176,31 @@
         $log.log('BigMapService:updateUserMarker');
         bigMap.config.markers.user.lat = UserLocation.real.lat;
         bigMap.config.markers.user.lng = UserLocation.real.lon;
+      }
+    }
+
+    /**
+     * Updates the center of the map so that it matches the latest user's location value.
+     */
+    function centerOnUser() {
+      bigMap.config.center = {
+        lat : UserLocation.real.lat,
+        lng : UserLocation.real.lon,
+        zoom: 17
+      };
+    }
+
+    /**
+     * Fit the map to the excursion path.
+     */
+    function fitOnPath() {
+      if (map !== null) {
+        if (pathBounds === null) {
+          Excursion.excursionChangeObs.subscribe(function(value) {
+            pathBounds = L.geoJson(value.path).getBounds();
+          });
+        }
+        map.fitBounds(pathBounds);
       }
     }
   }

@@ -17,6 +17,10 @@
     bigmap.remove = Modals.removeCurrent;
     bigmap.config = BigMap.config;
     bigmap.positionState = 'searching';
+    bigmap.userIsFound = false;
+
+    bigmap.centerOnUser = centerOnUser;
+    bigmap.fitOnPath = BigMap.fitOnPath;
 
     // var debouncedUpdatePoints = _.debounce(BigMap.updateMapMarkers, 500);
 
@@ -24,7 +28,9 @@
       BigMap.setMap(map);
       BigMap.updateMapMarkers();
       $scope.$on('leafletDirectiveMap.bigmap.moveend', BigMap.updateMapMarkers);
-      UserLocation.realObs.subscribe(function() {
+      UserLocation.realObs.subscribe(function(location) {
+        $log.log(location);
+        !bigmap.userIsFound && (bigmap.userIsFound = true);
         bigmap.positionState = 'success';
         $timeout(function() {
           bigmap.positionState = 'searching';
@@ -33,5 +39,11 @@
     }).catch(function(error) {
       $log.error(error);
     });
+
+    ////////////////////
+
+    function centerOnUser() {
+      bigmap.userIsFound && BigMap.centerOnUser();
+    }
   }
 })();

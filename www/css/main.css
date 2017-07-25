@@ -240,6 +240,9 @@ progress {
 #excursion-details .excursion-map-container + .list {
   margin-bottom: 0; }
 
+#excursion-details-menu .item:hover, #excursion-details-menu .item:active {
+  background-color: #e8e8e8; }
+
 @keyframes popover-in {
   from {
     opacity: 0; }

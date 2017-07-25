@@ -11,6 +11,10 @@
 		<div class="position-badge-wrapper">
 			<position-badge show-label="never" state="bigmap.positionState"></position-badge>
 		</div>
+		<div class="fab-buttons">
+			<button class="button fab" ng-click="bigmap.fitOnPath()">Sentier</button>
+			<button class="button fab" ng-click="bigmap.centerOnUser()" ng-disabled="!bigmap.userIsFound">Centrer</button>
+		</div>
 		<div class="bigmap-container">
 			<leaflet id="bigmap" tiles="minimap.config.tiles" markers="bigmap.config.markers" lf-center="bigmap.config.center"
 			         layers="bigmap.config.layers" geojson="minimap.config.geojson"

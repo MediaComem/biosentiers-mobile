@@ -140,6 +140,13 @@ option.placeholder {
     border-radius: 120px;
     opacity: .75;
     background-color: #0000FF; }
+  .bigmap-modal .fab-buttons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 1; }
 
 #poi-filters .poi-theme img {
   position: absolute;

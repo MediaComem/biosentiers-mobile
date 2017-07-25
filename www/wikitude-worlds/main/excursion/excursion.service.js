@@ -5,12 +5,13 @@
     .module('excursion')
     .factory('Excursion', ExcursionService);
 
-  function ExcursionService(AppActions, $log, rx, turf) {
+  function ExcursionService(AppActions, $log, rx) {
 
     var excursion,
         currentPoi,
         currentPoiDetails,
-        excursionSubject     = new rx.ReplaySubject(1),
+        // excursionSubject     = new rx.ReplaySubject(1),
+        excursionSubject     = new rx.AsyncSubject(),
         currentPoiSubject = new rx.ReplaySubject(1);
 
     var service = {
@@ -50,6 +51,7 @@
         excursion = newExcursion;
         $log.debug('Excursion loaded', excursion);
         excursionSubject.onNext(excursion);
+        excursionSubject.onCompleted();
       }
     }
 
