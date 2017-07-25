@@ -1,5 +1,10 @@
 <ion-view view-title="{{excursion.data.name}}" id="excursion-sheet">
-	<ion-content>
+	<ion-nav-buttons side="secondary">
+		<button class="button" ng-click="excursion.openExcursionMenu($event)">
+			<i class="icon ion-android-more-vertical"></i>
+		</button>
+	</ion-nav-buttons>
+	<ion-content ng-class="{'archived_at': excursion.isArchived()}">
 		<div class="excursion-map-container">
 			<div class="white-dropdown" ng-if="excursion.activeFAB"></div>
 			<leaflet id="{{ excursion.data.id }}" maxbounds="excursion.mapConfig.maxbounds"
@@ -16,7 +21,8 @@
 			<div class="item item-button-right">
 				<span
 						class="bio-badge-{{excursion.data.status}} badge excursion-status">{{excursion.data.status | status}}</span>
-				<button id="ar-action" class="button button-assertive" on-release="excursion.actionButtonClick()"><i
+				<button id="ar-action" class="button button-assertive" on-release="excursion.actionButtonClick()"
+				        ng-disabled="excursion.data.archived_at !== null"><i
 						class="icon ion-iphone"></i>{{excursion.data.status | excursionActionButton}}
 				</button>
 			</div>

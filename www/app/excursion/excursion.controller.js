@@ -8,24 +8,20 @@
     .module('app')
     .controller('ExcursionCtrl', ExcursionCtrl);
 
-  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, $scope, $state, $timeout, WorldActions) {
-    $log.log('excursion data', excursionData);
+  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, $ionicPopover, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, rx, $scope, $state, $timeout, WorldActions) {
 
     $scope.$on('$ionicView.beforeEnter', function(event, viewData) {
       viewData.enableBack = true;
-      $log.log('before entering excursion sheet');
       excursion.map && excursion.map._onResize();
     });
 
+    // $scope.$on('$ionicView.afterEnter', afterViewEnter);
+
+    $scope.$on('$ionicView.beforeLeave', deactivatePositionWatch);
+
     var excursion = this;
     var geoData, positionWatcher;
-
-    excursion.actionButtonClick = actionButtonClick;
-    excursion.centerMapOnZone = centerMapOnZone;
-    excursion.openFabActions = openFabActions;
-    excursion.zoneIsNotAvailable = zoneIsNotAvailable;
-    excursion.togglePositionWatch = togglePositionWatch;
-    excursion.goToSeenList = goToSeenList;
+    var RefreshData = rx.Observable.merge(DbExcursions.archivedObs, DbExcursions.restoredObs);
 
     excursion.data = excursionData;
     excursion.downloadProgress = "Télécharger";
@@ -33,16 +29,23 @@
     excursion.positionState = 'refresh';
     excursion.activeFAB = false;
 
-    // $scope.$on('$ionicView.afterEnter', afterViewEnter);
+    excursion.actionButtonClick = actionButtonClick;
+    excursion.centerMapOnZone = centerMapOnZone;
+    excursion.openFabActions = toggleFabActions;
+    excursion.zoneIsNotAvailable = zoneIsNotAvailable;
+    excursion.togglePositionWatch = togglePositionWatch;
+    excursion.goToSeenList = goToSeenList;
+    excursion.openExcursionMenu = openExcursionMenu;
+    excursion.isArchived = isArchived;
+    excursion.remove = menuAction(removeExcursion);
+    excursion.archive = menuAction(DbExcursions.archiveOne);
+    excursion.restore = menuAction(DbExcursions.restoreOne);
 
-    $scope.$on('$ionicView.beforeLeave', deactivatePositionWatch);
-
-    PoiGeo.getExcursionGeoData(excursion.data.zones).then(loadExcursionData);
+    PoiGeo.getExcursionGeoData(excursion.data.zones).then(loadExcursionData).catch(handleError);
 
     DbExcursions.setNotNew(excursion.data);
 
     leafletData.getMap(excursion.data.id).then(function(map) {
-      $log.info('Excursion Map', map);
       excursion.map = map;
     }).catch(handleError);
 
@@ -51,37 +54,110 @@
     }).catch(handleError);
 
     DbSeenPois.seenPoiObs.subscribe(function(data) {
-      $log.info('DbSeenPois: catched event - new poi has been seen', data);
       if (excursion.data.id === data.excursionId) excursion.nbSeenPoi = data.nbSeen;
     });
 
+    RefreshData.subscribe(function(newData) {
+      if (newData.id === excursion.data.id) excursion.data = newData;
+    });
+
+    $ionicPopover
+      .fromTemplateUrl('app/excursion-context-menus/excursion-details-context-menu.html', {scope: $scope})
+      .then(function(popover) {
+        $log.log(popover);
+        excursion.excursionMenu = popover;
+      })
+      .catch(function(error) {
+        $log.error(error);
+      });
+
     ////////////////////
 
+    /**
+     * Used to create the actions triggered by the contextual menu of the excursion details.
+     * The given action will be wrapped in a function that executes the action, then closes the contextual menu.
+     * The returned function should be passed an excursion object as its argument, that will be passed along to the action function as well.
+     * @param action A function representing an action of the contextual menu
+     * @return {Function} A function that will executes the action, then closes the contextual menu
+     */
+    function menuAction(action) {
+      return function(excursion) {
+        closeExcursionMenu().then(function() {
+          action(excursion);
+        });
+      }
+    }
+
+    function removeExcursion(excursion) {
+      DbExcursions.removeOne(excursion)
+        .then(function(result) {
+          $log.log(result);
+          result !== false && $state.go('app.excursions-list.all');
+        });
+    }
+
+    /**
+     * Opens the contextual menu for the excursion list page
+     */
+    function openExcursionMenu($event) {
+      excursion.excursionMenu.show($event);
+    }
+
+    /**
+     * If it exists, close the contextual menu for the excursion list page
+     */
+    function closeExcursionMenu() {
+      if (!!excursion.excursionMenu) return excursion.excursionMenu.hide();
+    }
+
+    /**
+     * Stops or restarts the position watcher looking out for the user's location.
+     * If the position watcher is on a "refresh" state, it will be restarted. Otherwise, it will be stopped.
+     */
     function togglePositionWatch() {
       excursion.positionState === 'refresh' ? activatePositionWatch() : deactivatePositionWatch();
     }
 
+    /**
+     * Checks wether or not the given zone number is in the selected excursion zones.
+     * @param zoneNb
+     * @return {boolean}
+     */
     function zoneIsNotAvailable(zoneNb) {
       return !_.includes(excursion.data.zones, zoneNb);
     }
 
-    function openFabActions() {
+    /**
+     * Switch the boolean value of excursion.activeFAB
+     */
+    function toggleFabActions() {
       excursion.activeFAB = !excursion.activeFAB;
     }
 
-    function centerMapOnZone(zone) {
-      $log.log('ExcursionCtrl - center map on zone', zone);
-      var zoneGeoJson = getZone(zone);
-      $log.log('centerMapOnZone', zoneGeoJson);
+    /**
+     * Centers the map on one of the excursion zone
+     * @param zoneId The number of the zone
+     */
+    function centerMapOnZone(zoneId) {
+      var zoneGeoJson = getZone(zoneId);
       excursion.mapConfig.setBoundsFromGeoJson(zoneGeoJson);
     }
 
+    /**
+     * Fetch the GeoJSON object matching the given zone id.
+     * @param zoneId
+     */
     function getZone(zoneId) {
       return _.find(excursion.mapConfig.geojson.zones.data.features, function(zone) {
         return zone.properties.id_zone === zoneId;
       })
     }
 
+    /**
+     * Updates the config of the excursion map to includes the excursion data,
+     * like the path, the zones, the extremity points and the bounds.
+     * @param excursionData
+     */
     function loadExcursionData(excursionData) {
       geoData = excursionData;
       $log.info('getExcursionGeoData -  excursionGeoData', geoData);
@@ -91,9 +167,12 @@
       excursion.mapConfig.setBoundsFromGeoJson(geoData.path);
     }
 
+    /**
+     * Activates the position watcher so that it waits for a user's location.
+     * If an error occurs, the positionError function is called, otherwise, the positionUpdate function is called.
+     */
     function activatePositionWatch() {
       excursion.positionState = "searching";
-      $log.info('ExcursionCtrl - Activating location watcher');
       positionWatcher = $cordovaGeolocation.watchPosition({
         timeout           : 10000,
         enableHighAccuracy: true
@@ -101,13 +180,20 @@
       positionWatcher.then(null, positionError, positionUpdate);
     }
 
+    /**
+     * Deactivate the position watcher so that it doesnt watch for the user's location.
+     */
     function deactivatePositionWatch() {
-      $log.info('ExcursionCtrl - Deactivating location watcher');
       positionWatcher && positionWatcher.cancel();
       delete excursion.mapConfig.markers.user;
       excursion.positionState = 'refresh';
     }
 
+    /**
+     * Called when an error occured while watching the user's location.
+     * Logs the error, and change the state of the position watcher to 'error'.
+     * @param error
+     */
     function positionError(error) {
       $log.error('positionError', error);
       excursion.positionState = 'error';
@@ -116,6 +202,11 @@
       }, 1000);
     }
 
+    /**
+     * Called when the position watcher successfully retrieved the user's location.
+     * Updates the map configuration with the new location.
+     * @param position
+     */
     function positionUpdate(position) {
       $log.info('getCurrentPosition', position);
       excursion.mapConfig.setUserLocation({
@@ -129,6 +220,11 @@
       $log.info(positionWatcher);
     }
 
+    /**
+     * Executes the action corresponding to the state of the excursion main button.
+     * This will start the excursion if the state is 'pending',
+     * or resume it if the state is 'ongoing'.
+     */
     function actionButtonClick() {
       var actions = {
         pending: startExcursion,
@@ -138,7 +234,7 @@
     }
 
     /**
-     * Load and launch the AR World with the excursion's data, then changes the status of this excursion from "pending" to "ongoing".
+     * Loads and launches the AR World with the excursion's data, then changes the status of this excursion from "pending" to "ongoing".
      */
     function startExcursion() {
       return $q.when()
@@ -148,6 +244,9 @@
         .catch(handleError);
     }
 
+    /**
+     * Executes the startExcursion function, then logs the fact in the ActivityTracker that the excursion has been resumed.
+     */
     function resumeExcursion() {
       return $q.when()
         .then(startExcursion)
@@ -200,10 +299,16 @@
       });
     }
 
+    /**
+     * Redirect the user to the list of seen elements, if he/she has effectively seen at least one element.
+     */
     function goToSeenList() {
       excursion.nbSeenPoi > 0 && $state.go('app.excursion.seenlist', {excursionId: excursion.data.id});
     }
 
+    function isArchived() {
+      return excursion.data.archived_at !== null;
+    }
 
     // Zip download
     //TODO add to localdb that the download and unzip was sucessful

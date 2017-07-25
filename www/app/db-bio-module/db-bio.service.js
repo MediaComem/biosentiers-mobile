@@ -67,8 +67,10 @@
      * @return {Promise} A promise of the database saved.
      */
     function save() {
+      $log.log('DbBio:Saving...');
       var deferred = $q.defer();
       db.saveDatabase(function(err) {
+        $log.log('Saved', err);
         err ? deferred.reject() : deferred.resolve();
       });
       return deferred.promise;

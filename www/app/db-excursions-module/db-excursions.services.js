@@ -8,13 +8,14 @@
     .module('db-excursions-module')
     .factory('DbExcursions', DbExcursions);
 
-  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $log, $q, rx) {
+  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $ionicPopup, $log, $q, rx) {
     var COLL_NAME       = 'excursions',
         COLL_OPTIONS    = {
           unique: ['id']
         },
         archivedSubject = new rx.ReplaySubject(1),
         removedSubject  = new rx.ReplaySubject(1),
+        restoredSubject  = new rx.ReplaySubject(1),
         service         = {
           getAll           : getAll,
           getOne           : getOne,
@@ -30,7 +31,8 @@
           setNotNew        : setNotNew,
           setNew           : setNew,
           archivedObs      : archivedSubject.asObservable(),
-          removedObs       : removedSubject.asObservable()
+          removedObs       : removedSubject.asObservable(),
+          restoredObs      : restoredSubject.asObservable()
         };
 
     return service;
@@ -143,6 +145,7 @@
      * @return {Promise} A promise of an updated document.
      */
     function updateOne(doc) {
+      $log.log('DbExcursion:Updating');
       return getCollection()
         .then(function(coll) { coll.update(doc); })
         .then(DbBio.save)
@@ -158,10 +161,13 @@
      * @return {Promise}
      */
     function archiveOne(excursion) {
+      $log.log('DbExcursion:Archiving');
       if (!excursion) throw new TypeError('DbExcursions : archiveOne needs an Excursion object as its first argument, none given');
-      if (excursion.archived_at !== null) return $q.resolve();
+      if (excursion.archived_at !== null) return $q.resolve(excursion);
       excursion.archived_at = Date.now();
-      return setNotNew(excursion).then(function() { archivedSubject.onNext(excursion) });
+      return setNotNew(excursion)
+        .then(updateOne)
+        .then(function() { archivedSubject.onNext(excursion) });
     }
 
     /**
@@ -172,12 +178,29 @@
     function removeOne(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : removeOne needs an Excursion object as its first argument, none given');
       if (excursion.archived_at === null) throw new Error('DbExcursions: removeOne can only remove an excursion if it has previously been archived.');
-      return getCollection()
-        .then(function(coll) { coll.remove(excursion); })
-        .then(function() { DbSeenPois.removeAllFor(excursion.id); })
-        .then(function() { removedSubject.onNext(excursion); })
-        .then(DbBio.save)
-        .catch(handleError);
+
+      var confirmPopup = $ionicPopup.confirm({
+        title     : 'Supprimer une sortie',
+        subTitle  : excursion.name,
+        template  : "<p>Ceci supprimera définitivement la sortie, ainsi que l'historique de ses éléments vus.</p><p><strong>Cette action est irréversible !</strong></p>",
+        cancelText: "Annuler",
+        okText    : "Supprimer",
+        okType    : "button-assertive"
+      });
+
+      return confirmPopup.then(function(res) {
+        if (res) {
+          return getCollection()
+            .then(function(coll) { coll.remove(excursion); })
+            .then(function() { DbSeenPois.removeAllFor(excursion.id); })
+            .then(function() { removedSubject.onNext(excursion); })
+            .then(DbBio.save)
+            .catch(handleError);
+        } else {
+          return false;
+        }
+      });
+
     }
 
     /**
@@ -189,9 +212,10 @@
      */
     function restoreOne(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : restoreOne needs an Excursion object as its first argument, none given');
-      if (excursion.archived_at === null) return $q.resolve();
+      if (excursion.archived_at === null) return $q.resolve(excursion);
       excursion.archived_at = null;
-      return updateOne(excursion);
+      return updateOne(excursion)
+        .then(function() { restoredSubject.onNext(excursion) });
     }
 
     /**
@@ -205,7 +229,7 @@
      */
     function setOngoingStatus(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : setOngoingStatus needs an Excursion object as its first argument, none given');
-      if (excursion.status !== 'pending') return $q.resolve();
+      if (excursion.status !== 'pending') return $q.resolve(excursion);
       excursion.status = 'ongoing';
       excursion.started_at = Date.now();
       return updateOne(excursion);
@@ -222,7 +246,7 @@
      */
     function setFinishedStatus(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : setFinishedStatus needs an Excursion object as its first argument, none given');
-      if (excursion.status !== 'ongoing') return $q.resolve();
+      if (excursion.status !== 'ongoing') return $q.resolve(excursion);
       excursion.status = 'finished';
       excursion.finished_at = Date.now();
       return updateOne(excursion);
@@ -234,6 +258,7 @@
      * @return {Promise}
      */
     function setNotNew(excursion) {
+      $log.log('DbExcursion:Setting as not new');
       if (!excursion) throw new TypeError('DbExcursions : setNotNew needs an Excursion object as its first argument, none given');
       if (!excursion.is_new) return $q.resolve(excursion);
       excursion.is_new = false;
@@ -248,7 +273,7 @@
      */
     function setNew(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : setNew needs an Excursion object as its first argument, none given');
-      if (excursion.is_new || excursion.status !== 'pending') return $q.resolve();
+      if (excursion.is_new || excursion.status !== 'pending') return $q.resolve(excursion);
       excursion.is_new = true;
       return updateOne(excursion);
     }

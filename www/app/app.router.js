@@ -58,7 +58,7 @@
         url    : '/all',
         views  : {
           'excursions-all': {
-            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            templateUrl: 'app/excursions-list/excursions-list-content.html',
             controller : 'ExcursionsListTabCtrl as tab'
           }
         },
@@ -74,7 +74,7 @@
         url    : '/pending',
         views  : {
           'excursions-pending': {
-            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            templateUrl: 'app/excursions-list/excursions-list-content.html',
             controller : 'ExcursionsListTabCtrl as tab'
           }
         },
@@ -89,7 +89,7 @@
         url    : '/ongoing',
         views  : {
           'excursions-ongoing': {
-            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            templateUrl: 'app/excursions-list/excursions-list-content.html',
             controller : 'ExcursionsListTabCtrl as tab'
           }
         },
@@ -104,7 +104,7 @@
         url    : '/finished',
         views  : {
           'excursions-finished': {
-            templateUrl: 'app/excursions-list/excursions-list-tab.html',
+            templateUrl: 'app/excursions-list/excursions-list-content.html',
             controller : 'ExcursionsListTabCtrl as tab'
           }
         },

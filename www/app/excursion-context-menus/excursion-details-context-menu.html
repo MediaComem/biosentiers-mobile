@@ -1,0 +1,9 @@
+<ion-popover-view id="excursion-menu">
+	<ion-content>
+		<ion-list>
+			<ion-item ng-show="!excursion.isArchived()" ng-click="excursion.archive(excursion.data)">Archiver</ion-item>
+			<ion-item ng-show="excursion.isArchived()" ng-click="excursion.restore(excursion.data)">Restaurer</ion-item>
+			<ion-item ng-show="excursion.isArchived()" ng-click="excursion.remove(excursion.data)">Supprimer</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-popover-view>

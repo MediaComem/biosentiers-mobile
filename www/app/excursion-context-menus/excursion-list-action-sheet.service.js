@@ -129,19 +129,7 @@
      * @return {boolean}
      */
     function removeAction() {
-      var confirmPopup = $ionicPopup.confirm({
-        title     : 'Supprimer une sortie',
-        subTitle  : excursion.name,
-        template  : "<p>Ceci supprimera définitivement la sortie, ainsi que l'historique de ses éléments vus.</p><p><strong>Cette action est irréversible !</strong></p>",
-        cancelText: "Annuler",
-        okText    : "Supprimer",
-        okType    : "button-assertive"
-      });
-
-      confirmPopup.then(function(res) {
-        res && DbExcursions.removeOne(excursion);
-      });
-
+      DbExcursions.removeOne(excursion);
       return true;
     }
   }
