@@ -16,12 +16,13 @@
     /**
      * Creates a new Excursion object, with the values passed a arguments.
      * The following properties will also be created with default values:
+     * * app_id (which identify this excursion with this participant on the app) will concatenate the server_id value and the participant.id value with a "-"
      * * status will be set to 'pending'
      * * added_at will be set to the current time and date
      * * nb_seen will be set to 0
      * * is_new will be set to true
      * @param created_by The name of the person who created the excursion
-     * @param id A number identifying the excursion
+     * @param server_id A number identifying the excursion on the server
      * @param name The title of the excursion
      * @param date The date at which the excursion is suppoed to take place
      * @param participant An object representing the participant data for this excursion
@@ -29,15 +30,15 @@
      * @param zones The path zones requested for this excursion
      * @constructor
      */
-    function Excursion(created_by, id, date, name, participant, themes, zones) {
+    function Excursion(created_by, server_id, date, name, participant, themes, zones) {
       // TODO id de type number, valeur du status, valeur par défaut des dates
       this.created_by = created_by;
-      this.id = id;
+      this.server_id = server_id;
       this.date = date;
       this.name = name;
-      this.participant = participant;
-      this.themes = themes;
-      this.zones = zones;
+      this.participant = angular.copy(participant);
+      this.themes = angular.copy(themes);
+      this.zones = angular.copy(zones);
       this.status = status || 'pending';
       this.added_at = new Date();
       this.started_at = null;
@@ -45,6 +46,7 @@
       this.finished_at = null;
       this.is_new = true;
       this.archived_at = null;
+      this.app_id = this.server_id + "-" + this.participant.id;
     }
 
     /**

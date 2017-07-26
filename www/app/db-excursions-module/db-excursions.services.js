@@ -15,7 +15,7 @@
         },
         archivedSubject = new rx.ReplaySubject(1),
         removedSubject  = new rx.ReplaySubject(1),
-        restoredSubject  = new rx.ReplaySubject(1),
+        restoredSubject = new rx.ReplaySubject(1),
         service         = {
           getAll           : getAll,
           getOne           : getOne,
@@ -133,7 +133,9 @@
           var newExcursion = ExcursionClass.fromQrCodeData(newExcursionData);
           $log.log(newExcursion);
           coll.insert(newExcursion);
-        }).catch(handleError);
+        })
+        .then(DbBio.save)
+        .catch(handleError);
     }
 
     /**
