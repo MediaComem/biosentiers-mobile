@@ -26,7 +26,10 @@
 
     $ionicPlatform.ready(function() {
       ionicInitialize();
-      grantAndroidPermissions();
+
+      if (ionic.Platform.isAndroid()) {
+        grantAndroidPermissions();
+      }
     });
     ////////////////////
 
