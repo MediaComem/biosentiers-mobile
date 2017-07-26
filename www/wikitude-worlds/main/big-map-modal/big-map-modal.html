@@ -11,9 +11,9 @@
 		<div class="position-badge-wrapper">
 			<position-badge show-label="never" state="bigmap.positionState"></position-badge>
 		</div>
-		<div class="fab-buttons">
-			<button class="button fab" ng-click="bigmap.fitOnPath()">Sentier</button>
-			<button class="button fab" ng-click="bigmap.centerOnUser()" ng-disabled="!bigmap.userIsFound">Centrer</button>
+		<div class="fabs">
+			<button ng-click="bigmap.fitOnPath()"><i class="icon ion-android-expand"></i></button>
+			<button ng-click="bigmap.centerOnUser()" ng-disabled="!bigmap.userIsFound"><i class="icon ion-android-locate"></i></button>
 		</div>
 		<div class="bigmap-container">
 			<leaflet id="bigmap" tiles="minimap.config.tiles" markers="bigmap.config.markers" lf-center="bigmap.config.center"
