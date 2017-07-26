@@ -29,8 +29,8 @@
         $ionicPlatform.ready(function() {
           $log.log('initializing Loki for', name);
           db = new Loki('db', {
-            autosave        : true,
-            autosaveInterval: 10000,
+            // autosave        : true,
+            // autosaveInterval: 10000,
             adapter         : new LokiCordovaFSAdapter({'prefix': 'biosentiers'}),
             autoload        : true,
             autoloadCallback: function(result) {
