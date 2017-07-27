@@ -41,6 +41,7 @@
     excursion.remove = menuAction(removeExcursion);
     excursion.archive = menuAction(DbExcursions.archiveOne);
     excursion.restore = menuAction(DbExcursions.restoreOne);
+    excursion.reinitialize = menuAction(DbExcursions.reinitializeOne);
 
     PoiGeo.getExcursionGeoData(excursion.data.zones).then(loadExcursionData).catch(handleError);
 

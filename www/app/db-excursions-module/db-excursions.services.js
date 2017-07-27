@@ -9,14 +9,15 @@
     .factory('DbExcursions', DbExcursions);
 
   function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $ionicPopup, $log, $q, rx) {
-    var COLL_NAME       = 'excursions',
-        COLL_OPTIONS    = {
+    var COLL_NAME            = 'excursions',
+        COLL_OPTIONS         = {
           unique: ['id']
         },
-        archivedSubject = new rx.ReplaySubject(1),
-        removedSubject  = new rx.ReplaySubject(1),
-        restoredSubject = new rx.ReplaySubject(1),
-        service         = {
+        archivedSubject      = new rx.ReplaySubject(1),
+        removedSubject       = new rx.ReplaySubject(1),
+        restoredSubject      = new rx.ReplaySubject(1),
+        reinitializedSubject = new rx.ReplaySubject(1),
+        service              = {
           getAll           : getAll,
           getOne           : getOne,
           countAll         : countAll,
@@ -25,6 +26,7 @@
           updateOne        : updateOne,
           archiveOne       : archiveOne,
           removeOne        : removeOne,
+          reinitializeOne  : reinitializeOne,
           restoreOne       : restoreOne,
           setOngoingStatus : setOngoingStatus,
           setFinishedStatus: setFinishedStatus,
@@ -32,7 +34,8 @@
           setNew           : setNew,
           archivedObs      : archivedSubject.asObservable(),
           removedObs       : removedSubject.asObservable(),
-          restoredObs      : restoredSubject.asObservable()
+          restoredObs      : restoredSubject.asObservable(),
+          reinitializeObs  : reinitializedSubject.asObservable()
         };
 
     return service;
@@ -141,13 +144,13 @@
      * The values of existing properties will be changed, new properties will be added and missing properties will be removed.
      * The object passed as a parameter must have the $loki and meta properties, required by LokiJS.
      * When the update is performed, the in-memory database is saved on the device's filesystem.
-     * @param doc An object of the Excursion to update
+     * @param excursion An object of the Excursion to update
      * @return {Promise} A promise of an updated document.
      */
-    function updateOne(doc) {
+    function updateOne(excursion) {
       $log.log('DbExcursion:Updating');
       return getCollection()
-        .then(function(coll) { coll.update(doc); })
+        .then(function(coll) { coll.update(excursion); })
         .then(DbBio.save)
         .catch(handleError);
     }
@@ -192,7 +195,7 @@
         if (res) {
           return getCollection()
             .then(function(coll) { coll.remove(excursion); })
-            .then(function() { DbSeenPois.removeAllFor(excursion.id); })
+            .then(function() { DbSeenPois.removeAllFor(excursion.qr_id); })
             .then(function() { removedSubject.onNext(excursion); })
             .then(DbBio.save)
             .catch(handleError);
@@ -200,7 +203,45 @@
           return false;
         }
       });
+    }
 
+    /**
+     * Reinitializes an excursion. This means reverting its status back as if it had just been scanned by the user.
+     * Shows a popup before actually reinitializing the excursion, to ask confirmation to the user.
+     * @param excursion
+     */
+    function reinitializeOne(excursion) {
+      if (!excursion) throw new TypeError('DbExcursions : reinitializeOne needs an Excursion object as its first argument, none given');
+      if (excursion.status !== 'finished') throw new Error('DbExcursions: reinitializeOne can only reinitialize an excursion if it has previously been finished.');
+
+      var confirmPopup = $ionicPopup.confirm({
+        title     : 'Réinitialiser une sortie',
+        subTitle  : excursion.name,
+        template  : "<p>La sortie <strong>" + excursion.name + "</strong> va revenir à son état initial, comme si son QR Code venait d'être scanné.</p><p>La liste des éléments vus lors de cette sortie va être supprimée.</p><p><strong>Attention, cette opération est irréversible.</strong></p>",
+        cancelText: "Annuler",
+        okText    : "Réinitialiser",
+        okType    : "button-energized"
+      });
+
+      return confirmPopup.then(function(res) {
+        if (res) {
+          return getCollection()
+            .then(function(coll) {
+              excursion.is_new = true;
+              excursion.started_at = null;
+              excursion.paused_at = null;
+              excursion.finished_at = null;
+              excursion.archived_at = null;
+              excursion.status = 'pending';
+              return coll.update(excursion);
+            })
+            .then(function() { return DbSeenPois.removeAllFor(excursion.qr_id); })
+            .then(DbBio.save)
+            .catch(handleError);
+        } else {
+          return false;
+        }
+      });
     }
 
     /**

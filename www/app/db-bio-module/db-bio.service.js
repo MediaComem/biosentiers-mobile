@@ -68,12 +68,12 @@
      */
     function save() {
       $log.log('DbBio:Saving...');
-      var deferred = $q.defer();
-      db.saveDatabase(function(err) {
-        $log.log('Saved', err);
-        err ? deferred.reject() : deferred.resolve();
+      return $q(function(resolve, reject) {
+        db.saveDatabase(function(err) {
+          $log.log('Saved', err);
+          err ? reject(err) : resolve(true);
+        });
       });
-      return deferred.promise;
     }
 
     // TODO : Supprimer en prod

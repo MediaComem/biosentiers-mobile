@@ -41,8 +41,13 @@
         // Whatever's the state of the excursion, its sheep can be consulted
         options.buttons.push({text: '<i class="icon ion-android-arrow-forward"></i>Accéder à la fiche'});
         options.actions.push(function(excursion) {
-          $state.go('app.excursion', {excursionId: excursion.id});
+          $state.go('app.excursion', {qrId: excursion.qr_id});
         });
+
+        if (excursion.status === 'finished') {
+          options.buttons.push({text: '<i class="icon ion-android-refresh"></i> Réinitialiser'});
+          options.actions.push(DbExcursions.reinitializeOne);
+        }
 
         // Debug : affiche les infos de la sortie dans la console
         // options.buttons.push({text: '<i class="icon ion-code-working"></i> Debug sortie'});
