@@ -272,6 +272,18 @@ progress {
   }
 }
 
+.participant {
+  display: inline-block;
+  color: blueviolet;
+  padding: 0 3px;
+  border-radius: 3px;
+  border: 1px solid blueviolet;
+
+  & + .participant {
+    margin-left: 5px;
+  }
+}
+
 @keyframes popover-in {
   from {
     opacity: 0;

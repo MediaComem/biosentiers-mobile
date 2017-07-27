@@ -25,13 +25,13 @@
 
     /**
      * Tries to get all the POIs that have been seen for a particuler excursion.
-     * @param appId The app_id of the Excursion for which we want to get all the seen POIs.
+     * @param qrId The qr_id of the Excursion for which we want to get all the seen POIs.
      * @return {Promise} A promise of an Array containing the POIs that have been seen for the specified Excursion
      */
-    function getAll(appId) {
+    function getAll(qrId) {
       return DbBio.getCollection(collName)
         .then(function(coll) {
-          var res = coll.find({app_id: appId});
+          var res = coll.find({qr_id: qrId});
           console.log('DbSeenPois:getAll:result', res);
           return res;
         })
@@ -40,31 +40,31 @@
 
     /**
      * Counts the number of Seen Poi for the excursion whose ID matches the one received in argument.
-     * @param appId
+     * @param qrId
      */
-    function countFor(appId) {
+    function countFor(qrId) {
       return DbBio.getCollection(collName)
-        .then(function(coll) { return coll.count({app_id: appId}); })
+        .then(function(coll) { return coll.count({qr_id: qrId}); })
         .catch(handleError);
     }
 
     /**
      * Adds a new seen poi to the collection, that matches the given parameter.
-     * @param appId The app_id of the excursion
+     * @param qrId The qr_id of the excursion
      * @param serverId The server_id of the excursion in which the poi has been seen
      * @param participantId The id of the excursion's participan
      * @param poiId The ID of the POI that have been seen.
      * @param poiData The GeoJSON object of the seen POI.
      */
-    function addOne(appId, serverId, participantId, poiId, poiData) {
+    function addOne(qrId, serverId, participantId, poiId, poiData) {
       return DbBio.getCollection(collName)
         .then(function(coll) {
-          var res = coll.insertOne(new Seen(appId, serverId, participantId, poiId, poiData));
-          if ('undefined' === typeof res) throw new Error("DbSeenPois:addOne: An error occured while trying to save that the POI n°" + poiId + " had been seen in the excursion n°" + appId);
-          return countFor(appId);
+          var res = coll.insertOne(new Seen(qrId, serverId, participantId, poiId, poiData));
+          if ('undefined' === typeof res) throw new Error("DbSeenPois:addOne: An error occured while trying to save that the POI n°" + poiId + " had been seen in the excursion n°" + qrId);
+          return countFor(qrId);
         })
         .then(function(count) {
-          seenPoiSubject.onNext({appId: appId, nbSeen: count});
+          seenPoiSubject.onNext({qrId: qrId, nbSeen: count});
         })
         .then(DbBio.save)
         .catch(handleError);
@@ -72,13 +72,13 @@
 
     /**
      * Remove all the SeenPoi from the database whose server_id matches the given excursionId parameter.
-     * @param appId
+     * @param qrId
      */
-    function removeAllFor(appId) {
+    function removeAllFor(qrId) {
       return DbBio.getCollection(collName)
         .then(function(coll) {
-          $log.debug('DbSeenPois:removeAllFor:collection before removing:', appId, angular.copy(coll));
-          var res = coll.removeWhere({app_id: appId});
+          $log.debug('DbSeenPois:removeAllFor:collection before removing:', qrId, angular.copy(coll));
+          var res = coll.removeWhere({qr_id: qrId});
           $log.debug('DbSeenPois:removeAllFor:collection after removing:', angular.copy(coll));
           return res;
         })
@@ -128,15 +128,15 @@
     /**
      * Creates a new Seen object, that represents a POI seen in an Excursion
      * The seenAt property of this object will be set as Date.now().
-     * @param appId The app_id of the Excursion in which the POI has been seen
+     * @param qrId The qr_id of the Excursion in which the POI has been seen
      * @param serverId The server_id of the Excursion in which the POI has been seen
      * @param participantId The id of the participant to the Excursion that has seen the POI
      * @param poiId The id of the POI that has been seen
      * @param poiData The GeoJSON data of the seen POI
      * @constructor
      */
-    function Seen(appId, serverId, participantId, poiId, poiData) {
-      this.app_id = appId;
+    function Seen(qrId, serverId, participantId, poiId, poiData) {
+      this.qr_id = qrId;
       this.server_id = serverId;
       this.participant_id = participantId;
       this.poi_id = poiId;

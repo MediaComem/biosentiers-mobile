@@ -39,9 +39,11 @@
         seenPois.push(poi.properties.id_poi);
         $log.log(seenPois);
         var param = {
-          poiId: poi.properties.id_poi,
-          poiData: poi,
-          excursionId: Excursion.id
+          poiId        : poi.properties.id_poi,
+          poiData      : poi,
+          qrId         : Excursion.qrId,
+          serverId     : Excursion.serverId,
+          participantId: Excursion.participantId
         };
         AppActions.execute('addSeenPoi', param);
       }
@@ -51,7 +53,7 @@
      * Set the value for the private seenPois Array.
      */
     function setSeenPois() {
-      seenPois = Excursion.getSeenPois();
+      seenPois = Excursion.seenPois;
       $log.log('seenPois from SeenTracker', seenPois);
     }
 

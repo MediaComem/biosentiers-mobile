@@ -39,7 +39,7 @@
      */
     function updateAvailableChoices() {
 
-      var themes = Excursion.getThemes();
+      var themes = Excursion.themes;
       service.themes = themes;
       selected.themes = themes.slice();
 

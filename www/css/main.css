@@ -243,6 +243,15 @@ progress {
 #excursion-details-menu .item:hover, #excursion-details-menu .item:active {
   background-color: #e8e8e8; }
 
+.participant {
+  display: inline-block;
+  color: blueviolet;
+  padding: 0 3px;
+  border-radius: 3px;
+  border: 1px solid blueviolet; }
+  .participant + .participant {
+    margin-left: 5px; }
+
 @keyframes popover-in {
   from {
     opacity: 0; }

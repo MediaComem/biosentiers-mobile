@@ -41,30 +41,30 @@
 
     /**
      * Retrieve all the saved Excursions
-     * @param {Object} options An option object respecting the MongoDB syntax that will be used to filter the excursions.
+     * @param {Object} criterias An option object respecting the MongoDB syntax that will be used to filter the excursions.
      * @return {Promise} A promise of an array of Excursions
      */
-    function getAll(options) {
-      options = angular.copy(options);
+    function getAll(criterias) {
+      criterias = angular.copy(criterias);
       // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archived_at value.
       if (ExcursionsSettings.withArchive.value === false) {
-        options.archived_at = null;
+        criterias.archived_at = null;
       }
       return getCollection()
         .then(function(coll) {
-          console.log('DbExcursions:getAll', coll, options);
-          return coll.chain().find(options).simplesort('date', true).data();
+          console.log('DbExcursions:getAll', coll, criterias);
+          return coll.chain().find(criterias).simplesort('date', true).data();
         }).catch(handleError);
     }
 
     /**
-     * Retrieve one excursion, based on the given ID.
-     * @param excursionId The id corresponding to the requested Excursion
+     * Retrieve one excursion, based on the given criteria object.
+     * @param criteria A MongoDB criteria object to search for one Excursion.
      * @return {Promise} A promise of a single Excursion object.
      */
-    function getOne(excursionId) {
+    function getOne(criteria) {
       return getCollection()
-        .then(function(coll) { return coll.findOne({id: excursionId}); })
+        .then(function(coll) { return coll.findOne(criteria); })
         .catch(handleError);
     }
 
@@ -123,15 +123,13 @@
 
     /**
      * Creates a new Excursion in the database, based on the data provided through newExcursionData
-     * @param newExcursionData An object representing the data for the new Excursion
+     * @param newExcursion The new Excursion to save
      * @return {Promise} A promise of a new Excursion
      */
-    function createOne(newExcursionData) {
+    function createOne(newExcursion) {
       return getCollection()
         .then(function(coll) {
-          $log.log('DbExcursions:newExcursionData', newExcursionData);
-          var newExcursion = ExcursionClass.fromQrCodeData(newExcursionData);
-          $log.log(newExcursion);
+          $log.log('DbExcursions:newExcursionData', newExcursion);
           coll.insert(newExcursion);
         })
         .then(DbBio.save)

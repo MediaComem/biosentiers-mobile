@@ -8,12 +8,12 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(Altitude, AppActions, ArView, DeviceOrientation, Filters, $log, Excursion, UserLocation, $timeout, rx) {
+  function WorldService(AppActions, ArView, DeviceOrientation, Filters, $log, Excursion, UserLocation, rx) {
 
     var service = {
       startup                : true,
       poiData                : null,
-      loadExcursion          : Excursion.setExcursion,
+      loadExcursion          : Excursion.load,
       updateDeviceOrientation: updateDeviceOrientation,
       returnResultFromApp    : AppActions.returnResultFromApp
     };

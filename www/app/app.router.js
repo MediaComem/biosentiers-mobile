@@ -36,12 +36,12 @@
       })
 
       .state('app.excursions-list', {
-        url  : '/excursions-list',
-        cache: false, //fix issue with other tabs system - encyclopedia - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
-        views: {
+        url    : '/excursions-list',
+        cache  : false, //fix issue with other tabs system - encyclopedia - http://stackoverflow.com/questions/32430920/ionic-different-tab-content
+        views  : {
           'menuContent': {
             templateUrl: 'app/excursions-list/excursions-list.html',
-            controller: 'ExcursionsListCtrl as list'
+            controller : 'ExcursionsListCtrl as list'
           }
         },
         onEnter: function(DbExcursions, $state) {
@@ -181,27 +181,27 @@
       })
 
       .state('app.excursion', {
-        url    : '/excursions-list/:excursionId',
+        url    : '/excursions-list/:qrId',
         views  : {
           'menuContent': {
-            templateUrl : 'app/excursion/excursion.html',
-            controller  : 'ExcursionCtrl as excursion'
+            templateUrl: 'app/excursion/excursion.html',
+            controller : 'ExcursionCtrl as excursion'
           }
         },
         resolve: {
           excursionData: function(DbExcursions, $stateParams, $log) {
             $log.log('AppRouter:app.excursion state:', $stateParams);
-            return DbExcursions.getOne($stateParams.excursionId);
+            return DbExcursions.getOne({qr_id: $stateParams.qrId});
           }
         }
       })
 
       .state('app.excursion.seenlist', {
-        url    : '/seen',
-        views  : {
+        url  : '/seen',
+        views: {
           'menuContent@app': {
-            templateUrl : 'app/excursion-seen-list/excursion-seen.html',
-            controller  : 'ExcursionSeenCtrl as excursionSeen'
+            templateUrl: 'app/excursion-seen-list/excursion-seen.html',
+            controller : 'ExcursionSeenCtrl as excursionSeen'
           }
         }
       })
@@ -211,7 +211,7 @@
         views: {
           'menuContent@app': {
             templateUrl: 'app/excursion-seen-poi/excursion-seen-poi.html',
-            controller: 'ExcursionSeenPoiCtrl as poiCtrl'
+            controller : 'ExcursionSeenPoiCtrl as poiCtrl'
           }
         }
       })

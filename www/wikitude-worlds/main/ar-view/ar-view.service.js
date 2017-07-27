@@ -84,7 +84,7 @@
       var timer = Timers.start();
 
       // Retrieve all available points.
-      var allPois = Excursion.getPois();
+      var allPois = Excursion.pois;
       $log.debug(allPois.length + ' points in total');
 
       // Determine the nearest points; those are the only points that should be in the AR.
@@ -133,8 +133,8 @@
      */
     function loadExtremityPoints() {
       arExtremityPoints = {
-        start: new ArExtremityMarker(Excursion.getStartPoint()),
-        end  : new ArExtremityMarker(Excursion.getEndPoint(), onEnterActionRange)
+        start: new ArExtremityMarker(Excursion.startPoint),
+        end  : new ArExtremityMarker(Excursion.endPoint, onEnterActionRange)
       }
     }
 
@@ -250,7 +250,7 @@
         EndPopup.automatic().then(function(validated) {
           $log.log("promptEndOfExcursion - prompt result", validated);
           if (validated) {
-            AppActions.execute('finishExcursion', {excursionId: Excursion.id});
+            AppActions.execute('finishExcursion', {qrId: Excursion.qrId});
           } else {
             hasReachEndOnce = true;
             activateManualEndingSubject.onNext();

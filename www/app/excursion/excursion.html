@@ -1,4 +1,4 @@
-<ion-view view-title="{{excursion.data.name}}" id="excursion-details">
+<ion-view view-title="{{excursion.data.name}} {{ excursion.isArchived() ? '(Archivée)' : ''}}" id="excursion-details">
 	<ion-nav-buttons side="secondary">
 		<button class="button" ng-click="excursion.openExcursionMenu($event)">
 			<i class="icon ion-android-more-vertical"></i>
@@ -7,7 +7,7 @@
 	<ion-content ng-class="{'archived_at': excursion.isArchived()}">
 		<div class="excursion-map-container">
 			<div class="white-dropdown" ng-if="excursion.activeFAB"></div>
-			<leaflet id="{{ excursion.data.id }}" maxbounds="excursion.mapConfig.maxbounds"
+			<leaflet id="{{ excursion.data.qr_id }}" maxbounds="excursion.mapConfig.maxbounds"
 			         defaults="excursion.mapConfig.defaults"
 			         tiles="excursion.mapConfig.tiles" center="excursion.mapConfig.center"
 			         geojson="excursion.mapConfig.geojson" geojson-nested="true" markers="excursion.mapConfig.markers"

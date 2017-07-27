@@ -37,7 +37,7 @@
 
     $log.log('BigMapService:defaultMarkers', angular.copy(defaultMarkers));
 
-    $log.log('Turf Center of Path', turf.center(Excursion.getPathGeoJson()));
+    $log.log('Turf Center of Path', turf.center(Excursion.pathGeoJson));
 
     initialize();
 
@@ -139,7 +139,7 @@
      * @return {Array} An Array that contains all the GeoJSON Point that are insode the polygon.
      */
     function getMapMarkersToShow(poly) {
-      var pois = Excursion.getPois();
+      var pois = Excursion.pois;
       return _.filter(pois, function(poi) {
         return turf.inside(poi, poly);
       });

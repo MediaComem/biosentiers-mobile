@@ -45,10 +45,10 @@
         });
 
         // Debug : affiche les infos de la sortie dans la console
-        options.buttons.push({text: '<i class="icon ion-code-working"></i> Debug sortie'});
-        options.actions.push(function(excursion) {
-          console.log(excursion);
-        });
+        // options.buttons.push({text: '<i class="icon ion-code-working"></i> Debug sortie'});
+        // options.actions.push(function(excursion) {
+        //   console.log(excursion);
+        // });
 
         // If the excursion is archived, it can only be restored
         if (isArchived()) {
@@ -93,7 +93,7 @@
       opt.destructiveText = '<i class="icon ion-android-delete"></i> Supprimer';
       opt.destructiveButtonClicked = removeAction;
 
-      opt.buttons.push({text: '<i class="icon ion-android-add-circle"></i> Restaurer'});
+      opt.buttons.push({text: '<i class="icon ion-reply"></i> Restaurer'});
       opt.actions.push(function() {
         DbExcursions.restoreOne(excursion);
         return true;
@@ -114,8 +114,8 @@
       };
 
       if (excursion.status === 'pending') {
-        var setNotNewText = '<i class="icon ion-android-checkmark-circle"></i> Marquer comme vu';
-        var setNewText = '<i class="icon ion-android-radio-button-off"></i> Marquer comme nouveau';
+        var setNotNewText = '<i class="icon ion-android-checkmark-circle"></i> Marquer comme vue';
+        var setNewText = '<i class="icon ion-android-radio-button-off"></i> Marquer comme nouvelle';
         opt.buttons.push({text: excursion.is_new ? setNotNewText : setNewText});
         opt.actions.push(excursion.is_new ? DbExcursions.setNotNew : DbExcursions.setNew);
       }

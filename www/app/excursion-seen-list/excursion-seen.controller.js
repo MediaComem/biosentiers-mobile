@@ -13,7 +13,7 @@
     excursionSeen.getIconPathForTheme = getIconPathForTheme;
 
     DbSeenPois
-      .getAll(excursionSeen.excursion.id)
+      .getAll(excursionSeen.excursion.qr_id)
       .then(function(data) {
         $log.log('ExcursionSeenCtrl:seenPois', data);
         excursionSeen.seenPois = data;

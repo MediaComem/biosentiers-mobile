@@ -23,6 +23,7 @@
     var geoData, positionWatcher;
     var RefreshData = rx.Observable.merge(DbExcursions.archivedObs, DbExcursions.restoredObs);
 
+    $log.log(excursionData);
     excursion.data = excursionData;
     excursion.downloadProgress = "Télécharger";
     excursion.mapConfig = new ExcursionMapConfig;
@@ -45,20 +46,20 @@
 
     DbExcursions.setNotNew(excursion.data);
 
-    leafletData.getMap(excursion.data.id).then(function(map) {
+    leafletData.getMap(excursion.data.qr_id).then(function(map) {
       excursion.map = map;
     }).catch(handleError);
 
-    DbSeenPois.countFor(excursion.data.id).then(function(res) {
+    DbSeenPois.countFor(excursion.data.qr_id).then(function(res) {
       excursion.nbSeenPoi = res;
     }).catch(handleError);
 
     DbSeenPois.seenPoiObs.subscribe(function(data) {
-      if (excursion.data.id === data.excursionId) excursion.nbSeenPoi = data.nbSeen;
+      if (excursion.data.qr_id === data.qrId) excursion.nbSeenPoi = data.nbSeen;
     });
 
     RefreshData.subscribe(function(newData) {
-      if (newData.id === excursion.data.id) excursion.data = newData;
+      if (newData.qr_id === excursion.data.qr_id) excursion.data = newData;
     });
 
     $ionicPopover
@@ -88,6 +89,11 @@
       }
     }
 
+    /**
+     * Removes the current excursion from the databse.
+     * If it has been correctly removed, then the user is redirected to the excursions list
+     * @param excursion
+     */
     function removeExcursion(excursion) {
       DbExcursions.removeOne(excursion)
         .then(function(result) {
@@ -276,18 +282,20 @@
      * When all these promises are resolved, a call to the AR function loadExcursion is made.
      */
     function loadWorldExcursion() {
-      $log.debug('World loaded');
+      $log.debug('World loading...');
 
       var promises = {
         pois    : PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
-        seenPois: DbSeenPois.getAll(excursion.data.id)
+        seenPois: DbSeenPois.getAll(excursion.data.qr_id)
       };
 
       return $q.all(promises).then(function(results) {
         $log.log('ExcursionCtrl:loadWorldExcursion', results);
         var arData = {
           name           : excursion.data.name,
-          id             : excursion.data.id,
+          qrId           : excursion.data.qr_id,
+          serverId       : excursion.data.server_id,
+          participantId  : excursion.data.participant.id,
           themes         : excursion.data.themes,
           path           : geoData.path,
           extremityPoints: geoData.extremityPoints,
@@ -303,7 +311,7 @@
      * Redirect the user to the list of seen elements, if he/she has effectively seen at least one element.
      */
     function goToSeenList() {
-      excursion.nbSeenPoi > 0 && $state.go('app.excursion.seenlist', {excursionId: excursion.data.id});
+      excursion.nbSeenPoi > 0 && $state.go('app.excursion.seenlist', {excursionId: excursion.data.qr_id});
     }
 
     function isArchived() {

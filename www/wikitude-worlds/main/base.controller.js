@@ -110,7 +110,7 @@
 
     function finishExcursion() {
       EndPopup.manual().then(function(validated) {
-        validated && AppActions.execute('finishExcursion', {excursionId: Excursion.id});
+        validated && AppActions.execute('finishExcursion', {qrId: Excursion.qrId});
       });
     }
 

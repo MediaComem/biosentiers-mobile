@@ -16,7 +16,7 @@
     /**
      * Creates a new Excursion object, with the values passed a arguments.
      * The following properties will also be created with default values:
-     * * app_id (which identify this excursion with this participant on the app) will concatenate the server_id value and the participant.id value with a "-"
+     * * qr_id (which identify this excursion with this participant on the app) will concatenate the server_id value and the participant.id value with a "-"
      * * status will be set to 'pending'
      * * added_at will be set to the current time and date
      * * nb_seen will be set to 0
@@ -46,7 +46,7 @@
       this.finished_at = null;
       this.is_new = true;
       this.archived_at = null;
-      this.app_id = this.server_id + "-" + this.participant.id;
+      this.qr_id = this.server_id + "-" + this.participant.id;
     }
 
     /**

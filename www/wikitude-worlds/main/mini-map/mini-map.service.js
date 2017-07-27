@@ -22,13 +22,13 @@
     Excursion.excursionChangeObs.subscribe(function() {
     // Excursion.excursionChangeObs.first().subscribe(function() {
       service.config.markers.start = {
-        lat : Excursion.getStartPoint().geometry.coordinates[1],
-        lng : Excursion.getStartPoint().geometry.coordinates[0],
+        lat : Excursion.startPoint.geometry.coordinates[1],
+        lng : Excursion.startPoint.geometry.coordinates[0],
         icon: MapIcons.start
       };
       service.config.markers.end = {
-        lat : Excursion.getEndPoint().geometry.coordinates[1],
-        lng : Excursion.getEndPoint().geometry.coordinates[0],
+        lat : Excursion.endPoint.geometry.coordinates[1],
+        lng : Excursion.endPoint.geometry.coordinates[0],
         icon: MapIcons.end
       };
     });

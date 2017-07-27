@@ -89,12 +89,12 @@
       }
 
       function addSeenPoi(service, param) {
-        $log.log('adding seen poi');
-        $log.log('addSeenPoi', DbSeenPois.addOne(param.excursionId, param.poiId, param.poiData));
+        $log.log('adding seen poi', param);
+        $log.log('addSeenPoi', DbSeenPois.addOne(param.qrId, param.serverId, param.participantId, param.poiId, param.poiData));
       }
 
       function finishExcursion(service, param) {
-        return $q.when(param.excursionId)
+        return $q.when({qr_id: param.qrId})
           .then(DbExcursions.getOne)
           .then(DbExcursions.setFinishedStatus)
           .then(_.partial(close, service))
