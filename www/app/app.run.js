@@ -11,7 +11,10 @@
       ionicInitialize();
       grantAndroidPermissions();
       // Generates or load the app IID
-      InstallationId.getValue();
+      InstallationId.getValue()
+        .then(function(iid) {
+          $log.info('Installation identifier', iid);
+        });
     });
 
     ////////////////////

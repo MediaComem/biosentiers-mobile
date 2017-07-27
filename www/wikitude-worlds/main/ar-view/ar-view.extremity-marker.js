@@ -33,7 +33,7 @@
         self.icon = ArIcons.getActive(self.properties.type);
       }
 
-      self.geoObject.onClick = onEnterActionRange || function() {return true;};
+      // self.geoObject.onClick = onEnterActionRange || function() {return true;};
       self.geoObject.drawables.cam = [self.icon];
     }
 
