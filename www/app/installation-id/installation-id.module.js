@@ -9,8 +9,7 @@
     .factory('InstallationId', InstallationIdFn);
 
   function InstallationIdFn($ionicPlatform, $cordovaFile, $log, $q) {
-    var iid,
-        deferred,
+    var deferred,
         fileName = 'installation-id.txt',
         service = {
           getValue: fetchOrCreate
@@ -68,7 +67,7 @@
      * If it fails, then the promise is rejected instead.
      */
     function createIidFile() {
-      iid = b();
+      var iid = b();
       $log.debug('InstallationId generated iid', iid);
       $cordovaFile.writeFile(cordova.file.dataDirectory, fileName, iid, false)
         .then(function(result) {
