@@ -5,29 +5,15 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform, $log, $rootScope, $state, DbExcursions, $cordovaToast) {
-    // This event is used to prevent the excursion list of being showned when no excursion exists.
-    // If the user tries to go to the excursion list and he has no excursion yet, he's redirected to the login page, in order to scan a QR Code.
-    // $rootScope.$on('$stateChangeStart', function(e, toState) {
-    //   // This pattern should match any state name that starts with 'app.excursion-lists'
-    //   var listPattern = new RegExp("^app[.]excursions-list([.].*)?$");
-    //   if (listPattern.test(toState.name)) {
-    //     $log.info('App:Run:Checking if there\'s any excursion');
-    //     DbExcursions.countAll().then(function(res) {
-    //       $log.info('App:Run:Number of excursion:', res);
-    //       // Go to the login if there's no Excursion in the DB
-    //       if (res === 0) {
-    //         $cordovaToast.showLongTop("Aucune sortie existante.\nMerci de scanner un QR Code de sortie.");
-    //         $state.go('login');
-    //       }
-    //     })
-    //   }
-    // });
+  function run($ionicPlatform, $log, InstallationId) {
 
     $ionicPlatform.ready(function() {
       ionicInitialize();
       grantAndroidPermissions();
+      // Generates or load the app IID
+      InstallationId.getValue();
     });
+
     ////////////////////
 
     /**
