@@ -1,7 +1,7 @@
 <ion-popover-view id="excursions-menu" ng-controller="ExcursionsMenuCtrl as menu">
 	<ion-content>
 		<ion-list>
-			<ion-checkbox ng-model="menu.withArchive" ng-click="menu.toggleWithArchive()">Voir archivées</ion-checkbox>
+			<ion-item ng-click="menu.toggleWithArchive()">{{menu.withArchive ? 'Cacher' : 'Afficher'}} archives</ion-item>
 		</ion-list>
 	</ion-content>
 </ion-popover-view>

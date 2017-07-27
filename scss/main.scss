@@ -16,6 +16,10 @@
     &:not(:last-of-type) {
       margin-bottom: 20px;
     }
+
+    .icon {
+      float: right;
+    }
   }
 }
 
@@ -98,6 +102,7 @@ progress {
   .badge.excursion-status {
     position: initial;
     display: inline-block;
+    border-radius: 3px;
   }
   .bio-badge-pending {
     background-color: transparent;
@@ -253,7 +258,7 @@ progress {
 }
 
 #excursion-details {
-  .disabled {
+  .item.disabled {
     opacity: 0.54;
 
     .icon {
@@ -263,6 +268,10 @@ progress {
 
   .excursion-map-container + .list {
     margin-bottom: 0;
+  }
+
+  .button-bar > .button {
+    padding: initial;
   }
 }
 

@@ -61,6 +61,8 @@
     width: 60vw; }
     #login button:not(:last-of-type) {
       margin-bottom: 20px; }
+    #login button .icon {
+      float: right; }
 
 #logo {
   height: 60vw;
@@ -126,7 +128,8 @@ progress {
 
 .item .badge.excursion-status {
   position: initial;
-  display: inline-block; }
+  display: inline-block;
+  border-radius: 3px; }
 
 .item .bio-badge-pending {
   background-color: transparent;
@@ -232,13 +235,16 @@ progress {
   margin-right: 5px;
   opacity: 0.38; }
 
-#excursion-details .disabled {
+#excursion-details .item.disabled {
   opacity: 0.54; }
-  #excursion-details .disabled .icon {
+  #excursion-details .item.disabled .icon {
     visibility: hidden; }
 
 #excursion-details .excursion-map-container + .list {
   margin-bottom: 0; }
+
+#excursion-details .button-bar > .button {
+  padding: initial; }
 
 #excursion-details-menu .item:hover, #excursion-details-menu .item:active {
   background-color: #e8e8e8; }

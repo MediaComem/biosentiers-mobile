@@ -12,7 +12,7 @@
   function ExcursionsMenuCtrlFn(ExcursionsSettings, $timeout) {
     var menu = this;
 
-    ExcursionsSettings.withArchive.changeObs.first().subscribe(function(value) {
+    ExcursionsSettings.withArchive.changeObs.subscribe(function(value) {
       $timeout(function() {
         menu.withArchive = value;
       });

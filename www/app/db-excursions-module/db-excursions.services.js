@@ -8,7 +8,7 @@
     .module('db-excursions-module')
     .factory('DbExcursions', DbExcursions);
 
-  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $ionicPopup, $log, $q, rx) {
+  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $ionicPopup, $cordovaToast, $log, $q, rx) {
     var COLL_NAME            = 'excursions',
         COLL_OPTIONS         = {
           unique: ['id']
@@ -170,7 +170,10 @@
       excursion.archived_at = Date.now();
       return setNotNew(excursion)
         .then(updateOne)
-        .then(function() { archivedSubject.onNext(excursion) });
+        .then(function() {
+          archivedSubject.onNext(excursion);
+          $cordovaToast.showShortBottom('"' + excursion.name + '" archivée.')
+        });
     }
 
     /**
@@ -196,7 +199,10 @@
           return getCollection()
             .then(function(coll) { coll.remove(excursion); })
             .then(function() { DbSeenPois.removeAllFor(excursion.qr_id); })
-            .then(function() { removedSubject.onNext(excursion); })
+            .then(function() {
+              removedSubject.onNext(excursion);
+              $cordovaToast.showShortBottom('"' + excursion.name + '" supprimée.')
+            })
             .then(DbBio.save)
             .catch(handleError);
         } else {
@@ -236,6 +242,10 @@
               return coll.update(excursion);
             })
             .then(function() { return DbSeenPois.removeAllFor(excursion.qr_id); })
+            .then(function() {
+              reinitializedSubject.onNext(excursion);
+              $cordovaToast.showShortBottom('"' + excursion.name + '" réinitialisée.')
+            })
             .then(DbBio.save)
             .catch(handleError);
         } else {
@@ -256,7 +266,10 @@
       if (excursion.archived_at === null) return $q.resolve(excursion);
       excursion.archived_at = null;
       return updateOne(excursion)
-        .then(function() { restoredSubject.onNext(excursion) });
+        .then(function() {
+          restoredSubject.onNext(excursion);
+          $cordovaToast.showShortBottom('"' + excursion.name + '" restaurée.')
+        });
     }
 
     /**
