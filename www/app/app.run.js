@@ -9,11 +9,11 @@
 
     $ionicPlatform.ready(function() {
       ionicInitialize();
-      grantAndroidPermissions();
+      if ($ionicPlatform.is('android')) grantAndroidPermissions();
       // Generates or load the app IID
       InstallationId.getValue()
         .then(function(iid) {
-          $log.info('Installation identifier', iid);
+          $log.debug('Installation identifier', iid);
         });
     });
 
