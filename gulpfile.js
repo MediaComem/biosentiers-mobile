@@ -7,6 +7,7 @@ var _ = require('lodash'),
     minifyCss = require('gulp-minify-css'),
     path = require('path'),
     rename = require('gulp-rename'),
+    request = require('request-promise'),
     sass = require('gulp-sass'),
     sh = require('shelljs'),
     sort = require('gulp-sort'),
@@ -87,6 +88,16 @@ gulp.task('git-check', function(done) {
     process.exit(1);
   }
   done();
+});
+
+gulp.task('update-data', function(done) {
+  const backendUrl = process.env.BACKEND_URL || 'https://biosentiers.heig-vd.ch';
+  const trailId = process.env.TRAIL_ID || '8c8c2474-4375-4121-95d3-763f381717df';
+
+  request({
+    url: `${backendUrl}/api/trails/${trailId}/data-package`,
+    json: true
+  }).then(updateLocalData).then(done, done);
 });
 
 function watchSourcesFactory(injectTask, sourcesPath) {
@@ -198,4 +209,82 @@ function isJs(file) {
 
 function isAngularModule(file) {
   return !!file.path.match(/\.module\.js$/);
+}
+
+/**
+ * Updates the local BioSentiers data with fresh data from the server.
+ */
+function updateLocalData(serverData) {
+
+  const trail = serverData.trail;
+
+  // Trail path (GeoJsonFeature)
+  const pathFeature = apiResourceToGeoJsonFeature(_.pick(trail, 'geometry'), _.pick(trail, 'length'));
+
+  // Zones
+  //
+  // {
+  //   type: 'FeatureCollection',
+  //   features: [ GeoJsonFeature, GeoJsonFeature, ... ]
+  // }
+  const zoneFeatureCollection = {
+    type: 'FeatureCollection',
+    features: serverData.zones.map(zone => apiResourceToGeoJsonFeature(zone))
+  };
+
+  // Species map by theme
+  //
+  // {
+  //   bird: [ speciesObject, speciesObject, speciesObject, ... ],
+  //   butterfly: [ speciesObject, speciesObject, speciesObject, ... ],
+  //   ...
+  // }
+  const speciesByTheme = _.reduce(serverData.species, (memo, species) => {
+    memo[species.theme] = memo[species.theme] || [];
+    memo[species.theme].push(species);
+    return memo;
+  }, {});
+
+  // POIS map by theme
+  //
+  // {
+  //   bird: {
+  //     type: 'FeatureCollection',
+  //     features: [ GeoJsonFeature, GeoJsonFeature, ... ]
+  //   },
+  //   butterfly: {
+  //     type: 'FeatureCollection',
+  //     features: [ GeoJsonFeature, GeoJsonFeature, ... ]
+  //   },
+  //   ...
+  // }
+  const poiFeatureCollectionsByTheme = _.reduce(serverData.pois, (memo, poi) => {
+    memo[poi.theme] = memo[poi.theme] || { type: 'FeatureCollection', features: [] };
+
+    const species = serverData.species.find(species => species.id == poi.speciesId);
+    if (!species) {
+      throw new Error(`Could not find species for POI ${poi.id} (species ID ${poi.speciesId})`);
+    }
+
+    const extraSpeciesProperties = _.pick(species, 'commonName', 'periodStart', 'periodEnd');
+    memo[poi.theme].features.push(apiResourceToGeoJsonFeature(poi, extraSpeciesProperties));
+
+    return memo;
+  }, {});
+
+  // TODO: do the magic...
+}
+
+function apiResourceToGeoJsonFeature(resource, extraProperties) {
+
+  const geometry = resource.geometry;
+  if (!geometry) {
+    throw new Error(`Resource must have a geometry (properties: ${_.keys(resource).join(', ')})`);
+  }
+
+  return {
+    type: 'Feature',
+    geometry: geometry,
+    properties: _.extend(_.omit(resource, 'geometry'), extraProperties)
+  };
 }
