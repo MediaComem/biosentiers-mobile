@@ -1,39 +1,49 @@
-var _ = require('lodash'),
-    bower = require('bower'),
-    concat = require('gulp-concat'),
-    gulp = require('gulp'),
-    gutil = require('gulp-util'),
-    inject = require('gulp-inject'),
+var _         = require('lodash'),
+    bower     = require('bower'),
+    concat    = require('gulp-concat'),
+    gulp      = require('gulp'),
+    gutil     = require('gulp-util'),
+    inject    = require('gulp-inject'),
     minifyCss = require('gulp-minify-css'),
-    path = require('path'),
-    rename = require('gulp-rename'),
-    request = require('request-promise'),
-    sass = require('gulp-sass'),
-    sh = require('shelljs'),
-    sort = require('gulp-sort'),
-    stable = require('stable'),
-    util = require('gulp-util'),
-    watch = require('gulp-watch');
+    path      = require('path'),
+    rename    = require('gulp-rename'),
+    request   = require('request-promise'),
+    sass      = require('gulp-sass'),
+    sh        = require('shelljs'),
+    sort      = require('gulp-sort'),
+    stable    = require('stable'),
+    util      = require('gulp-util'),
+    watch     = require('gulp-watch'),
+    fs        = require('fs'),
+    turf      = require('@turf/helpers');
 
-var appDir = 'www/app',
+var appDir      = 'www/app',
     wikitudeDir = 'www/wikitude-worlds';
 
 var paths = {
-  sass           : [ './scss/**/*.scss' ],
+  sass           : ['./scss/**/*.scss'],
   sassAr         : ['./scss-ar/**/*.scss'],
   appIndex       : 'www/index.html',
-  appSources     : { files: [ '**/*.js', '**/*.css' ], cwd: appDir },
+  appSources     : {files: ['**/*.js', '**/*.css'], cwd: appDir},
   wikitudeIndex  : path.join(wikitudeDir, 'main/index.html'),
-  wikitudeSources: { files: [ '**/*.js', '**/*.css' ], cwd: wikitudeDir }
+  wikitudeSources: {files: ['**/*.js', '**/*.css'], cwd: wikitudeDir},
 };
 
-gulp.task('default', [ 'compile', 'inject', 'watch' ]);
+const dataBasePath = 'www/data';
+const dataPaths = {
+  trail     : `${dataBasePath}/path.json`,
+  zones     : `${dataBasePath}/zones.json`,
+  poiDetails: `${dataBasePath}/poi-details`,
+  poiGeoJson: `${dataBasePath}/complete`
+};
 
-gulp.task('compile', [ 'sass', 'sass-ar' ]);
-gulp.task('inject', [ 'inject:app', 'inject:wikitude' ]);
-gulp.task('watch', [ 'watch:app', 'watch:sass', 'watch:sass-ar', 'watch:wikitude' ]);
+gulp.task('default', ['compile', 'inject', 'watch']);
 
-var injectAppSources = injectSourcesFactory('app', paths.appIndex, paths.appSources),
+gulp.task('compile', ['sass', 'sass-ar']);
+gulp.task('inject', ['inject:app', 'inject:wikitude']);
+gulp.task('watch', ['watch:app', 'watch:sass', 'watch:sass-ar', 'watch:wikitude']);
+
+var injectAppSources      = injectSourcesFactory('app', paths.appIndex, paths.appSources),
     injectWikitudeSources = injectSourcesFactory('wikitude', paths.wikitudeIndex, paths.wikitudeSources);
 
 gulp.task('inject:app', injectAppSources);
@@ -49,7 +59,7 @@ gulp.task('sass', function(done) {
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
-    .pipe(rename({ extname: '.min.css' }))
+    .pipe(rename({extname: '.min.css'}))
     .pipe(gulp.dest('./www/css/'))
     .on('end', done);
 });
@@ -95,7 +105,7 @@ gulp.task('update-data', function(done) {
   const trailId = process.env.TRAIL_ID || '8c8c2474-4375-4121-95d3-763f381717df';
 
   request({
-    url: `${backendUrl}/api/trails/${trailId}/data-package`,
+    url : `${backendUrl}/api/trails/${trailId}/data-package`,
     json: true
   }).then(updateLocalData).then(done, done);
 });
@@ -117,7 +127,7 @@ function injectSourcesFactory(name, indexPath, sourcesPath) {
   return function() {
     util.log('Injecting ' + util.colors.blue(name) + ' sources');
 
-    var sources = pathToGulpSrc(sourcesPath, { read: false })
+    var sources = pathToGulpSrc(sourcesPath, {read: false})
       .pipe(sort({
         customSortFn: function(files) {
           return stable(files, compareAngularFiles);
@@ -125,7 +135,7 @@ function injectSourcesFactory(name, indexPath, sourcesPath) {
       }));
 
     return pathToGulpSrc(indexPath)
-      .pipe(inject(sources, { relative: true }))
+      .pipe(inject(sources, {relative: true}))
       .pipe(gulp.dest(path.dirname(indexPath)));
   };
 }
@@ -160,10 +170,10 @@ function watchPath(path, options, callback) {
  */
 function gulpifyPath(path, options) {
   if (_.isArray(path) || _.isString(path)) {
-    return [ path, {} ];
+    return [path, {}];
   } else if (_.isArray(path.files) || _.isString(path.files)) {
     var pathOptions = _.omit(path, 'files');
-    return [ path.files, _.extend({}, pathOptions, options) ];
+    return [path.files, _.extend({}, pathOptions, options)];
   } else {
     throw new Error('Path must be a string or an array or have a "files" property that is a string or an array, got ' + JSON.stringify(path));
   }
@@ -179,9 +189,9 @@ function compareAngularFiles(f1, f2) {
     return f1.path.localeCompare(f2.path);
   }
 
-  var f1Dir = path.dirname(f1.path),
+  var f1Dir    = path.dirname(f1.path),
       f1Module = isAngularModule(f1),
-      f2Dir = path.dirname(f2.path),
+      f2Dir    = path.dirname(f2.path),
       f2Module = isAngularModule(f2);
 
   if (f1Dir.indexOf(f2Dir + path.sep) === 0) {
@@ -216,10 +226,14 @@ function isAngularModule(file) {
  */
 function updateLocalData(serverData) {
 
+  if (!fs.existsSync(dataBasePath)) createMissingDir(dataBasePath);
+
   const trail = serverData.trail;
 
   // Trail path (GeoJsonFeature)
-  const pathFeature = apiResourceToGeoJsonFeature(_.pick(trail, 'geometry'), _.pick(trail, 'length'));
+  const pathFeature = turf.feature(trail.geometry, _.omit(trail, 'geometry'));
+  // const pathFeature = apiResourceToGeoJsonFeature(_.pick(trail, 'geometry'), _.pick(trail, 'length'));
+  savePathInFile(pathFeature);
 
   // Zones
   //
@@ -227,10 +241,18 @@ function updateLocalData(serverData) {
   //   type: 'FeatureCollection',
   //   features: [ GeoJsonFeature, GeoJsonFeature, ... ]
   // }
-  const zoneFeatureCollection = {
-    type: 'FeatureCollection',
-    features: serverData.zones.map(zone => apiResourceToGeoJsonFeature(zone))
-  };
+  // const zonesFeatureCollection = {
+  //   name    : 'zone',
+  //   type    : 'FeatureCollection',
+  //   features: serverData.zones.map(zone => {
+  //     console.log(zone);
+  //     throw Error();
+  //     apiResourceToGeoJsonFeature(zone)
+  //   })
+  // };
+  const zonesFeatures = serverData.zones.map(zone => turf.feature(zone.geometry, _.omit(zone, 'geometry')));
+  const zonesFeatureCollection = turf.featureCollection(zonesFeatures);
+  saveZonesInFile(zonesFeatureCollection);
 
   // Species map by theme
   //
@@ -244,6 +266,7 @@ function updateLocalData(serverData) {
     memo[species.theme].push(species);
     return memo;
   }, {});
+  savePoiDetailsInFiles(speciesByTheme);
 
   // POIS map by theme
   //
@@ -259,7 +282,7 @@ function updateLocalData(serverData) {
   //   ...
   // }
   const poiFeatureCollectionsByTheme = _.reduce(serverData.pois, (memo, poi) => {
-    memo[poi.theme] = memo[poi.theme] || { type: 'FeatureCollection', features: [] };
+    memo[poi.theme] = memo[poi.theme] || {name: poi.theme, type: 'FeatureCollection', features: []};
 
     const species = serverData.species.find(species => species.id == poi.speciesId);
     if (!species) {
@@ -271,8 +294,7 @@ function updateLocalData(serverData) {
 
     return memo;
   }, {});
-
-  // TODO: do the magic...
+  savePoiGeoJsonInFile(poiFeatureCollectionsByTheme);
 }
 
 function apiResourceToGeoJsonFeature(resource, extraProperties) {
@@ -283,8 +305,64 @@ function apiResourceToGeoJsonFeature(resource, extraProperties) {
   }
 
   return {
-    type: 'Feature',
-    geometry: geometry,
+    type      : 'Feature',
+    geometry  : geometry,
     properties: _.extend(_.omit(resource, 'geometry'), extraProperties)
   };
+}
+
+function savePathInFile(pathFeature) {
+  fs.writeFile(dataPaths.trail, JSON.stringify(pathFeature), (err) => {
+    if (err) throw err;
+    console.log(`${time()} File updated: ${dataPaths.trail}`)
+  })
+}
+
+function saveZonesInFile(zonesFeatures) {
+  // Save as-is
+  fs.writeFile(dataPaths.zones, JSON.stringify(zonesFeatures), (err) => {
+    if (err) throw err;
+    console.log(`${time()} File updated: ${dataPaths.zones}`);
+  })
+}
+
+function savePoiDetailsInFiles(poiDetails) {
+  if (!fs.existsSync(dataPaths.poiDetails)) createMissingDir(dataPaths.poiDetails);
+
+  for (let theme in poiDetails) {
+    const dirPath = `${dataPaths.poiDetails}/${theme}`;
+    if (!fs.existsSync(dirPath)) createMissingDir(dirPath);
+
+    for (let poi of poiDetails[theme]) {
+      const fileName = `${dataPaths.poiDetails}/${theme}/${theme}${poi.id}.json`;
+      fs.writeFile(fileName, JSON.stringify(poi), (err) => {
+        if (err) throw err;
+        console.log(`${time()} File updated: ${fileName}`);
+      })
+    }
+  }
+}
+
+function savePoiGeoJsonInFile(poiGeoJson) {
+  if (!fs.existsSync(dataPaths.poiGeoJson)) createMissingDir(dataPaths.poiGeoJson);
+
+  for (let theme in poiGeoJson) {
+    const fileName = `${dataPaths.poiGeoJson}/${theme}.json`;
+    fs.writeFile(fileName, JSON.stringify(poiGeoJson[theme]), (err) => {
+      if (err) throw err;
+      console.log(`${time()} File updated: ${fileName}`);
+    })
+  }
+}
+
+function createMissingDir(dirPath) {
+  console.log(`${time()} No directory found at ${dirPath}.`);
+  console.log(`${time()} Creating new directory at ${dirPath}.`);
+  fs.mkdirSync(dirPath);
+  console.log(`${time()} Done!`);
+}
+
+function time() {
+  const date = new Date();
+  return `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`;
 }
