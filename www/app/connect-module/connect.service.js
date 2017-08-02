@@ -5,10 +5,10 @@
   'use strict';
 
   angular
-    .module('auth-module')
-    .factory('AuthService', AuthService);
+    .module('connect-module')
+    .factory('ConnectService', ConnectService);
 
-  function AuthService($q) {
+  function ConnectService($q) {
 
     var service = {};
 

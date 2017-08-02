@@ -7,13 +7,13 @@
   'use strict';
 
   angular
-    .module('auth-module')
-    .controller('AuthCtrl', AuthCtrl);
+    .module('connect-module')
+    .controller('ConnectCtrl', ConnectCtrl);
 
   /*
    Controller function
    */
-  function AuthCtrl($scope, $state, $cordovaBarcodeScanner, ExcursionClass, $ionicPlatform, $ionicPopup, AuthService, DbExcursions, $q, QR, $log) {
+  function ConnectCtrl($scope, $state, $cordovaBarcodeScanner, ExcursionClass, $ionicPlatform, $ionicPopup, ConnectService, DbExcursions, $q, QR, $log) {
     var auth = this;
 
     $ionicPlatform.ready(function() {
@@ -51,19 +51,19 @@
     function handleData(rawData) {
       if (!rawData.cancelled && rawData.format === 'QR_CODE') {
         auth.excursion = ExcursionClass.fromQrCodeData(QR.getExcursionData(rawData));
-        $log.info('AuthCtrl:handleData:decoded data', auth.excursion);
+        $log.info('ConnectCtrl:handleData:decoded data', auth.excursion);
         // We fetch all excursions with their server id (and not their qr id), because we want to see if the scanned excursion already exist in the database
         DbExcursions.getAll({server_id: auth.excursion.server_id})
           .then(function(excursions) {
             $log.debug(excursions);
             if (excursions.length === 0) {
-              $log.log('AuthCtrl:handleData:no excursion with id ' + auth.excursion.server_id);
+              $log.log('ConnectCtrl:handleData:no excursion with id ' + auth.excursion.server_id);
               showExcursionValidation();
             } else if (hasSameParticipant(excursions, auth.excursion.participant.id)) {
-              $log.log('AuthCtrl:handleData:existing excursion with same participant');
+              $log.log('ConnectCtrl:handleData:existing excursion with same participant');
               showSameParticipantError();
             } else {
-              $log.log('AuthCtrl:handleData:existing excursion with different participant');
+              $log.log('ConnectCtrl:handleData:existing excursion with different participant');
               showDiffParticipanValidation(excursions);
             }
           });
@@ -99,7 +99,7 @@
     function showExcursionValidation() {
       $ionicPopup.show({
         title      : "Nouvelle sortie",
-        templateUrl: 'app/auth-module/new-excursion.html',
+        templateUrl: 'app/connect-module/new-excursion.html',
         scope      : $scope,
         buttons    : [{
           text: "Pas du tout",
@@ -138,7 +138,7 @@
       $ionicPopup.show({
         title   : "Sortie existante",
         subTitle: auth.excursion.name,
-        templateUrl: "app/auth-module/diff-participant-validation.html",
+        templateUrl: "app/connect-module/diff-participant-validation.html",
         scope   : $scope,
         buttons : [{
           text: "Hum... non",
@@ -174,7 +174,7 @@
       auth.account = {};
       $ionicPopup.show({
         title      : "Connexion",
-        templateUrl: 'app/auth-module/account-popup.html',
+        templateUrl: 'app/connect-module/connect-with-account.html',
         scope      : $scope,
         buttons    : [{
           text : "Annuler",
@@ -196,7 +196,7 @@
               auth.error = 'Champs non remplis';
               e.preventDefault();
             } else {
-              AuthService.connectUser(auth.account)
+              ConnectService.connectUser(auth.account)
                 .then(function() {
                   $log.log('connection réussie !');
                   $state.go('app.excursions-list');

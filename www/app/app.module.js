@@ -14,7 +14,7 @@
     'TurfModule',
     // Application modules.
     'activity-tracker-module',
-    'auth-module',
+    'connect-module',
     'db-bio-module',
     'db-excursions-module',
     'db-seen-pois-module',
