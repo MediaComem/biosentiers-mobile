@@ -15,7 +15,7 @@
     /**
      * Creates the configuration object with the basic and/or static values.
      * En excursion map is centered by default in the center of Yverdon-les-Bains.
-     * The tiles are local ones, located in the www/data/Tiles.
+     * The tiles are local ones, located in the www/tiles.
      * The zonn level can go from 11 to 18 and their is no controls visible.
      * Call:
      * * setUserLocation to put a marker at the user's location
@@ -40,9 +40,9 @@
         }
       };
       this.tiles = {
-        url    : 'data/Tiles/{z}/{x}/{y}.png',
+        url    : 'tiles/{z}/{x}/{y}.png',
         options: {
-          errorTileUrl: 'data/Tiles/error.png'
+          errorTileUrl: 'tiles/error.png'
         }
       };
       this.defaults = {

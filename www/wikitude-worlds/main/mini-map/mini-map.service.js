@@ -43,9 +43,9 @@
     function initialize() {
       service.config = {
         tiles   : {
-          url    : '../../data/Tiles/{z}/{x}/{y}.png',
+          url    : '../../tiles/{z}/{x}/{y}.png',
           options: {
-            errorTileUrl: '../../data/Tiles/error.png'
+            errorTileUrl: '../../tiles/error.png'
           }
         },
         defaults: {
