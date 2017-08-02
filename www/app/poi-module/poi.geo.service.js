@@ -28,14 +28,14 @@
      * @param zones An Array of zone numbers
      */
     function getExcursionGeoData(zones) {
-      var promises = [
-            getPath(),
-            getZones(zones),
-          ],
+      var promises = {
+            path: getPath(),
+            zones: getZones(zones),
+          },
           data     = {};
       return $q.all(promises).then(function(results) {
-        data.path = results[0];
-        data.zones = results[1];
+        data.path = results.path;
+        data.zones = results.zones;
         data.extremityPoints = getExtremityPoints(data.zones);
         return data;
       });
@@ -70,33 +70,37 @@
 
     function getZones(zones) {
       return $http.get('data/zones.json').then(function(res) {
-        res.data.features = _.filter(res.data.features, matchesSelectedZones);
+        res.data.features = _.pullAt(res.data.features, zones);
         return res.data;
       });
 
-      function matchesSelectedZones(zone) {
-        return _.includes(zones, zone.properties.id_zone);
-      }
+      // function matchesSelectedZones(zone) {
+      //   return _.includes(zones, zone.properties.id_zone);
+      // }
     }
 
     function getExtremityPoints(zonesGeoData) {
-      $log.log('PoiGeo:getExtremityPoints', zonesGeoData);
-      var indexedZones = [], start, end;
-      zonesGeoData.features.forEach(function(zoneFeature) {
-        indexedZones[zoneFeature.properties.id_zone] = zoneFeature;
-      });
-      $log.info('PoiGeo:indexedZones', indexedZones);
-      start = _.find(indexedZones, defined).properties.start;
-      end = _.last(indexedZones).properties.end;
-      $log.log('PoiGeo:extremityPoints', start, end);
       return {
-        start: start,
-        end  : end
+        start: _.first(zonesGeoData.features).properties.points.start,
+        end  : _.last(zonesGeoData.features).properties.points.end
       };
-
-      function defined(element) {
-        return !!element;
-      }
+      // $log.log('PoiGeo:getExtremityPoints', zonesGeoData);
+      // var indexedZones = [], start, end;
+      // zonesGeoData.features.forEach(function(zoneFeature) {
+      //   indexedZones[zoneFeature.properties.id_zone] = zoneFeature;
+      // });
+      // $log.info('PoiGeo:indexedZones', indexedZones);
+      // start = _.find(indexedZones, defined).properties.start;
+      // end = _.last(indexedZones).properties.end;
+      // $log.log('PoiGeo:extremityPoints', start, end);
+      // return {
+      //   start: start,
+      //   end  : end
+      // };
+      //
+      // function defined(element) {
+      //   return !!element;
+      // }
     }
 
     function getFilteredPoints(zones, themes) {
