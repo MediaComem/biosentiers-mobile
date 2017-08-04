@@ -2,10 +2,9 @@
   'use strict';
   angular
     .module('installation-id-module')
-    .constant('SECRET_URL', '/api/installations')
     .factory('InstallationSecret', InstallationSecretFn);
 
-  function InstallationSecretFn($cordovaFile, BACKEND_URL, SECRET_URL, InstallationId, $http, $q) {
+  function InstallationSecretFn($cordovaFile, API_URL, REGISTER_API, InstallationId, $http, $q) {
     var registerDefer,
         valueDefer,
         fileName = 'installation-secret.txt',
@@ -40,7 +39,7 @@
     }
 
     function callApi(iid) {
-      return $http.post(BACKEND_URL + SECRET_URL, iid)
+      return $http.post(API_URL + REGISTER_API, iid)
     }
 
     function saveSecret(response) {
@@ -48,7 +47,7 @@
       $cordovaFile.writeFile(cordova.file.dataDirectory, fileName, response.data.sharedSecret, true)
         .then(function(success) {
           console.log('Secret saved', success);
-          registerDefer.resolve(response);
+          registerDefer.resolve(response.data.sharedSecret);
         })
         .catch(function(error) {
           registerDefer.reject({
@@ -64,7 +63,7 @@
 
     function handleError(error) {
       if (_.find(error.data.errors, checkIdAlreadyUsedError) !== undefined) {
-        InstallationId.regen()
+        InstallationId.getValue({regen: true})
           .then(callApi)
           .then(saveSecret)
           .catch(handleError)

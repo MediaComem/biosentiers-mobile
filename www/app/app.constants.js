@@ -3,5 +3,7 @@
 
   angular
     .module('app')
-    .constant('BACKEND_URL', 'https://biosentiers.heig-vd.ch');
+    .constant('API_URL', 'https://biosentiers.heig-vd.ch/api')
+    .constant('REGISTER_API', '/installations')
+    .constant('JWT_API', '/auth');
 })();

@@ -14,6 +14,7 @@
     'TurfModule',
     // Application modules.
     'activity-tracker-module',
+    'auth-module',
     'connect-module',
     'db-bio-module',
     'db-excursions-module',
@@ -30,6 +31,7 @@
     'qr-module',
     'timers-module',
     'trans-module',
+    'uuid-module',
     'world-actions-module'
     // 'arDirectives'
   ]);

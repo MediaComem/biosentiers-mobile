@@ -5,24 +5,29 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform, $log, InstallationSecret, InstallationId) {
+  function run(AuthToken, $ionicPlatform, $log, InstallationSecret, InstallationId) {
 
     $ionicPlatform.ready(function() {
       ionicInitialize();
       if ($ionicPlatform.is('android')) grantAndroidPermissions();
 
+      // This will create the Installation Id the first time the app is opened
       InstallationId.getValue();
+
+      // This will check if the app has already been registered on the backend, by looking up for the file containing the secret
+      // If the file does not exist, it will try to register the app on start-up.
       InstallationSecret.exists()
-        .then(InstallationSecret.getValue)
-        .then(function(value) {
-          console.log('Installation Secret value', value);
-        })
         .catch(function(error) {
           if (error.code === 1) {
             InstallationSecret.registerApp();
           } else {
             $log.error(error);
           }
+        });
+
+      AuthToken.get()
+        .then(function(result) {
+          console.log('AuthToken:get result', result);
         })
     });
 

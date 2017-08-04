@@ -10,26 +10,33 @@
   angular.module('installation-id-module')
     .factory('InstallationId', InstallationIdFn);
 
-  function InstallationIdFn($cordovaFile, $log, $q) {
+  function InstallationIdFn($cordovaFile, $log, $q, uuid) {
     var deferred,
         fileName = 'installation-id.txt',
         service  = {
           getValue: fetchOrCreate,
-          regen   : regenFn
+          exists: exists
         };
 
     return service;
 
     ////////////////////
 
+    function exists() {
+      return $cordovaFile.checkFile(cordova.file.dataDirectory, fileName);
+    }
+
     /**
      * Fetches or Creates the installation id for this application instance.
+     * The installation id can be force regenerated if an opt object is passed with the property regen set to true
+     * @param {{regen:Boolean}} opt An object of options
      * @return {Promise} If resolved, the value will be that of the iid. If rejected, it will contains some error object or message.
      */
-    function fetchOrCreate() {
-      if (!deferred) {
+    function fetchOrCreate(opt) {
+      opt = opt || {regen: false};
+      if (!deferred || opt.regen === true) {
         deferred = $q.defer();
-        $cordovaFile.checkFile(cordova.file.dataDirectory, fileName)
+        exists()
           .then(readFile)
           .catch(failedChedk)
       }
@@ -69,10 +76,9 @@
      * If it fails, then the promise is rejected instead.
      */
     function createIidFile() {
-      var now     = new Date(),
-          content = {
-            id            : b(),
-            firstStartedAt: now.toISOString(),
+      var content = {
+            id            : uuid.gen(),
+            firstStartedAt: (new Date()).toISOString(),
             properties    : {
               device: device
             }
@@ -88,22 +94,5 @@
           deferred.reject(error);
         })
     }
-
-    function regenFn() {
-      deferred = $q.defer();
-      createIidFile();
-      return deferred.promise;
-    }
-
-    /**
-     * Returns a random v4 UUID of the form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx,
-     * where each x is replaced with a random hexadecimal digit from 0 to f,
-     * and y is replaced with a random hexadecimal digit from 8 to b.
-     * @author Jed Schmidt (https://github.com/jed)
-     * @link https://gist.github.com/jed/982883
-     * @param a
-     * @return {string}
-     */
-    function b(a) {return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, b)}
   }
 })();
