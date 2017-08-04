@@ -151,7 +151,8 @@
      */
     function addMapMarkers(poisToAdd) {
       _.each(poisToAdd, function(poi) {
-        bigMap.config.markers[poi.properties.id] = {
+        // We use a base64 encoded id as the marker id, since Angular Leaflet does not accept '-' in marker's id.
+        bigMap.config.markers[btoa(poi.properties.id)] = {
           layer: 'markers',
           lat  : poi.geometry.coordinates[1],
           lng  : poi.geometry.coordinates[0],

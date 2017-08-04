@@ -98,13 +98,12 @@
     function updateMapMarkers(mapMarkerChanges) {
       $log.log(mapMarkerChanges);
       _.each(mapMarkerChanges.hidden, function(marker) {
-        delete service.config.markers[marker.properties.id];
+        // We use a base64 encoded id as the marker id, since Angular Leaflet does not accept '-' in marker's id.
+        delete service.config.markers[btoa(marker.properties.id)];
       });
       _.each(mapMarkerChanges.shown, function(marker) {
-        // console.log('MiniMap:updateMapMarkers: id before replace', marker.properties.id);
-        // marker.properties.id = marker.properties.id.replace(/-/g, '');
-        // console.log('MiniMap:updateMapMarkers: id after replace', marker.properties.id);
-        service.config.markers[marker.properties.id] = {
+        // We use a base64 encoded id as the marker id, since Angular Leaflet does not accept '-' in marker's id.
+        service.config.markers[btoa(marker.properties.id)] = {
           lat : marker.geometry.coordinates[1],
           lng : marker.geometry.coordinates[0],
           icon: MapIcons.get(marker.properties.theme)
