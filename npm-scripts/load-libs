@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+console.log("Installing NPM module in your project's lib folder...");
+console.log('');
+const copy = require('copy');
+const src = './node_modules/angular-jwt/dist/';
+const dest = './www/lib/angular-jwt/dist';
+const opt = {
+  flatten: true
+};
+
+copy(src + '*', dest, opt, function(err) {
+  if (err) throw err;
+});
+console.log('NPM module libs copied in Ionic\'s lib folder');
