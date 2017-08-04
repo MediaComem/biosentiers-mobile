@@ -38,6 +38,9 @@
       return tokenDefer.promise;
     }
 
+    /**
+     * Construct the data object that will be passed as POST params in the API call to get a JWT Token.
+     */
     function getDataObject() {
       return $q.all({
         iid   : InstallationId.getValue(),
@@ -68,6 +71,10 @@
         });
     }
 
+    /**
+     * Executes the call to the API to authenticate the app
+     * @param data A data object, see getDataObject()
+     */
     function requestToken(data) {
       return $http.post(API_URL + JWT_API, data);
     }

@@ -14,15 +14,11 @@
       // This will create the Installation Id the first time the app is opened
       InstallationId.getValue();
 
-      // This will check if the app has already been registered on the backend, by looking up for the file containing the secret
-      // If the file does not exist, it will try to register the app on start-up.
-      InstallationSecret.exists()
-        .catch(function(error) {
-          if (error.code === 1) {
-            InstallationSecret.registerApp();
-          } else {
-            $log.error(error);
-          }
+      // This will check if the app has already been registered on the backend, by trying to fetch the secret value
+      // If the file containing the secret value does not exists, that means the app has never been registered and an attempt to do so will be executed
+      InstallationSecret.getValue()
+        .then(function(result) {
+          console.log('Installation Secret value', result);
         });
 
       AuthToken.get()

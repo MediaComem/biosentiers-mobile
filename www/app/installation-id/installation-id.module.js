@@ -14,14 +14,19 @@
     var deferred,
         fileName = 'installation-id.txt',
         service  = {
-          getValue: fetchOrCreate,
-          exists: exists
+          getValue: fetchOrCreate
         };
 
     return service;
 
     ////////////////////
 
+    /**
+     * Returns a Promise that resolves if the installation-id.txt file exists.
+     * If the promise is rejected, you can check if the result's 'code' property equals 1. That would mean that the file does not exist.
+     * Any other code could mean other errors. See here for a list of probable errore codes: http://ngcordova.com/docs/plugins/file/
+     * @return {Promise}
+     */
     function exists() {
       return $cordovaFile.checkFile(cordova.file.dataDirectory, fileName);
     }
@@ -50,12 +55,9 @@
     function readFile() {
       $cordovaFile.readAsText(cordova.file.dataDirectory, fileName)
         .then(function(content) {
-          console.log('Installation Id value', content);
           deferred.resolve(JSON.parse(content));
         })
-        .catch(function(error) {
-          deferred.reject(error);
-        })
+        .catch(deferred.reject)
     }
 
     /**
@@ -77,12 +79,12 @@
      */
     function createIidFile() {
       var content = {
-            id            : uuid.gen(),
-            firstStartedAt: (new Date()).toISOString(),
-            properties    : {
-              device: device
-            }
-          };
+        id            : uuid.gen(),
+        firstStartedAt: (new Date()).toISOString(),
+        properties    : {
+          device: device
+        }
+      };
       $log.debug('InstallationId generated iid', content);
       $cordovaFile.writeFile(cordova.file.dataDirectory, fileName, JSON.stringify(content), true)
         .then(function(result) {
