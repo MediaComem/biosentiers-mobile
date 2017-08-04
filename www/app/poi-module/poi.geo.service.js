@@ -9,7 +9,7 @@
     .factory('PoiGeo', PoiGeoService);
 
   function PoiGeoService($http, $log, themesFilter, $q, turf) {
-    var dataPath = "data/partial/";
+    var dataPath = "data/complete/";
 
     var service = {
       getPath            : getPath,
@@ -29,7 +29,7 @@
      */
     function getExcursionGeoData(zones) {
       var promises = {
-            path: getPath(),
+            path : getPath(),
             zones: getZones(zones),
           },
           data     = {};
@@ -44,8 +44,8 @@
     function getPoints() {
       // return $http.get('data/flowers_birds_150m.json');
       var data = [
-        $http.get(dataPath + 'flower_all.json'),
-        $http.get(dataPath + 'tree_all.json'),
+        $http.get(dataPath + 'flower.json'),
+        $http.get(dataPath + 'tree.json'),
         $http.get(dataPath + 'bird.json'),
         $http.get(dataPath + 'butterfly.json')
       ];
@@ -68,10 +68,17 @@
       });
     }
 
+    /**
+     * Fetch the GeoJSON object of the requested zones.
+     * The GeoJSON objects being stored in an orderded manner in the json file,
+     * the zones parameter must be an array of indexes, indicating which zones should be returned.
+     * The returned array will contains only the requested GeoJSON zone objects.
+     * @param {Array} zones An integer array of indexes
+     */
     function getZones(zones) {
       return $http.get('data/zones.json').then(function(res) {
-        res.data.features = _.pullAt(res.data.features, zones);
-        return res.data;
+        // res.data.features = _.pullAt(res.data.features, zones);
+        return _.pullAt(res.data.features, zones);
       });
 
       // function matchesSelectedZones(zone) {
@@ -79,10 +86,25 @@
       // }
     }
 
+    /**
+     * Fetch the UUID of the requested zones.
+     * This function relies on the getZones function.
+     * Thus the zones argument must also be an array of indexes.
+     * @param zones
+     */
+    function getZonesId(zones) {
+      return getZones(zones)
+        .then(function(res) {
+          return res.map(function(zone) {
+            return zone.properties.id;
+          })
+        })
+    }
+
     function getExtremityPoints(zonesGeoData) {
       return {
-        start: _.first(zonesGeoData.features).properties.points.start,
-        end  : _.last(zonesGeoData.features).properties.points.end
+        start: _.first(zonesGeoData).properties.points.start,
+        end  : _.last(zonesGeoData).properties.points.end
       };
       // $log.log('PoiGeo:getExtremityPoints', zonesGeoData);
       // var indexedZones = [], start, end;
@@ -103,21 +125,24 @@
       // }
     }
 
-    function getFilteredPoints(zones, themes) {
-      return getPoints()
-        .then(filterPoints);
+    function getFilteredPoints(zonesIndexes, themes) {
+      return $q.all({
+        points: getPoints(),
+        zones : getZonesId(zonesIndexes)
+      }).then(filterPoints);
 
       ////////////////////
 
       function filterPoints(res) {
-        $log.log('PoiGeo:getFilteredPoints:Total number of points', res.features.length);
-        var pois = _.filter(res.features, matchesFilter);
-        $log.log('PoiGeo:getFilteredPoints:' + pois.length + ' filtered points base on', zones, themes);
+        console.log(res);
+        $log.log('PoiGeo:getFilteredPoints:Total number of points', res.points.features.length);
+        var pois = _.filter(res.points.features, matchesFilter);
+        $log.log('PoiGeo:getFilteredPoints:' + pois.length + ' filtered points based on', res.zones, themes);
         return pois;
-      }
 
-      function matchesFilter(point) {
-        return _.includes(zones, point.properties.id_zone) && _.includes(themes, point.properties.theme_name);
+        function matchesFilter(point) {
+          return _.includes(res.zones, point.properties.zoneId) && _.includes(themes, point.properties.theme);
+        }
       }
     }
   }

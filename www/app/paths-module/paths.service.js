@@ -33,7 +33,7 @@
               "name": "Du train à Champ-Pi en direct",
               "id_type": 1,
               "id_buffer": null,
-              "created_at": "2015-02-24"
+              "createdAt": "2015-02-24"
             }
           }
           , {
@@ -49,7 +49,7 @@
               "name": "Du train à Champ-Pi à basse vitesse",
               "id_type": 2,
               "id_buffer": null,
-              "created_at": "2015-02-24"
+              "createdAt": "2015-02-24"
             }
           }
         ]

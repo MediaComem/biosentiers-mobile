@@ -49,9 +49,9 @@
      */
     function getAll(criterias) {
       criterias = angular.copy(criterias);
-      // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archived_at value.
+      // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archivedAt value.
       if (ExcursionsSettings.withArchive.value === false) {
-        criterias.archived_at = null;
+        criterias.archivedAt = null;
       }
       return getCollection()
         .then(function(coll) {
@@ -87,8 +87,8 @@
      * @return {Promise}
      */
     function getStats() {
-      // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archived_at value.
-      var options = ExcursionsSettings.withArchive.value === false ? {archived_at: null} : {};
+      // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archivedAt value.
+      var options = ExcursionsSettings.withArchive.value === false ? {archivedAt: null} : {};
       return getCollection()
         .then(function(coll) {
           return coll.chain().find(options).mapReduce(statsMap, statsReduce);
@@ -157,7 +157,7 @@
 
     /**
      * Archive the given excursion.
-     * This means setting its 'archived_at' property to the current datetime.
+     * This means setting its 'archivedAt' property to the current datetime.
      * This is only possible if this property has not already been set before.
      * If a 'new' excursion is archived, it's setted to 'not new', then archived
      * @param excursion
@@ -166,8 +166,8 @@
     function archiveOne(excursion) {
       $log.log('DbExcursion:Archiving');
       if (!excursion) throw new TypeError('DbExcursions : archiveOne needs an Excursion object as its first argument, none given');
-      if (excursion.archived_at !== null) return $q.resolve(excursion);
-      excursion.archived_at = Date.now();
+      if (excursion.archivedAt !== null) return $q.resolve(excursion);
+      excursion.archivedAt = Date.now();
       return setNotNew(excursion)
         .then(updateOne)
         .then(function() {
@@ -183,7 +183,7 @@
      */
     function removeOne(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : removeOne needs an Excursion object as its first argument, none given');
-      if (excursion.archived_at === null) throw new Error('DbExcursions: removeOne can only remove an excursion if it has previously been archived.');
+      if (excursion.archivedAt === null) throw new Error('DbExcursions: removeOne can only remove an excursion if it has previously been archived.');
 
       var confirmPopup = $ionicPopup.confirm({
         title     : 'Supprimer une sortie',
@@ -198,7 +198,7 @@
         if (res) {
           return getCollection()
             .then(function(coll) { coll.remove(excursion); })
-            .then(function() { DbSeenPois.removeAllFor(excursion.qr_id); })
+            .then(function() { DbSeenPois.removeAllFor(excursion.qrId); })
             .then(function() {
               removedSubject.onNext(excursion);
               $cordovaToast.showShortBottom('"' + excursion.name + '" supprimée.')
@@ -233,15 +233,15 @@
         if (res) {
           return getCollection()
             .then(function(coll) {
-              excursion.is_new = true;
-              excursion.started_at = null;
-              excursion.paused_at = null;
-              excursion.finished_at = null;
-              excursion.archived_at = null;
+              excursion.isNew = true;
+              excursion.startedAt = null;
+              excursion.pausedAt = null;
+              excursion.finishedAt = null;
+              excursion.archivedAt = null;
               excursion.status = 'pending';
               return coll.update(excursion);
             })
-            .then(function() { return DbSeenPois.removeAllFor(excursion.qr_id); })
+            .then(function() { return DbSeenPois.removeAllFor(excursion.qrId); })
             .then(function() {
               reinitializedSubject.onNext(excursion);
               $cordovaToast.showShortBottom('"' + excursion.name + '" réinitialisée.')
@@ -256,15 +256,15 @@
 
     /**
      * Restore the given excursion.
-     * This means setting its 'archived_at' property to null.
+     * This means setting its 'archivedAt' property to null.
      * This is only possible if this property is not already equal to null.
      * @param excursion
      * @return {Promise}
      */
     function restoreOne(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : restoreOne needs an Excursion object as its first argument, none given');
-      if (excursion.archived_at === null) return $q.resolve(excursion);
-      excursion.archived_at = null;
+      if (excursion.archivedAt === null) return $q.resolve(excursion);
+      excursion.archivedAt = null;
       return updateOne(excursion)
         .then(function() {
           restoredSubject.onNext(excursion);
@@ -278,14 +278,14 @@
      * If you pass an excursion with a status other than 'pending', the promise will be resolved, but the excursion will remain untouched.
      * @param {ExcursionClass} excursion The excursion whose status should be set as 'oingoing'
      * @param {String} excursion.status This property must have a value of 'pending'. It will be set to 'ongoing'
-     * @param {Number} excursion.started_at This property should be empty. It will be set as the current timestamp.
+     * @param {Number} excursion.startedAt This property should be empty. It will be set as the current timestamp.
      * @return {Promise} A promise of an updated Excursion
      */
     function setOngoingStatus(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : setOngoingStatus needs an Excursion object as its first argument, none given');
       if (excursion.status !== 'pending') return $q.resolve(excursion);
       excursion.status = 'ongoing';
-      excursion.started_at = Date.now();
+      excursion.startedAt = Date.now();
       return updateOne(excursion);
     }
 
@@ -295,14 +295,14 @@
      * Note that if you pass an excursion with a status other than 'ongoing', the promise will be resolved, but the excursion will remain untouched.
      * @param {ExcursionClass} excursion The excursion whose status should be set as 'finished'
      * @param {String} excursion.status This property must have a value of 'ongoing'. It will be set to 'finished'
-     * @param {Number} excursion.finished_at This property should be empty. It will be set as the current timestamp.
+     * @param {Number} excursion.finishedAt This property should be empty. It will be set as the current timestamp.
      * @return {Promise} A promise of an updated Excursion
      */
     function setFinishedStatus(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : setFinishedStatus needs an Excursion object as its first argument, none given');
       if (excursion.status !== 'ongoing') return $q.resolve(excursion);
       excursion.status = 'finished';
-      excursion.finished_at = Date.now();
+      excursion.finishedAt = Date.now();
       return updateOne(excursion);
     }
 
@@ -314,8 +314,8 @@
     function setNotNew(excursion) {
       $log.log('DbExcursion:Setting as not new');
       if (!excursion) throw new TypeError('DbExcursions : setNotNew needs an Excursion object as its first argument, none given');
-      if (!excursion.is_new) return $q.resolve(excursion);
-      excursion.is_new = false;
+      if (!excursion.isNew) return $q.resolve(excursion);
+      excursion.isNew = false;
       return updateOne(excursion);
     }
 
@@ -327,8 +327,8 @@
      */
     function setNew(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : setNew needs an Excursion object as its first argument, none given');
-      if (excursion.is_new || excursion.status !== 'pending') return $q.resolve(excursion);
-      excursion.is_new = true;
+      if (excursion.isNew || excursion.status !== 'pending') return $q.resolve(excursion);
+      excursion.isNew = true;
       return updateOne(excursion);
     }
 

@@ -151,11 +151,11 @@
      */
     function addMapMarkers(poisToAdd) {
       _.each(poisToAdd, function(poi) {
-        bigMap.config.markers[poi.properties.id_poi] = {
+        bigMap.config.markers[poi.properties.id] = {
           layer: 'markers',
           lat  : poi.geometry.coordinates[1],
           lng  : poi.geometry.coordinates[0],
-          icon : MapIcons.get(poi.properties.theme_name)
+          icon : MapIcons.get(poi.properties.theme)
         };
       })
     }

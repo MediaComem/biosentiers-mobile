@@ -19,7 +19,7 @@
       $log.log('PoiModal:currentPoiChangeObs', data);
       poiCtrl.poi = data.poi;
       poiCtrl.hasBeenSeen = SeenTracker.hasBeenSeen(poiCtrl.poi);
-      poiCtrl.commonNameLanguages = Object.keys(poiCtrl.poi.properties.common_name);
+      poiCtrl.commonNameLanguages = Object.keys(poiCtrl.poi.properties.commonName);
       $log.log('PoiModalCtrl:poiCtrl.commonNameLanguages', poiCtrl.commonNameLanguages);
       PoiCardService.setup(poiCtrl, data.details);
     });

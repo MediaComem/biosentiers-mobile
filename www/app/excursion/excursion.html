@@ -4,10 +4,10 @@
 			<i class="icon ion-android-more-vertical"></i>
 		</button>
 	</ion-nav-buttons>
-	<ion-content ng-class="{'archived_at': excursion.isArchived()}">
+	<ion-content ng-class="{'archivedAt': excursion.isArchived()}">
 		<div class="excursion-map-container">
 			<div class="white-dropdown" ng-if="excursion.activeFAB"></div>
-			<leaflet id="{{ excursion.data.qr_id }}" maxbounds="excursion.mapConfig.maxbounds"
+			<leaflet id="{{ excursion.data.qrId }}" maxbounds="excursion.mapConfig.maxbounds"
 			         defaults="excursion.mapConfig.defaults"
 			         tiles="excursion.mapConfig.tiles" center="excursion.mapConfig.center"
 			         geojson="excursion.mapConfig.geojson" geojson-nested="true" markers="excursion.mapConfig.markers"
@@ -22,21 +22,21 @@
 				<span
 						class="bio-badge-{{excursion.data.status}} badge excursion-status">{{excursion.data.status | status}}</span>
 				<button id="ar-action" class="button button-assertive" on-release="excursion.actionButtonClick()"
-				        ng-disabled="excursion.data.archived_at !== null"><i
+				        ng-disabled="excursion.data.archivedAt !== null"><i
 						class="icon ion-iphone"></i>{{excursion.data.status | excursionActionButton}}
 				</button>
 			</div>
 		</div>
 		<div class="padding">
-			<div class="row" ng-if="excursion.data.started_at">
+			<div class="row" ng-if="excursion.data.startedAt">
 				<div class="col text-left">Commencée le</div>
-				<div class="col text-right">{{excursion.data.started_at | date:'dd.MM.yyyy'}} à {{excursion.data.started_at |
+				<div class="col text-right">{{excursion.data.startedAt | date:'dd.MM.yyyy'}} à {{excursion.data.startedAt |
 					date:'HH:mm'}}
 				</div>
 			</div>
-			<div class="row" ng-if="excursion.data.finished_at">
+			<div class="row" ng-if="excursion.data.finishedAt">
 				<div class="col text-left">Terminée le</div>
-				<div class="col text-right">{{excursion.data.finished_at | date:'dd.MM.yyyy'}} à {{excursion.data.finished_at |
+				<div class="col text-right">{{excursion.data.finishedAt | date:'dd.MM.yyyy'}} à {{excursion.data.finishedAt |
 					date:'HH:mm'}}
 				</div>
 			</div>
@@ -46,7 +46,7 @@
 			</div>
 			<div class="row">
 				<div class="col text-left">Créée par</div>
-				<div class="col text-right">{{excursion.data.created_by}}</div>
+				<div class="col text-right">{{excursion.data.createdBy}}</div>
 			</div>
 			<div class="themes">
 				<div class="row">

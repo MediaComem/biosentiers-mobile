@@ -47,20 +47,20 @@
 
     DbExcursions.setNotNew(excursion.data);
 
-    leafletData.getMap(excursion.data.qr_id).then(function(map) {
+    leafletData.getMap(excursion.data.qrId).then(function(map) {
       excursion.map = map;
     }).catch(handleError);
 
-    DbSeenPois.countFor(excursion.data.qr_id).then(function(res) {
+    DbSeenPois.countFor(excursion.data.qrId).then(function(res) {
       excursion.nbSeenPoi = res;
     }).catch(handleError);
 
     DbSeenPois.seenPoiObs.subscribe(function(data) {
-      if (excursion.data.qr_id === data.qrId) excursion.nbSeenPoi = data.nbSeen;
+      if (excursion.data.qrId === data.qrId) excursion.nbSeenPoi = data.nbSeen;
     });
 
     RefreshData.subscribe(function(newData) {
-      if (newData.qr_id === excursion.data.qr_id) excursion.data = newData;
+      if (newData.qrId === excursion.data.qrId) excursion.data = newData;
     });
 
     $ionicPopover
@@ -287,21 +287,21 @@
 
       var promises = {
         pois    : PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
-        seenPois: DbSeenPois.getAll(excursion.data.qr_id)
+        seenPois: DbSeenPois.getAll(excursion.data.qrId)
       };
 
       return $q.all(promises).then(function(results) {
         $log.log('ExcursionCtrl:loadWorldExcursion', results);
         var arData = {
           name           : excursion.data.name,
-          qrId           : excursion.data.qr_id,
-          serverId       : excursion.data.server_id,
+          qrId           : excursion.data.qrId,
+          serverId       : excursion.data.serverId,
           participantId  : excursion.data.participant.id,
           themes         : excursion.data.themes,
           path           : geoData.path,
           extremityPoints: geoData.extremityPoints,
           pois           : results.pois,
-          seen           : _.map(results.seenPois, 'poi_id')
+          seen           : _.map(results.seenPois, 'poiId')
         };
         $log.info('ExcursionCtrl:loadWorldExcursion:excursion.arData', arData);
         WorldActions.execute('loadExcursion', arData);
@@ -312,11 +312,11 @@
      * Redirect the user to the list of seen elements, if he/she has effectively seen at least one element.
      */
     function goToSeenList() {
-      excursion.nbSeenPoi > 0 && $state.go('app.excursion.seenlist', {excursionId: excursion.data.qr_id});
+      excursion.nbSeenPoi > 0 && $state.go('app.excursion.seenlist', {excursionId: excursion.data.qrId});
     }
 
     function isArchived() {
-      return excursion.data.archived_at !== null;
+      return excursion.data.archivedAt !== null;
     }
 
     // Zip download

@@ -25,13 +25,13 @@
 
     /**
      * Tries to get all the POIs that have been seen for a particuler excursion.
-     * @param qrId The qr_id of the Excursion for which we want to get all the seen POIs.
+     * @param qrId The qrId of the Excursion for which we want to get all the seen POIs.
      * @return {Promise} A promise of an Array containing the POIs that have been seen for the specified Excursion
      */
     function getAll(qrId) {
       return DbBio.getCollection(collName)
         .then(function(coll) {
-          var res = coll.find({qr_id: qrId});
+          var res = coll.find({qrId: qrId});
           console.log('DbSeenPois:getAll:result', res);
           return res;
         })
@@ -44,14 +44,14 @@
      */
     function countFor(qrId) {
       return DbBio.getCollection(collName)
-        .then(function(coll) { return coll.count({qr_id: qrId}); })
+        .then(function(coll) { return coll.count({qrId: qrId}); })
         .catch(handleError);
     }
 
     /**
      * Adds a new seen poi to the collection, that matches the given parameter.
-     * @param qrId The qr_id of the excursion
-     * @param serverId The server_id of the excursion in which the poi has been seen
+     * @param qrId The qrId of the excursion
+     * @param serverId The serverId of the excursion in which the poi has been seen
      * @param participantId The id of the excursion's participan
      * @param poiId The ID of the POI that have been seen.
      * @param poiData The GeoJSON object of the seen POI.
@@ -71,14 +71,14 @@
     }
 
     /**
-     * Remove all the SeenPoi from the database whose server_id matches the given excursionId parameter.
+     * Remove all the SeenPoi from the database whose serverId matches the given excursionId parameter.
      * @param qrId
      */
     function removeAllFor(qrId) {
       return DbBio.getCollection(collName)
         .then(function(coll) {
           $log.debug('DbSeenPois:removeAllFor:collection before removing:', qrId, angular.copy(coll));
-          var res = coll.removeWhere({qr_id: qrId});
+          var res = coll.removeWhere({qrId: qrId});
           $log.debug('DbSeenPois:removeAllFor:collection after removing:', angular.copy(coll));
           return res;
         })
@@ -97,20 +97,20 @@
           type       : "Point"
         },
         properties: {
-          common_name : {
+          commonName : {
             de: "Thunbergs Berberitze",
             fr: "Epine-vinette de Thunberg",
             it: "Crespino di Thunberg",
             la: "Berberis thunbergii"
           },
-          created_at  : "20170402112523",
+          createdAt  : "20170402112523",
           id_poi      : 166,
-          id_specie   : 122,
-          id_zone     : 1,
-          owner_name  : "Alain Jotterand",
-          period_end  : 5,
-          period_start: 5,
-          theme_name  : "tree"
+          speciesId   : 122,
+          zoneId     : 1,
+          ownerName  : "Alain Jotterand",
+          periodEnd  : 5,
+          periodStart: 5,
+          theme  : "tree"
         },
         type      : "Feature"
       };
@@ -128,20 +128,20 @@
     /**
      * Creates a new Seen object, that represents a POI seen in an Excursion
      * The seenAt property of this object will be set as Date.now().
-     * @param qrId The qr_id of the Excursion in which the POI has been seen
-     * @param serverId The server_id of the Excursion in which the POI has been seen
+     * @param qrId The qrId of the Excursion in which the POI has been seen
+     * @param serverId The serverId of the Excursion in which the POI has been seen
      * @param participantId The id of the participant to the Excursion that has seen the POI
      * @param poiId The id of the POI that has been seen
      * @param poiData The GeoJSON data of the seen POI
      * @constructor
      */
     function Seen(qrId, serverId, participantId, poiId, poiData) {
-      this.qr_id = qrId;
-      this.server_id = serverId;
-      this.participant_id = participantId;
-      this.poi_id = poiId;
-      this.poi_data = poiData;
-      this.seen_at = Date.now();
+      this.qrId = qrId;
+      this.serverId = serverId;
+      this.participantId = participantId;
+      this.poiId = poiId;
+      this.poiData = poiData;
+      this.seenAt = Date.now();
     }
 
     /**

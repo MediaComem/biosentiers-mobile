@@ -20,8 +20,8 @@
 
       self.poi = poi;
       self.properties = poi.properties;
-      self.relativeAltitudeDelta = Altitude.getRelativeDelta(self.poi.properties.theme_name);
-      self.minActiveDistance = getMinActiveDistance(self.properties.theme_name);
+      self.relativeAltitudeDelta = Altitude.getRelativeDelta(self.properties.theme);
+      self.minActiveDistance = getMinActiveDistance(self.properties.theme);
 
       $log.debug('ArBaseMarker -> self', self);
       self.location = new AR.GeoLocation(self.poi.geometry.coordinates[1], self.poi.geometry.coordinates[0]);

@@ -41,7 +41,7 @@
         // Whatever's the state of the excursion, its sheep can be consulted
         options.buttons.push({text: '<i class="icon ion-android-arrow-forward"></i>Accéder à la fiche'});
         options.actions.push(function(excursion) {
-          $state.go('app.excursion', {qrId: excursion.qr_id});
+          $state.go('app.excursion', {qrId: excursion.qrId});
         });
 
         if (excursion.status === 'finished') {
@@ -86,7 +86,7 @@
      * @return {boolean}
      */
     function isArchived() {
-      return excursion.archived_at !== null;
+      return excursion.archivedAt !== null;
     }
 
     /**
@@ -121,8 +121,8 @@
       if (excursion.status === 'pending') {
         var setNotNewText = '<i class="icon ion-android-checkmark-circle"></i> Marquer comme vue';
         var setNewText = '<i class="icon ion-android-radio-button-off"></i> Marquer comme nouvelle';
-        opt.buttons.push({text: excursion.is_new ? setNotNewText : setNewText});
-        opt.actions.push(excursion.is_new ? DbExcursions.setNotNew : DbExcursions.setNew);
+        opt.buttons.push({text: excursion.isNew ? setNotNewText : setNewText});
+        opt.actions.push(excursion.isNew ? DbExcursions.setNotNew : DbExcursions.setNew);
       }
     }
 

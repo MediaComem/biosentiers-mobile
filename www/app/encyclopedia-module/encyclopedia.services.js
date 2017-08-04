@@ -19,8 +19,8 @@
 
       return PoiGeo.getPoints().then(function(success) {
         if(theme){
-          var groupedbyTheme = _.groupBy(success.data.features, function(d){return d.properties.theme_name});
-          return _.groupBy(_.sortBy(groupedbyTheme[theme],"properties.common_name"), function(d){return d.properties.common_name});
+          var groupedbyTheme = _.groupBy(success.data.features, function(d){return d.properties.theme});
+          return _.groupBy(_.sortBy(groupedbyTheme[theme],"properties.commonName"), function(d){return d.properties.commonName});
         }
         else{
           return success.data.features;
@@ -33,7 +33,7 @@
 
     function getOne(speciesId) {
       return getAll().then(function(encyclopedia) {
-        return _.filter(encyclopedia, function(species){ return species.properties.id_specie === speciesId; });
+        return _.filter(encyclopedia, function(species){ return species.properties.speciesId === speciesId; });
       });
     }
   }

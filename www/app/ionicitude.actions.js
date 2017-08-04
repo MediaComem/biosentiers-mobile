@@ -94,7 +94,7 @@
       }
 
       function finishExcursion(service, param) {
-        return $q.when({qr_id: param.qrId})
+        return $q.when({qrId: param.qrId})
           .then(DbExcursions.getOne)
           .then(DbExcursions.setFinishedStatus)
           .then(_.partial(close, service))

@@ -132,6 +132,7 @@
      * Loads in the AR View both the start point and the end point of the excursion.
      */
     function loadExtremityPoints() {
+      console.log(Excursion.startPoint, Excursion.endPoint);
       arExtremityPoints = {
         start: new ArExtremityMarker(Excursion.startPoint),
         end  : new ArExtremityMarker(Excursion.endPoint, onEnterActionRange)
@@ -487,7 +488,7 @@
       // Important: must return a string as the resulting value is used both
       // in array and as object keys (it is automatically casted to a string
       // when used as an object key).
-      return '' + poi.properties.id_poi;
+      return '' + poi.properties.id;
     }
   }
 })();

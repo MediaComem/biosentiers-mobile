@@ -126,9 +126,9 @@
      * @param newExcursion
      */
     function load(newExcursion) {
+      $log.debug('Excursion loaded', newExcursion);
       if (newExcursion) {
         excursion = newExcursion;
-        $log.debug('Excursion loaded', excursion);
         excursionSubject.onNext(excursion);
         excursionSubject.onCompleted();
       }
@@ -140,7 +140,7 @@
      */
     function loadCurrentPoi(poi) {
 
-      var params  = {specieId: poi.properties.id_specie, theme: poi.properties.theme_name},
+      var params  = {specieId: poi.properties.speciesId, theme: poi.properties.theme},
           options = {return: true};
 
       AppActions.execute('loadPoiDetails', params, options).then(function(details) {
