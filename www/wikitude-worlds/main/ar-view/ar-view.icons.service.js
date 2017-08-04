@@ -70,28 +70,31 @@
      * @return {AR.ImageDrawable} The requested ImageDrawable.
      */
     function getIcon(type, state, hasBeenSeen) {
-      var storage, opacity;
+      var storage, suffix = '';
       if (state === 'active') {
         storage = hasBeenSeen ? iconsSeenActive : iconsActive;
-        opacity = 1;
       } else if (state === 'inactive') {
         storage = hasBeenSeen ? iconsSeenInactive : iconsInactive;
-        opacity = 0.5;
       }
 
       if (!storage[type] || storage[type].destroyed) {
-        var img = new AR.ImageResource("assets/icons/" + type + (hasBeenSeen ? "_seen.png" : ".png"), {
+        if (type !== 'start' && type !== 'end') {
+          if (state === 'inactive') suffix += '_far';
+          if (hasBeenSeen) suffix += '_seen';
+        }
+        suffix += '.png';
+        var img = new AR.ImageResource("assets/icons/" + type + suffix, {
           onError: function() {
             throw new SyntaxError("Aucun marqueur existant pour le type '" + type + "'.");
           }
         });
         storage[type] = new AR.ImageDrawable(img, 1, {
           zOrder : 0,
-          opacity: opacity
+          opacity: 1
         });
       }
 
-      $log.debug("ar-view.icons.service.js - getIcon()", type, state, hasBeenSeen, storage, opacity);
+      $log.debug("ar-view.icons.service.js - getIcon()", type, state, hasBeenSeen, storage);
       return storage[type];
     }
   }
