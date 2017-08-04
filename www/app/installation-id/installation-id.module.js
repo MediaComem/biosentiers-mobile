@@ -1,5 +1,7 @@
 /*
-
+  Service responsible for generating and reading the installation id of an app instance.
+  This installation id will then be used when connecting to the backend for synchonization purposes.
+  To get the value of this id, call the only service's method getValue ; the actual value is accesible through the id property of the result
  */
 (function() {
   'use strict';
@@ -8,11 +10,12 @@
   angular.module('installation-id-module')
     .factory('InstallationId', InstallationIdFn);
 
-  function InstallationIdFn($ionicPlatform, $cordovaFile, $log, $q) {
+  function InstallationIdFn($cordovaFile, $log, $q) {
     var deferred,
         fileName = 'installation-id.txt',
-        service = {
-          getValue: fetchOrCreate
+        service  = {
+          getValue: fetchOrCreate,
+          regen   : regenFn
         };
 
     return service;
@@ -26,11 +29,9 @@
     function fetchOrCreate() {
       if (!deferred) {
         deferred = $q.defer();
-        $ionicPlatform.ready(function() {
-          $cordovaFile.checkFile(cordova.file.dataDirectory, fileName)
-            .then(readFile)
-            .catch(failedChedk)
-        })
+        $cordovaFile.checkFile(cordova.file.dataDirectory, fileName)
+          .then(readFile)
+          .catch(failedChedk)
       }
       return deferred.promise;
     }
@@ -42,7 +43,8 @@
     function readFile() {
       $cordovaFile.readAsText(cordova.file.dataDirectory, fileName)
         .then(function(content) {
-          deferred.resolve(content);
+          console.log('Installation Id value', content);
+          deferred.resolve(JSON.parse(content));
         })
         .catch(function(error) {
           deferred.reject(error);
@@ -67,17 +69,30 @@
      * If it fails, then the promise is rejected instead.
      */
     function createIidFile() {
-      var iid = b();
-      $log.debug('InstallationId generated iid', iid);
-      $cordovaFile.writeFile(cordova.file.dataDirectory, fileName, iid, false)
+      var now     = new Date(),
+          content = {
+            id            : b(),
+            firstStartedAt: now.toISOString(),
+            properties    : {
+              device: device
+            }
+          };
+      $log.debug('InstallationId generated iid', content);
+      $cordovaFile.writeFile(cordova.file.dataDirectory, fileName, JSON.stringify(content), true)
         .then(function(result) {
           $log.debug('InstallationId create file success', result);
-          deferred.resolve(iid);
+          deferred.resolve(content);
         })
         .catch(function(error) {
           $log.debug('InstallationId create file error', error);
           deferred.reject(error);
         })
+    }
+
+    function regenFn() {
+      deferred = $q.defer();
+      createIidFile();
+      return deferred.promise;
     }
 
     /**

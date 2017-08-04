@@ -5,16 +5,25 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform, $log, InstallationId) {
+  function run($ionicPlatform, $log, InstallationSecret, InstallationId) {
 
     $ionicPlatform.ready(function() {
       ionicInitialize();
       if ($ionicPlatform.is('android')) grantAndroidPermissions();
-      // Generates or load the app IID
-      InstallationId.getValue()
-        .then(function(iid) {
-          $log.debug('Installation identifier', iid);
-        });
+
+      InstallationId.getValue();
+      InstallationSecret.exists()
+        .then(InstallationSecret.getValue)
+        .then(function(value) {
+          console.log('Installation Secret value', value);
+        })
+        .catch(function(error) {
+          if (error.code === 1) {
+            InstallationSecret.registerApp();
+          } else {
+            $log.error(error);
+          }
+        })
     });
 
     ////////////////////

@@ -368,7 +368,6 @@ function time() {
 }
 
 // TODO : remove
-
 gulp.task('rename', function() {
 
-})
+});
