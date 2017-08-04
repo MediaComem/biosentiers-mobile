@@ -244,13 +244,13 @@ function updateLocalData(serverData) {
   // const zonesFeatureCollection = {
   //   name    : 'zone',
   //   type    : 'FeatureCollection',
-  //   features: serverData.zones.map(zone => {
-  //     console.log(zone);
-  //     throw Error();
-  //     apiResourceToGeoJsonFeature(zone)
-  //   })
+  //   features: serverData.zones.map(zone => apiResourceToGeoJsonFeature(zone))
   // };
-  const zonesFeatures = serverData.zones.map(zone => turf.feature(zone.geometry, _.omit(zone, 'geometry')));
+  const zonesFeatures = serverData.zones.map(zone => {
+    zone.points.start = turf.feature(zone.points.start.geometry, _.assign(_.omit(zone.points.start, 'geometry'), {theme: 'extremity', type: 'start'}));
+    zone.points.end = turf.feature(zone.points.end.geometry, _.assign(_.omit(zone.points.end, 'geometry'), {theme: 'extremity', type: 'end'}));
+    return turf.feature(zone.geometry, _.omit(zone, 'geometry'))
+  });
   const zonesFeatureCollection = turf.featureCollection(zonesFeatures);
   saveZonesInFile(zonesFeatureCollection);
 
@@ -366,3 +366,9 @@ function time() {
   const date = new Date();
   return `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`;
 }
+
+// TODO : remove
+
+gulp.task('rename', function() {
+
+})
