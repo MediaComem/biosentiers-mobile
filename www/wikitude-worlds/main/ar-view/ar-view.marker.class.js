@@ -20,7 +20,7 @@
 
       var self = this;
 
-      self.id = poi.properties.id_poi;
+      self.id = poi.properties.id;
       self.hasBeenSeen = hasBeenSeen;
 
       self.actionRange = new AR.ActionRange(self.location, self.minActiveDistance, {
@@ -29,9 +29,9 @@
       });
 
       if (self.distanceToUser() > self.minActiveDistance) {
-        self.icon = ArIcons.getInactive(self.properties.theme_name, self.hasBeenSeen);
+        self.icon = ArIcons.getInactive(self.properties.theme, self.hasBeenSeen);
       } else {
-        self.icon = ArIcons.getActive(self.properties.theme_name, self.hasBeenSeen);
+        self.icon = ArIcons.getActive(self.properties.theme, self.hasBeenSeen);
       }
 
       self.geoObject.onClick = onClick(self);
@@ -51,7 +51,7 @@
      */
     ArMarker.prototype.setSeen = function() {
       this.hasBeenSeen = true;
-      this.geoObject.drawables.cam = [ArIcons.getActive(this.properties.theme_name, this.hasBeenSeen)];
+      this.geoObject.drawables.cam = [ArIcons.getActive(this.properties.theme, this.hasBeenSeen)];
     };
 
     /**
@@ -79,7 +79,7 @@
        * It will change the ArPoi's Icon to an opaque one, indicating that the ArPoi can be clicked.
        */
       return function onEnterSetActive() {
-        ArPoi.geoObject.drawables.cam = [ArIcons.getActive(ArPoi.properties.theme_name, ArPoi.hasBeenSeen)];
+        ArPoi.geoObject.drawables.cam = [ArIcons.getActive(ArPoi.properties.theme, ArPoi.hasBeenSeen)];
       }
     }
 
@@ -94,7 +94,7 @@
        * It will change the ArPoi's Icon to a transparent one, indicating that the ArPoi can't be clicked.
        */
       return function onExitSetInactive() {
-        ArPoi.geoObject.drawables.cam = [ArIcons.getInactive(ArPoi.properties.theme_name, ArPoi.hasBeenSeen)];
+        ArPoi.geoObject.drawables.cam = [ArIcons.getInactive(ArPoi.properties.theme, ArPoi.hasBeenSeen)];
       }
     }
   }

@@ -105,12 +105,12 @@
     }
 
     function matchBySelectedThemes(poi) {
-      return _.isObject(poi.properties) && _.includes(selected.themes, poi.properties.theme_name);
+      return _.isObject(poi.properties) && _.includes(selected.themes, poi.properties.theme);
     }
 
     function isOffSeason(poi) {
       var currentMonth = new Date().getMonth() + 1;
-      return poi.properties.period_start > currentMonth || poi.properties.period_end < currentMonth;
+      return poi.properties.periodStart > currentMonth || poi.properties.periodEnd < currentMonth;
     }
   }
 })();

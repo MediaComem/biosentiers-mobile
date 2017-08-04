@@ -1,6 +1,6 @@
 <div class="existing-excursion">
 	<p>
-		Cette sortie existe <strong>{{ auth.existingExcursions.length }} fois</strong> sur ce téléphone, avec le{{auth.existingExcursions.length > 1 ? 's' : ''}} participant{{auth.existingExcursions.length > 1 ? 's' : ''}} :
+		Cette sortie existe <strong>{{ auth.existingExcursions.length }} fois</strong> sur cet appareil, avec le{{auth.existingExcursions.length > 1 ? 's' : ''}} participant{{auth.existingExcursions.length > 1 ? 's' : ''}} :
 	</p>
 	<p>
 		<span class="participant" ng-repeat="excursion in auth.existingExcursions">{{ excursion.participant.name }}</span>

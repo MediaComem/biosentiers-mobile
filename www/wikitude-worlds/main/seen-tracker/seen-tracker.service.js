@@ -35,11 +35,11 @@
      * @param poi The POI to save as seen.
      */
     function addSeenPoi(poi) {
-      if (!_.includes(seenPois, poi.properties.id_poi)) {
-        seenPois.push(poi.properties.id_poi);
+      if (!_.includes(seenPois, poi.properties.id)) {
+        seenPois.push(poi.properties.id);
         $log.log(seenPois);
         var param = {
-          poiId        : poi.properties.id_poi,
+          poiId        : poi.properties.id,
           poiData      : poi,
           qrId         : Excursion.qrId,
           serverId     : Excursion.serverId,
@@ -63,7 +63,7 @@
      * @return {boolean} True if the POI has been seen, False if the POI remains to be seen.
      */
     function hasBeenSeen(poi) {
-      var seen = _.includes(seenPois, poi.properties.id_poi);
+      var seen = _.includes(seenPois, poi.properties.id);
       $log.log('SeenTracker:hasBeenSeen', poi, seenPois, seen);
       return seen;
     }

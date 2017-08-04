@@ -1,10 +1,10 @@
 <ion-view view-title="Oiseaux">
   <ion-content on-swipe-right="goBack()" on-swipe-left="goForward()">
     <ion-list>
-      <ion-item ng-repeat="specie in ctrl.encyclopedia" href="#/app/encyclopedia/{{specie[0].properties.id_specie}}">
+      <ion-item ng-repeat="specie in ctrl.encyclopedia" href="#/app/encyclopedia/{{specie[0].properties.speciesId}}">
 
-        <h2>{{specie[0].properties.common_name}}</h2>
-        <p>Habitat: {{specie[0].properties.habitat_characteristics}}</p>
+        <h2>{{specie[0].properties.commonName}}</h2>
+        <p>Habitat: {{specie[0].properties.characteristics.habitat}}</p>
 
       </ion-item>
     </ion-list>

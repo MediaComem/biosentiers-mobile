@@ -16,13 +16,13 @@
     /**
      * Creates a new Excursion object, with the values passed a arguments.
      * The following properties will also be created with default values:
-     * * qr_id (which identify this excursion with this participant on the app) will concatenate the server_id value and the participant.id value with a "-"
+     * * qrId (which identify this excursion with this participant on the app) will concatenate the serverId value and the participant.id value with a "-"
      * * status will be set to 'pending'
-     * * added_at will be set to the current time and date
+     * * addedAt will be set to the current time and date
      * * nb_seen will be set to 0
-     * * is_new will be set to true
-     * @param created_by The name of the person who created the excursion
-     * @param server_id A number identifying the excursion on the server
+     * * isNew will be set to true
+     * @param createdBy The name of the person who created the excursion
+     * @param serverId A number identifying the excursion on the server
      * @param name The title of the excursion
      * @param date The date at which the excursion is suppoed to take place
      * @param participant An object representing the participant data for this excursion
@@ -30,23 +30,23 @@
      * @param zones The path zones requested for this excursion
      * @constructor
      */
-    function Excursion(created_by, server_id, date, name, participant, themes, zones) {
+    function Excursion(createdBy, serverId, date, name, participant, themes, zones) {
       // TODO id de type number, valeur du status, valeur par défaut des dates
-      this.created_by = created_by;
-      this.server_id = server_id;
+      this.createdBy = createdBy;
+      this.serverId = serverId;
       this.date = date;
       this.name = name;
       this.participant = angular.copy(participant);
       this.themes = angular.copy(themes);
       this.zones = angular.copy(zones);
       this.status = status || 'pending';
-      this.added_at = new Date();
-      this.started_at = null;
-      this.paused_at = null;
-      this.finished_at = null;
-      this.is_new = true;
-      this.archived_at = null;
-      this.qr_id = this.server_id + "-" + this.participant.id;
+      this.addedAt = new Date();
+      this.startedAt = null;
+      this.pausedAt = null;
+      this.finishedAt = null;
+      this.isNew = true;
+      this.archivedAt = null;
+      this.qrId = this.serverId + "-" + this.participant.id;
     }
 
     /**

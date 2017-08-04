@@ -20,7 +20,7 @@
     initialize();
 
     Excursion.excursionChangeObs.subscribe(function() {
-    // Excursion.excursionChangeObs.first().subscribe(function() {
+      // Excursion.excursionChangeObs.first().subscribe(function() {
       service.config.markers.start = {
         lat : Excursion.startPoint.geometry.coordinates[1],
         lng : Excursion.startPoint.geometry.coordinates[0],
@@ -43,9 +43,9 @@
     function initialize() {
       service.config = {
         tiles   : {
-          url    : '../../data/Tiles/{z}/{x}/{y}.png',
+          url    : '../../tiles/{z}/{x}/{y}.png',
           options: {
-            errorTileUrl: '../../data/Tiles/error.png'
+            errorTileUrl: '../../tiles/error.png'
           }
         },
         defaults: {
@@ -98,13 +98,16 @@
     function updateMapMarkers(mapMarkerChanges) {
       $log.log(mapMarkerChanges);
       _.each(mapMarkerChanges.hidden, function(marker) {
-        delete service.config.markers[marker.properties.id_poi];
+        delete service.config.markers[marker.properties.id];
       });
       _.each(mapMarkerChanges.shown, function(marker) {
-        service.config.markers[marker.properties.id_poi] = {
+        // console.log('MiniMap:updateMapMarkers: id before replace', marker.properties.id);
+        // marker.properties.id = marker.properties.id.replace(/-/g, '');
+        // console.log('MiniMap:updateMapMarkers: id after replace', marker.properties.id);
+        service.config.markers[marker.properties.id] = {
           lat : marker.geometry.coordinates[1],
           lng : marker.geometry.coordinates[0],
-          icon: MapIcons.get(marker.properties.theme_name)
+          icon: MapIcons.get(marker.properties.theme)
         }
       });
       $log.log('updateMapMarkers', service.config);

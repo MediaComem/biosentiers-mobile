@@ -37,12 +37,19 @@
   * Change `this._sdkKey` in `/platforms/android/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` for Android.
   * Change `this._sdkKey` in `/platforms/ios/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` for iOS.
 
+## Downloading the data
+
+The application data is not commited in this GitHub repository, and thus must be downloaded before working or installing the app.
+
+To do so, use the dedicated gulp task `update-data` (see below).
+
+This task will create the `data` directory and all its files.
+
 ## Development
 
 [Gulp](http://gulpjs.com) tasks are provided to make your life easier.
 
-The default task, launched by typing `glup` in a terminal in the project's directory,
-executes most useful development tasks in one go.
+The default task, launched by typing `glup` in a terminal in the project's directory, executes most useful development tasks in one go.
 It runs the `compile`, `inject` and `watch` tasks that are described below.
 
 ### Compilation tasks
@@ -54,9 +61,7 @@ It runs the `compile`, `inject` and `watch` tasks that are described below.
 
 The [gulp-inject](https://www.npmjs.com/package/gulp-inject) plugin is used to automatically include CSS and JS files in the application's HTML pages.
 
-**Note:** this only works for application files added by developers,
-not files of third-party libraries like Lodash, Turf or Leaflet.
-Those must still be added manually.
+**Note:** this only works for application files added by developers, not files of third-party libraries like Lodash, Turf or Leaflet. Those must still be added manually.
 
 * `gulp inject:app` - Lists CSS and JS files in `www/app` and automatically injects the corresponding `<link>` and `<script>`
   tags in `www/index.html`, where the `<!-- inject:css -->` and `<!-- inject:js -->` comments are.
@@ -70,14 +75,17 @@ Those must still be added manually.
 
 To avoid manually launching the above tasks every time a file is added, modified and deleted, the following tasks are provided.
 
-* `gulp watch:app` - Observes additions and deletions of CSS and JS files in the `www/app`
-  directory and updates injections in `www/index.html` in real time.
-* `gulp watch:wikitude` - Observes additions and deletions of CSS and JS files in the `www/wikitude-worlds`
-  directory and updates injections in `www/wikitude-worlds/main/index.html` in real time.
+* `gulp watch:app` - Observes additions and deletions of CSS and JS files in the `www/app` directory and updates injections in `www/index.html` in real time.
+* `gulp watch:wikitude` - Observes additions and deletions of CSS and JS files in the `www/wikitude-worlds` directory and updates injections in `www/wikitude-worlds/main/index.html` in real time.
 * `gulp watch:sass` - Observes the Sass files in the `scss` directory and automatically compiles them into `www/css` in real time.
 * `gulp watch` - Executes the three above tasks in parallel.
 
 **Note:** these tasks keep executing until they are stopped with Ctrl-C.
+
+### Misc task
+
+* `gulp update-data` - Download all the trail and POI data (geographic or informative) with a call to the backend API. The received JSON is then manipulated and saved in adequates files and folders, all under the `data` directory, which will be created if not existing.
+  **Call this task again at anytime to update the data with the latest version available in the backend database.**
 
 ## Conventions
 

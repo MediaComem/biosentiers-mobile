@@ -5,33 +5,33 @@
 	<div class="poi-card-content">
 		<div class="list card">
 			<div class="item item-button-right">
-				Nom Commun<span style="float: right">{{poiCtrl.content.common_name.fr}}</span>
+				Nom Commun<span style="float: right">{{poiCtrl.content.commonName.fr}}</span>
 				<button class="button button-positive button-small button-clear" ng-click="poiCtrl.updateCommomName()">
 					<img id="flag-icon" ng-src="{{poiCtrl.flagUrl}}" alt="{{poiCtrl.selectedLanguage}}">
 				</button>
 			</div>
-			<div class="item">Nom Scientifique<span style="float: right">{{::poiCtrl.content.scientific_name}}</span></div>
-			<div class="item" ng-if="::poiCtrl.content.reign_name">Règne<span style="float: right">{{::poiCtrl.content.reign_name}}</span>
+			<div class="item">Nom Scientifique<span style="float: right">{{::poiCtrl.content.scientificName}}</span></div>
+			<div class="item" ng-if="::poiCtrl.content.taxonomy.reign">Règne<span style="float: right">{{::poiCtrl.content.taxonomy.reign}}</span>
 			</div>
-			<div class="item" ng-if="::poiCtrl.content.division_name">Division<span style="float: right">{{::poiCtrl.content.division_name}}</span>
+			<div class="item" ng-if="::poiCtrl.content.taxonomy.division">Division<span style="float: right">{{::poiCtrl.content.taxonomy.division}}</span>
 			</div>
-			<div class="item" ng-if="::poiCtrl.content.family_name">Famille<span style="float: right">{{::poiCtrl.content.family_name}}</span>
+			<div class="item" ng-if="::poiCtrl.content.taxonomy.family">Famille<span style="float: right">{{::poiCtrl.content.taxonomy.family}}</span>
 			</div>
 			<div class="item" ng-if="::poiCtrl.content.height">Taille<span
 					style="float: right">{{::poiCtrl.content.height}}m</span></div>
 			<div class="item">
-				{{(poiCtrl.content.theme_name === 'bird' || poiCtrl.content.theme_name === 'butterfly') ? 'Visible' :
+				{{(poiCtrl.content.theme === 'bird' || poiCtrl.content.theme === 'butterfly') ? 'Visible' :
 				'Floraison'}}
 				<span style="float: right">
-					{{::poiCtrl.content.period_start | periodToMonth}} à {{::poiCtrl.content.period_end | periodToMonth}}
+					{{::poiCtrl.content.periodStart | periodToMonth}} à {{::poiCtrl.content.periodEnd | periodToMonth}}
 				</span>
 			</div>
 			<div class="item item-body">
 				<h2>Description</h2>
 				<h3>Caractéristiques physiques</h3>
-				<p>{{::poiCtrl.content.physical_characteristics}}</p>
+				<p>{{::poiCtrl.content.characteristics.physical}}</p>
 				<h3>Caractéristiques de l'habitat</h3>
-				<p>{{::poiCtrl.content.habitat_characteristics}}</p>
+				<p>{{::poiCtrl.content.characteristics.habitat}}</p>
 			</div>
 			<div class="item item-body" ng-if="poiCtrl.content.anecdote">
 				<h2>Anecdote</h2>
@@ -42,8 +42,8 @@
 			<a class="item item-icon-right positive" ng-click="poiCtrl.openInBrowser()">Plus sur le Web<i
 					class="icon ion-share"></i></a>
 		</div>
-		<div class="credit text-right padding {{::poiCtrl.classFromTheme(poiCtrl.content.theme_name)}}">
-			Information fournie par {{::poiCtrl.content.owner_name}}.
+		<div class="credit text-right padding {{::poiCtrl.classFromTheme(poiCtrl.content.theme)}}">
+			Information fournie par {{::poiCtrl.content.ownerName}}.
 		</div>
 	</div>
 </div>

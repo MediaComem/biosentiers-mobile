@@ -53,11 +53,11 @@
         auth.excursion = ExcursionClass.fromQrCodeData(QR.getExcursionData(rawData));
         $log.info('ConnectCtrl:handleData:decoded data', auth.excursion);
         // We fetch all excursions with their server id (and not their qr id), because we want to see if the scanned excursion already exist in the database
-        DbExcursions.getAll({server_id: auth.excursion.server_id})
+        DbExcursions.getAll({serverId: auth.excursion.serverId})
           .then(function(excursions) {
             $log.debug(excursions);
             if (excursions.length === 0) {
-              $log.log('ConnectCtrl:handleData:no excursion with id ' + auth.excursion.server_id);
+              $log.log('ConnectCtrl:handleData:no excursion with id ' + auth.excursion.serverId);
               showExcursionValidation();
             } else if (hasSameParticipant(excursions, auth.excursion.participant.id)) {
               $log.log('ConnectCtrl:handleData:existing excursion with same participant');
@@ -122,8 +122,8 @@
     function showSameParticipantError() {
       $ionicPopup.alert({
         title   : "Erreur",
-        subTitle: "Ce QR Code a déjà été scanné sur ce téléphone",
-        template: "<p>La sortie <strong>" + auth.excursion.name + "</strong> avec le participant <strong>" + auth.excursion.participant.name + "</strong> existe déjà sur ce téléphone.</p><p><strong>Veuillez essayer un autre QR Code.</strong></p>",
+        subTitle: "Ce QR Code a déjà été scanné sur cet appareil",
+        template: "<p>La sortie <strong>" + auth.excursion.name + "</strong> avec le participant <strong>" + auth.excursion.participant.name + "</strong> existe déjà sur cet appareil.</p><p><strong>Veuillez essayer un autre QR Code.</strong></p>",
         okText  : "Bien compris",
         okType  : "button-assertive button-outline"
       });

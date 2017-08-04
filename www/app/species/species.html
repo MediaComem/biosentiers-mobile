@@ -1,4 +1,4 @@
-<ion-view view-title="{{species.data[0].properties.common_name}}">
+<ion-view view-title="{{species.data[0].properties.commonName}}">
   <ion-content>
     <div>
       <leaflet id="map" maxbounds="specie.map.maxbounds" defaults="specie.map.defaults" tiles="specie.map.tiles"
@@ -12,14 +12,14 @@
       </div>
       <div class="row">
         <div class="col text-left">Nom scientifique</div>
-        <div class="col text-right">{{species.data[0].properties.scientific_name}}</div>
+        <div class="col text-right">{{species.data[0].properties.scientificName}}</div>
       </div>
       <div class="row">
         <div class="col text-left">Habitat</div>
-        <div class="col text-right">{{species.data[0].properties.habitat_characteristics}}</div>
+        <div class="col text-right">{{species.data[0].properties.characteristics.habitat}}</div>
       </div>
       <div class="row">
-        <p>{{species.data[0].properties.physical_characteristics}}</p>
+        <p>{{species.data[0].properties.characteristics.physical}}</p>
       </div>
       <div class="row">
         <p>{{species.data[0].properties.lien_url}}</p>

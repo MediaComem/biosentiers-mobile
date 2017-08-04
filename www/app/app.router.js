@@ -200,7 +200,7 @@
         resolve: {
           excursionData: function(DbExcursions, $stateParams, $log) {
             $log.log('AppRouter:app.excursion state:', $stateParams);
-            return DbExcursions.getOne({qr_id: $stateParams.qrId});
+            return DbExcursions.getOne({qrId: $stateParams.qrId});
           }
         }
       })

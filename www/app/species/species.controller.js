@@ -34,9 +34,9 @@
         }
       },
       tiles    : {
-        url    : 'data/Tiles/{z}/{x}/{y}.png',
+        url    : 'tiles/{z}/{x}/{y}.png',
         options: {
-          errorTileUrl: 'data/Tiles/error.png'
+          errorTileUrl: 'tiles/error.png'
         }
       },
       defaults : {
@@ -102,11 +102,11 @@
     function addMapMarkers(poisToAdd) {
       var markersArray = [];
       _.each(poisToAdd, function (poi) {
-        species.map.markers[poi.properties.id_poi] = {
+        species.map.markers[poi.properties.id] = {
           layer: 'markers',
           lat  : poi.geometry.coordinates[1],
           lng  : poi.geometry.coordinates[0],
-          icon : MapIcons.get(poi.properties.theme_name)
+          icon : MapIcons.get(poi.properties.theme)
         };
         markersArray.push([poi.geometry.coordinates[1], poi.geometry.coordinates[0]]);
       })

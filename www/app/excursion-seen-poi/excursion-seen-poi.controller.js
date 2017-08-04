@@ -12,7 +12,7 @@
 
     poiCtrl.getTitle = function() {
       $log.log('content', poiCtrl.content);
-      return _.get(poiCtrl, 'content.common_name.fr');
+      return _.get(poiCtrl, 'content.commonName.fr');
     };
 
     PoiContent.getPoiData($stateParams.specieId, $stateParams.theme)

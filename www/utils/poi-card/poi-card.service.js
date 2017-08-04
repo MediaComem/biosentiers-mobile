@@ -46,20 +46,20 @@
         tree: getImageSourceFlora
       };
 
-      return funcs[ctrl.content.theme_name];
+      return funcs[ctrl.content.theme];
 
       ////////////////////
 
       function getImageSourceFlora() {
-        return imgBaseUrl + "photos/flora/" + ctrl.content.id_specie + "a.jpg";
+        return imgBaseUrl + "photos/flora/" + ctrl.content.id + "a.jpg";
       }
 
       function getImageSourceBird() {
-        return imgBaseUrl + "photos/bird/" + ctrl.content.id_specie + "_700px.png";
+        return imgBaseUrl + "photos/bird/" + ctrl.content.id + "_700px.png";
       }
 
       function getImageSourceButterfly() {
-        return imgBaseUrl + "photos/butterfly/" + ctrl.content.id_specie + ".jpg";
+        return imgBaseUrl + "photos/butterfly/" + ctrl.content.id + ".jpg";
       }
     }
 
