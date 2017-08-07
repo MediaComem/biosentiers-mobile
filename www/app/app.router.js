@@ -174,7 +174,7 @@
         url  : '/activity-tracker',
         views: {
           'menuContent': {
-            templateUrl: 'utils/activity-tracker-module/template.html',
+            templateUrl: 'app/activity-tracker-module/template.html',
             controller : 'ActivityTrackerCtrl as atc'
           }
         }
