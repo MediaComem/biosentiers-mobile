@@ -6,6 +6,7 @@
 
   angular.module('app', [
     // Third-party modules.
+    'angular-jwt',
     'ionic',
     'ionicitude-module',
     'lokijs',

@@ -5,5 +5,6 @@
     .module('app')
     .constant('API_URL', 'https://biosentiers.heig-vd.ch/api')
     .constant('REGISTER_API', '/installations')
+    .constant('EVENTS_API', 'installations/:id/events')
     .constant('JWT_API', '/auth');
 })();

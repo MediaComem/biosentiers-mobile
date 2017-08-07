@@ -4,7 +4,7 @@
     .module('activity-tracker-module')
     .factory('LogUploader', LogUploaderFn);
 
-  function LogUploaderFn(API_URL, EVENTS_API, InstallationId, AuthToken, LogPaths, $http, jwtHelper, $q) {
+  function LogUploaderFn(API_URL, EVENTS_API, FsUtils, InstallationId, AuthToken, LogPaths, $http, jwtHelper, $q, $cordovaFile) {
     var service = {
       upload: upload
     };
@@ -46,8 +46,36 @@
 
     }
 
+    /**
+     * Gets all file paths of the file present in the /ActivityTracker/toUpload directory, and returns them as an array of paths.
+     * @return {Promise}
+     */
     function getFileToUploadPaths() {
-      return [];
+      return $q(function(resolve, reject) {
+        FsUtils.safeUploadDir()
+          .then(function() {
+            console.log('LU getFileToUploadPaths from', cordova.file.dataDirectory + LogPaths.uploadDir);
+            window.resolveLocalFileSystemURL(cordova.file.dataDirectory + LogPaths.uploadDir,
+              function(dirEntry) {
+                var dirReader = dirEntry.createReader();
+                dirReader.readEntries(function(files) {
+                  var fileNames = [];
+                  console.log('LU files', files);
+                  for (var i = 0; i < files.length; i++) {
+                    console.log('LU', files[i], files[i].name);
+                    fileNames.push(LogPaths.uploadDir + '/' + files[i].name);
+                  }
+                  resolve(fileNames);
+                }, function(error) {
+                  console.error('LU readEntries', error);
+                  reject(error);
+                })
+              }, function(error) {
+                console.error('LU getAllLogfileNames', error);
+                reject(error);
+              });
+          })
+      })
     }
   }
 })();

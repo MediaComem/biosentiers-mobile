@@ -20,11 +20,6 @@
         .then(function(result) {
           console.log('Installation Secret value', result);
         });
-
-      AuthToken.get()
-        .then(function(result) {
-          console.log('AuthToken:get result', result);
-        })
     });
 
     ////////////////////

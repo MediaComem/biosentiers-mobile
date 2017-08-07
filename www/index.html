@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com http://*; style-src 'self' 'unsafe-inline'; media-src *; script-src 'self' http://10.192.114.17:35729 http://192.168.1.105:35729; connect-src 'self' ws://10.192.114.17:35729 ws://192.168.1.105:35729 http://biosentiers.heig-vd.ch">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com http://*; style-src 'self' 'unsafe-inline'; media-src *; script-src 'self' http://10.192.114.10:35729 http://192.168.1.105:35729; connect-src 'self' ws://10.192.114.10:35729 ws://192.168.1.105:35729 http://biosentiers.heig-vd.ch">
     <title></title>
 
     <!-- compiled css output -->
@@ -43,8 +43,6 @@
     <script src="utils/trans-module/excursion-action-button.filter.js"></script>
     <script src="utils/poi-card/poi-card.module.js"></script>
     <script src="utils/poi-card/poi-card.service.js"></script>
-    <script src="utils/activity-tracker-module/activity-tracker.module.js"></script>
-    <script src="utils/activity-tracker-module/activity-tracker.service.js"></script>
     <script src="utils/uuid/uuid.module.js"></script>
 
     <!-- AR Module -->
@@ -66,6 +64,9 @@
   
     <!-- HMAC -->
     <script src="lib/hmac/sha512.js"></script>
+    
+    <!-- JWT -->
+    <script src="lib/angular-jwt/dist/angular-jwt.min.js"></script>
 
     <!--
       ATTENTION: the inject:css and inject:js sections are automatically filled
@@ -83,6 +84,13 @@
     <script src="app/app.router.js"></script>
     <script src="app/app.run.js"></script>
     <script src="app/ionicitude.actions.js"></script>
+    <script src="app/activity-tracker-module/activity-tracker.module.js"></script>
+    <script src="app/activity-tracker-module/activity-tracker.service.js"></script>
+    <script src="app/activity-tracker-module/controller.js"></script>
+    <script src="app/activity-tracker-module/fs-utils.service.js"></script>
+    <script src="app/activity-tracker-module/log-paths.service.js"></script>
+    <script src="app/activity-tracker-module/log-uploader.service.js"></script>
+    <script src="app/activity-tracker-module/log.classes.js"></script>
     <script src="app/auth-module/auth.module.js"></script>
     <script src="app/connect-module/connect.module.js"></script>
     <script src="app/connect-module/connect.controller.js"></script>
@@ -124,7 +132,7 @@
     <script src="app/world-actions-module/world-actions.module.js"></script>
     <script src="app/world-actions-module/world-actions.service.js"></script>
     <!-- endinject -->
-    <script src="utils/activity-tracker-module/controller.js"></script>
+    <script src="app/activity-tracker-module/controller.js"></script>
   </head>
 
   <body ng-app="app">

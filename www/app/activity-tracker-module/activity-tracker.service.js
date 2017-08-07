@@ -7,7 +7,7 @@
     .module('activity-tracker-module')
     .service('ActivityTracker', ActivityTrackerService);
 
-  function ActivityTrackerService(LogUploader, LogPaths, $cordovaFile, $q) {
+  function ActivityTrackerService(FsUtils, LogUploader, LogPaths, $cordovaFile, $q) {
     var service                 = {
           moveToUpload: moveToUploadFn,
           addLog      : addLogFn,
@@ -97,7 +97,7 @@
 
     function moveLogfile() {
       return $q.when()
-        .then(safeUploadDir)
+        .then(FsUtils.safeUploadDir)
         .then(function() {
           return $cordovaFile.moveFile(cordova.file.dataDirectory, LogPaths.logfile.path, cordova.file.dataDirectory, LogPaths.uploadDir + '/' + Date.now());
         });
@@ -167,55 +167,55 @@
      */
     function checkCurrentLogfile() {
       return $q.when()
-        .then(safeBaseDir)
+        .then(FsUtils.safeBaseDir)
         .then(function() {
           return $cordovaFile.checkFile(cordova.file.dataDirectory, LogPaths.logfile.path);
         });
     }
-
-    /**
-     * Check that the base directory exists or creates it if not.
-     * Should be called before accessing all files.
-     * @return {Promise}
-     */
-    function safeBaseDir() {
-      return $q(function(resolve, reject) {
-        $cordovaFile.checkDir(cordova.file.dataDirectory, LogPaths.baseDir)
-          .then(resolve)
-          .catch(function(error) {
-            if (error.code === 1) {
-              $cordovaFile.createDir(cordova.file.dataDirectory, LogPaths.baseDir)
-                .then(resolve)
-                .catch(reject);
-            } else {
-              reject(error);
-            }
-          })
-      })
-    }
-
-    /**
-     * Checks that the upload dir exists or creates it if not.
-     * Should be called before accessing files to upload.
-     * @return {Promise}
-     */
-    function safeUploadDir() {
-      return $q(function(resolve, reject) {
-        safeBaseDir()
-          .then(function() {
-            $cordovaFile.checkDir(cordova.file.dataDirectory, LogPaths.uploadDir)
-              .then(resolve)
-              .catch(function(error) {
-                if (error.code === 1) {
-                  $cordovaFile.createDir(cordova.file.dataDirectory, LogPaths.uploadDir)
-                    .then(resolve)
-                    .catch(reject);
-                } else {
-                  reject(error);
-                }
-              })
-          })
-      });
-    }
+    //
+    // /**
+    //  * Check that the base directory exists or creates it if not.
+    //  * Should be called before accessing all files.
+    //  * @return {Promise}
+    //  */
+    // function safeBaseDir() {
+    //   return $q(function(resolve, reject) {
+    //     $cordovaFile.checkDir(cordova.file.dataDirectory, LogPaths.baseDir)
+    //       .then(resolve)
+    //       .catch(function(error) {
+    //         if (error.code === 1) {
+    //           $cordovaFile.createDir(cordova.file.dataDirectory, LogPaths.baseDir)
+    //             .then(resolve)
+    //             .catch(reject);
+    //         } else {
+    //           reject(error);
+    //         }
+    //       })
+    //   })
+    // }
+    //
+    // /**
+    //  * Checks that the upload dir exists or creates it if not.
+    //  * Should be called before accessing files to upload.
+    //  * @return {Promise}
+    //  */
+    // function safeUploadDir() {
+    //   return $q(function(resolve, reject) {
+    //     safeBaseDir()
+    //       .then(function() {
+    //         $cordovaFile.checkDir(cordova.file.dataDirectory, LogPaths.uploadDir)
+    //           .then(resolve)
+    //           .catch(function(error) {
+    //             if (error.code === 1) {
+    //               $cordovaFile.createDir(cordova.file.dataDirectory, LogPaths.uploadDir)
+    //                 .then(resolve)
+    //                 .catch(reject);
+    //             } else {
+    //               reject(error);
+    //             }
+    //           })
+    //       })
+    //   });
+    // }
   }
 })();
