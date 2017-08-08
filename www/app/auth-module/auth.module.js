@@ -46,9 +46,9 @@
         iid   : InstallationId.getValue(),
         secret: InstallationSecret.getValue()
       })
-        .then(function(result) {
+        .then(function(results) {
           var dataObject = {
-            installation : null,
+            installation : results.iid.id,
             nonce        : uuid.gen(),
             date         : (new Date()).toISOString(),
             authorization: null
@@ -57,10 +57,9 @@
           // Creation of the HMAC encoding
           // Documentation of the jsSHA lib : https://github.com/Caligatio/jsSHA
           var shaObj = new jsSHA("SHA-512", "TEXT");
-          shaObj.setHMACKey(atob(result.secret), 'BYTES');
-          shaObj.update(dataObject.nonce + ';' + dataObject.date);
+          shaObj.setHMACKey(atob(results.secret), 'BYTES');
+          shaObj.update(dataObject.installation + ';' + dataObject.nonce + ';' + dataObject.date);
 
-          dataObject.installation = result.iid.id;
           dataObject.authorization = shaObj.getHMAC('HEX');
           console.log('AuthModule:dataObject', dataObject);
           return dataObject;
