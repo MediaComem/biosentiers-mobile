@@ -26,7 +26,6 @@
 
       atc.hundredLogs = function() {
         for (var i = 0; i < 110; i++) {
-          console.log('AT new Line');
           ActivityTracker.addLog(new BaseLog('test', {number: i, uuid: uuid.gen()}));
         }
       };

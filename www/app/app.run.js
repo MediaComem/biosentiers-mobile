@@ -5,7 +5,9 @@
     .module('app')
     .run(run);
 
-  function run(AuthToken, $ionicPlatform, $log, InstallationSecret, InstallationId) {
+  function run($ionicPlatform, $log, InstallationSecret, InstallationId, ActivityTracker, LogUploader, rx, TimerUploadObs) {
+
+    var uploadObs = rx.Observable.merge(ActivityTracker.logLimitReachedObs, TimerUploadObs);
 
     $ionicPlatform.ready(function() {
       ionicInitialize();
@@ -17,6 +19,10 @@
       // This will check if the app has already been registered on the backend, by trying to fetch the secret value
       // If the file containing the secret value does not exists, that means the app has never been registered and an attempt to do so will be executed
       InstallationSecret.getValue();
+
+      uploadObs.subscribe(function() {
+        console.log('Uploade requested !');
+      })
     });
 
     ////////////////////

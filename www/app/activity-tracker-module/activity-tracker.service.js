@@ -7,13 +7,17 @@
     .module('activity-tracker-module')
     .service('ActivityTracker', ActivityTrackerService);
 
-  function ActivityTrackerService(FsUtils, LogUploader, LogPaths, $cordovaFile, $q) {
-    var service                 = {
-          moveLog: moveLogFn,
-          addLog : addLogFn,
-          reset  : resetFn
-        },
-        currentOperationPromise = null; // Will store the promise of the current operation
+  function ActivityTrackerService(FsUtils, LogUploader, LogPaths, $cordovaFile, $q, rx) {
+    var currentOperationPromise   = null, // Will store the promise of the current operation
+        logCount                  = 0,
+        logLimit                  = 100,
+        logLimitReachedSubject = new rx.Subject(),
+        service                   = {
+          moveLog                  : moveLogFn,
+          addLog                   : addLogFn,
+          reset                    : resetFn,
+          logLimitReachedObs: logLimitReachedSubject.asObservable()
+        };
 
     return service;
 
@@ -47,6 +51,7 @@
       currentOperationPromise = $q.when(currentOperationPromise)
       // Wathever the outcome of the previous action is, intercept the catch and carry on.
         .catch(_.noop)
+        .then(function() {console.log('AT new line starting');})
         .then(FsUtils.checkCurrentLogfile)
         .then(_.wrap(logObject, FsUtils.appendToFile))
         .catch(function(result) {
@@ -55,7 +60,8 @@
           } else {
             throw result;
           }
-        });
+        })
+        .then(iterateCounter);
 
       return currentOperationPromise;
     }
@@ -71,6 +77,14 @@
         .catch(function(error) {
           console.log('AT reset error', error);
         })
+    }
+
+    /* ----- Private Functions ----- */
+
+    function iterateCounter() {
+      logCount += 1;
+      console.log('Iterating log counter', logCount);
+      logCount >= logLimit && logLimitReachedSubject.onNext();
     }
   }
 })();
