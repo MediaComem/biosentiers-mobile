@@ -16,10 +16,7 @@
 
       // This will check if the app has already been registered on the backend, by trying to fetch the secret value
       // If the file containing the secret value does not exists, that means the app has never been registered and an attempt to do so will be executed
-      InstallationSecret.getValue()
-        .then(function(result) {
-          console.log('Installation Secret value', result);
-        });
+      InstallationSecret.getValue();
     });
 
     ////////////////////

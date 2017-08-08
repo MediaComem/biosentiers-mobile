@@ -4,78 +4,63 @@
     .module('activity-tracker-module')
     .factory('LogUploader', LogUploaderFn);
 
-  function LogUploaderFn(API_URL, EVENTS_API, FsUtils, InstallationId, AuthToken, LogPaths, $http, jwtHelper, $q, $cordovaFile) {
-    var service = {
-      upload: upload
-    };
+  function LogUploaderFn(EVENTS_API, FsUtils, BioApi, $q) {
+    var prevUploadActionPromise = null; // Will store the promise of the current upload
 
-    return service;
+    return upload;
 
     ////////////////////
 
+    /**
+     * Uploads all the files in the '/ActivityTracker/toUpload' folder, one after the other.
+     * @return {Promise} A promise that will be resolved when all the file have been processed (wether the upload succeeded or not).
+     */
     function upload() {
-      $q.all({
-        token    : getValideToken(),
-        iid      : InstallationId.getValue(),
-        filePaths: getFileToUploadPaths()
-      }).then(function(results) {
-        console.log('LU requested data', results);
-      })
+      // Wait on the previous upload to finish, whatever it's outcome, then start a new one
+      prevUploadActionPromise = $q.when(prevUploadActionPromise).catch(_.noop)
+        .then(FsUtils.getFileToUploadPaths)
+        .then(function(filePaths) {
+          // Using the reduce() function to ensure that all upload promises are sequentially executed
+          return filePaths.reduce(function(prevAction, filePath) {
+            // Using the finally() method so that the next upload is trigger whatever the outcome of the previous turns out to be.
+            return prevAction.catch(_.noop)
+              .then(_.wrap(filePath, uploadOneFile))
+              .then(_.wrap(filePath, FsUtils.deleteFile));
+          }, $q.when());
+        });
+
+      return prevUploadActionPromise;
     }
 
     /**
-     * Returns a valid JWT token by calling the AuthToken.get function.
-     * If the received token is no more valid, a new token will be fetched from the backend.
-     * @param opt An option object with a 'regen' property to true, to get a fresh token. Is only passed recursively when a token is no more valid.
+     * Upload the content of the file accesible at the given filePath to the backend.
+     * If the file contains more than a hundred log, it will be split in chunks of hundred logs, and send separatly.
+     * @param filePath The path of the file whose content will be uploaded, relative to the dataDirectory folder.
+     * @return {Promise} A promise that will be resolved when all the chunk of the file content have been uploaded
      */
-    function getValideToken(opt) {
-      opt = opt || {regen: false};
-      return AuthToken.get(opt)
-        .then(function(token) {
-          var now = new Date();
-          var expDate = jwtHelper.getTokenExpirationDate(token);
-          if (now > expDate) {
-            return getValideToken({regen: true});
-          } else {
-            return token;
-          }
+    function uploadOneFile(filePath) {
+      return $q.when(filePath)
+        .then(FsUtils.readFile)
+        .then(function(content) {
+          return _.chunk(content, 100).reduce(function(prevAction, batch) {
+            return prevAction.catch(_.noop)
+              .then(_.wrap(batch, sendRequest))
+          }, $q.when());
         })
     }
 
-    function sendRequest() {
-
-    }
-
     /**
-     * Gets all file paths of the file present in the /ActivityTracker/toUpload directory, and returns them as an array of paths.
-     * @return {Promise}
+     * Uploads the given content to the backend.
+     * @param logs An array of BaseLog
+     * @return {Promise} A promise that will be resolved when the upload is successful.
      */
-    function getFileToUploadPaths() {
-      return $q(function(resolve, reject) {
-        FsUtils.safeUploadDir()
-          .then(function() {
-            console.log('LU getFileToUploadPaths from', cordova.file.dataDirectory + LogPaths.uploadDir);
-            window.resolveLocalFileSystemURL(cordova.file.dataDirectory + LogPaths.uploadDir,
-              function(dirEntry) {
-                var dirReader = dirEntry.createReader();
-                dirReader.readEntries(function(files) {
-                  var fileNames = [];
-                  console.log('LU files', files);
-                  for (var i = 0; i < files.length; i++) {
-                    console.log('LU', files[i], files[i].name);
-                    fileNames.push(LogPaths.uploadDir + '/' + files[i].name);
-                  }
-                  resolve(fileNames);
-                }, function(error) {
-                  console.error('LU readEntries', error);
-                  reject(error);
-                })
-              }, function(error) {
-                console.error('LU getAllLogfileNames', error);
-                reject(error);
-              });
-          })
+    function sendRequest(logs) {
+      return BioApi({
+        url   : EVENTS_API,
+        method: 'POST',
+        data  : logs
       })
     }
   }
-})();
+})
+();

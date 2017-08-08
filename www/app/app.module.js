@@ -16,6 +16,7 @@
     // Application modules.
     'activity-tracker-module',
     'auth-module',
+    'bio-api-module',
     'connect-module',
     'db-bio-module',
     'db-excursions-module',
