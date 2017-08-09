@@ -170,16 +170,6 @@
         }
       })
 
-      .state('app.activity-tracker', {
-        url  : '/activity-tracker',
-        views: {
-          'menuContent': {
-            templateUrl: 'app/activity-tracker-module/template.html',
-            controller : 'ActivityTrackerCtrl as atc'
-          }
-        }
-      })
-
       .state('app.settings', {
         url  : '/settings',
         views: {

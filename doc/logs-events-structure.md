@@ -14,6 +14,59 @@ Their structure is as follow:
 }
 ```
 
-## Event type
+## Event types
 
-### `lifecycle.app.started`
+### Lifecycle events
+
+#### `lifecycle.app.started`
+
+> Fired each time the user starts the BioSentiers app.
+
+**Properties object:**
+
+```json
+{}
+```
+#### `lifecycle.app.paused`
+
+> Fired each time the user put the BioSentiers app in the background.
+
+**Properties object:**
+
+```json
+{}
+```
+
+#### `lifecycle.app.resumed`
+
+> Fired each time the user resumes the BioSentiers app from the background.
+
+**Properties object:**
+
+```json
+{}
+```
+
+### Network events
+
+#### `network.offline`
+
+> Fired each time the device loses network connectivity
+
+**Properties object:**
+
+```json
+{}
+```
+
+#### `network.online`
+
+> Fired each time the device gain or has network connectivity
+
+**Properties object:**
+
+```json
+{
+  "connectionType": "The type of the network connectivity at the moment the event is fired."
+}
+```

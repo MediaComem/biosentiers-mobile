@@ -2,23 +2,23 @@
   'use strict';
   angular
     .module('activity-tracker-module')
-    .factory('BaseLog', BaseLogFn);
+    .factory('EventLog', EventLogFn);
 
-  function BaseLogFn() {
+  function EventLogFn() {
     var version = "0.1.0";
     /**
      * The base class for Logs
      * @constructor
      */
-    function BaseLog(type, content) {
-      if (!type || !angular.isString(type)) throw TypeError("BaseLog Class: You must provide a string value for the type parameter of the BaseLog constructor.");
-      if (!angular.isObject(content)) throw new TypeError("BaseLog Class: The 'content' argument of the BaseLog constructor must be of type object.");
+    function EventLog(type, content) {
+      if (!type || !angular.isString(type)) throw TypeError("EventLog Class: You must provide a string value for the type parameter of the EventLog constructor.");
+      if (content && !angular.isObject(content)) throw new TypeError("EventLog Class: The 'content' argument of the EventLog constructor must be of type object.");
       this.occurredAt = (new Date()).toISOString();
       this.version = version;
       this.properties = content || {};
       this.type = type;
     }
 
-    return BaseLog;
+    return EventLog;
   }
 })();

@@ -4,7 +4,7 @@
     .module('activity-tracker-module')
     .service('FsUtils', FsUtilsFn);
 
-  function FsUtilsFn(LogPaths, $cordovaFile, $q) {
+  function FsUtilsFn($cordovaFile, $cordovaToast, LogPaths, $q) {
 
     this.readFile = readFileContent;
     this.deleteFile = deleteFile;
@@ -13,6 +13,7 @@
     this.appendToFile = appendToFile;
     this.createLogfile = createLogfile;
     this.getFileToUploadPaths = getFileToUploadPaths;
+    this.deleteBaseDir = deleteBaseDir;
 
     ////////////////////
 
@@ -68,7 +69,7 @@
 
     /**
      * Transforms the given logObject to a JSON string, prefixed by a comma, and append that string to the 'currentLog' file content.
-     * @param logObject An object of class BaseLog representing the log to be append to the file.
+     * @param logObject An object of class Event representing the log to be append to the file.
      * @return {Promise} A Promise that will be resolved when the append correctly finished.
      */
     function appendToFile(logObject) {
@@ -77,7 +78,7 @@
 
     /**
      * Creates the 'currentLog' file, and write the given logObject (in a JSON string).
-     * @param logObject An object of class BaseLog representing the log to be written in the file.
+     * @param logObject An object of class Event representing the log to be written in the file.
      * @return {Promise} A Promise that will be resolved when the file is correctly created.
      */
     function createLogfile(logObject) {
@@ -105,6 +106,16 @@
               }, reject);
           })
       })
+    }
+
+    /**
+     * DEBUG Removes the ActivityTracker directory recursively.
+     */
+    function deleteBaseDir() {
+      $cordovaFile.removeRecursively(cordova.file.dataDirectory, LogPaths.baseDir)
+        .then(function() {
+          $cordovaToast.showShortBottom('Dossier "ActivityTracker" supprimé.');
+        });
     }
 
     /* ----- Private Functions ----- */

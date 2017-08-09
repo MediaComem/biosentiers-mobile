@@ -5,11 +5,10 @@
     .module('app')
     .run(run);
 
-  function run($ionicPlatform, $log, InstallationSecret, InstallationId, ActivityTracker, LogUploader, rx, TimerUploadObs) {
-
-    var uploadObs = rx.Observable.merge(ActivityTracker.logLimitReachedObs, TimerUploadObs);
+  function run(EventLogFactory, $ionicPlatform, $log, InstallationSecret, InstallationId, ActivityTracker, $rootScope, $cordovaNetwork, $timeout) {
 
     $ionicPlatform.ready(function() {
+      console.log('App ready from application run block.');
       ionicInitialize();
       if ($ionicPlatform.is('android')) grantAndroidPermissions();
 
@@ -20,9 +19,29 @@
       // If the file containing the secret value does not exists, that means the app has never been registered and an attempt to do so will be executed
       InstallationSecret.getValue();
 
-      uploadObs.subscribe(function() {
-        console.log('Uploade requested !');
-      })
+      // Log the fact that the app is being started
+      ActivityTracker(EventLogFactory.lifecycle.app.started);
+
+      // Log an event about the current device's network connection state.
+      $cordovaNetwork.isOnline() ? ActivityTracker(EventLogFactory.network.online) : ActivityTracker(EventLogFactory.network.offline);
+    });
+
+    // Registering activity events that will trigger an event log.
+
+    $ionicPlatform.on('pause', function() {
+      ActivityTracker(EventLogFactory.lifecycle.app.paused);
+      // Stops the ActivityTracker after 5 minutes of app being in background.
+      $timeout(ActivityTracker.stop, 1000 * 60 * 5);
+    });
+    $ionicPlatform.on('resume', function() {
+      ActivityTracker.start();
+      ActivityTracker(EventLogFactory.lifecycle.app.resumed);
+    });
+    $rootScope.$on('$cordovaNetwork:online', function() {
+      ActivityTracker(EventLogFactory.network.online);
+    });
+    $rootScope.$on('$cordovaNetwork:offline', function() {
+      ActivityTracker(EventLogFactory.network.offline);
     });
 
     ////////////////////

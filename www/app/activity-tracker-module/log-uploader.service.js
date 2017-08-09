@@ -4,12 +4,18 @@
     .module('activity-tracker-module')
     .factory('LogUploader', LogUploaderFn);
 
-  function LogUploaderFn(EVENTS_API, FsUtils, BioApi, $q) {
-    var prevUploadActionPromise = null; // Will store the promise of the current upload
+  function LogUploaderFn(EVENTS_API, FsUtils, BioApi, $q, $cordovaNetwork, $log) {
+    var prevUploadActionPromise = null, // Will store the promise of the current upload
+        running                 = true;
+
+    upload.start = startService;
+    upload.stop = stopService;
 
     return upload;
 
     ////////////////////
+
+    /* ----- Public Functions ----- */
 
     /**
      * Uploads all the files in the '/ActivityTracker/toUpload' folder, one after the other.
@@ -17,20 +23,26 @@
      */
     function upload() {
       // Wait on the previous upload to finish, whatever it's outcome, then start a new one
-      prevUploadActionPromise = $q.when(prevUploadActionPromise).catch(_.noop)
-        .then(FsUtils.getFileToUploadPaths)
-        .then(function(filePaths) {
-          // Using the reduce() function to ensure that all upload promises are sequentially executed
-          return filePaths.reduce(function(prevAction, filePath) {
-            // Using the finally() method so that the next upload is trigger whatever the outcome of the previous turns out to be.
-            return prevAction.catch(_.noop)
-              .then(_.wrap(filePath, uploadOneFile))
-              .then(_.wrap(filePath, FsUtils.deleteFile));
-          }, $q.when());
-        });
-
+      if (running && $cordovaNetwork.isOnline()) {
+        prevUploadActionPromise = $q.when(prevUploadActionPromise).catch(_.noop)
+          .then(FsUtils.getFileToUploadPaths)
+          .then(function(filePaths) {
+            // Using the reduce() function to ensure that all upload promises are sequentially executed
+            return filePaths.reduce(function(prevAction, filePath) {
+              // Using the finally() method so that the next upload is trigger whatever the outcome of the previous turns out to be.
+              return prevAction.catch(_.noop)
+                .then(_.wrap(filePath, uploadOneFile))
+                .then(_.wrap(filePath, FsUtils.deleteFile));
+            }, $q.when());
+          });
+      } else {
+        prevUploadActionPromise = $q.reject('The LogUploader is not running. Try calling LogUploader.start() and then retry.');
+        console.error('The LogUploader is not running. Try calling LogUploader.start() and then retry.');
+      }
       return prevUploadActionPromise;
     }
+
+    /* ----- Private Functions ----- */
 
     /**
      * Upload the content of the file accesible at the given filePath to the backend.
@@ -51,7 +63,7 @@
 
     /**
      * Uploads the given content to the backend.
-     * @param logs An array of BaseLog
+     * @param logs An array of Event
      * @return {Promise} A promise that will be resolved when the upload is successful.
      */
     function sendRequest(logs) {
@@ -60,6 +72,22 @@
         method: 'POST',
         data  : logs
       })
+    }
+
+    /**
+     * Sets the 'running' private variable to 'true', so that the service continues to try and upload files.
+     */
+    function startService() {
+      $log.log('LogUploader starting.');
+      running = true;
+    }
+
+    /**
+     * Sets the 'running' private variable to 'false', so that the service stops to try and upload files.
+     */
+    function stopService() {
+      $log.log('LogUploader stopping.');
+      running = false;
     }
   }
 })

@@ -257,7 +257,6 @@
     function resumeExcursion() {
       return $q.when()
         .then(startExcursion)
-        .then(ActivityTracker.logResume)
         .catch(handleError);
     }
 
@@ -270,9 +269,9 @@
     function handleError(e) {
       $log.error(e);
       if (e instanceof UnsupportedFeatureError) {
-        $cordovaToast.showShortBottom("Device not supported !");
+        $cordovaToast.showShortBottom("Votre appareil est incompatible.");
       } else {
-        $cordovaToast.showShortBottom("Unknow error. Please check the logs.");
+        $cordovaToast.showShortBottom("Erreur inconnue. Merci de réessayer.");
       }
     }
 
