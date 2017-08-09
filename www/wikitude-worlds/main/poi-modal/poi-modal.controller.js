@@ -8,7 +8,8 @@
     .controller('PoiModalCtrl', PoiModalCtrlFn);
 
   function PoiModalCtrlFn(ArView, Excursion, $log, Modals, SeenTracker, PoiCardService) {
-    var poiCtrl = this;
+    var TAG     = "[PoiModalCtrl] ",
+        poiCtrl = this;
 
     poiCtrl.remove = Modals.removeCurrent;
     poiCtrl.setPoiSeen = setPoiSeen;
@@ -16,11 +17,11 @@
     poiCtrl.getImageSource = getImageSource;
 
     Excursion.currentPoiChangeObs.subscribe(function(data) {
-      $log.log('PoiModal:currentPoiChangeObs', data);
+      $log.log(TAG + 'currentPoiChangeObs', data);
       poiCtrl.poi = data.poi;
       poiCtrl.hasBeenSeen = SeenTracker.hasBeenSeen(poiCtrl.poi);
       poiCtrl.commonNameLanguages = Object.keys(poiCtrl.poi.properties.commonName);
-      $log.log('PoiModalCtrl:poiCtrl.commonNameLanguages', poiCtrl.commonNameLanguages);
+      $log.log(TAG + 'poiCtrl.commonNameLanguages', poiCtrl.commonNameLanguages);
       PoiCardService.setup(poiCtrl, data.details);
     });
 

@@ -18,8 +18,9 @@
   }
 
   function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, $ionicLoading, Modals, $log, Excursion, $scope, UserLocation, $timeout) {
-    var base = this;
-    var debugCount = 0;
+    var TAG        = "[BaseCtrl] ",
+        debugCount = 0,
+        base       = this;
 
     // TODO : supprimer hors debug
     base.debugPositionClass = 'royal';
@@ -54,7 +55,7 @@
     });
 
     Excursion.excursionChangeObs.subscribe(function(data) {
-    // Excursion.excursionChangeObs.first().subscribe(function(data) {
+      // Excursion.excursionChangeObs.first().subscribe(function(data) {
       $timeout(function() {
         base.excursionName = data.name;
       })
@@ -67,11 +68,11 @@
     });
 
     $scope.$on('modal.hidden', function(data) {
-      $log.log('modal destroyed', data);
+      $log.log(TAG + 'modal destroyed', data);
     });
 
     $scope.$on('modal.removed', function(data) {
-      $log.log('modal removed', data);
+      $log.log(TAG + 'modal removed', data);
     });
 
     ////////////////////
@@ -83,7 +84,7 @@
         debugCount = 0;
       } else {
         debugCount += 1;
-        $log.log('BaseCtrl:manageDebugLog', debugCount);
+        $log.log(TAG + 'manageDebugLog', debugCount);
         if (debugCount === 7) {
           base.showDebug = true;
         }
@@ -104,7 +105,7 @@
     }
 
     function closeAR() {
-      $log.debug('Closing the AR');
+      $log.debug(TAG + 'Closing the AR');
       AppActions.execute('close');
     }
 

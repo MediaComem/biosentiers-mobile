@@ -4,8 +4,9 @@
     .module('installation-id-module')
     .factory('InstallationSecret', InstallationSecretFn);
 
-  function InstallationSecretFn($cordovaFile, API_URL, REGISTER_API, InstallationId, $http, $q) {
-    var registerDefer,
+  function InstallationSecretFn($cordovaFile, API_URL, REGISTER_API, InstallationId, $http, $log, $q) {
+    var TAG      = "[InstallationSecret] ",
+        registerDefer,
         valueDefer,
         fileName = 'installation-secret.txt',
         service  = {
@@ -61,10 +62,10 @@
      * @param response The HTTP response object from the API call. The secret is located in the data.sharedSecret property.
      */
     function saveSecret(response) {
-      console.log('Response OK', response.data.sharedSecret);
+      $log.log(TAG + 'Response OK', response.data.sharedSecret);
       $cordovaFile.writeFile(cordova.file.dataDirectory, fileName, response.data.sharedSecret, true)
         .then(function(success) {
-          console.log('Secret saved', success);
+          $log.log(TAG + 'Secret saved', success);
           registerDefer.resolve(response.data.sharedSecret);
         })
         .catch(function(error) {

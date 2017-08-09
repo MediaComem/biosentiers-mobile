@@ -14,7 +14,8 @@
    Controller function
    */
   function ConnectCtrl($scope, $state, $cordovaBarcodeScanner, ExcursionClass, $ionicPlatform, $ionicPopup, ConnectService, DbExcursions, $q, QR, $log) {
-    var auth = this;
+    var TAG  = "[ConnectCtrl] ",
+        auth = this;
 
     $ionicPlatform.ready(function() {
       auth.doQRCodeLogin = doQRCodeLogin;
@@ -51,19 +52,19 @@
     function handleData(rawData) {
       if (!rawData.cancelled && rawData.format === 'QR_CODE') {
         auth.excursion = ExcursionClass.fromQrCodeData(QR.getExcursionData(rawData));
-        $log.info('ConnectCtrl:handleData:decoded data', auth.excursion);
+        $log.info(TAG + 'handleData:decoded data', auth.excursion);
         // We fetch all excursions with their server id (and not their qr id), because we want to see if the scanned excursion already exist in the database
         DbExcursions.getAll({serverId: auth.excursion.serverId})
           .then(function(excursions) {
-            $log.debug(excursions);
+            $log.debug(TAG + "excursions with same serverId", excursions);
             if (excursions.length === 0) {
-              $log.log('ConnectCtrl:handleData:no excursion with id ' + auth.excursion.serverId);
+              $log.log(TAG + 'handleData:no excursion with id ' + auth.excursion.serverId);
               showExcursionValidation();
             } else if (hasSameParticipant(excursions, auth.excursion.participant.id)) {
-              $log.log('ConnectCtrl:handleData:existing excursion with same participant');
+              $log.log(TAG +'handleData:existing excursion with same participant');
               showSameParticipantError();
             } else {
-              $log.log('ConnectCtrl:handleData:existing excursion with different participant');
+              $log.log(TAG +'handleData:existing excursion with different participant');
               showDiffParticipanValidation(excursions);
             }
           });
@@ -89,7 +90,7 @@
      * @param error
      */
     function handleError(error) {
-      $log.error(error);
+      $log.error(TAG + "handleError", error);
       return $q.reject(error);
     }
 
@@ -136,11 +137,11 @@
     function showDiffParticipanValidation(excursions) {
       auth.existingExcursions = excursions;
       $ionicPopup.show({
-        title   : "Sortie existante",
-        subTitle: auth.excursion.name,
+        title      : "Sortie existante",
+        subTitle   : auth.excursion.name,
         templateUrl: "app/connect-module/diff-participant-validation.html",
-        scope   : $scope,
-        buttons : [{
+        scope      : $scope,
+        buttons    : [{
           text: "Hum... non",
           type: "button-assertive button-outline"
         }, {
@@ -198,10 +199,10 @@
             } else {
               ConnectService.connectUser(auth.account)
                 .then(function() {
-                  $log.log('connection réussie !');
+                  $log.log(TAG + 'connection réussie !');
                   $state.go('app.excursions-list');
                 }, function() {
-                  $log.log('connection refusée');
+                  $log.log(TAG + 'connection refusée');
                 });
             }
           }

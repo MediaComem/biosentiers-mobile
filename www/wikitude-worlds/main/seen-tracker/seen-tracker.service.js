@@ -8,7 +8,8 @@
     .factory('SeenTracker', SeenTrackerService);
 
   function SeenTrackerService($log, Excursion, AppActions) {
-    var seenPois = [],
+    var TAG      = "[SeenTracker] ",
+        seenPois = [],
         service  = {
           getSeenPois: getSeenPois,
           addSeenPoi : addSeenPoi,
@@ -37,7 +38,7 @@
     function addSeenPoi(poi) {
       if (!_.includes(seenPois, poi.properties.id)) {
         seenPois.push(poi.properties.id);
-        $log.log(seenPois);
+        $log.log(TAG + "seen pois", seenPois);
         var param = {
           poiId        : poi.properties.id,
           poiData      : poi,
@@ -54,7 +55,7 @@
      */
     function setSeenPois() {
       seenPois = Excursion.seenPois;
-      $log.log('seenPois from SeenTracker', seenPois);
+      $log.log(TAG + 'seenPois from SeenTracker', seenPois);
     }
 
     /**
@@ -64,7 +65,7 @@
      */
     function hasBeenSeen(poi) {
       var seen = _.includes(seenPois, poi.properties.id);
-      $log.log('SeenTracker:hasBeenSeen', poi, seenPois, seen);
+      $log.log(TAG + 'hasBeenSeen', poi, seenPois, seen);
       return seen;
     }
   }

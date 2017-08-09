@@ -9,8 +9,9 @@
     .controller('ExcursionsListCtrl', ExcursionsListCtrlFn);
 
   function ExcursionsListCtrlFn(DbExcursions, ExcursionsSettings, $log, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, rx) {
-    var list = this;
-    var RefreshStatsObs = rx.Observable.merge(ExcursionsSettings.withArchive.changeObs, DbExcursions.archivedObs, DbExcursions.removedObs);
+    var TAG             = "[ExcursionListCtrl] ",
+        list            = this,
+        RefreshStatsObs = rx.Observable.merge(ExcursionsSettings.withArchive.changeObs, DbExcursions.archivedObs, DbExcursions.removedObs);
 
     list.nextTab = nextTab;
     list.previousTab = previousTab;
@@ -48,7 +49,7 @@
      * @param stats
      */
     function setStats(stats) {
-      $log.log('ExcursionsListCtrl:stats', stats);
+      $log.log(TAG + 'stats', stats);
       list.stats = stats;
     }
 

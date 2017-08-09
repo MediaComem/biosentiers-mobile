@@ -4,7 +4,8 @@
     .module('activity-tracker-module')
     .service('FsUtils', FsUtilsFn);
 
-  function FsUtilsFn($cordovaFile, $cordovaToast, LogPaths, $q) {
+  function FsUtilsFn($cordovaFile, $cordovaToast, $log, LogPaths, $q) {
+    var TAG = "[FsUtils] ";
 
     this.readFile = readFileContent;
     this.deleteFile = deleteFile;
@@ -38,7 +39,7 @@
      * @return {Promise} A promise that will resolve if the file has been removed and reject if it has not.
      */
     function deleteFile(filePath) {
-      console.log('FS Deleting file', filePath);
+      $log.log(TAG + 'Deleting file', filePath);
       return $cordovaFile.removeFile(cordova.file.dataDirectory, filePath);
     }
 
@@ -62,7 +63,7 @@
       return $q.when()
         .then(safeUploadDir)
         .then(function() {
-          console.log('Moving file to upload...');
+          $log.log(TAG + 'Moving file to upload...');
           return $cordovaFile.moveFile(cordova.file.dataDirectory, LogPaths.logfile.path, cordova.file.dataDirectory, LogPaths.uploadDir + '/' + Date.now());
         });
     }
@@ -131,7 +132,7 @@
           .then(resolve)
           .catch(function(error) {
             if (error.code === 1) {
-              console.log('Base dir needs to be created');
+              $log.log(TAG + 'Base dir needs to be created');
               $cordovaFile.createDir(cordova.file.dataDirectory, LogPaths.baseDir)
                 .then(resolve)
                 .catch(reject);

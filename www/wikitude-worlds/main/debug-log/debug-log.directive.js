@@ -13,9 +13,9 @@
 
   function debugToggleFn() {
     return {
-      restrict    : 'E',
-      replace     : true,
-      template : '<div id="debug-toggle"></div>'
+      restrict: 'E',
+      replace : true,
+      template: '<div id="debug-toggle"></div>'
     }
   }
 
@@ -35,12 +35,13 @@
   }
 
   function DebugLog($log) {
-    var logs = [];
-    var service = {
-      logs       : logs,
-      add        : add,
-      removeFirst: removeFirst
-    };
+    var TAG     = "[DebugLog] ",
+        logs    = [],
+        service = {
+          logs       : logs,
+          add        : add,
+          removeFirst: removeFirst
+        };
 
     return service;
 
@@ -49,14 +50,14 @@
     function add(log) {
       logs.push({time: Date.now(), content: log});
       logs.length >= 100 && removeFirst();
-      // $log.log('DebugLog:add:new log added', log, logs);
+      // $log.log(TAG + 'add:new log added', log, logs);
     }
 
     function removeFirst() {
       if (logs.length <= 5) return;
-      $log.log('DebugLog:removeFirst:before removing', logs);
+      $log.log(TAG + 'removeFirst:before removing', logs);
       service.logs.shift();
-      $log.log('DebugLog:removeFirst:after removing', logs);
+      $log.log(TAG + 'removeFirst:after removing', logs);
     }
   }
 })();

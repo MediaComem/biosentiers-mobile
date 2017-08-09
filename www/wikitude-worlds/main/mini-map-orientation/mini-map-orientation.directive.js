@@ -10,7 +10,7 @@
     .directive('miniMapOrientation', MiniMapOrientationDirective)
     .controller('MiniMapOrientationCtrl', MiniMapOrientationCtrl);
 
-  function MiniMapOrientationDirective($log) {
+  function MiniMapOrientationDirective() {
     return {
       restrict: 'E',
       replace: true,
@@ -20,7 +20,7 @@
     };
   }
 
-  function MiniMapOrientationCtrl(DeviceOrientation, $log, $scope) {
+  function MiniMapOrientationCtrl(DeviceOrientation, $scope) {
 
     var subscription = DeviceOrientation.orientationChangeObs.subscribe(function(data) {
       if ($scope.setOrientation) {

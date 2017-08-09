@@ -7,8 +7,9 @@
     .module('app')
     .controller('DebugCtrl', DebugCtrl);
 
-  function DebugCtrl(ActivityTracker, EventLog, $ionicPlatform, FsUtils, DbBio, DbExcursions, $cordovaToast, LogUploader, $q, uuid) {
-    var debug = this;
+  function DebugCtrl(ActivityTracker, EventLog, $ionicPlatform, FsUtils, DbBio, DbExcursions, $cordovaToast, $log, LogUploader, $q, uuid) {
+    var TAG   = "[DebugCtrl] ",
+        debug = this;
 
     $ionicPlatform.ready(function() {
       debug.resetDb = resetDb;
@@ -31,13 +32,13 @@
     }
 
     function newLine() {
-      console.log('AT new line');
-      ActivityTracker(new EventLog('test', {uuid: uuid.gen()}));
+      $log.log(TAG + 'new line');
+      ActivityTracker(new EventLog('test', {uuid: uuid()}));
     }
 
     function hundredLines() {
       for (var i = 0; i < 110; i++) {
-        ActivityTracker(new EventLog('test', {number: i, uuid: uuid.gen()}));
+        ActivityTracker(new EventLog('test', {number: i, uuid: uuid()}));
       }
     }
 
@@ -50,7 +51,7 @@
     function readCurrentLog() {
       FsUtils.readFile(LogPaths.logfile.path)
         .then(function(content) {
-          console.log('Current log file content', content);
+          $log.log(TAG + 'Current log file content', content);
         })
     }
   }

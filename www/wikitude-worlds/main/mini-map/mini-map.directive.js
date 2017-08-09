@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -18,9 +18,10 @@
 
   function MiniMapCtrl(ArView, Modals, $log, MiniMap, Excursion, $scope, UserLocation, $timeout) {
 
-    var minimap = this;
+    var TAG     = "[MiniMapCtrl] ",
+        minimap = this;
 
-    $log.info('minimap should not be visible');
+    $log.info(TAG + 'minimap should not be visible');
     // Hides the minimap while loading things
     minimap.isVisible = false;
     minimap.config = MiniMap.config;
@@ -33,7 +34,7 @@
 
     UserLocation.realObs.subscribe(function(position) {
       minimap.positionState = "success";
-      $log.log('MiniMapCtrl:UserLocation:realObs received', minimap.positionState);
+      $log.log(TAG + 'UserLocation:realObs received', minimap.positionState);
       $timeout(function() {
         minimap.positionState = 'searching';
       }, 1000);
@@ -44,7 +45,7 @@
 
     // Show the minimap when loading things is done
     minimap.isVisible = true;
-    $log.info('minimap should now be visible');
+    $log.info(TAG + 'minimap should now be visible');
 
     ////////////////////
 

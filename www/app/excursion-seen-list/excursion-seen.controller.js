@@ -8,14 +8,15 @@
     .controller('ExcursionSeenCtrl', ExcursionSeenCtrl);
 
   function ExcursionSeenCtrl(excursionData, DbSeenPois, $log) {
-    var excursionSeen = this;
+    var TAG           = "[ExcursionSeenCtrl] ",
+        excursionSeen = this;
     excursionSeen.excursion = excursionData;
     excursionSeen.getIconPathForTheme = getIconPathForTheme;
 
     DbSeenPois
       .getAll(excursionSeen.excursion.qrId)
       .then(function(data) {
-        $log.log('ExcursionSeenCtrl:seenPois', data);
+        $log.log(TAG + 'seenPois', data);
         excursionSeen.seenPois = data;
       });
 
@@ -23,7 +24,7 @@
 
     function getIconPathForTheme(theme) {
       var path = './wikitude-worlds/main/assets/icons/' + theme + '.png';
-      $log.log('ExcursionSeenCtrl:getIconPathForTheme:path', path);
+      $log.log(TAG + 'getIconPathForTheme:path', path);
       return path;
     }
   }

@@ -9,7 +9,8 @@
     .factory('DbExcursions', DbExcursions);
 
   function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $ionicPopup, $cordovaToast, $log, $q, rx) {
-    var COLL_NAME            = 'excursions',
+    var TAG = "[DbExursions] ",
+        COLL_NAME            = 'excursions',
         COLL_OPTIONS         = {
           unique: ['id']
         },
@@ -55,7 +56,7 @@
       }
       return getCollection()
         .then(function(coll) {
-          console.log('DbExcursions:getAll', coll, criterias);
+          $log.log(TAG + 'getAll', coll, criterias);
           return coll.chain().find(criterias).simplesort('date', true).data();
         }).catch(handleError);
     }
@@ -132,7 +133,7 @@
     function createOne(newExcursion) {
       return getCollection()
         .then(function(coll) {
-          $log.log('DbExcursions:newExcursionData', newExcursion);
+          $log.log(TAG + 'newExcursionData', newExcursion);
           coll.insert(newExcursion);
         })
         .then(DbBio.save)
@@ -148,7 +149,7 @@
      * @return {Promise} A promise of an updated document.
      */
     function updateOne(excursion) {
-      $log.log('DbExcursion:Updating');
+      $log.log(TAG + 'Updating');
       return getCollection()
         .then(function(coll) { coll.update(excursion); })
         .then(DbBio.save)
@@ -164,7 +165,7 @@
      * @return {Promise}
      */
     function archiveOne(excursion) {
-      $log.log('DbExcursion:Archiving');
+      $log.log(TAG + 'Archiving');
       if (!excursion) throw new TypeError('DbExcursions : archiveOne needs an Excursion object as its first argument, none given');
       if (excursion.archivedAt !== null) return $q.resolve(excursion);
       excursion.archivedAt = Date.now();
@@ -312,7 +313,7 @@
      * @return {Promise}
      */
     function setNotNew(excursion) {
-      $log.log('DbExcursion:Setting as not new');
+      $log.log(TAG + 'Setting as not new');
       if (!excursion) throw new TypeError('DbExcursions : setNotNew needs an Excursion object as its first argument, none given');
       if (!excursion.isNew) return $q.resolve(excursion);
       excursion.isNew = false;
@@ -341,7 +342,7 @@
      * @return {Promise} A rejected promise whose value is the received error.
      */
     function handleError(error) {
-      $log.error(error);
+      $log.error(TAG + "handleError", error);
       return $q.reject(error);
     }
 

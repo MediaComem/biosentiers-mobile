@@ -9,6 +9,7 @@
     .controller('ExcursionCtrl', ExcursionCtrl);
 
   function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, $ionicPopover, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, rx, $scope, $state, $timeout, WorldActions) {
+    var TAG = "[ExcursionCtrl] ";
 
     $scope.$on('$ionicView.beforeEnter', function(event, viewData) {
       viewData.enableBack = true;
@@ -23,7 +24,7 @@
     var geoData, positionWatcher;
     var RefreshData = rx.Observable.merge(DbExcursions.archivedObs, DbExcursions.restoredObs);
 
-    $log.log(excursionData);
+    $log.log(TAG + "excursion data", excursionData);
     excursion.data = excursionData;
     excursion.downloadProgress = "Télécharger";
     excursion.mapConfig = new ExcursionMapConfig;
@@ -66,11 +67,11 @@
     $ionicPopover
       .fromTemplateUrl('app/excursion-context-menus/excursion-details-context-menu.html', {scope: $scope})
       .then(function(popover) {
-        $log.log(popover);
+        $log.log(TAG + "details context menu", popover);
         excursion.excursionMenu = popover;
       })
       .catch(function(error) {
-        $log.error(error);
+        $log.error(TAG + "details context menu", error);
       });
 
     ////////////////////
@@ -98,7 +99,7 @@
     function removeExcursion(excursion) {
       DbExcursions.removeOne(excursion)
         .then(function(result) {
-          $log.log(result);
+          $log.log(TAG + "remove excursion result", result);
           result !== false && $state.go('app.excursions-list.all');
         });
     }
@@ -167,7 +168,7 @@
      */
     function loadExcursionData(excursionData) {
       geoData = excursionData;
-      $log.info('getExcursionGeoData -  excursionGeoData', geoData);
+      $log.info(TAG + 'getExcursionGeoData -  excursionGeoData', geoData);
       excursion.mapConfig.setPath(geoData.path);
       excursion.mapConfig.setZones(geoData.zones);
       excursion.mapConfig.setExtremityPoints(geoData.extremityPoints);
@@ -202,7 +203,7 @@
      * @param error
      */
     function positionError(error) {
-      $log.error('positionError', error);
+      $log.error(TAG + 'positionError', error);
       excursion.positionState = 'error';
       $timeout(function() {
         excursion.positionState = 'refresh';
@@ -215,7 +216,7 @@
      * @param position
      */
     function positionUpdate(position) {
-      $log.info('getCurrentPosition', position);
+      $log.info(TAG + 'getCurrentPosition', position);
       excursion.mapConfig.setUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
@@ -224,7 +225,7 @@
       $timeout(function() {
         excursion.positionState = 'searching';
       }, 1000);
-      $log.info(positionWatcher);
+      $log.info(TAG + "positionWatcher", positionWatcher);
     }
 
     /**
@@ -267,7 +268,7 @@
      * @param e
      */
     function handleError(e) {
-      $log.error(e);
+      $log.error(TAG + "handleError", e);
       if (e instanceof UnsupportedFeatureError) {
         $cordovaToast.showShortBottom("Votre appareil est incompatible.");
       } else {
@@ -282,7 +283,7 @@
      * When all these promises are resolved, a call to the AR function loadExcursion is made.
      */
     function loadWorldExcursion() {
-      $log.debug('World loading...');
+      $log.debug(TAG + 'World loading...');
 
       var promises = {
         pois    : PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
@@ -290,7 +291,7 @@
       };
 
       return $q.all(promises).then(function(results) {
-        $log.log('ExcursionCtrl:loadWorldExcursion', results);
+        $log.log(TAG + 'loadWorldExcursion', results);
         var arData = {
           name           : excursion.data.name,
           qrId           : excursion.data.qrId,
@@ -302,7 +303,7 @@
           pois           : results.pois,
           seen           : _.map(results.seenPois, 'poiId')
         };
-        $log.info('ExcursionCtrl:loadWorldExcursion:excursion.arData', arData);
+        $log.info(TAG + 'loadWorldExcursion:excursion.arData', arData);
         WorldActions.execute('loadExcursion', arData);
       });
     }

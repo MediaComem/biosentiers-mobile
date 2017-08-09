@@ -4,7 +4,9 @@
     .module('bio-api-module')
     .factory('BioApi', BioApiServiceFn);
 
-  function BioApiServiceFn(InstallationId, $http, AuthToken, API_URL, jwtHelper, $q) {
+  function BioApiServiceFn(InstallationId, $http, AuthToken, API_URL, jwtHelper, $log, $q) {
+    var TAG = "[BioApi] ";
+
     return completeConfig;
 
     ////////////////////
@@ -28,10 +30,10 @@
         config.url = config.url.replace(":iid", results.iid.id);
         return $http(config)
           .catch(function(error) {
-            console.error('BioApi http error', error);
+            $log.error(TAG + 'http error', error);
           });
       })
-    };
+    }
 
     /**
      * Returns a valid JWT token by calling the AuthToken.get function.

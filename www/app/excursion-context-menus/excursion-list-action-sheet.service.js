@@ -7,14 +7,12 @@
     .module('excursion-context-menus')
     .factory('ExcursionListContextMenu', ExcursionListContextMenuFn);
 
-  function ExcursionListContextMenuFn(DbExcursions, $ionicActionSheet, $ionicPopup, $state) {
+  function ExcursionListContextMenuFn(DbExcursions, $ionicActionSheet, $log, $state) {
 
-    var service = {
-          showMenu: showMenu
-        },
+    var TAG     = "[ExcursionListContextMenu] ",
         excursion;
 
-    return service;
+    return showMenu;
 
     ////////////////////
 
@@ -49,10 +47,10 @@
           options.actions.push(DbExcursions.reinitializeOne);
         }
 
-        // Debug : affiche les infos de la sortie dans la console
+        // Debug : affiche les infos de la sortie dans la $log
         // options.buttons.push({text: '<i class="icon ion-code-working"></i> Debug sortie'});
         // options.actions.push(function(excursion) {
-        //   console.log(excursion);
+        //   $log.log(TAG + "current excursion", excursion);
         // });
 
         // If the excursion is archived, it can only be restored
@@ -62,7 +60,7 @@
           activeOptions(options);
         }
 
-        console.log(options);
+        $log.log(TAG + "context menu options", options);
 
         // Show the action sheet
         $ionicActionSheet.show(options);
@@ -71,11 +69,11 @@
       ////////////////////
 
       function cancelFn() {
-        console.log('Canceled the Action Sheet');
+        $log.log(TAG + 'Canceled the Action Sheet');
       }
 
       function buttonClickedFn(index) {
-        console.log('button index', index);
+        $log.log(TAG + 'button index', index);
         options.actions[index](excursion);
         return true;
       }
@@ -113,7 +111,7 @@
     function activeOptions(opt) {
       opt.destructiveText = '<i class="icon ion-android-archive"></i> Archiver';
       opt.destructiveButtonClicked = function() {
-        console.log('destructive button clicked');
+        $log.log(TAG + 'destructive button clicked');
         DbExcursions.archiveOne(excursion);
         return true;
       };

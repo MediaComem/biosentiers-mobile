@@ -6,7 +6,8 @@
     .factory('AuthToken', AuthTokenFn);
 
   function AuthTokenFn(API_URL, JWT_API, $log, $q, InstallationId, InstallationSecret, $http, uuid) {
-    var tokenDefer,
+    var TAG     = "[AuthToken] ",
+        tokenDefer,
         service = {
           get: getFn
         };
@@ -31,7 +32,7 @@
             tokenDefer.resolve(response.data.token);
           })
           .catch(function(error) {
-            $log.error(error);
+            $log.error(TAG + 'get error', error);
             tokenDefer.reject(error);
           })
       }
@@ -49,7 +50,7 @@
         .then(function(results) {
           var dataObject = {
             installation : results.iid.id,
-            nonce        : uuid.gen(),
+            nonce        : uuid(),
             date         : (new Date()).toISOString(),
             authorization: null
           };
@@ -61,11 +62,11 @@
           shaObj.update(dataObject.installation + ';' + dataObject.nonce + ';' + dataObject.date);
 
           dataObject.authorization = shaObj.getHMAC('HEX');
-          console.log('AuthModule:dataObject', dataObject);
+          $log.log(TAG + 'dataObject', dataObject);
           return dataObject;
         })
         .catch(function(error) {
-          $log.error(error);
+          $log.error(TAG + "getDataObject error", error);
           return error;
         });
     }

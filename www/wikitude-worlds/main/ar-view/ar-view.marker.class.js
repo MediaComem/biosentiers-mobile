@@ -5,8 +5,7 @@
     .module('ar-view')
     .factory('ArMarker', ArMarkerClass);
 
-  function ArMarkerClass(ArBaseMarker, ArIcons, $log) {
-
+  function ArMarkerClass(ArBaseMarker, ArIcons) {
     /**
      * This class represent a geolocalized marker in the ArView.
      * @param poi The GeoJSON poi object representing the ArMarker to create

@@ -6,20 +6,21 @@
 
   /*
    * Factory that stores and returns new EventLog object corresponding to the property that is accessed.
-   * Note : All EventLog object are returned through property getters.
+   * Some events requires an additionnal prop object argument for information that can not be retrieved by this service.
+   * Please, check each individual functions.
    */
   function EventListFn(EventLog, $cordovaNetwork) {
     return {
       lifecycle: {
         app: {
-          get started() { return new EventLog('lifecycle.app.started'); },
-          get paused() { return new EventLog('lifecycle.app.paused'); },
-          get resumed() { return new EventLog('lifecycle.app.resumed') }
+          started: function() { return new EventLog('lifecycle.app.started'); },
+          paused: function() { return new EventLog('lifecycle.app.paused'); },
+          resumed: function() { return new EventLog('lifecycle.app.resumed') }
         }
       },
       network  : {
-        get offline() { return new EventLog('network.offline'); },
-        get online() { return new EventLog('network.online', {connectionType: $cordovaNetwork.getNetwork()}); }
+        offline: function() { return new EventLog('network.offline'); },
+        online: function() { return new EventLog('network.online', {connectionType: $cordovaNetwork.getNetwork()}); }
       }
     }
   }

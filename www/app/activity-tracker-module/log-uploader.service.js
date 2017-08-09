@@ -5,7 +5,8 @@
     .factory('LogUploader', LogUploaderFn);
 
   function LogUploaderFn(EVENTS_API, FsUtils, BioApi, $q, $cordovaNetwork, $log) {
-    var prevUploadActionPromise = null, // Will store the promise of the current upload
+    var TAG = '[LogUploader] ',
+        prevUploadActionPromise = null, // Will store the promise of the current upload
         running                 = true;
 
     upload.start = startService;
@@ -36,8 +37,9 @@
             }, $q.when());
           });
       } else {
-        prevUploadActionPromise = $q.reject('The LogUploader is not running. Try calling LogUploader.start() and then retry.');
-        console.error('The LogUploader is not running. Try calling LogUploader.start() and then retry.');
+        var reason = 'The LogUploader is not running. Try calling LogUploader.start() and then retry.';
+        prevUploadActionPromise = $q.reject(reason);
+        $log.error(TAG + reason);
       }
       return prevUploadActionPromise;
     }
@@ -78,7 +80,7 @@
      * Sets the 'running' private variable to 'true', so that the service continues to try and upload files.
      */
     function startService() {
-      $log.log('LogUploader starting.');
+      $log.log(TAG + 'starting.');
       running = true;
     }
 
@@ -86,7 +88,7 @@
      * Sets the 'running' private variable to 'false', so that the service stops to try and upload files.
      */
     function stopService() {
-      $log.log('LogUploader stopping.');
+      $log.log(TAG + 'stopping.');
       running = false;
     }
   }

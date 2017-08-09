@@ -8,17 +8,18 @@
     .controller('ExcursionSeenPoiCtrl', ExcursionSeenPoiCtrlFn);
 
   function ExcursionSeenPoiCtrlFn(PoiCardService, PoiContent, $log, $stateParams) {
-    var poiCtrl = this;
+    var TAG = "[ExcursionSeenPoiCtrl] ",
+        poiCtrl = this;
 
     poiCtrl.getTitle = function() {
-      $log.log('content', poiCtrl.content);
+      $log.log(TAG + 'content', poiCtrl.content);
       return _.get(poiCtrl, 'content.commonName.fr');
     };
 
     PoiContent.getPoiData($stateParams.specieId, $stateParams.theme)
       .then(function(data) {
         PoiCardService.setup(poiCtrl, data);
-        $log.log(poiCtrl);
+        $log.log(TAG + "updated controller", poiCtrl);
       });
   }
 })();

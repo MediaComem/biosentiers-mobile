@@ -5,10 +5,13 @@
     .module('app')
     .run(run);
 
-  function run(EventLogFactory, $ionicPlatform, $log, InstallationSecret, InstallationId, ActivityTracker, $rootScope, $cordovaNetwork, $timeout) {
+  function run(EventLogFactory, $ionicPlatform, $log, InstallationSecret, InstallationId, ActivityTracker, $rootScope, $cordovaNetwork, LogUploader, $timeout) {
+    var TAG = '[App:Run] ';
 
     $ionicPlatform.ready(function() {
-      console.log('App ready from application run block.');
+      // TODO: Remove in production
+      LogUploader.stop();
+
       ionicInitialize();
       if ($ionicPlatform.is('android')) grantAndroidPermissions();
 
@@ -20,28 +23,27 @@
       InstallationSecret.getValue();
 
       // Log the fact that the app is being started
-      ActivityTracker(EventLogFactory.lifecycle.app.started);
+      ActivityTracker(EventLogFactory.lifecycle.app.started());
 
       // Log an event about the current device's network connection state.
-      $cordovaNetwork.isOnline() ? ActivityTracker(EventLogFactory.network.online) : ActivityTracker(EventLogFactory.network.offline);
-    });
+      $cordovaNetwork.isOnline() ? ActivityTracker(EventLogFactory.network.online()) : ActivityTracker(EventLogFactory.network.offline());
 
-    // Registering activity events that will trigger an event log.
-
-    $ionicPlatform.on('pause', function() {
-      ActivityTracker(EventLogFactory.lifecycle.app.paused);
-      // Stops the ActivityTracker after 5 minutes of app being in background.
-      $timeout(ActivityTracker.stop, 1000 * 60 * 5);
-    });
-    $ionicPlatform.on('resume', function() {
-      ActivityTracker.start();
-      ActivityTracker(EventLogFactory.lifecycle.app.resumed);
-    });
-    $rootScope.$on('$cordovaNetwork:online', function() {
-      ActivityTracker(EventLogFactory.network.online);
-    });
-    $rootScope.$on('$cordovaNetwork:offline', function() {
-      ActivityTracker(EventLogFactory.network.offline);
+      // Registering activity events that will trigger an event log.
+      $ionicPlatform.on('pause', function() {
+        ActivityTracker(EventLogFactory.lifecycle.app.paused());
+        // Stops the ActivityTracker after 5 minutes of app being in background.
+        $timeout(ActivityTracker.stop, 1000 * 60 * 5);
+      });
+      $ionicPlatform.on('resume', function() {
+        ActivityTracker.start();
+        ActivityTracker(EventLogFactory.lifecycle.app.resumed());
+      });
+      $rootScope.$on('$cordovaNetwork:online', function() {
+        ActivityTracker(EventLogFactory.network.online());
+      });
+      $rootScope.$on('$cordovaNetwork:offline', function() {
+        ActivityTracker(EventLogFactory.network.offline());
+      });
     });
 
     ////////////////////
@@ -73,21 +75,21 @@
         for (var permission in statuses) {
           switch (statuses[permission]) {
             case cordova.plugins.diagnostic.permissionStatus.GRANTED:
-              $log.log("Permission granted to use " + permission);
+              $log.log(TAG + "Permission granted to use " + permission);
               break;
             case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
-              $log.log("Permission to use " + permission + " has not been requested yet");
+              $log.log(TAG + "Permission to use " + permission + " has not been requested yet");
               break;
             case cordova.plugins.diagnostic.permissionStatus.DENIED:
-              $log.log("Permission denied to use " + permission + " - ask again?");
+              $log.log(TAG + "Permission denied to use " + permission + " - ask again?");
               break;
             case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
-              $log.log("Permission permanently denied to use " + permission + " - guess we won't be using it then!");
+              $log.log(TAG + "Permission permanently denied to use " + permission + " - guess we won't be using it then!");
               break;
           }
         }
       }, function(error) {
-        $log.error("The following error occurred: " + error);
+        $log.error(TAG + "The following error occurred: " + error);
       }, [
         cordova.plugins.diagnostic.runtimePermission.ACCESS_FINE_LOCATION,
         cordova.plugins.diagnostic.runtimePermission.ACCESS_COARSE_LOCATION,

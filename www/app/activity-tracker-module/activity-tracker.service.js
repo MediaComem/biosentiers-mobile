@@ -8,13 +8,13 @@
     .service('ActivityTracker', ActivityTrackerService);
 
   function ActivityTrackerService(FsUtils, $ionicPlatform, LogUploader, $q, TimerUploadObs, $log) {
-    var currentOperationPromise = null, // Will store the promise of the current operation
+    var TAG                     = '[ActivityTracker] ',
+        currentOperationPromise = null, // Will store the promise of the current operation
         logCount                = 0,
         logLimit                = 100,
         running                 = true;
 
     $ionicPlatform.ready(function() {
-      $log.log('App ready from ActivityTrackerService');
       // When the app is ready, it means that it had just been started.
       // Thus, move the 'currentLog' file to the upload folder, in order to start a new one.
       moveLog();
@@ -51,7 +51,7 @@
       } else {
         var reason = 'The ActivityTracker service is not running. Try calling ActivityTracker.start() and retry.';
         currentOperationPromise = $q.reject(reason);
-        $log.info(reason);
+        $log.info(TAG + reason);
       }
       return currentOperationPromise;
     }
@@ -68,7 +68,7 @@
         currentOperationPromise = $q.when(currentOperationPromise)
         // Wathever the outcome of the previous action is, intercept the catch and carry on.
           .catch(_.noop)
-          .then(function() {$log.log('AT new line starting', logObject);})
+          .then(function() {$log.log(TAG + 'new line starting', logObject);})
           .then(FsUtils.checkCurrentLogfile)
           .then(_.wrap(logObject, FsUtils.appendToFile))
           .catch(function(result) {
@@ -82,7 +82,7 @@
       } else {
         var reason = 'The ActivityTracker service is not running. Try calling ActivityTracker.start() and retry.';
         currentOperationPromise = $q.reject(reason);
-        $log.info(reason);
+        $log.info(TAG + reason);
       }
       return currentOperationPromise;
     }
@@ -95,7 +95,7 @@
      */
     function incrementCounter() {
       logCount += 1;
-      $log.log('Iterating log counter', logCount);
+      $log.log(TAG + 'Iterating log counter', logCount);
       logCount >= logLimit && moveLog();
     }
 
@@ -103,7 +103,7 @@
      * Set the 'running' private variable to 'true', so that the service will continue adding logs and moving files.
      */
     function startService() {
-      $log.log('ActivityTracker starting');
+      $log.log(TAG + 'starting');
       running = true;
     }
 
@@ -111,7 +111,7 @@
      * Sets the 'running' private variable to false, so that the service will stop adding logs and moving files.
      */
     function stopService() {
-      $log.log('ActivityTracker stopping');
+      $log.log(TAG + 'stopping');
       running = false;
     }
   }

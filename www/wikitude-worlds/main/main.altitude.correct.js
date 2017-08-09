@@ -8,12 +8,13 @@
     .service('Altitude', Altitude);
 
   function Altitude(UserLocation, $log) {
-    var altitude = {
-      unknown         : AR.CONST.UNKNOWN_ALTITUDE,
-      correct         : correct,
-      getRelativeDelta: getRelativeDelta,
-      setFixedAltitude: setFixedAltitude
-    };
+    var TAG      = "[Altitude] ",
+        altitude = {
+          unknown         : AR.CONST.UNKNOWN_ALTITUDE,
+          correct         : correct,
+          getRelativeDelta: getRelativeDelta,
+          setFixedAltitude: setFixedAltitude
+        };
 
     var altitudeModifiers = {
       'bird'     : 10,
@@ -53,13 +54,13 @@
      * @param {ArBaseMarker} arPoi The ArPoi whose altitude should be changed.
      */
     function setFixedAltitude(arPoi) {
-      $log.log('ArView:updateArPoisAltitude:previous altitude for POI n°' + arPoi.id, arPoi.location.altitude);
+      $log.log(TAG + 'updateArPoisAltitude:previous altitude for POI n°' + arPoi.id, arPoi.location.altitude);
       if (UserLocation.real.alt === altitude.unknown || arPoi.relativeAltitudeDelta === altitude.unknown) {
         arPoi.location.altitude = altitude.unknown;
       } else {
         arPoi.location.altitude = UserLocation.real.alt + arPoi.relativeAltitudeDelta;
       }
-      $log.log('ArView:updateArPoisAltitude:new altitude', arPoi.location.altitude);
+      $log.log(TAG + 'updateArPoisAltitude:new altitude', arPoi.location.altitude);
     }
   }
 })();

@@ -9,7 +9,8 @@
     .controller('MenuCtrl', MenuCtrl);
 
   function MenuCtrl($log) {
-    var menu = this,
+    var TAG = "[MenuCtrl] ",
+        menu = this,
         debugCount = 0;
 
     menu.showDebug = false;
@@ -19,7 +20,7 @@
         debugCount = 0;
       } else {
         debugCount += 1;
-        $log.log('BaseCtrl:manageDebugLog', debugCount);
+        $log.log(TAG + 'manageDebugLog', debugCount);
         if (debugCount === 7) {
           menu.showDebug = true;
         }

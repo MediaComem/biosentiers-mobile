@@ -24,10 +24,7 @@
      * @returns {*}
        */
     function connectUser(credentials) {
-      var q = $q.defer();
-      //TODO : remplacer par la véritable logique de connection
-      credentials.username && credentials.password && q.resolve() || q.reject();
-      return q.promise;
+      return credentials.username && credentials.password ? $q.resolve() : $q.reject();
     }
   }
 })();

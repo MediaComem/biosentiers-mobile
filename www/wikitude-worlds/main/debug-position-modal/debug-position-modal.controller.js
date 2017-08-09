@@ -11,7 +11,8 @@
     .controller('DebugCtrl', DebugCtrl);
 
   function DebugCtrl(AppActions, Modals, UserLocation, $log) {
-    var debug = this;
+    var TAG   = "[DebugCtrl] ",
+        debug = this;
 
     debug.position = {};
     debug.remove = Modals.removeCurrent;
@@ -76,7 +77,7 @@
         lon: Number(debug.position.lon || UserLocation.real.lon),
         alt: Number(debug.position.alt || UserLocation.real.alt)
       };
-      $log.log('DebugPosition:custom', pos);
+      $log.log(TAG + 'custom', pos);
       setPosition(pos.lat, pos.lon, pos.alt);
     }
 
@@ -88,10 +89,10 @@
      */
     function setPosition(lat, lon, alt) {
       Modals.removeCurrent().then(function(success) {
-        $log.debug(success);
+        $log.debug(TAG + "setPosition success", success);
         AppActions.execute('setPosition', {lat: lat, lon: lon, alt: alt});
       }).catch(function(error) {
-        $log.error(error);
+        $log.error(TAG + "setPosition error", error);
       });
     }
   }

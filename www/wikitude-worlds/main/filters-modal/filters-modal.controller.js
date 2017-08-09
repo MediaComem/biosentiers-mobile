@@ -5,7 +5,7 @@
     .module('filters-modal')
     .controller('FiltersModalCtrl', FiltersModalCtrl);
 
-  function FiltersModalCtrl(Filters, $log, Modals, $scope) {
+  function FiltersModalCtrl(Filters, Modals, $scope) {
     var filters = this;
 
     filters.remove = Modals.removeCurrent;

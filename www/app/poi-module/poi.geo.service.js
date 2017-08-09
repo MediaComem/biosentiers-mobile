@@ -8,16 +8,16 @@
     .module('poi-module')
     .factory('PoiGeo', PoiGeoService);
 
-  function PoiGeoService($http, $log, themesFilter, $q, turf) {
-    var dataPath = "data/complete/";
-
-    var service = {
-      getPath            : getPath,
-      getZones           : getZones,
-      getPoints          : getPoints,
-      getFilteredPoints  : getFilteredPoints,
-      getExcursionGeoData: getExcursionGeoData
-    };
+  function PoiGeoService($http, $log, $q, turf) {
+    var TAG      = "[PoiGeo] ",
+        dataPath = "data/complete/",
+        service  = {
+          getPath            : getPath,
+          getZones           : getZones,
+          getPoints          : getPoints,
+          getFilteredPoints  : getFilteredPoints,
+          getExcursionGeoData: getExcursionGeoData
+        };
 
     return service;
 
@@ -51,13 +51,13 @@
       ];
 
       return $q.all(data).then(function(result) {
-        $log.log('PoiGeo:getPoints:promise results', result);
+        $log.log(TAG + 'getPoints:promise results', result);
         var features = [];
         for (var i = 0; i < result.length; i++) {
           features = _.concat(features, result[i].data.features);
         }
         var res = turf.helpers.featureCollection(features);
-        $log.log('PoiGeo:getPoints:return result', res);
+        $log.log(TAG + 'getPoints:return result', res);
         return res;
       })
     }
@@ -106,15 +106,15 @@
         start: _.first(zonesGeoData).properties.points.start,
         end  : _.last(zonesGeoData).properties.points.end
       };
-      // $log.log('PoiGeo:getExtremityPoints', zonesGeoData);
+      // $log.log(TAG + 'getExtremityPoints', zonesGeoData);
       // var indexedZones = [], start, end;
       // zonesGeoData.features.forEach(function(zoneFeature) {
       //   indexedZones[zoneFeature.properties.id_zone] = zoneFeature;
       // });
-      // $log.info('PoiGeo:indexedZones', indexedZones);
+      // $log.info(TAG + 'indexedZones', indexedZones);
       // start = _.find(indexedZones, defined).properties.start;
       // end = _.last(indexedZones).properties.end;
-      // $log.log('PoiGeo:extremityPoints', start, end);
+      // $log.log(TAG + 'extremityPoints', start, end);
       // return {
       //   start: start,
       //   end  : end
@@ -135,9 +135,9 @@
 
       function filterPoints(res) {
         console.log(res);
-        $log.log('PoiGeo:getFilteredPoints:Total number of points', res.points.features.length);
+        $log.log(TAG + 'getFilteredPoints:Total number of points', res.points.features.length);
         var pois = _.filter(res.points.features, matchesFilter);
-        $log.log('PoiGeo:getFilteredPoints:' + pois.length + ' filtered points based on', res.zones, themes);
+        $log.log(TAG + 'getFilteredPoints:' + pois.length + ' filtered points based on', res.zones, themes);
         return pois;
 
         function matchesFilter(point) {

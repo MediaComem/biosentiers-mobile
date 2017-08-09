@@ -7,7 +7,7 @@
  *
  * Created by Mathias on 02.05.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -16,12 +16,13 @@
 
   function AppActionsService($log, $q, $timeout) {
 
-    var defaultTimeout = 30000,
+    var TAG             = "[AppActions] ",
+        defaultTimeout  = 30000,
         nextExecutionId = 0,
-        pendingActions = {};
+        pendingActions  = {};
 
     var service = {
-      execute: execute,
+      execute            : execute,
       returnResultFromApp: returnResultFromApp
     };
 
@@ -85,7 +86,7 @@
 
         var fullData = _.extend({}, params, extraData);
 
-        $log.debug('Executing app action ' + name + ' with ' + angular.toJson(fullData) + ' and options ' + angular.toJson(options));
+        $log.debug(TAG + 'Executing app action ' + name + ' with ' + angular.toJson(fullData) + ' and options ' + angular.toJson(options));
 
         var dest = "architectsdk://" + name;
         var url = dest + "?" + angular.toJson(fullData);
@@ -114,10 +115,10 @@
 
       // Retrieve the execution ID and the action data.
       var executionId = data.id,
-          action = pendingActions[executionId];
+          action      = pendingActions[executionId];
 
       if (!action) {
-        $log.warn('Received app result for unknown execution ID ' + executionId + ' (it may have timed out)');
+        $log.warn(TAG + 'Received app result for unknown execution ID ' + executionId + ' (it may have timed out)');
         return;
       }
 

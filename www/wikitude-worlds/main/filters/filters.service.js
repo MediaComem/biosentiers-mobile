@@ -6,7 +6,7 @@
     .factory('Filters', FiltersService);
 
   function FiltersService($log, Excursion, rx, SeenTracker) {
-
+    var TAG = "[Filters] ";
     // Currently selected filters.
     // Update by calling `Filters.update(selected)`.
     var selected = {
@@ -43,7 +43,7 @@
       service.themes = themes;
       selected.themes = themes.slice();
 
-      $log.debug('Filters: available themes updated to ' + themes.join(', '));
+      $log.debug(TAG + 'available themes updated to ' + themes.join(', '));
     }
 
     /**
@@ -99,7 +99,7 @@
         pois = _.reject(pois, isOffSeason)
       }
 
-      $log.debug('Filters: ' + n + ' points of interest filtered to ' + pois.length + ' matching points with criteria ' + JSON.stringify(selected));
+      $log.debug(TAG + n + ' points of interest filtered to ' + pois.length + ' matching points with criteria ' + JSON.stringify(selected));
 
       return pois;
     }

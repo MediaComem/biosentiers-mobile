@@ -9,7 +9,8 @@
 
   function DbSeenPoisService(DbBio, $log, $q, rx) {
 
-    var collName       = 'seen-pois',
+    var TAG = "[DbSeenPois] ",
+        collName       = 'seen-pois',
         seenPoiSubject = new rx.ReplaySubject(1),
         service        = {
           getAll      : getAll,
@@ -32,7 +33,7 @@
       return DbBio.getCollection(collName)
         .then(function(coll) {
           var res = coll.find({qrId: qrId});
-          console.log('DbSeenPois:getAll:result', res);
+          $log.log(TAG + 'getAll:result', res);
           return res;
         })
         .catch(handleError);
@@ -77,9 +78,9 @@
     function removeAllFor(qrId) {
       return DbBio.getCollection(collName)
         .then(function(coll) {
-          $log.debug('DbSeenPois:removeAllFor:collection before removing:', qrId, angular.copy(coll));
+          $log.debug(TAG + 'removeAllFor:collection before removing:', qrId, angular.copy(coll));
           var res = coll.removeWhere({qrId: qrId});
-          $log.debug('DbSeenPois:removeAllFor:collection after removing:', angular.copy(coll));
+          $log.debug(TAG + 'removeAllFor:collection after removing:', angular.copy(coll));
           return res;
         })
         .catch(handleError);
@@ -150,7 +151,7 @@
      * @param error
      */
     function handleError(error) {
-      $log.error(error);
+      $log.error(TAG + "handleError", error);
       return $q.reject(error);
     }
   }

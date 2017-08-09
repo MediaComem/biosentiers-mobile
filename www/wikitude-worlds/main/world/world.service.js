@@ -8,7 +8,7 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(AppActions, ArView, DeviceOrientation, Filters, $log, Excursion, UserLocation, rx) {
+  function WorldService(AppActions, ArView, DeviceOrientation, Filters, Excursion, UserLocation, rx) {
 
     var service = {
       startup                : true,

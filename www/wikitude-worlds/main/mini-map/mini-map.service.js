@@ -9,7 +9,8 @@
     .factory('MiniMap', MiniMapService);
 
   function MiniMapService(MapIcons, $log, Excursion) {
-    var zoom    = 17,
+    var TAG     = "[MiniMap] ",
+        zoom    = 17,
         service = {
           config          : {},
           addPath         : addPath,
@@ -96,7 +97,7 @@
      * @param mapMarkerChanges An object with at least a removed and added properties, that contains respectivly the map markers to delete and to add.
      */
     function updateMapMarkers(mapMarkerChanges) {
-      $log.log(mapMarkerChanges);
+      $log.log(TAG + "mapMarkerChanges", mapMarkerChanges);
       _.each(mapMarkerChanges.hidden, function(marker) {
         // We use a base64 encoded id as the marker id, since Angular Leaflet does not accept '-' in marker's id.
         delete service.config.markers[btoa(marker.properties.id)];
@@ -109,7 +110,7 @@
           icon: MapIcons.get(marker.properties.theme)
         }
       });
-      $log.log('updateMapMarkers', service.config);
+      $log.log(TAG + 'updateMapMarkers', service.config);
     }
 
     /**
@@ -118,12 +119,12 @@
      */
     function centerOnUser(realLocation) {
       if (service.config.hasOwnProperty('center')) {
-        $log.debug('Updating the minimap center');
+        $log.debug(TAG + 'Updating the minimap center');
         service.config.center.lat = realLocation.lat;
         service.config.center.lng = realLocation.lon;
       }
       if (service.config.markers.hasOwnProperty('user')) {
-        $log.debug('Updating the minimap marker');
+        $log.debug(TAG + 'Updating the minimap marker');
         service.config.markers.user.lat = realLocation.lat;
         service.config.markers.user.lng = realLocation.lon;
       }

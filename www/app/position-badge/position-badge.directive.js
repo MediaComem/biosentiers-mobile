@@ -21,7 +21,8 @@
   }
 
   function PositionBadgeCtrl($scope, $log) {
-    $log.log('PositionBadgeCtrl', $scope.showLabel);
+    var TAG = "[PositionBadgeCtrl] ";
+    $log.log(TAG, $scope.showLabel);
     $scope.showLabel = $scope.showLabel || 'always';
     var posbadge = this;
     var states = {
@@ -56,7 +57,7 @@
     };
 
     $scope.$watch('state', function(newValue, oldValue) {
-      $log.log('Position Badge Watch - state', newValue, oldValue);
+      $log.log(TAG + 'Watch - state', newValue, oldValue);
       if (typeof newValue === "undefined") throw new Error("Position Badge Directive - undefined state value");
       $scope.showLabel === 'never' && hideLabel(newValue);
       states[newValue].action();

@@ -10,7 +10,8 @@
     .controller('BigMapCtrl', BigMapCtrl);
 
   function BigMapCtrl(leafletData, $log, BigMap, Modals, $scope, UserLocation, $timeout) {
-    var bigmap = this;
+    var TAG    = "[BigMapCtrl] ",
+        bigmap = this;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
     // So, the Modals.closeCurrent closes the BigMap Modal.
@@ -29,7 +30,7 @@
       BigMap.updateMapMarkers();
       $scope.$on('leafletDirectiveMap.bigmap.moveend', BigMap.updateMapMarkers);
       UserLocation.realObs.subscribe(function(location) {
-        $log.log(location);
+        $log.log(TAG + "user location", location);
         !bigmap.userIsFound && (bigmap.userIsFound = true);
         bigmap.positionState = 'success';
         $timeout(function() {
@@ -37,7 +38,7 @@
         }, 1000);
       });
     }).catch(function(error) {
-      $log.error(error);
+      $log.error(TAG + "getMap error", error);
     });
 
     ////////////////////

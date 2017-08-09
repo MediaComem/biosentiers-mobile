@@ -20,13 +20,14 @@
                       DbSeenPois,
                       WorldActions) {
 
-    var deviceOrientationWatch,
+    var TAG = "[App:Run:IonicitudeAction] ",
+        deviceOrientationWatch,
         deviceOrientationUpdatesInterval = 250;
 
     $ionicPlatform.ready(function() {
       Ionicitude.init()
-        .then(function(success) { $log.log(success); })
-        .catch(function(error) { $log.log(error); });
+        .then(function(success) { $log.log(TAG + "init success", success); })
+        .catch(function(error) { $log.log(TAG + "init error", error); });
 
       /**
        * Register Ionicitude Actions
@@ -48,15 +49,15 @@
        * @param service The Ionicitude service
        */
       function open(service) {
-        $log.debug('World opened');
+        $log.debug(TAG + 'World opened');
 
-        $log.debug('Starting device orientation updates every ' + deviceOrientationUpdatesInterval + 'ms');
+        $log.debug(TAG + 'Starting device orientation updates every ' + deviceOrientationUpdatesInterval + 'ms');
         deviceOrientationWatch = $cordovaDeviceOrientation.watchHeading({
           frequency: deviceOrientationUpdatesInterval
         });
 
         deviceOrientationWatch.then(null, function(err) {
-          $log.error(err);
+          $log.error(TAG + err);
         }, function(update) {
           WorldActions.execute('updateDeviceOrientation', update);
         });
@@ -71,26 +72,26 @@
       }
 
       function setPosition(service, param) {
-        $log.log('setting position :', param);
+        $log.log(TAG + 'setting position :', param);
         service.setLocation(param.lat, param.lon, param.alt, 1);
       }
 
       function close(service) {
-        $log.debug('World closing');
+        $log.debug(TAG + 'World closing');
 
         if (deviceOrientationWatch) {
-          $log.debug('Stopping device orientation updates');
+          $log.debug(TAG + 'Stopping device orientation updates');
           deviceOrientationWatch.clearWatch();
         } else {
-          $log.warn('No devices orientation updates to stop');
+          $log.warn(TAG + 'No devices orientation updates to stop');
         }
         service.close();
         DbBio.save();
       }
 
       function addSeenPoi(service, param) {
-        $log.log('adding seen poi', param);
-        $log.log('addSeenPoi', DbSeenPois.addOne(param.qrId, param.serverId, param.participantId, param.poiId, param.poiData));
+        $log.log(TAG + 'adding seen poi', param);
+        $log.log(TAG + 'addSeenPoi', DbSeenPois.addOne(param.qrId, param.serverId, param.participantId, param.poiId, param.poiData));
       }
 
       function finishExcursion(service, param) {
@@ -99,7 +100,7 @@
           .then(DbExcursions.setFinishedStatus)
           .then(_.partial(close, service))
           .catch(function(error) {
-            $log.error(error);
+            $log.error(TAG + error);
             $q.reject(error);
           });
       }

@@ -11,7 +11,8 @@
     .factory('InstallationId', InstallationIdFn);
 
   function InstallationIdFn($cordovaFile, $log, $q, uuid) {
-    var deferred,
+    var TAG = "[InstallationId] ",
+        deferred,
         fileName = 'installation-id.txt',
         service  = {
           getValue: fetchOrCreate
@@ -68,7 +69,7 @@
      * @param result
      */
     function failedChedk(result) {
-      $log.debug('InstallationId checkFile exisence error', result);
+      $log.debug(TAG + 'checkFile exisence error', result);
       result.code === 1 ? createIidFile() : deferred.reject(result);
     }
 
@@ -79,20 +80,20 @@
      */
     function createIidFile() {
       var content = {
-        id            : uuid.gen(),
+        id            : uuid(),
         firstStartedAt: (new Date()).toISOString(),
         properties    : {
           device: device
         }
       };
-      $log.debug('InstallationId generated iid', content);
+      $log.debug(TAG + 'generated iid', content);
       $cordovaFile.writeFile(cordova.file.dataDirectory, fileName, JSON.stringify(content), true)
         .then(function(result) {
-          $log.debug('InstallationId create file success', result);
+          $log.debug(TAG + 'create file success', result);
           deferred.resolve(content);
         })
         .catch(function(error) {
-          $log.debug('InstallationId create file error', error);
+          $log.debug(TAG + 'create file error', error);
           deferred.reject(error);
         })
     }

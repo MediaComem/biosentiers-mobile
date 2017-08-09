@@ -14,7 +14,8 @@
 
     // Private data
     // Will store all the ArPoi in the view, by their id.
-    var arPointsById                = {},
+    var TAG                         = "[ArView] ",
+        arPointsById                = {},
         arExtremityPoints           = {},
         reachLimit                  = 250,
         minPoiActiveDistance        = 10,
@@ -85,7 +86,7 @@
 
       // Retrieve all available points.
       var allPois = Excursion.pois;
-      $log.debug(allPois.length + ' points in total');
+      $log.debug(TAG + allPois.length + ' points in total');
 
       // Determine the nearest points; those are the only points that should be in the AR.
       var nearestPois = getNearestPois(allPois);
@@ -165,13 +166,13 @@
      * @param {{camera, sensors}} options
      */
     function arHardwareStates(options) {
-      $log.log('ArView:arHardwareStates', options);
+      $log.log(TAG + 'arHardwareStates', options);
       if (options.hasOwnProperty('camera')) {
-        $log.log('ArView:arHardwareStates:' + (options.camera ? 'activating' : 'deactivating') + ' the camera.');
+        $log.log(TAG + 'arHardwareStates:' + (options.camera ? 'activating' : 'deactivating') + ' the camera.');
         AR.hardware.camera.enabled = !!options.camera;
       }
       if (options.hasOwnProperty('sensors')) {
-        $log.log('ArView:arHardwareStates:' + (options.sensors ? 'activating' : 'deactivating') + ' the sensors.');
+        $log.log(TAG + 'arHardwareStates:' + (options.sensors ? 'activating' : 'deactivating') + ' the sensors.');
         AR.hardware.sensors.enabled = !!options.sensors;
       }
     }
@@ -183,10 +184,10 @@
      * @param poi A GeoJSON object representing the poi that have been seen.
      */
     function setPoiSeen(poi) {
-      $log.log('setPoiSeen:poi', poi);
+      $log.log(TAG + 'setPoiSeen:poi', poi);
       SeenTracker.addSeenPoi(poi);
       var arPoi = arPointsById[getPoiId(poi)];
-      $log.log('setPoiSeen:arPointsById', arPointsById);
+      $log.log(TAG + 'setPoiSeen:arPointsById', arPointsById);
       arPoi.setSeen();
       if (Filters.getSelected().settings.showSeenPois === false) {
         arPoi.setVisible(false);
@@ -200,7 +201,7 @@
      */
     function onScreenClick() {
       $rootScope.$apply(function() {
-        $log.log('screen clicked');
+        $log.log(TAG + 'screen clicked');
       });
     }
 
@@ -228,9 +229,9 @@
        * When a ArPoi is clicked by the user, if there
        */
       return function onClick() {
-        $log.log('POI clicked', arPoi);
+        $log.log(TAG + 'POI clicked', arPoi);
         var dist = arPoi.distanceToUser();
-        $log.log("distance to user ", dist);
+        $log.log(TAG + "distance to user ", dist);
         DebugLog.add('POI clicked - ' + arPoi.id);
         DebugLog.add('POI distance to user - ' + dist + 'm');
         // if (1 === 1) {
@@ -249,13 +250,13 @@
     function onEnterActionRange() {
       if (!hasReachEndOnce) {
         EndPopup.automatic().then(function(validated) {
-          $log.log("promptEndOfExcursion - prompt result", validated);
+          $log.log(TAG + "promptEndOfExcursion - prompt result", validated);
           if (validated) {
             AppActions.execute('finishExcursion', {qrId: Excursion.qrId});
           } else {
             hasReachEndOnce = true;
             activateManualEndingSubject.onNext();
-            $log.log('Pas de fin du sentier');
+            $log.log(TAG + 'Pas de fin du sentier');
           }
         });
       }
@@ -273,11 +274,11 @@
       // This timeout without delay is used to ensure that the code is executed within an angular digest cycle.
       $timeout(function() {
         var currentAltitude = UserLocation.real.alt;
-        $log.log('ArView:updateArPoiAltitude:altitudes', currentAltitude, latestAltitude);
+        $log.log(TAG + 'updateArPoiAltitude:altitudes', currentAltitude, latestAltitude);
         if (currentAltitude === latestAltitude) {
           DebugLog.add('Same current and latest altitude - no updates');
         } else {
-          $log.log('ArView:updateArPoisAltitude:User position', UserLocation.real);
+          $log.log(TAG + 'updateArPoisAltitude:User position', UserLocation.real);
           var updateTime = Timers.start();
           _.each(arPointsById, Altitude.setFixedAltitude);
           _.each(arExtremityPoints, Altitude.setFixedAltitude);
@@ -455,7 +456,7 @@
       var arPoi = new ArMarker(poi, enabled, onArPoiClick, SeenTracker.hasBeenSeen(poi));
       var poiId = getPoiId(poi);
       arPointsById[poiId] = arPoi;
-      $log.info('ArView:UpdateAr:addArPoi:The poi n°' + poiId + ' has been added', arPointsById);
+      $log.info(TAG + 'UpdateAr:addArPoi:The poi n°' + poiId + ' has been added', arPointsById);
       return arPoi;
     }
 
@@ -470,12 +471,12 @@
     function removeArPoi(id) {
       var arPoi = arPointsById[id];
       if (!arPoi) {
-        $log.warn('Could not find ArMarker to remove with id ' + JSON.stringify(id));
+        $log.warn(TAG + 'Could not find ArMarker to remove with id ' + JSON.stringify(id));
         return;
       }
       arPoi.remove();
       delete arPointsById[id];
-      $log.info('ArView:UpdateAr:removeArPoi:The poi n°' + id + ' has been removed', arPointsById);
+      $log.info(TAG + 'ArView:UpdateAr:removeArPoi:The poi n°' + id + ' has been removed', arPointsById);
       return arPoi.poi;
     }
 

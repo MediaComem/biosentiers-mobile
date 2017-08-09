@@ -1,7 +1,7 @@
 /**
  * Created by Mathias on 31.03.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -10,9 +10,10 @@
 
   function QRService($log) {
 
-    var service = {
-      getExcursionData: getExcursionData
-    };
+    var TAG     = "[QR] ",
+        service = {
+          getExcursionData: getExcursionData
+        };
 
     return service;
 
@@ -24,7 +25,7 @@
      * @return {excursion|{creatorName, id, date, name, participant, types, zones}|*}
      */
     function getExcursionData(qrCodeData) {
-      $log.log('QR CODE raw data', qrCodeData);
+      $log.log(TAG + 'QR code raw data', qrCodeData);
       var decodedData = bioqr.decode(qrCodeData.text, {format: 'numeric'});
       switch (decodedData.version) {
         case 1:

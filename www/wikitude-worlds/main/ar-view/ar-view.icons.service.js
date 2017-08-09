@@ -17,7 +17,8 @@
 
   function ArIconsService($log) {
 
-    var iconsInactive     = [],
+    var TAG               = "[ArIcons] ",
+        iconsInactive     = [],
         iconsActive       = [],
         iconsSeenActive   = [],
         iconsSeenInactive = [];
@@ -94,7 +95,7 @@
         });
       }
 
-      $log.debug("ar-view.icons.service.js - getIcon()", type, state, hasBeenSeen, storage);
+      $log.debug(TAG + "getIcon()", type, state, hasBeenSeen, storage);
       return storage[type];
     }
   }

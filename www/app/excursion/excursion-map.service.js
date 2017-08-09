@@ -10,7 +10,8 @@
 
   function ExcursionMapConfigService(MapIcons, leafletBoundsHelpers, $log, turf) {
     // Flag used for the 'once' option of the setUserLocation() method
-    var hasBeenCentered = false;
+    var TAG             = "[ExcursionMapConfig] ",
+        hasBeenCentered = false;
 
     /**
      * Creates the configuration object with the basic and/or static values.
@@ -76,13 +77,13 @@
     function setUserLocation(location, options) {
       if (typeof options === "undefined" || typeof options.center === 'undefined') options.center = 'always';
       if (typeof location === "undefined") throw new TypeError("ExcursionMapConfig.setUserLocation - mandatory 'location' argument is undefined.");
-      $log.info('ExcursionMapConfig - setUserLocation', this, location);
+      $log.info(TAG + 'setUserLocation', this, location);
       if (typeof this.markers.user !== "undefined") {
-        $log.log('ExcursionMapConfig.setUserLocation - updating the marker');
+        $log.log(TAG + 'setUserLocation - updating the marker');
         this.markers.user.lat = location.lat;
         this.markers.user.lng = location.lng;
       } else {
-        $log.log('ExcursionMapConfig.setUserLocation - creating the marker');
+        $log.log(TAG + 'setUserLocation - creating the marker');
         this.markers.user = {
           lat : location.lat,
           lng : location.lng,
@@ -104,7 +105,7 @@
      * @param {GeoJSON} path A GeoJSON object
      */
     function setPath(path) {
-      $log.info('ExcursionMap:setPath', path);
+      $log.info(TAG + 'setPath', path);
       if (path) {
         this.geojson.path = {
           data : path,
@@ -121,7 +122,7 @@
      * @param {GeoJSON} zones A GeoJSON object
      */
     function setZones(zones) {
-      $log.log('ExcursionMap:setZones', zones);
+      $log.log(TAG + 'setZones', zones);
       if (zones) {
         this.geojson.zones = {
           data : zones,
@@ -143,7 +144,7 @@
      * @param {{start: GeoJSON, end: GeoJSON}} points An object containing GeoJSON Point objects.
      */
     function setExtremityPoints(points) {
-      $log.log('ExcursionMap:setExtremityPoints', points);
+      $log.log(TAG + 'setExtremityPoints', points);
       if (points) {
         this.markers.start = {
           lat: points.start.geometry.coordinates[1],

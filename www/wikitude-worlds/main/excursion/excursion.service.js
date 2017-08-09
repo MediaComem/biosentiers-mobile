@@ -7,7 +7,8 @@
 
   function ExcursionService(AppActions, $log, rx) {
 
-    var excursion,
+    var TAG               = "[Excursion] ",
+        excursion,
         currentPoi,
         currentPoiDetails,
         // excursionSubject     = new rx.ReplaySubject(1),
@@ -126,7 +127,7 @@
      * @param newExcursion
      */
     function load(newExcursion) {
-      $log.debug('Excursion loaded', newExcursion);
+      $log.debug(TAG + 'loaded', newExcursion);
       if (newExcursion) {
         excursion = newExcursion;
         excursionSubject.onNext(excursion);
@@ -144,7 +145,7 @@
           options = {return: true};
 
       AppActions.execute('loadPoiDetails', params, options).then(function(details) {
-        $log.log('ExcursionService:loadCurrentPoi', details);
+        $log.log(TAG + 'loadCurrentPoi', details);
 
         currentPoi = poi;
         currentPoiDetails = details;

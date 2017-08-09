@@ -5,11 +5,7 @@
     .factory('uuid', uuid);
 
   function uuid() {
-    return {
-      gen: function() {
-        return b();
-      }
-    };
+    return b;
 
     /**
      * Returns a random v4 UUID of the form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx,

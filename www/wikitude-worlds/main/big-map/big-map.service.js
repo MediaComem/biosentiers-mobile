@@ -8,14 +8,15 @@
     .factory('BigMap', BigMapService);
 
   function BigMapService(Filters, $log, MapIcons, Excursion, turf, UserLocation) {
-    var bigMap = {
-      config          : {},
-      updateMapMarkers: updateMapMarkers,
-      setMap          : setMap,
-      updateUserMarker: updateUserMarker,
-      centerOnUser    : centerOnUser,
-      fitOnPath       : fitOnPath
-    };
+    var TAG    = "[BigMap] ",
+        bigMap = {
+          config          : {},
+          updateMapMarkers: updateMapMarkers,
+          setMap          : setMap,
+          updateUserMarker: updateUserMarker,
+          centerOnUser    : centerOnUser,
+          fitOnPath       : fitOnPath
+        };
 
     var pathBounds          = null,
         map                 = null,
@@ -35,9 +36,9 @@
           disableClusteringAtZoom: 18
         };
 
-    $log.log('BigMapService:defaultMarkers', angular.copy(defaultMarkers));
+    $log.log(TAG + 'defaultMarkers', angular.copy(defaultMarkers));
 
-    $log.log('Turf Center of Path', turf.center(Excursion.pathGeoJson));
+    $log.log(TAG + 'Turf Center of Path', turf.center(Excursion.pathGeoJson));
 
     initialize();
 
@@ -103,13 +104,13 @@
     function updateMapMarkers() {
       if (map !== null) {
         resetMapMarkers();
-        $log.log(_.size(bigMap.config.markers));
+        $log.log(TAG + "number of markers after reset", _.size(bigMap.config.markers));
         var poisToShow = getMapMarkersToShow(getScreenPolygon());
         addMapMarkers(Filters.filterPois(poisToShow));
-        $log.log(_.size(bigMap.config.markers));
+        $log.log(TAG + "number of markers after add", _.size(bigMap.config.markers));
         return bigMap.config.markers;
       } else {
-        $log.error('No map available. Try to call the BigMap.setMap() method, passing it a valid leaflet map.');
+        $log.error(TAG + 'No map available. Try to call the BigMap.setMap() method, passing it a valid leaflet map.');
       }
     }
 
@@ -174,7 +175,7 @@
      */
     function updateUserMarker() {
       if (bigMap.config.markers.hasOwnProperty('user')) {
-        $log.log('BigMapService:updateUserMarker');
+        $log.log(TAG + 'updateUserMarker');
         bigMap.config.markers.user.lat = UserLocation.real.lat;
         bigMap.config.markers.user.lng = UserLocation.real.lon;
       }

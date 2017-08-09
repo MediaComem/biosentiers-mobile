@@ -15,11 +15,8 @@
   }
 
   function run(AppActions, ArView, $window, World) {
-
     ArView.init();
-
     $window.World = World;
-
     //AppActions.execute('open');
   }
 })();

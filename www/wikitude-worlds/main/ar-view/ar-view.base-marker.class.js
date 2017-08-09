@@ -8,8 +8,12 @@
     .service('ArBaseMarker', ArBaseMarkerClass);
 
   function ArBaseMarkerClass(Altitude, $log) {
+    var TAG = "[ArBaseMarker] ";
+
     /**
-     *
+     * This class represents the ArMarker that represents the POIs in the AR view.
+     * @param {GeoJSON} poi A GeoJSON object representing the poi that will be displayed on the AR view.
+     * @param {Boolean} enabled Indicates wether or not the constructed ArMarker should be visible in the AR view.
      * @constructor
      */
     function ArBaseMarker(poi, enabled) {
@@ -23,7 +27,7 @@
       self.relativeAltitudeDelta = Altitude.getRelativeDelta(self.properties.theme);
       self.minActiveDistance = getMinActiveDistance(self.properties.theme);
 
-      $log.debug('ArBaseMarker -> self', self);
+      $log.debug(TAG + 'new ArBaseMarker', self);
       self.location = new AR.GeoLocation(self.poi.geometry.coordinates[1], self.poi.geometry.coordinates[0]);
       Altitude.setFixedAltitude(self);
 
@@ -79,7 +83,7 @@
       };
 
       var res = distances.hasOwnProperty(theme) ? distances[theme] : AR.context.scene.minPoiActiveDistance;
-      $log.log('ArBaseMarker:minActiveDistance', res);
+      $log.log(TAG + 'minActiveDistance', res);
       return res;
     }
   }

@@ -10,6 +10,8 @@
     .config(router);
 
   function router($stateProvider, $urlRouterProvider) {
+    var TAG = "[App:Router] ";
+
     $stateProvider
       .state('login', {
         url         : '/login',
@@ -44,11 +46,11 @@
             controller : 'ExcursionsListCtrl as list'
           }
         },
-        onEnter: function(DbExcursions, $state) {
-          console.log('App:Router:Checking if there\'s any excursion');
+        onEnter: function(DbExcursions, $state, $log) {
+          $log.log(TAG + 'Checking if there\'s any excursion');
           DbExcursions.countAll()
             .then(function(value) {
-              console.log("App:router:Number of excursions", value);
+              $log.log(TAG + "Number of excursions", value);
               if (value === 0) $state.go('login');
             })
         }
@@ -189,7 +191,7 @@
         },
         resolve: {
           excursionData: function(DbExcursions, $stateParams, $log) {
-            $log.log('AppRouter:app.excursion state:', $stateParams);
+            $log.log(TAG + 'app.excursion state:', $stateParams);
             return DbExcursions.getOne({qrId: $stateParams.qrId});
           }
         }

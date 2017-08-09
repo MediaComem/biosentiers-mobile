@@ -1,7 +1,7 @@
 /**
  * Created by Mathias on 08.06.2016.
  */
-(function () {
+(function() {
   'use strict';
   angular
     .module('ar-view')
@@ -9,19 +9,18 @@
 
   function UserLocationService(Location, $log, rx, turf) {
 
-    var movingDistanceThreshold = 20;
-
-    var realLocationSubject = new rx.ReplaySubject(1),
-        spacedLocationSubject = new rx.ReplaySubject(1);
-
-    var service = {
-      real: null,
-      spaced: null,
-      update: update,
-      hasLocation: hasLocation,
-      realObs: realLocationSubject.asObservable(),
-      spacedObs: spacedLocationSubject.asObservable()
-    };
+    var TAG                     = "[UserLocation] ",
+        movingDistanceThreshold = 20,
+        realLocationSubject     = new rx.ReplaySubject(1),
+        spacedLocationSubject   = new rx.ReplaySubject(1),
+        service                 = {
+          real       : null,
+          spaced     : null,
+          update     : update,
+          hasLocation: hasLocation,
+          realObs    : realLocationSubject.asObservable(),
+          spacedObs  : spacedLocationSubject.asObservable()
+        };
 
     return service;
 
@@ -47,7 +46,7 @@
         spacedLocationSubject.onNext(service.spaced);
 
         if (!firstLocation) {
-          $log.debug('User has moved more than ' + movingDistanceThreshold + 'm');
+          $log.debug(TAG + 'User has moved more than ' + movingDistanceThreshold + 'm');
         }
       }
 
@@ -56,7 +55,7 @@
         message += ' (moved ' + distance + 'm from the last spaced position)';
       }
 
-      $log.debug(message);
+      $log.debug(TAG + message);
     }
 
     function movingDistance() {

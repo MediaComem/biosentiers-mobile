@@ -8,7 +8,8 @@
     .service('DbBio', DbBioService);
 
   function DbBioService($ionicPlatform, $log, Loki, $q) {
-    var deferred,
+    var TAG     = "[DbBio] ",
+        deferred,
         db,
         service = {
           getCollection: getCollection,
@@ -27,14 +28,14 @@
       if (!deferred) {
         deferred = $q.defer();
         $ionicPlatform.ready(function() {
-          $log.log('initializing Loki for', name);
+          $log.log(TAG + 'initializing Loki for', name);
           db = new Loki('db', {
             // autosave        : true,
             // autosaveInterval: 10000,
             adapter         : new LokiCordovaFSAdapter({'prefix': 'biosentiers'}),
             autoload        : true,
             autoloadCallback: function(result) {
-              $log.warn(TAG('loadDatabase:result'), result);
+              $log.warn(TAG + 'loadDatabase:result', result);
               deferred.resolve();
             }
           });
@@ -54,7 +55,7 @@
         // db.removeCollection(name);
         var coll = db.getCollection(name);
         if (coll) return coll;
-        $log.log('DbBio:getCollection:' + name + ' options', options);
+        $log.log(TAG + 'getCollection:' + name + ' options', options);
         coll = db.addCollection(name, options);
         return save().then(function() {
           return coll;
@@ -67,10 +68,10 @@
      * @return {Promise} A promise of the database saved.
      */
     function save() {
-      $log.log('DbBio:Saving...');
+      $log.log(TAG + 'Saving...');
       return $q(function(resolve, reject) {
         db.saveDatabase(function(err) {
-          $log.log('Saved', err);
+          $log.log(TAG + 'Save result', err);
           err ? reject(err) : resolve(true);
         });
       });
@@ -81,19 +82,11 @@
       return start().then(function() {
         db.removeCollection('excursions');
         db.removeCollection('seen-pois');
-        $log.log('DbBio:reset', db);
+        $log.log(TAG + 'reset', db);
         save().then(function() {
           db = null;
         });
       })
-    }
-
-    /**
-     * @param content
-     * @return {string}
-     */
-    function TAG(content) {
-      return "DbBio:" + content;
     }
   }
 })();
