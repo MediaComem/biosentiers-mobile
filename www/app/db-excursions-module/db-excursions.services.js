@@ -169,11 +169,31 @@
       if (!excursion) throw new TypeError('DbExcursions : archiveOne needs an Excursion object as its first argument, none given');
       if (excursion.archivedAt !== null) return $q.resolve(excursion);
       excursion.archivedAt = Date.now();
-      return setNotNew(excursion)
-        .then(updateOne)
-        .then(function() {
+      // Remove the "new" flag if it exists
+      excursion.isNew && (excursion.isNew = false);
+      return updateOne(excursion)
+        .then(function(result) {
           archivedSubject.onNext(excursion);
-          $cordovaToast.showShortBottom('"' + excursion.name + '" archivée.')
+          $cordovaToast.showShortBottom('"' + excursion.name + '" archivée.');
+          $log.log(TAG + "update result", result);
+        });
+    }
+
+    /**
+     * Restore the given excursion.
+     * This means setting its 'archivedAt' property to null.
+     * This is only possible if this property is not already equal to null.
+     * @param excursion
+     * @return {Promise}
+     */
+    function restoreOne(excursion) {
+      if (!excursion) throw new TypeError('DbExcursions : restoreOne needs an Excursion object as its first argument, none given');
+      if (excursion.archivedAt === null) return $q.resolve(excursion);
+      excursion.archivedAt = null;
+      return updateOne(excursion)
+        .then(function() {
+          restoredSubject.onNext(excursion);
+          $cordovaToast.showShortBottom('"' + excursion.name + '" restaurée.')
         });
     }
 
@@ -256,24 +276,6 @@
     }
 
     /**
-     * Restore the given excursion.
-     * This means setting its 'archivedAt' property to null.
-     * This is only possible if this property is not already equal to null.
-     * @param excursion
-     * @return {Promise}
-     */
-    function restoreOne(excursion) {
-      if (!excursion) throw new TypeError('DbExcursions : restoreOne needs an Excursion object as its first argument, none given');
-      if (excursion.archivedAt === null) return $q.resolve(excursion);
-      excursion.archivedAt = null;
-      return updateOne(excursion)
-        .then(function() {
-          restoredSubject.onNext(excursion);
-          $cordovaToast.showShortBottom('"' + excursion.name + '" restaurée.')
-        });
-    }
-
-    /**
      * Changes the status of a single excursion, passed as argument, and updates this excursion in the Loki DB.
      * Only an excursion with a 'pending' status could have its status changed to 'ongoing'.
      * If you pass an excursion with a status other than 'pending', the promise will be resolved, but the excursion will remain untouched.
@@ -332,8 +334,6 @@
       excursion.isNew = true;
       return updateOne(excursion);
     }
-
-    /* ----- PRIVATE FUNCTIONS ----- */
 
     /**
      * Determines how to react to an error when a query is executed.
