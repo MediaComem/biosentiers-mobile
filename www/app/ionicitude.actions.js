@@ -8,7 +8,9 @@
     .module('app')
     .run(ionicitude);
 
-  function ionicitude(DbBio,
+  function ionicitude(ActivityTracker,
+                      EventLogFactory,
+                      DbBio,
                       $cordovaDeviceOrientation,
                       $ionicPlatform,
                       Ionicitude,
@@ -76,7 +78,7 @@
         service.setLocation(param.lat, param.lon, param.alt, 1);
       }
 
-      function close(service) {
+      function close(service, param) {
         $log.debug(TAG + 'World closing');
 
         if (deviceOrientationWatch) {
@@ -86,6 +88,9 @@
           $log.warn(TAG + 'No devices orientation updates to stop');
         }
         service.close();
+        ActivityTracker(EventLogFactory.lifecycle.ar.quitted());
+        // Set the excursion as paused
+        DbExcursions.getOne({qrId: param.qrId}).then(DbExcursions.setPausedDate);
         DbBio.save();
       }
 

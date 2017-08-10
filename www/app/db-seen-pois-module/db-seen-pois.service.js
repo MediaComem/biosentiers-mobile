@@ -142,7 +142,7 @@
       this.participantId = participantId;
       this.poiId = poiId;
       this.poiData = poiData;
-      this.seenAt = Date.now();
+      this.seenAt = new Date();
     }
 
     /**

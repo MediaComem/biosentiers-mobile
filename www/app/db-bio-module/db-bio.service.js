@@ -11,6 +11,7 @@
     var TAG     = "[DbBio] ",
         deferred,
         db,
+        prevSave = null,
         service = {
           getCollection: getCollection,
           reset        : reset,
@@ -68,13 +69,16 @@
      * @return {Promise} A promise of the database saved.
      */
     function save() {
-      $log.log(TAG + 'Saving...');
-      return $q(function(resolve, reject) {
-        db.saveDatabase(function(err) {
-          $log.log(TAG + 'Save result', err);
-          err ? reject(err) : resolve(true);
+      prevSave = $q.when(prevSave).catch(_.noop)
+        .then(function() {
+          return $q(function(resolve, reject) {
+            db.saveDatabase(function(err) {
+              $log.log(TAG + 'Save result', err);
+              err ? reject(err) : resolve(true);
+            });
+          });
         });
-      });
+      return prevSave;
     }
 
     // TODO : Supprimer en prod

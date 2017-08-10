@@ -13,9 +13,13 @@
   /*
    Controller function
    */
-  function ConnectCtrl($scope, $state, $cordovaBarcodeScanner, ExcursionClass, $ionicPlatform, $ionicPopup, ConnectService, DbExcursions, $q, QR, $log) {
+  function ConnectCtrl(ActivityTracker, EventLogFactory, $scope, $state, $cordovaBarcodeScanner, ExcursionClass, $ionicPlatform, $ionicPopup, ConnectService, DbExcursions, $q, QR, $log) {
     var TAG  = "[ConnectCtrl] ",
         auth = this;
+
+    $scope.$on('$ionicView.enter', function() {
+      ActivityTracker(EventLogFactory.navigation.connect());
+    });
 
     $ionicPlatform.ready(function() {
       auth.doQRCodeLogin = doQRCodeLogin;
@@ -59,12 +63,15 @@
             $log.debug(TAG + "excursions with same serverId", excursions);
             if (excursions.length === 0) {
               $log.log(TAG + 'handleData:no excursion with id ' + auth.excursion.serverId);
+              ActivityTracker(EventLogFactory.action.scanQr.new(auth.excursion));
               showExcursionValidation();
             } else if (hasSameParticipant(excursions, auth.excursion.participant.id)) {
               $log.log(TAG +'handleData:existing excursion with same participant');
+              ActivityTracker(EventLogFactory.action.scanQr.identical(auth.excursion));
               showSameParticipantError();
             } else {
               $log.log(TAG +'handleData:existing excursion with different participant');
+              ActivityTracker(EventLogFactory.action.scanQr.different(auth.excursion, excursions));
               showDiffParticipanValidation(excursions);
             }
           });

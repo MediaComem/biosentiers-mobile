@@ -134,7 +134,6 @@
       ////////////////////
 
       function filterPoints(res) {
-        console.log(res);
         $log.log(TAG + 'getFilteredPoints:Total number of points', res.points.features.length);
         var pois = _.filter(res.points.features, matchesFilter);
         $log.log(TAG + 'getFilteredPoints:' + pois.length + ' filtered points based on', res.zones, themes);

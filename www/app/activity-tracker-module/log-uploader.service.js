@@ -39,7 +39,7 @@
       } else {
         var reason = 'The LogUploader is not running. Try calling LogUploader.start() and then retry.';
         prevUploadActionPromise = $q.reject(reason);
-        $log.error(TAG + reason);
+        $log.warn(TAG + reason);
       }
       return prevUploadActionPromise;
     }

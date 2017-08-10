@@ -1,17 +1,21 @@
 /**
  * Created by Mathias on 29.03.2016.
  */
-(function () {
+(function() {
   'use strict';
 
   angular
     .module('app')
     .controller('MenuCtrl', MenuCtrl);
 
-  function MenuCtrl($log) {
-    var TAG = "[MenuCtrl] ",
-        menu = this,
+  function MenuCtrl(ActivityTracker, EventLogFactory, $ionicSideMenuDelegate, $log, $scope) {
+    var TAG        = "[MenuCtrl] ",
+        menu       = this,
         debugCount = 0;
+
+    $scope.$watch(function() { return $ionicSideMenuDelegate.getOpenRatio(); },
+      function(ratio) { ratio === 1 && ActivityTracker(EventLogFactory.navigation.menuOpen()); }
+    );
 
     menu.showDebug = false;
     menu.manageDebugLog = function() {

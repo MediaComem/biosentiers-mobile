@@ -51,7 +51,7 @@
       } else {
         var reason = 'The ActivityTracker service is not running. Try calling ActivityTracker.start() and retry.';
         currentOperationPromise = $q.reject(reason);
-        $log.info(TAG + reason);
+        $log.warn(TAG + reason);
       }
       return currentOperationPromise;
     }
@@ -63,28 +63,30 @@
      * @return {Promise}
      */
     function addLog(logObject) {
-      if (!logObject || typeof logObject !== 'object') throw new TypeError('ActivityTracker.addLog expects an object as its first argument. "' + typeof logObject + '" given.');
-      if (running) {
-        currentOperationPromise = $q.when(currentOperationPromise)
-        // Wathever the outcome of the previous action is, intercept the catch and carry on.
-          .catch(_.noop)
-          .then(function() {$log.log(TAG + 'new line starting', logObject);})
-          .then(FsUtils.checkCurrentLogfile)
-          .then(_.wrap(logObject, FsUtils.appendToFile))
-          .catch(function(result) {
-            if (result.code === 1) {
-              return FsUtils.createLogfile(logObject);
-            } else {
-              throw result;
-            }
-          })
-          .then(incrementCounter);
-      } else {
-        var reason = 'The ActivityTracker service is not running. Try calling ActivityTracker.start() and retry.';
-        currentOperationPromise = $q.reject(reason);
-        $log.info(TAG + reason);
-      }
-      return currentOperationPromise;
+      return $ionicPlatform.ready(function() {
+        if (!logObject || typeof logObject !== 'object') throw new TypeError('ActivityTracker.addLog expects an object as its first argument. "' + typeof logObject + '" given.');
+        if (running) {
+          currentOperationPromise = $q.when(currentOperationPromise)
+          // Wathever the outcome of the previous action is, intercept the catch and carry on.
+            .catch(_.noop)
+            .then(function() {$log.log(TAG + 'new line starting', logObject);})
+            .then(FsUtils.checkCurrentLogfile)
+            .then(_.wrap(logObject, FsUtils.appendToFile))
+            .catch(function(result) {
+              if (result.code === 1) {
+                return FsUtils.createLogfile(logObject);
+              } else {
+                throw result;
+              }
+            })
+            .then(incrementCounter);
+        } else {
+          var reason = 'The ActivityTracker service is not running. Try calling ActivityTracker.start() and retry.';
+          currentOperationPromise = $q.reject(reason);
+          $log.warn(TAG + reason);
+        }
+        return currentOperationPromise;
+      });
     }
 
     /* ----- Private Functions ----- */

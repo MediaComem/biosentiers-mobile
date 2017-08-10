@@ -8,12 +8,16 @@
     .module('app')
     .controller('ExcursionCtrl', ExcursionCtrl);
 
-  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, Ionicitude, $ionicPopover, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, rx, $scope, $state, $timeout, WorldActions) {
+  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, EventLogFactory, Ionicitude, $ionicPopover, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, rx, $scope, $state, $timeout, WorldActions) {
     var TAG = "[ExcursionCtrl] ";
 
     $scope.$on('$ionicView.beforeEnter', function(event, viewData) {
       viewData.enableBack = true;
       excursion.map && excursion.map._onResize();
+    });
+
+    $scope.$on('$ionicView.enter', function() {
+      ActivityTracker(EventLogFactory.navigation.excursion.card(excursionData));
     });
 
     // $scope.$on('$ionicView.afterEnter', afterViewEnter);
@@ -245,9 +249,9 @@
      * Loads and launches the AR World with the excursion's data, then changes the status of this excursion from "pending" to "ongoing".
      */
     function startExcursion() {
+      ActivityTracker(EventLogFactory.action.excursion.started(excursion.data));
       return $q.when()
-        .then(Ionicitude.launchAR)
-        .then(loadWorldExcursion)
+        .then(launchAr)
         .then(_.partial(DbExcursions.setOngoingStatus, excursion.data))
         .catch(handleError);
     }
@@ -256,9 +260,20 @@
      * Executes the startExcursion function, then logs the fact in the ActivityTracker that the excursion has been resumed.
      */
     function resumeExcursion() {
+      ActivityTracker(EventLogFactory.action.excursion.resumed(excursion.data));
       return $q.when()
-        .then(startExcursion)
+        .then(launchAr)
         .catch(handleError);
+    }
+
+    /**
+     * Actually launch the AR view.
+     */
+    function launchAr() {
+      ActivityTracker(EventLogFactory.lifecycle.ar.launched());
+      return $q.when()
+        .then(Ionicitude.launchAR)
+        .then(loadWorldExcursion)
     }
 
     /**

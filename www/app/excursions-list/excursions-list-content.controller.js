@@ -8,10 +8,15 @@
     .module('app')
     .controller('ExcursionsListTabCtrl', ExcursionsListTabCtrl);
 
-  function ExcursionsListTabCtrl(DbExcursions, excursionFilter, ExcursionListContextMenu, ExcursionsSettings, $log, rx) {
+  function ExcursionsListTabCtrl(ActivityTracker, DbExcursions, EventLogFactory, excursionFilter, ExcursionListContextMenu, ExcursionsSettings, $log, rx, $scope, $state) {
     var TAG        = "[ExcursionListTabCtrl] ",
         tab        = this,
         RefreshObs = rx.Observable.merge(ExcursionsSettings.withArchive.changeObs, DbExcursions.archivedObs, DbExcursions.removedObs);
+
+    // Track each time the user enters one of the lists tab.
+    $scope.$on('$ionicView.enter', function(){
+      ActivityTracker(EventLogFactory.navigation.excursionsList(excursionFilter.status || 'all'));
+    });
 
     tab.loading = true;
     tab.showExcursionActions = ExcursionListContextMenu;

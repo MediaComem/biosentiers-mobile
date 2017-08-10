@@ -8,8 +8,8 @@
     .module('db-excursions-module')
     .factory('DbExcursions', DbExcursions);
 
-  function DbExcursions(ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $ionicPopup, $cordovaToast, $log, $q, rx) {
-    var TAG = "[DbExursions] ",
+  function DbExcursions(ActivityTracker, EventLogFactory, ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $ionicPopup, $cordovaToast, $log, $q, rx) {
+    var TAG                  = "[DbExursions] ",
         COLL_NAME            = 'excursions',
         COLL_OPTIONS         = {
           unique: ['id']
@@ -33,6 +33,7 @@
           setFinishedStatus: setFinishedStatus,
           setNotNew        : setNotNew,
           setNew           : setNew,
+          setPausedDate    : setPausedDate,
           archivedObs      : archivedSubject.asObservable(),
           removedObs       : removedSubject.asObservable(),
           restoredObs      : restoredSubject.asObservable(),
@@ -134,10 +135,13 @@
       return getCollection()
         .then(function(coll) {
           $log.log(TAG + 'newExcursionData', newExcursion);
-          coll.insert(newExcursion);
+          return coll.insert(newExcursion);
         })
-        .then(DbBio.save)
-        .catch(handleError);
+        .then(function(result) {
+          ActivityTracker(EventLogFactory.action.excursion.created(result));
+        })
+        .catch(handleError)
+        .finally(DbBio.save);
     }
 
     /**
@@ -151,9 +155,9 @@
     function updateOne(excursion) {
       $log.log(TAG + 'Updating');
       return getCollection()
-        .then(function(coll) { coll.update(excursion); })
-        .then(DbBio.save)
-        .catch(handleError);
+        .then(function(coll) { return coll.update(excursion); })
+        .catch(handleError)
+        .finally(DbBio.save);
     }
 
     /**
@@ -168,14 +172,14 @@
       $log.log(TAG + 'Archiving');
       if (!excursion) throw new TypeError('DbExcursions : archiveOne needs an Excursion object as its first argument, none given');
       if (excursion.archivedAt !== null) return $q.resolve(excursion);
-      excursion.archivedAt = Date.now();
+      excursion.archivedAt = new Date();
       // Remove the "new" flag if it exists
       excursion.isNew && (excursion.isNew = false);
       return updateOne(excursion)
         .then(function(result) {
-          archivedSubject.onNext(excursion);
-          $cordovaToast.showShortBottom('"' + excursion.name + '" archivée.');
-          $log.log(TAG + "update result", result);
+          ActivityTracker(EventLogFactory.action.excursion.archived(result));
+          archivedSubject.onNext(result);
+          $cordovaToast.showShortBottom('"' + result.name + '" archivée.');
         });
     }
 
@@ -191,9 +195,10 @@
       if (excursion.archivedAt === null) return $q.resolve(excursion);
       excursion.archivedAt = null;
       return updateOne(excursion)
-        .then(function() {
-          restoredSubject.onNext(excursion);
-          $cordovaToast.showShortBottom('"' + excursion.name + '" restaurée.')
+        .then(function(result) {
+          ActivityTracker(EventLogFactory.action.excursion.restored(result));
+          restoredSubject.onNext(result);
+          $cordovaToast.showShortBottom('"' + result.name + '" restaurée.')
         });
     }
 
@@ -221,11 +226,12 @@
             .then(function(coll) { coll.remove(excursion); })
             .then(function() { DbSeenPois.removeAllFor(excursion.qrId); })
             .then(function() {
+              ActivityTracker(EventLogFactory.action.excursion.deleted(excursion));
               removedSubject.onNext(excursion);
               $cordovaToast.showShortBottom('"' + excursion.name + '" supprimée.')
             })
-            .then(DbBio.save)
-            .catch(handleError);
+            .catch(handleError)
+            .finally(DbBio.save);
         } else {
           return false;
         }
@@ -241,19 +247,21 @@
       if (!excursion) throw new TypeError('DbExcursions : reinitializeOne needs an Excursion object as its first argument, none given');
       if (excursion.status !== 'finished') throw new Error('DbExcursions: reinitializeOne can only reinitialize an excursion if it has previously been finished.');
 
-      var confirmPopup = $ionicPopup.confirm({
-        title     : 'Réinitialiser une sortie',
-        subTitle  : excursion.name,
-        template  : "<p>La sortie <strong>" + excursion.name + "</strong> va revenir à son état initial, comme si son QR Code venait d'être scanné.</p><p>La liste des éléments vus lors de cette sortie va être supprimée.</p><p><strong>Attention, cette opération est irréversible.</strong></p>",
-        cancelText: "Annuler",
-        okText    : "Réinitialiser",
-        okType    : "button-energized"
-      });
+      var excursionCache,
+          confirmPopup = $ionicPopup.confirm({
+            title     : 'Réinitialiser une sortie',
+            subTitle  : excursion.name,
+            template  : "<p>La sortie <strong>" + excursion.name + "</strong> va revenir à son état initial, comme si son QR Code venait d'être scanné.</p><p>La liste des éléments vus lors de cette sortie va être supprimée.</p><p><strong>Attention, cette opération est irréversible.</strong></p>",
+            cancelText: "Annuler",
+            okText    : "Réinitialiser",
+            okType    : "button-energized"
+          });
 
       return confirmPopup.then(function(res) {
         if (res) {
           return getCollection()
             .then(function(coll) {
+              excursionCache = angular.copy(excursion);
               excursion.isNew = true;
               excursion.startedAt = null;
               excursion.pausedAt = null;
@@ -264,11 +272,12 @@
             })
             .then(function() { return DbSeenPois.removeAllFor(excursion.qrId); })
             .then(function() {
+              ActivityTracker(EventLogFactory.action.excursion.reinitialized(excursionCache));
               reinitializedSubject.onNext(excursion);
-              $cordovaToast.showShortBottom('"' + excursion.name + '" réinitialisée.')
+              $cordovaToast.showShortBottom('"' + excursion.name + '" réinitialisée.');
             })
-            .then(DbBio.save)
-            .catch(handleError);
+            .catch(handleError)
+            .finally(DbBio.save);
         } else {
           return false;
         }
@@ -288,7 +297,7 @@
       if (!excursion) throw new TypeError('DbExcursions : setOngoingStatus needs an Excursion object as its first argument, none given');
       if (excursion.status !== 'pending') return $q.resolve(excursion);
       excursion.status = 'ongoing';
-      excursion.startedAt = Date.now();
+      excursion.startedAt = new Date();
       return updateOne(excursion);
     }
 
@@ -302,10 +311,12 @@
      * @return {Promise} A promise of an updated Excursion
      */
     function setFinishedStatus(excursion) {
+      $log.log(TAG + "finishing excursion", excursion);
       if (!excursion) throw new TypeError('DbExcursions : setFinishedStatus needs an Excursion object as its first argument, none given');
       if (excursion.status !== 'ongoing') return $q.resolve(excursion);
       excursion.status = 'finished';
-      excursion.finishedAt = Date.now();
+      excursion.finishedAt = new Date();
+      ActivityTracker(EventLogFactory.action.excursion.finished(excursion));
       return updateOne(excursion);
     }
 
@@ -319,6 +330,7 @@
       if (!excursion) throw new TypeError('DbExcursions : setNotNew needs an Excursion object as its first argument, none given');
       if (!excursion.isNew) return $q.resolve(excursion);
       excursion.isNew = false;
+      // The call to ActivityTracker is done in the excursion-list-action-sheet.service.js file, because the event should only be logged when the user manually unflag an excursion.
       return updateOne(excursion);
     }
 
@@ -332,6 +344,19 @@
       if (!excursion) throw new TypeError('DbExcursions : setNew needs an Excursion object as its first argument, none given');
       if (excursion.isNew || excursion.status !== 'pending') return $q.resolve(excursion);
       excursion.isNew = true;
+      ActivityTracker(EventLogFactory.action.excursion.flagAsNew(excursion));
+      return updateOne(excursion)
+    }
+
+    /**
+     * Sets or changes the value of the "pausedAt" attribute of the given excursion.
+     * @param excursion
+     * @return {Promise}
+     */
+    function setPausedDate(excursion) {
+      if (!excursion) throw new TypeError('DbExcursions : setNew needs an Excursion object as its first argument, none given');
+      excursion.pausedAt = new Date();
+      ActivityTracker(EventLogFactory.action.excursion.paused(excursion));
       return updateOne(excursion);
     }
 

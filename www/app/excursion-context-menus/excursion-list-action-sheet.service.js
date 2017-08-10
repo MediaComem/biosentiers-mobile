@@ -7,9 +7,9 @@
     .module('excursion-context-menus')
     .factory('ExcursionListContextMenu', ExcursionListContextMenuFn);
 
-  function ExcursionListContextMenuFn(DbExcursions, $ionicActionSheet, $log, $state) {
+  function ExcursionListContextMenuFn(ActivityTracker, EventLogFactory, DbExcursions, $ionicActionSheet, $log, $state) {
 
-    var TAG     = "[ExcursionListContextMenu] ",
+    var TAG = "[ExcursionListContextMenu] ",
         excursion;
 
     return showMenu;
@@ -48,7 +48,11 @@
         }
 
         // Debug : affiche les infos de la sortie dans la $log
-        // options.buttons.push({text: '<i class="icon ion-code-working"></i> Debug sortie'});
+        options.buttons.push({text: '<i class="icon ion-code-working"></i> [DEBUG] Terminer la sortie'});
+        options.actions.push(function(excursion) {
+          DbExcursions.setOngoingStatus(excursion).then(DbExcursions.setFinishedStatus);
+        });
+        // options.buttons.push({text: '<i class="icon ion-code-working"></i> [DEBUG] Logger la sortie'});
         // options.actions.push(function(excursion) {
         //   $log.log(TAG + "current excursion", excursion);
         // });
@@ -120,7 +124,14 @@
         var setNotNewText = '<i class="icon ion-android-checkmark-circle"></i> Marquer comme vue';
         var setNewText = '<i class="icon ion-android-radio-button-off"></i> Marquer comme nouvelle';
         opt.buttons.push({text: excursion.isNew ? setNotNewText : setNewText});
-        opt.actions.push(excursion.isNew ? DbExcursions.setNotNew : DbExcursions.setNew);
+        if (excursion.isNew) {
+          opt.actions.push(function(excursion) {
+            ActivityTracker(EventLogFactory.action.excursion.unflagAsNew(excursion));
+            DbExcursions.setNotNew(excursion);
+          });
+        } else {
+          opt.actions.push(DbExcursions.setNew);
+        }
       }
     }
 

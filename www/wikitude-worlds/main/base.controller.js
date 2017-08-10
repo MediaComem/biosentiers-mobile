@@ -106,7 +106,7 @@
 
     function closeAR() {
       $log.debug(TAG + 'Closing the AR');
-      AppActions.execute('close');
+      AppActions.execute('close', {qrId: Excursion.qrId});
     }
 
     function finishExcursion() {
