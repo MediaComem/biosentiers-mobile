@@ -184,6 +184,7 @@
      * If an error occurs, the positionError function is called, otherwise, the positionUpdate function is called.
      */
     function activatePositionWatch() {
+      ActivityTracker(EventLogFactory.action.positionWatcher.activated());
       excursion.positionState = "searching";
       positionWatcher = $cordovaGeolocation.watchPosition({
         timeout           : 10000,
@@ -196,6 +197,7 @@
      * Deactivate the position watcher so that it doesnt watch for the user's location.
      */
     function deactivatePositionWatch() {
+      ActivityTracker(EventLogFactory.action.positionWatcher.deactivated());
       positionWatcher && positionWatcher.cancel();
       delete excursion.mapConfig.markers.user;
       excursion.positionState = 'refresh';
@@ -221,6 +223,7 @@
      */
     function positionUpdate(position) {
       $log.info(TAG + 'getCurrentPosition', position);
+      ActivityTracker(EventLogFactory.localization('excursionCard', excursion.data.serverId, position.coords));
       excursion.mapConfig.setUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude

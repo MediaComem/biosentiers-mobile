@@ -29,42 +29,15 @@
     /* ----- Public functions ----- */
 
     /**
-     * Moves the 'currentLog' file from the folder 'ActivityTracker' to the subfolder 'toUpload'.
-     * The file will be renamed with the current timestamp.
-     * IMPORTANT: This function needs to stay in this service, to ensure that adding a log and moving the logfile are never executed at the same time.
-     * @return {Promise}
-     */
-    function moveLog() {
-      if (running) {
-        // Wait on the current operation to finish before executing this one.
-        currentOperationPromise = $q.when(currentOperationPromise)
-        // Wathever the outcome of the previous action is, intercept the catch and carry on.
-          .catch(_.noop)
-          .then(FsUtils.checkCurrentLogfile)
-          .then(FsUtils.moveLogfile)
-          .then(function() {
-            // Reinitialize the counter since the file has been moved.
-            logCount = 0;
-            // Notify the uploader that it should try to upload the files.
-            LogUploader();
-          });
-      } else {
-        var reason = 'The ActivityTracker service is not running. Try calling ActivityTracker.start() and retry.';
-        currentOperationPromise = $q.reject(reason);
-        $log.warn(TAG + reason);
-      }
-      return currentOperationPromise;
-    }
-
-    /**
      * Adds a new log to the currentLog file.
      * It is not needed to create the file before colling addLog(), as it will be created by this function if it does not exists yet.
-     * @param logObject An object of class Event representing the log to add to the file.
-     * @return {Promise}
+     * If you don't pass any logObject value, the function will resolve silently, but no EventLog will be added to the currentLog file.
+     * @param {EventLog} logObject - An object of class EventLog representing the log to add to the file.
      */
     function addLog(logObject) {
       return $ionicPlatform.ready(function() {
-        if (!logObject || typeof logObject !== 'object') throw new TypeError('ActivityTracker.addLog expects an object as its first argument. "' + typeof logObject + '" given.');
+        if (!logObject) return $q.resolve();
+        if (typeof logObject !== 'object') throw new TypeError('ActivityTracker.addLog expects an object as its first argument. "' + typeof logObject + '" given.');
         if (running) {
           currentOperationPromise = $q.when(currentOperationPromise)
           // Wathever the outcome of the previous action is, intercept the catch and carry on.
@@ -90,6 +63,33 @@
     }
 
     /* ----- Private Functions ----- */
+
+    /**
+     * Moves the 'currentLog' file from the folder 'ActivityTracker' to the subfolder 'toUpload'.
+     * The file will be renamed with the current timestamp.
+     * IMPORTANT: This function needs to stay in this service, to ensure that adding a log and moving the logfile are never executed at the same time.
+     */
+    function moveLog() {
+      if (running) {
+        // Wait on the current operation to finish before executing this one.
+        currentOperationPromise = $q.when(currentOperationPromise)
+        // Wathever the outcome of the previous action is, intercept the catch and carry on.
+          .catch(_.noop)
+          .then(FsUtils.checkCurrentLogfile)
+          .then(FsUtils.moveLogfile)
+          .then(function() {
+            // Reinitialize the counter since the file has been moved.
+            logCount = 0;
+            // Notify the uploader that it should try to upload the files.
+            LogUploader();
+          });
+      } else {
+        var reason = 'The ActivityTracker service is not running. Try calling ActivityTracker.start() and retry.';
+        currentOperationPromise = $q.reject(reason);
+        $log.warn(TAG + reason);
+      }
+      return currentOperationPromise;
+    }
 
     /**
      * Increment the log counter.

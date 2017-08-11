@@ -10,7 +10,7 @@
     .module('ar-view')
     .factory('ArView', ArViewService);
 
-  function ArViewService(Altitude, AppActions, ArExtremityMarker, ArMarker, DebugLog, EndPopup, Filters, $log, Excursion, $rootScope, rx, SeenTracker, Timers, turf, UserLocation, $timeout) {
+  function ArViewService(Altitude, AppActions, ArExtremityMarker, ArMarker, DebugLog, EndPopup, EventLogFactory, Excursion, Filters, $log, $rootScope, rx, SeenTracker, Timers, turf, UserLocation, $timeout) {
 
     // Private data
     // Will store all the ArPoi in the view, by their id.
@@ -214,6 +214,14 @@
      * @param acc The accuracy of the new Location
      */
     function onLocationChanged(lat, lon, alt, acc) {
+      AppActions.execute('trackActivity', {
+        eventObject: EventLogFactory.localization('ar', Excursion.serverId, {
+          latitude : lat,
+          longitude: lon,
+          altitude : alt,
+          accuracy : acc
+        })
+      });
       $rootScope.$apply(function() {
         UserLocation.update(lon, lat, alt, acc);
       });

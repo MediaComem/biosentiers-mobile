@@ -2,14 +2,16 @@
   'use strict';
   angular
     .module('event-log-module')
+    .constant('MIN_DISTANCE', 10)
     .factory('EventLogFactory', EventLogFactoryFn);
 
   /*
    * Factory that stores and returns new EventLog object corresponding to the property that is accessed.
    * Depending on the event that needs to be created, the factory function could need additionnal argument. Please check each function signature.
    */
-  function EventLogFactoryFn(EventLog, $state, $log) {
-    var TAG = "[EventLogFactory] ";
+  function EventLogFactoryFn(MIN_DISTANCE, EventLog, $state, $log, turf) {
+    var TAG          = "[EventLogFactory] ",
+        prevPosition = null;
     return {
       lifecycle   : {
         app: {
@@ -79,6 +81,21 @@
               excursionId  : excursion.serverId,
               participantId: excursion.participant.id
             });
+          }
+        },
+        excursionsList : {
+          excursionActionSheet: function(excursion) {
+            return new EventLog('action.excursionsList.excursionActionSheet', {
+              excursion: {
+                id: excursion.serverId,
+                status: excursion.status
+              }
+            })
+          },
+          contextMenu         : function() { return new EventLog('action.excursionsList.contextMenu')},
+          archives            : {
+            showed: function() { return new EventLog('action.excursionsList.archives.showed'); },
+            hidden: function() { return new EventLog('action.excursionsList.archives.hidden'); }
           }
         },
         excursion      : {
@@ -185,18 +202,36 @@
         }
       },
       localization: function(context, excursionId, position) {
-        return new EventLog('localization', {
-          excursionId: excursionId,
-          position   : {
-            latitude: position.latitude,
-            longitude: position.longitude,
-            altitude: position.altitude,
-            accuracy: position.accuracy
-          },
-          context    : context
-        });
+        if (minDistanceMoved(position)) {
+          return new EventLog('localization', {
+            excursionId: excursionId,
+            position   : {
+              latitude : position.latitude,
+              longitude: position.longitude,
+              altitude : position.altitude,
+              accuracy : position.accuracy
+            },
+            context    : context
+          });
+        } else { return null; }
       }
+    };
+
+    /**
+     * Check that the given position is far enough from the previous one to be logged.
+     * @param {Object} position - The new position.
+     * @param {Number} position.longitude - The position's longitude, in degrees.
+     * @param {Number} position.latitude - The position's latitude, in degrees.
+     * @return {Boolean} True if the new position is far enough, False if not.
+     */
+    function minDistanceMoved(position) {
+      var res = true;
+      if (prevPosition) {
+        var distance = turf.distance(turf.helpers.point([prevPosition.longitude, prevPosition.latitude]), turf.helpers.point([position.longitude, position.latitude])) * 1000;
+        res = distance >= MIN_DISTANCE;
+      }
+      prevPosition = position;
+      return res;
     }
   }
-})
-();
+})();

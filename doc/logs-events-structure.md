@@ -21,6 +21,27 @@ Their structure is as follow:
 
 ## Event types
 
+### Localization events
+
+#### `localization`
+
+> Fired each time the user's position is localized by their device, and that this new position is at least 10 meters farer from the previous localized position.
+
+**Properties object:**
+
+```json
+{
+  "excursionId": "The serverId of the excursion in the context of which the position has been localized",
+  "position": {
+    "latitude": "The new position's latitude",
+    "longitude": "The new positions's longitude",
+    "altitude": "The new positions' altitude, if known",
+    "accuracy": "The localization's accuracy"
+  },
+  "context": "The context in which the position has been localized. This can be either on an excursion's card page (excursionCard) or when in the AR view (ar)."
+}
+```
+
 ### Lifecycle events
 
 #### `lifecycle.app.started`
@@ -32,6 +53,7 @@ Their structure is as follow:
 ```json
 {}
 ```
+
 #### `lifecycle.app.paused`
 
 > Fired each time the user put the BioSentiers app in the background.
@@ -131,8 +153,8 @@ Their structure is as follow:
 
 ```json
 {
+  "tab": "The name of the tab to which the user has navigated.",
   "state": {
-    "tab": "The name of the tab to which the user has navigated.",
     "name": "The name of the state to which the user has navigated (accessed through the $state service).",
     "url": "The URL of the state to which the user has navigated. (accessed through the $state service)."
   }
