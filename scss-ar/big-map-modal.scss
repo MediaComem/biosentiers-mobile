@@ -41,12 +41,8 @@
     background-color: #0000FF;
   }
 
-  .fab-buttons {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    right: 16px;
-    bottom: 16px;
+  .fabs{
     z-index: 1;
+    background-color: $assertive;
   }
 }

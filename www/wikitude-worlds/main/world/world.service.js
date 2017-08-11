@@ -8,7 +8,7 @@
     .module('world')
     .factory('World', WorldService);
 
-  function WorldService(AppActions, ArView, DeviceOrientation, Filters, Excursion, UserLocation, rx) {
+  function WorldService(AppActions, EventLogFactory, ArView, DeviceOrientation, Filters, Excursion, UserLocation, rx) {
 
     var service = {
       startup                : true,
@@ -24,7 +24,10 @@
     // * The user changes the filters.
     Excursion.excursionChangeObs.subscribe(ArView.updateAr);
     UserLocation.spacedObs.subscribe(ArView.updateAr);
-    Filters.filtersChangeObs.subscribe(ArView.updateAr);
+    Filters.filtersChangeObs.subscribe(function(selected) {
+      _.debounce(AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.filters.changed(Excursion.serverId, selected)}), 1000);
+      ArView.updateAr();
+    });
 
     // Display a message when the user location is first detected.
     UserLocation.realObs.first().subscribe(notifyUserLocated);

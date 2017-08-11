@@ -16,7 +16,7 @@
     };
   }
 
-  function MiniMapCtrl(ArView, Modals, $log, MiniMap, Excursion, $scope, UserLocation, $timeout) {
+  function MiniMapCtrl(AppActions, ArView, EventLogFactory, Modals, $log, MiniMap, Excursion, $scope, UserLocation, $timeout) {
 
     var TAG     = "[MiniMapCtrl] ",
         minimap = this;
@@ -53,6 +53,7 @@
      * Opens up the BigMap modal, passing as its scope the scope of the MiniMapCtrl.
      */
     function showBigMapModal() {
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.bigmap.opened(Excursion.serverId)});
       Modals.showBigMap($scope);
     }
   }

@@ -9,19 +9,19 @@
     .module('big-map-modal')
     .controller('BigMapCtrl', BigMapCtrl);
 
-  function BigMapCtrl(leafletData, $log, BigMap, Modals, $scope, UserLocation, $timeout) {
+  function BigMapCtrl(AppActions, EventLogFactory, Excursion, leafletData, $log, BigMap, Modals, $scope, UserLocation, $timeout) {
     var TAG    = "[BigMapCtrl] ",
         bigmap = this;
 
     // If the controller is active, that means that it's the BigMapModal that's loaded.
     // So, the Modals.closeCurrent closes the BigMap Modal.
-    bigmap.remove = Modals.removeCurrent;
+    bigmap.remove = remove;
     bigmap.config = BigMap.config;
     bigmap.positionState = 'searching';
     bigmap.userIsFound = false;
 
     bigmap.centerOnUser = centerOnUser;
-    bigmap.fitOnPath = BigMap.fitOnPath;
+    bigmap.fitOnPath = fitOnPath;
 
     // var debouncedUpdatePoints = _.debounce(BigMap.updateMapMarkers, 500);
 
@@ -44,7 +44,18 @@
     ////////////////////
 
     function centerOnUser() {
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.bigmap.center.onUser(Excursion.serverId)});
       bigmap.userIsFound && BigMap.centerOnUser();
+    }
+
+    function fitOnPath() {
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.bigmap.center.onTrail(Excursion.serverId)});
+      BigMap.fitOnPath();
+    }
+
+    function remove() {
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.bigmap.closed(Excursion.serverId)});
+      Modals.removeCurrent();
     }
   }
 })();

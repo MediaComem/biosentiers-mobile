@@ -222,6 +222,55 @@
         positionWatcher: {
           activated  : function() { return new EventLog('action.positionWatcher.activated'); },
           deactivated: function() { return new EventLog('action.positionWatcher.deactivated'); }
+        },
+        filters        : {
+          opened : function(excursionId, selectedFilters) {
+            return new EventLog('action.filters.opened', {
+              excursionId   : excursionId,
+              currentFilters: selectedFilters
+            });
+          },
+          changed: function(excursionId, selectedFilters) {
+            return new EventLog('action.filters.changed', {
+              excursionId   : excursionId,
+              newFilters: selectedFilters
+            });
+          }
+        },
+        bigmap         : {
+          opened: function(excursionId) { return new EventLog('action.bigmap.opened', {excursionId: excursionId}); },
+          center: {
+            onTrail: function(excursionId) { return new EventLog('action.bigmap.center.onTrail', {excursionId: excursionId}); },
+            onUser : function(excursionId) { return new EventLog('action.bigmap.center.onUser', {excursionId: excursionId}); }
+          },
+          closed: function(excursionId) { return new EventLog('action.bigmap.closed', {excursionId: excursionId}); }
+        },
+        ar             : {
+          poi: {
+            clicked: function() {
+
+            },
+            checked: function() {
+
+            },
+            closed : function() {
+
+            }
+          },
+          end: {
+            reached  : function() {
+
+            },
+            validated: function() {
+
+            },
+            refused  : function() {
+
+            },
+            manual   : function() {
+
+            }
+          }
         }
       }
     };

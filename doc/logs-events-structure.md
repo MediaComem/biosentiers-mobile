@@ -175,14 +175,31 @@ Their structure is as follow:
 }
 ```
 
-#### `navigation.excursion.seenList`
+#### `navigation.excursion.seenPois.list`
 
 > Fired each time the user navigates to the seen pois list of an excursion.
 
 **Properties object:**
 
 ```json
-{}
+{
+  "excursion": {
+    "id": "The server id of the excursion of which the list of seen pois is being displayed",
+    "status": "The status of the excursion of which the list of seen pois is being displayed" 
+  }
+}
+```
+
+#### `navigation.excursion.seenPois.card`
+
+> Fired each time the user navigates to the card of an excursion's seen poi.
+
+**Properties object:**
+
+```json
+{
+  "specieId": "The id of the specie whose information are displayed on the seen poi card."s
+}
 ```
 
 ### Action events
@@ -472,3 +489,101 @@ Their structure is as follow:
 ```json
 {}
 ```
+
+#### `action.filters.opened`
+
+> Fired each time the user opens the filters modal on the AR view.
+
+**Properties object:**
+
+```json
+{
+  "excursionId": "The server id of the current excursion",
+  "currentFilters": {
+    "themes": "An array of the selected themes name",
+    "settings": {
+      "showSeenPois": "Indicates if seen pois should be visible in the AR view",
+      "showOffSeason": "Indicates if off season species poi should be visible in the AR view"
+  }
+}
+```
+
+#### `action.filters.changed`
+
+> Fired when the user changes the active filters in the AR view (this is debounced in the code to prevent a flood of events).
+
+**Properties object:**
+
+```json
+{
+  "excursionId": "The server id of the current excursion",
+  "newFilters": {
+    "themes": "An array of the selected themes name",
+    "settings": {
+      "showSeenPois": "Indicates if seen pois should be visible in the AR view",
+      "showOffSeason": "Indicates if off season species poi should be visible in the AR view"
+  }
+}
+```
+
+#### `action.bigmap.opened`
+
+> Fired each time the user clicks on the MiniMap and opens the BigMap.
+
+**Properties object:**
+
+```json
+{
+  "excursionId": "The server id of the current excursion"
+}
+```
+
+#### `action.bigmap.center.onTrail`
+
+> Fired each time the user clicks on the "Center on trail" button in the BigMap.
+
+**Properties object:**
+
+```json
+{
+  "excursionId": "The server id of the current excursion"
+}
+```
+
+#### `action.bigmap.center.onUser`
+
+> Fired each time the user clicks on the "Center on user" button in the BigMap.
+
+**Properties object:**
+
+```json
+{
+  "excursionId": "The server id of the current excursion"
+}
+```
+
+#### `action.bigmap.closed`
+
+> Fired each time the user closes the BigMap.
+
+**Properties object:**
+
+```json
+{
+  "excursionId": "The server id of the current excursion"
+}
+```
+
+#### `action.ar.poi.clicked`
+
+#### `action.ar.poi.checked`
+
+#### `action.ar.poi.closed`
+
+#### `action.ar.end.reached`
+
+#### `action.ar.end.validated`
+
+#### `action.ar.end.refused`
+
+#### `action.ar.end.manual`

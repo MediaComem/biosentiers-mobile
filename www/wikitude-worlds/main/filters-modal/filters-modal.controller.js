@@ -5,7 +5,7 @@
     .module('filters-modal')
     .controller('FiltersModalCtrl', FiltersModalCtrl);
 
-  function FiltersModalCtrl(Filters, Modals, $scope) {
+  function FiltersModalCtrl(AppActions, EventLogFactory, Excursion, Filters, Modals, $scope) {
     var filters = this;
 
     filters.remove = Modals.removeCurrent;
@@ -13,7 +13,7 @@
     filters.themes = Filters.themes;
 
     filters.selected = {
-      themes: themesArrayToCheckedThemesObject(Filters.getSelected().themes),
+      themes  : themesArrayToCheckedThemesObject(Filters.getSelected().themes),
       settings: _.clone(Filters.getSelected().settings)
     };
 
@@ -70,7 +70,7 @@
      *     [ "theme1", "theme3" ]
      */
     function checkedThemesObjectToThemesArray(checkedThemes) {
-      return _.reduce(checkedThemes, function(memo, selected, theme) {
+      return _.reduce(checkedThemes, function(memo, selected, theme) {
         if (selected) {
           memo.push(theme);
         }

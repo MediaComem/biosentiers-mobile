@@ -17,7 +17,7 @@
     }
   }
 
-  function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, $ionicLoading, Modals, $log, Excursion, $scope, UserLocation, $timeout) {
+  function BaseCtrl(AppActions, ArView, Altitude, DebugLog, EndPopup, EventLogFactory, Filters, $ionicLoading, Modals, $log, Excursion, $scope, UserLocation, $timeout) {
     var TAG        = "[BaseCtrl] ",
         debugCount = 0,
         base       = this;
@@ -120,6 +120,7 @@
     }
 
     function showFiltersModal() {
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.filters.opened(Excursion.serverId, Filters.getSelected())});
       Modals.showFilters($scope);
     }
 
