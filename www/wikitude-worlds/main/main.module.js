@@ -20,6 +20,7 @@
     'debug-position-modal',
     'debug-stats',
     'debug-log',
+    'event-log-module',
     'excursion',
     'excursion-end-popup',
     'filters-modal',

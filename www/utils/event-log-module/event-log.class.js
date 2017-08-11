@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   angular
-    .module('activity-tracker-module')
+    .module('event-log-module')
     .factory('EventLog', EventLogFn);
 
   function EventLogFn() {

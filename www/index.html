@@ -1,141 +1,143 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com http://*; style-src 'self' 'unsafe-inline'; media-src *; script-src 'self' http://10.192.114.10:35729 http://192.168.1.105:35729; connect-src 'self' ws://10.192.114.10:35729 ws://192.168.1.105:35729 http://biosentiers.heig-vd.ch">
-    <title></title>
-
-    <!-- compiled css output -->
-    <link href="css/ionic.app.min.css" rel="stylesheet">
-    <link href="css/main.min.css" rel="stylesheet">
-    <link href="css/ionic-quirks.min.css" rel="stylesheet">
-
-    <!-- Lodash -->
-    <script src="lib/lodash/dist/lodash.min.js"></script>
-
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
-
-    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
-
-    <!-- Leaflet -->
-    <script src="lib/leaflet/dist/leaflet.js"></script>
-    <script src="lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-    <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css">
-    <link rel="stylesheet" href="lib/leaflet.markercluster/dist/MarkerCluster.css">
-    <link rel="stylesheet" href="lib/leaflet.markercluster/dist/MarkerCluster.Default.css">
-    <script src="lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-    
-    <!-- Turf -->
-    <script src="lib/turf/turf.min.js"></script>
-    <script src="lib/angular-turf-module/angular-turf-module.js"></script>
-
-    <!-- Utils -->
-    <script src="utils/timers/timers.module.js"></script>
-    <script src="utils/map-icons-module/map-icons.module.js"></script>
-    <script src="utils/trans-module/trans.module.js"></script>
-    <script src="utils/trans-module/status.filter.js"></script>
-    <script src="utils/trans-module/themes.filter.js"></script>
-    <script src="utils/trans-module/period-to-month.filter.js"></script>
-    <script src="utils/trans-module/excursion-action-button.filter.js"></script>
-    <script src="utils/poi-card/poi-card.module.js"></script>
-    <script src="utils/poi-card/poi-card.service.js"></script>
-    <script src="utils/uuid/uuid.module.js"></script>
-
-    <!-- AR Module -->
-    <script src="lib/ionicitude/dist/ionicitude.min.js"></script>
-    
-    <!-- LokiJS -->
-	  <script src="lib/lokijs/src/lokijs.js"></script>
-	  <script src="lib/lokijs/src/loki-angular.js"></script>
-	  <script src="lib/loki-cordova-fs-adapter/loki-cordova-fs-adapter.js"></script>
-
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta http-equiv="Content-Security-Policy"
+		      content="default-src 'self' data: gap: https://ssl.gstatic.com http://*; style-src 'self' 'unsafe-inline'; media-src *; script-src 'self' http://10.192.114.10:35729 http://192.168.1.105:35729; connect-src 'self' ws://10.192.114.10:35729 ws://192.168.1.105:35729 http://biosentiers.heig-vd.ch">
+		<title></title>
+		
+		<!-- compiled css output -->
+		<link href="css/ionic.app.min.css" rel="stylesheet">
+		<link href="css/main.min.css" rel="stylesheet">
+		<link href="css/ionic-quirks.min.css" rel="stylesheet">
+		
+		<!-- Lodash -->
+		<script src="lib/lodash/dist/lodash.min.js"></script>
+		
+		<!-- ionic/angularjs js -->
+		<script src="lib/ionic/js/ionic.bundle.js"></script>
+		
+		<script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
+		<!-- cordova script (this will be a 404 during development) -->
+		<script src="cordova.js"></script>
+		
+		<!-- Leaflet -->
+		<script src="lib/leaflet/dist/leaflet.js"></script>
+		<script src="lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+		<link rel="stylesheet" href="lib/leaflet/dist/leaflet.css">
+		<link rel="stylesheet" href="lib/leaflet.markercluster/dist/MarkerCluster.css">
+		<link rel="stylesheet" href="lib/leaflet.markercluster/dist/MarkerCluster.Default.css">
+		<script src="lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+		
+		<!-- Turf -->
+		<script src="lib/turf/turf.min.js"></script>
+		<script src="lib/angular-turf-module/angular-turf-module.js"></script>
+		
+		<!-- Utils -->
+		<script src="utils/timers/timers.module.js"></script>
+		<script src="utils/map-icons-module/map-icons.module.js"></script>
+		<script src="utils/trans-module/trans.module.js"></script>
+		<script src="utils/trans-module/status.filter.js"></script>
+		<script src="utils/trans-module/themes.filter.js"></script>
+		<script src="utils/trans-module/period-to-month.filter.js"></script>
+		<script src="utils/trans-module/excursion-action-button.filter.js"></script>
+		<script src="utils/poi-card/poi-card.module.js"></script>
+		<script src="utils/poi-card/poi-card.service.js"></script>
+		<script src="utils/uuid/uuid.module.js"></script>
+		<script src="utils/event-log-module/event-log.module.js"></script>
+		<script src="utils/event-log-module/event-log.class.js"></script>
+		<script src="utils/event-log-module/event-log.factory.js"></script>
+		
+		<!-- AR Module -->
+		<script src="lib/ionicitude/dist/ionicitude.min.js"></script>
+		
+		<!-- LokiJS -->
+		<script src="lib/lokijs/src/lokijs.js"></script>
+		<script src="lib/lokijs/src/loki-angular.js"></script>
+		<script src="lib/loki-cordova-fs-adapter/loki-cordova-fs-adapter.js"></script>
+		
 		<!-- RxJS -->
 		<!--<script src="lib/rxjs/dist/rx.lite.min.js"></script>-->
 		<script src="lib/rxjs/dist/rx.all.min.js"></script>
 		<script src="lib/rxjs/dist/rx.aggregates.min.js"></script>
 		<script src="lib/rx-angular/dist/rx.angular.min.js"></script>
-    
-    <!-- QR Code decoder -->
-    <script src="lib/biosentiers-qrcode/dist/biosentiers-qrcode.min.js"></script>
-  
-    <!-- HMAC -->
-    <script src="lib/hmac/sha512.js"></script>
-    
-    <!-- JWT -->
-    <script src="lib/angular-jwt/dist/angular-jwt.min.js"></script>
-
-    <!--
-      ATTENTION: the inject:css and inject:js sections are automatically filled
-      by the gulp-inject plugin. DO NOT EDIT THEM YOURSELF. See the README.
-    -->
-
-    <!-- inject:css -->
-    <link rel="stylesheet" href="app/position-badge/position-badge.css">
-    <!-- endinject -->
-
-    <!-- inject:js -->
-    <script src="app/app.module.js"></script>
-    <script src="app/app.config.js"></script>
-    <script src="app/app.constants.js"></script>
-    <script src="app/app.observables.js"></script>
-    <script src="app/app.router.js"></script>
-    <script src="app/app.run.js"></script>
-    <script src="app/ionicitude.actions.js"></script>
-    <script src="app/activity-tracker-module/activity-tracker.module.js"></script>
-    <script src="app/activity-tracker-module/activity-tracker.service.js"></script>
-    <script src="app/activity-tracker-module/events-list.service.js"></script>
-    <script src="app/activity-tracker-module/fs-utils.service.js"></script>
-    <script src="app/activity-tracker-module/log-paths.service.js"></script>
-    <script src="app/activity-tracker-module/log-uploader.service.js"></script>
-    <script src="app/activity-tracker-module/log.class.js"></script>
-    <script src="app/auth-module/auth.module.js"></script>
-    <script src="app/bio-api-module/bio-api.module.js"></script>
-    <script src="app/bio-api-module/bio-api.service.js"></script>
-    <script src="app/connect-module/connect.module.js"></script>
-    <script src="app/connect-module/connect.controller.js"></script>
-    <script src="app/connect-module/connect.service.js"></script>
-    <script src="app/db-bio-module/db-bio.module.js"></script>
-    <script src="app/db-bio-module/db-bio.service.js"></script>
-    <script src="app/db-excursions-module/db-excursions.module.js"></script>
-    <script src="app/db-excursions-module/db-excursions.services.js"></script>
-    <script src="app/db-excursions-module/excursions.class.js"></script>
-    <script src="app/db-seen-pois-module/db-seen-pois.module.js"></script>
-    <script src="app/db-seen-pois-module/db-seen-pois.service.js"></script>
-    <script src="app/debug/debug.controller.js"></script>
-    <script src="app/encyclopedia-module/encyclopedia.module.js"></script>
-    <script src="app/encyclopedia-module/encyclopedia.services.js"></script>
-    <script src="app/encyclopedia/encyclopedia.controller.js"></script>
-    <script src="app/excursion-context-menus/excursion-context-menus.module.js"></script>
-    <script src="app/excursion-context-menus/excursion-list-action-sheet.service.js"></script>
-    <script src="app/excursion-seen-list/excursion-seen.controller.js"></script>
-    <script src="app/excursion-seen-poi/excursion-seen-poi.controller.js"></script>
-    <script src="app/excursion/excursion-map.service.js"></script>
-    <script src="app/excursion/excursion.controller.js"></script>
-    <script src="app/excursions-list-menu/excursions-list-menu.module.js"></script>
-    <script src="app/excursions-list-settings/excursions-settings.service.js"></script>
-    <script src="app/excursions-list/excursions-list-content.controller.js"></script>
-    <script src="app/excursions-list/excursions-list.controller.js"></script>
-    <script src="app/installation-id/installation-id.module.js"></script>
-    <script src="app/installation-id/installation-secret.service.js"></script>
-    <script src="app/menu/menu.controller.js"></script>
-    <script src="app/poi-module/poi.module.js"></script>
-    <script src="app/poi-module/poi.content.service.js"></script>
-    <script src="app/poi-module/poi.geo.service.js"></script>
-    <script src="app/position-badge/position-badge.module.js"></script>
-    <script src="app/position-badge/position-badge.directive.js"></script>
-    <script src="app/qr-module/qr.module.js"></script>
-    <script src="app/qr-module/qr.service.js"></script>
-    <script src="app/species/species.controller.js"></script>
-    <script src="app/world-actions-module/world-actions.module.js"></script>
-    <script src="app/world-actions-module/world-actions.service.js"></script>
-    <!-- endinject -->
-  </head>
-
-  <body ng-app="app">
-    <ion-nav-view></ion-nav-view>
-  </body>
+		
+		<!-- QR Code decoder -->
+		<script src="lib/biosentiers-qrcode/dist/biosentiers-qrcode.min.js"></script>
+		
+		<!-- HMAC -->
+		<script src="lib/hmac/sha512.js"></script>
+		
+		<!-- JWT -->
+		<script src="lib/angular-jwt/dist/angular-jwt.min.js"></script>
+		
+		<!--
+			ATTENTION: the inject:css and inject:js sections are automatically filled
+			by the gulp-inject plugin. DO NOT EDIT THEM YOURSELF. See the README.
+		-->
+		
+		<!-- inject:css -->
+		<link rel="stylesheet" href="app/position-badge/position-badge.css">
+		<!-- endinject -->
+		
+		<!-- inject:js -->
+		<script src="app/app.module.js"></script>
+		<script src="app/app.config.js"></script>
+		<script src="app/app.constants.js"></script>
+		<script src="app/app.observables.js"></script>
+		<script src="app/app.router.js"></script>
+		<script src="app/app.run.js"></script>
+		<script src="app/ionicitude.actions.js"></script>
+		<script src="app/activity-tracker-module/activity-tracker.module.js"></script>
+		<script src="app/activity-tracker-module/activity-tracker.service.js"></script>
+		<script src="app/activity-tracker-module/fs-utils.service.js"></script>
+		<script src="app/activity-tracker-module/log-paths.service.js"></script>
+		<script src="app/activity-tracker-module/log-uploader.service.js"></script>
+		<script src="app/auth-module/auth.module.js"></script>
+		<script src="app/bio-api-module/bio-api.module.js"></script>
+		<script src="app/bio-api-module/bio-api.service.js"></script>
+		<script src="app/connect-module/connect.module.js"></script>
+		<script src="app/connect-module/connect.controller.js"></script>
+		<script src="app/connect-module/connect.service.js"></script>
+		<script src="app/db-bio-module/db-bio.module.js"></script>
+		<script src="app/db-bio-module/db-bio.service.js"></script>
+		<script src="app/db-excursions-module/db-excursions.module.js"></script>
+		<script src="app/db-excursions-module/db-excursions.services.js"></script>
+		<script src="app/db-excursions-module/excursions.class.js"></script>
+		<script src="app/db-seen-pois-module/db-seen-pois.module.js"></script>
+		<script src="app/db-seen-pois-module/db-seen-pois.service.js"></script>
+		<script src="app/debug/debug.controller.js"></script>
+		<script src="app/encyclopedia-module/encyclopedia.module.js"></script>
+		<script src="app/encyclopedia-module/encyclopedia.services.js"></script>
+		<script src="app/encyclopedia/encyclopedia.controller.js"></script>
+		<script src="app/excursion-context-menus/excursion-context-menus.module.js"></script>
+		<script src="app/excursion-context-menus/excursion-list-action-sheet.service.js"></script>
+		<script src="app/excursion-seen-list/excursion-seen.controller.js"></script>
+		<script src="app/excursion-seen-poi/excursion-seen-poi.controller.js"></script>
+		<script src="app/excursion/excursion-map.service.js"></script>
+		<script src="app/excursion/excursion.controller.js"></script>
+		<script src="app/excursions-list-menu/excursions-list-menu.module.js"></script>
+		<script src="app/excursions-list-settings/excursions-settings.service.js"></script>
+		<script src="app/excursions-list/excursions-list-content.controller.js"></script>
+		<script src="app/excursions-list/excursions-list.controller.js"></script>
+		<script src="app/installation-id/installation-id.module.js"></script>
+		<script src="app/installation-id/installation-secret.service.js"></script>
+		<script src="app/menu/menu.controller.js"></script>
+		<script src="app/poi-module/poi.module.js"></script>
+		<script src="app/poi-module/poi.content.service.js"></script>
+		<script src="app/poi-module/poi.geo.service.js"></script>
+		<script src="app/position-badge/position-badge.module.js"></script>
+		<script src="app/position-badge/position-badge.directive.js"></script>
+		<script src="app/qr-module/qr.module.js"></script>
+		<script src="app/qr-module/qr.service.js"></script>
+		<script src="app/species/species.controller.js"></script>
+		<script src="app/world-actions-module/world-actions.module.js"></script>
+		<script src="app/world-actions-module/world-actions.service.js"></script>
+		<!-- endinject -->
+	</head>
+	
+	<body ng-app="app">
+		<ion-nav-view></ion-nav-view>
+	</body>
 </html>

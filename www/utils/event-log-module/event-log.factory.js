@@ -1,17 +1,17 @@
 (function() {
   'use strict';
   angular
-    .module('activity-tracker-module')
-    .factory('EventLogFactory', EventListFn);
+    .module('event-log-module')
+    .factory('EventLogFactory', EventLogFactoryFn);
 
   /*
    * Factory that stores and returns new EventLog object corresponding to the property that is accessed.
    * Depending on the event that needs to be created, the factory function could need additionnal argument. Please check each function signature.
    */
-  function EventListFn(EventLog, $cordovaNetwork, $state, $log) {
+  function EventLogFactoryFn(EventLog, $state, $log) {
     var TAG = "[EventLogFactory] ";
     return {
-      lifecycle : {
+      lifecycle   : {
         app: {
           started: function() { return new EventLog('lifecycle.app.started'); },
           paused : function() { return new EventLog('lifecycle.app.paused'); },
@@ -22,11 +22,11 @@
           quitted : function() { return new EventLog('lifecycle.ar.quitted'); },
         }
       },
-      network   : {
+      network     : {
         offline: function() { return new EventLog('network.offline'); },
-        online : function() { return new EventLog('network.online', {connectionType: $cordovaNetwork.getNetwork()}); }
+        online : function(connectionType) { return new EventLog('network.online', {connectionType: connectionType}); }
       },
-      navigation: {
+      navigation  : {
         menuOpen      : function() {
           return new EventLog('navigation.menuOpen', {
             fromState: {
@@ -38,8 +38,8 @@
         connect       : function() { return new EventLog('navigation.connect'); },
         excursionsList: function(tab) {
           return new EventLog('navigation.excursionsList.' + tab, {
+            tab  : tab,
             state: {
-              tab : tab,
               url : $state.current.url,
               name: $state.current.name
             }
@@ -57,8 +57,8 @@
           }
         }
       },
-      action    : {
-        scanQr   : {
+      action      : {
+        scanQr         : {
           new      : function(excursion) {
             return new EventLog('actions.scanQr.new', {
               excursionId  : excursion.serverId,
@@ -81,7 +81,7 @@
             });
           }
         },
-        excursion: {
+        excursion      : {
           created      : function(excursion) {
             return new EventLog('action.excursion.created', {
               excursion: {
@@ -177,8 +177,24 @@
                 startedAt: excursion.startedAt,
               }
             });
-          }
+          },
+        },
+        positionWatcher: {
+          activated  : function() { return new EventLog('action.positionWatcher.activated'); },
+          deactivated: function() { return new EventLog('action.positionWatcher.deactivated'); }
         }
+      },
+      localization: function(context, excursionId, position) {
+        return new EventLog('localization', {
+          excursionId: excursionId,
+          position   : {
+            latitude: position.latitude,
+            longitude: position.longitude,
+            altitude: position.altitude,
+            accuracy: position.accuracy
+          },
+          context    : context
+        });
       }
     }
   }

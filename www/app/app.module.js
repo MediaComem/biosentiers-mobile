@@ -21,6 +21,7 @@
     'db-bio-module',
     'db-excursions-module',
     'db-seen-pois-module',
+    'event-log-module',
     'excursions-list-menu',
     'excursions-list-settings',
     'excursion-context-menus',

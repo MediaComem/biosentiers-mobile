@@ -26,7 +26,7 @@
       ActivityTracker(EventLogFactory.lifecycle.app.started());
 
       // Log an event about the current device's network connection state.
-      $cordovaNetwork.isOnline() ? ActivityTracker(EventLogFactory.network.online()) : ActivityTracker(EventLogFactory.network.offline());
+      $cordovaNetwork.isOnline() ? ActivityTracker(EventLogFactory.network.online($cordovaNetwork.getNetwork())) : ActivityTracker(EventLogFactory.network.offline());
 
       // Registering activity events that will trigger an event log.
       $ionicPlatform.on('pause', function() {
@@ -39,7 +39,7 @@
         ActivityTracker(EventLogFactory.lifecycle.app.resumed());
       });
       $rootScope.$on('$cordovaNetwork:online', function() {
-        ActivityTracker(EventLogFactory.network.online());
+        ActivityTracker(EventLogFactory.network.online($cordovaNetwork.getNetwork()));
       });
       $rootScope.$on('$cordovaNetwork:offline', function() {
         ActivityTracker(EventLogFactory.network.offline());
