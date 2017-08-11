@@ -8,7 +8,7 @@
     .module('app')
     .controller('ExcursionsListTabCtrl', ExcursionsListTabCtrl);
 
-  function ExcursionsListTabCtrl(ActivityTracker, DbExcursions, EventLogFactory, excursionFilter, ExcursionListContextMenu, ExcursionsSettings, $log, rx, $scope, $state) {
+  function ExcursionsListTabCtrl(ActivityTracker, DbExcursions, EventLogFactory, excursionFilter, ExcursionListActionSheet, ExcursionsSettings, $log, rx, $scope, $state) {
     var TAG        = "[ExcursionListTabCtrl] ",
         tab        = this,
         RefreshObs = rx.Observable.merge(ExcursionsSettings.withArchive.changeObs, DbExcursions.archivedObs, DbExcursions.removedObs);
@@ -19,7 +19,7 @@
     });
 
     tab.loading = true;
-    tab.showExcursionActions = ExcursionListContextMenu;
+    tab.showExcursionActions = ExcursionListActionSheet;
 
     RefreshObs.subscribe(function() {
       DbExcursions.getAll(excursionFilter).then(setData);

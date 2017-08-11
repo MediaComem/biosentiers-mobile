@@ -10,7 +10,7 @@
     .module('excursions-list-settings')
     .factory('ExcursionsSettings', ExcursionsSettingsFn);
 
-  function ExcursionsSettingsFn(rx) {
+  function ExcursionsSettingsFn(ActivityTracker, EventLogFactory, rx) {
     var withArchive        = true,
         withArchiveSubject = new rx.BehaviorSubject(withArchive);
 
@@ -30,6 +30,7 @@
 
     function toggleWithArchive() {
       settings.withArchive.value = !settings.withArchive.value;
+      ActivityTracker(settings.withArchive.value ? EventLogFactory.action.excursionsList.archives.showed() : EventLogFactory.action.excursionsList.archives.hidden());
       withArchiveSubject.onNext(settings.withArchive.value);
     }
   }

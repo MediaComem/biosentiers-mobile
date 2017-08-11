@@ -22,7 +22,9 @@
 
     // $scope.$on('$ionicView.afterEnter', afterViewEnter);
 
-    $scope.$on('$ionicView.beforeLeave', deactivatePositionWatch);
+    $scope.$on('$ionicView.beforeLeave', function() {
+      excursion.positionState !== 'refresh' && deactivatePositionWatch();
+    });
 
     var excursion = this;
     var geoData, positionWatcher;
@@ -112,6 +114,7 @@
      * Opens the contextual menu for the excursion list page
      */
     function openExcursionMenu($event) {
+      ActivityTracker(EventLogFactory.action.excursion.contextMenu());
       excursion.excursionMenu.show($event);
     }
 
@@ -197,8 +200,10 @@
      * Deactivate the position watcher so that it doesnt watch for the user's location.
      */
     function deactivatePositionWatch() {
-      ActivityTracker(EventLogFactory.action.positionWatcher.deactivated());
-      positionWatcher && positionWatcher.cancel();
+      if (positionWatcher) {
+        positionWatcher.cancel();
+        ActivityTracker(EventLogFactory.action.positionWatcher.deactivated());
+      }
       delete excursion.mapConfig.markers.user;
       excursion.positionState = 'refresh';
     }

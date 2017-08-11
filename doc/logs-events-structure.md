@@ -4,6 +4,7 @@
 
 * Est-ce que les événements doivent être loggés dès que l'action est entreprise ou seulement lorsque l'action est validée (genre les actions qui ont un impact sur la BD) ?
 * Mettre les événements du cycle de vie d'une excursion dans action ou dans lifecycle ? (Je penche pour lifecycle)
+* Lorsque la vue AR se lance, l'app est considérée comme "en pause"...
 
 ## Logs objects
 
@@ -226,6 +227,60 @@ Their structure is as follow:
 }
 ```
 
+#### `action.excursionsList.excursionActionSheet`
+
+> Fired each time the user shows the Action Sheet relative to an excursion from any excursions list.
+
+**Properties object:**
+
+```json
+{
+  "excursion": {
+    "id": "The server id of the excursion whose Action Sheet is being showed",
+    "status": "The status of the excursion whose Action Sheet is being showed"
+}
+```
+
+#### `action.excursionsList.contextMenu`
+
+> Fired each time the user opens any excursions list context menu.
+
+**Properties object:**
+
+```json
+{}
+```
+
+#### `action.excursionsList.archives.showed`
+
+> Fired each time the user shows the archived excursions in any excursion list.
+
+**Properties object:**
+
+```json
+{}
+```
+
+#### `action.excursionsList.archives.hidden`
+
+> Fired each time the user hide the archived excursions in any excursion list.
+
+**Properties object:**
+
+```json
+{}
+```
+
+#### `action.excursion.contextMenu`
+
+> Fired each time the user opens the context menu of an excursion card page.
+
+**Properties object:**
+
+```json
+{}
+```
+
 #### `action.excursion.created`
 
 > Fired each time an excursion is created on the device's database.
@@ -396,4 +451,24 @@ Their structure is as follow:
     "startedAt": "The date at which the excursion has been first started by the user",
   }
 }
+```
+
+#### `action.positionWatcher.activated`
+
+> Fired each time the user manually activates a position watcher (currently only on an excursion card page).
+
+**Properties object:**
+
+```json
+{}
+```
+
+#### `action.positionWatcher.deactivated`
+
+> Fired each time the user manually deactivate a position watcher (currently only on an excursion card page).
+
+**Properties object:**
+
+```json
+{}
 ```

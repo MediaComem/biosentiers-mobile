@@ -8,7 +8,7 @@
     .module('app')
     .controller('ExcursionsListCtrl', ExcursionsListCtrlFn);
 
-  function ExcursionsListCtrlFn(DbExcursions, ExcursionsSettings, $log, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, rx) {
+  function ExcursionsListCtrlFn(ActivityTracker, DbExcursions, EventLogFactory, ExcursionsSettings, $log, $ionicPopover, $ionicSideMenuDelegate, $ionicTabsDelegate, rx) {
     var TAG             = "[ExcursionListCtrl] ",
         list            = this,
         RefreshStatsObs = rx.Observable.merge(ExcursionsSettings.withArchive.changeObs, DbExcursions.archivedObs, DbExcursions.removedObs);
@@ -34,6 +34,7 @@
      * Opens the contextual menu for the excursion list page
      */
     function openExcursionsMenu($event) {
+      ActivityTracker(EventLogFactory.action.excursionsList.contextMenu());
       list.excursionMenu.show($event);
     }
 

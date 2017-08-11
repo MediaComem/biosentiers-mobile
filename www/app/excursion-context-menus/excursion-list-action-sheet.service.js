@@ -5,11 +5,11 @@
   'use strict';
   angular
     .module('excursion-context-menus')
-    .factory('ExcursionListContextMenu', ExcursionListContextMenuFn);
+    .factory('ExcursionListActionSheet', ExcursionListActionSheetFn);
 
-  function ExcursionListContextMenuFn(ActivityTracker, EventLogFactory, DbExcursions, $ionicActionSheet, $log, $state) {
+  function ExcursionListActionSheetFn(ActivityTracker, EventLogFactory, DbExcursions, $ionicActionSheet, $log, $state) {
 
-    var TAG = "[ExcursionListContextMenu] ",
+    var TAG = "[ExcursionListActionSheet] ",
         excursion;
 
     return showMenu;
@@ -26,6 +26,7 @@
     function showMenu(excursionArg) {
       if (!!excursionArg) {
         excursion = excursionArg;
+        ActivityTracker(EventLogFactory.action.excursionsList.excursionActionSheet(excursion));
 
         var options = {
           actions      : [],

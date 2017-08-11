@@ -13,6 +13,20 @@
     var TAG          = "[EventLogFactory] ",
         prevPosition = null;
     return {
+      localization: function(context, excursionId, position) {
+        if (minDistanceMoved(position)) {
+          return new EventLog('localization', {
+            excursionId: excursionId,
+            position   : {
+              latitude : position.latitude,
+              longitude: position.longitude,
+              altitude : position.altitude,
+              accuracy : position.accuracy
+            },
+            context    : context
+          });
+        } else { return null; }
+      },
       lifecycle   : {
         app: {
           started: function() { return new EventLog('lifecycle.app.started'); },
@@ -54,8 +68,16 @@
               status: excursion.status
             });
           },
-          seenList: function() {
-            return new EventLog('navigation.excursion.seenList');
+          seenPois: {
+            list: function(excursion) {
+              return new EventLog('navigation.excursion.seenPois.list', {
+                excursion: {
+                  id    : excursion.serverId,
+                  status: excursion.status
+                }
+              });
+            },
+            card: function(specieId) { return new EventLog('navigation.excursion.seenPois.card', {specieId: specieId}); }
           }
         }
       },
@@ -87,7 +109,7 @@
           excursionActionSheet: function(excursion) {
             return new EventLog('action.excursionsList.excursionActionSheet', {
               excursion: {
-                id: excursion.serverId,
+                id    : excursion.serverId,
                 status: excursion.status
               }
             })
@@ -99,6 +121,7 @@
           }
         },
         excursion      : {
+          contextMenu  : function() { return new EventLog('action.excursion.contextMenu')},
           created      : function(excursion) {
             return new EventLog('action.excursion.created', {
               excursion: {
@@ -200,20 +223,6 @@
           activated  : function() { return new EventLog('action.positionWatcher.activated'); },
           deactivated: function() { return new EventLog('action.positionWatcher.deactivated'); }
         }
-      },
-      localization: function(context, excursionId, position) {
-        if (minDistanceMoved(position)) {
-          return new EventLog('localization', {
-            excursionId: excursionId,
-            position   : {
-              latitude : position.latitude,
-              longitude: position.longitude,
-              altitude : position.altitude,
-              accuracy : position.accuracy
-            },
-            context    : context
-          });
-        } else { return null; }
       }
     };
 

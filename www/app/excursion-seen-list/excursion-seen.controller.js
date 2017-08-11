@@ -7,11 +7,15 @@
     .module('app')
     .controller('ExcursionSeenCtrl', ExcursionSeenCtrl);
 
-  function ExcursionSeenCtrl(excursionData, DbSeenPois, $log) {
+  function ExcursionSeenCtrl(ActivityTracker, EventLogFactory, excursionData, DbSeenPois, $log, $scope) {
     var TAG           = "[ExcursionSeenCtrl] ",
         excursionSeen = this;
     excursionSeen.excursion = excursionData;
     excursionSeen.getIconPathForTheme = getIconPathForTheme;
+
+    $scope.$on('$ionicView.enter', function() {
+      ActivityTracker(EventLogFactory.navigation.excursion.seenPois.list(excursionData));
+    });
 
     DbSeenPois
       .getAll(excursionSeen.excursion.qrId)

@@ -6,7 +6,8 @@
     .run(run);
 
   function run(EventLogFactory, $ionicPlatform, $log, InstallationSecret, InstallationId, ActivityTracker, $rootScope, $cordovaNetwork, LogUploader, $timeout) {
-    var TAG = '[App:Run] ';
+    var TAG          = '[App:Run] ',
+        pauseTimeout = null;
 
     $ionicPlatform.ready(function() {
       // TODO: Remove in production
@@ -29,15 +30,9 @@
       $cordovaNetwork.isOnline() ? ActivityTracker(EventLogFactory.network.online($cordovaNetwork.getNetwork())) : ActivityTracker(EventLogFactory.network.offline());
 
       // Registering activity events that will trigger an event log.
-      $ionicPlatform.on('pause', function() {
-        ActivityTracker(EventLogFactory.lifecycle.app.paused());
-        // Stops the ActivityTracker after 5 minutes of app being in background.
-        $timeout(ActivityTracker.stop, 1000 * 60 * 5);
-      });
-      $ionicPlatform.on('resume', function() {
-        ActivityTracker.start();
-        ActivityTracker(EventLogFactory.lifecycle.app.resumed());
-      });
+      $ionicPlatform.on('pause', appOnPause);
+      $ionicPlatform.on('resume', appOnResume);
+
       $rootScope.$on('$cordovaNetwork:online', function() {
         ActivityTracker(EventLogFactory.network.online($cordovaNetwork.getNetwork()));
       });
@@ -47,6 +42,21 @@
     });
 
     ////////////////////
+
+    function appOnPause() {
+      ActivityTracker(EventLogFactory.lifecycle.app.paused());
+      // Stops the ActivityTracker after 5 minutes of app being in background.
+      pauseTimeout = $timeout(function() {
+        ActivityTracker.stop();
+      }, 3000); //1000 * 60 * 5);
+    }
+
+    function appOnResume() {
+      // If a 'resume' happens less than 5 minutes after a 'pause', cancel stopping the ActivityTracker
+      pauseTimeout && $timeout.cancel(pauseTimeout) && (pauseTimeout = null);
+      ActivityTracker.start();
+      ActivityTracker(EventLogFactory.lifecycle.app.resumed());
+    }
 
     /**
      * Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

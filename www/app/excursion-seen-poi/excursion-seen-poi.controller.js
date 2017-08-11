@@ -7,9 +7,13 @@
     .module('app')
     .controller('ExcursionSeenPoiCtrl', ExcursionSeenPoiCtrlFn);
 
-  function ExcursionSeenPoiCtrlFn(PoiCardService, PoiContent, $log, $stateParams) {
+  function ExcursionSeenPoiCtrlFn(ActivityTracker, EventLogFactory, PoiCardService, PoiContent, $log, $scope, $stateParams) {
     var TAG = "[ExcursionSeenPoiCtrl] ",
         poiCtrl = this;
+
+    $scope.$on('$ionicView.enter', function() {
+      ActivityTracker(EventLogFactory.navigation.excursion.seenPois.card($stateParams.specieId));
+    });
 
     poiCtrl.getTitle = function() {
       $log.log(TAG + 'content', poiCtrl.content);
