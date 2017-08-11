@@ -41,6 +41,7 @@
       addIonicitudeAction(close);
       addIonicitudeAction(addSeenPoi);
       addIonicitudeAction(finishExcursion);
+      addIonicitudeAction(trackActivity);
 
       // Ionicitude.listLibActions();
 
@@ -108,6 +109,16 @@
             $log.error(TAG + error);
             $q.reject(error);
           });
+      }
+
+      /**
+       * Proxy to the ActivityTracker service.
+       * @param {Object} service - The Ionicitude service.
+       * @param {Object} param - The action params.
+       * @param {EventLog} param.eventObject - An object representing the event to pass to the ActivityTracker service.
+       */
+      function trackActivity(service, param) {
+        ActivityTracker(param.eventObject);
       }
 
       ////////////////////
