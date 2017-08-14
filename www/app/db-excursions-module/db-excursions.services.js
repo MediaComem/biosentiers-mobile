@@ -138,7 +138,7 @@
           return coll.insert(newExcursion);
         })
         .then(function(result) {
-          ActivityTracker(EventLogFactory.action.excursion.created(result));
+          ActivityTracker(EventLogFactory.excursion.created(result));
         })
         .catch(handleError)
         .finally(DbBio.save);
@@ -177,7 +177,7 @@
       excursion.isNew && (excursion.isNew = false);
       return updateOne(excursion)
         .then(function(result) {
-          ActivityTracker(EventLogFactory.action.excursion.archived(result));
+          ActivityTracker(EventLogFactory.excursion.archived(result));
           archivedSubject.onNext(result);
           $cordovaToast.showShortBottom('"' + result.name + '" archivée.');
         });
@@ -196,7 +196,7 @@
       excursion.archivedAt = null;
       return updateOne(excursion)
         .then(function(result) {
-          ActivityTracker(EventLogFactory.action.excursion.restored(result));
+          ActivityTracker(EventLogFactory.excursion.restored(result));
           restoredSubject.onNext(result);
           $cordovaToast.showShortBottom('"' + result.name + '" restaurée.')
         });
@@ -226,7 +226,7 @@
             .then(function(coll) { coll.remove(excursion); })
             .then(function() { DbSeenPois.removeAllFor(excursion.qrId); })
             .then(function() {
-              ActivityTracker(EventLogFactory.action.excursion.deleted(excursion));
+              ActivityTracker(EventLogFactory.excursion.deleted(excursion));
               removedSubject.onNext(excursion);
               $cordovaToast.showShortBottom('"' + excursion.name + '" supprimée.')
             })
@@ -272,7 +272,7 @@
             })
             .then(function() { return DbSeenPois.removeAllFor(excursion.qrId); })
             .then(function() {
-              ActivityTracker(EventLogFactory.action.excursion.reinitialized(excursionCache));
+              ActivityTracker(EventLogFactory.excursion.reinitialized(excursionCache));
               reinitializedSubject.onNext(excursion);
               $cordovaToast.showShortBottom('"' + excursion.name + '" réinitialisée.');
             })
@@ -316,7 +316,7 @@
       if (excursion.status !== 'ongoing') return $q.resolve(excursion);
       excursion.status = 'finished';
       excursion.finishedAt = new Date();
-      ActivityTracker(EventLogFactory.action.excursion.finished(excursion));
+      ActivityTracker(EventLogFactory.excursion.finished(excursion));
       return updateOne(excursion);
     }
 
@@ -344,7 +344,7 @@
       if (!excursion) throw new TypeError('DbExcursions : setNew needs an Excursion object as its first argument, none given');
       if (excursion.isNew || excursion.status !== 'pending') return $q.resolve(excursion);
       excursion.isNew = true;
-      ActivityTracker(EventLogFactory.action.excursion.flagAsNew(excursion));
+      ActivityTracker(EventLogFactory.excursion.flaggedAsNew(excursion));
       return updateOne(excursion)
     }
 
@@ -356,7 +356,7 @@
     function setPausedDate(excursion) {
       if (!excursion) throw new TypeError('DbExcursions : setNew needs an Excursion object as its first argument, none given');
       excursion.pausedAt = new Date();
-      ActivityTracker(EventLogFactory.action.excursion.paused(excursion));
+      ActivityTracker(EventLogFactory.excursion.paused(excursion));
       return updateOne(excursion);
     }
 

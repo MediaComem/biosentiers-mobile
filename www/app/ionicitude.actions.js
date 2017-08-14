@@ -89,7 +89,7 @@
           $log.warn(TAG + 'No devices orientation updates to stop');
         }
         service.close();
-        ActivityTracker(EventLogFactory.lifecycle.ar.quitted());
+        ActivityTracker(EventLogFactory.ar.quitted());
         // Set the excursion as paused
         DbExcursions.getOne({qrId: param.qrId}).then(DbExcursions.setPausedDate);
         DbBio.save();

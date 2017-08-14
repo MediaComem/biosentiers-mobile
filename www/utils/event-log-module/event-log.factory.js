@@ -13,9 +13,9 @@
     var TAG          = "[EventLogFactory] ",
         prevPosition = null;
     return {
-      localization: function(context, excursionId, position) {
+      location  : function(context, excursionId, position) {
         if (minDistanceMoved(position)) {
-          return new EventLog('localization', {
+          return new EventLog('location', {
             excursionId: excursionId,
             position   : {
               latitude : position.latitude,
@@ -27,22 +27,20 @@
           });
         } else { return null; }
       },
-      lifecycle   : {
-        app: {
-          started: function() { return new EventLog('lifecycle.app.started'); },
-          paused : function() { return new EventLog('lifecycle.app.paused'); },
-          resumed: function() { return new EventLog('lifecycle.app.resumed'); }
-        },
-        ar : {
-          launched: function() { return new EventLog('lifecycle.ar.launched'); },
-          quitted : function() { return new EventLog('lifecycle.ar.quitted'); },
-        }
+      app       : {
+        started: function() { return new EventLog('app.started'); },
+        paused : function() { return new EventLog('app.paused'); },
+        resumed: function() { return new EventLog('app.resumed'); }
       },
-      network     : {
+      ar        : {
+        launched: function() { return new EventLog('ar.launched'); },
+        quitted : function() { return new EventLog('ar.quitted'); },
+      },
+      network   : {
         offline: function() { return new EventLog('network.offline'); },
         online : function(connectionType) { return new EventLog('network.online', {connectionType: connectionType}); }
       },
-      navigation  : {
+      navigation: {
         menuOpen      : function() {
           return new EventLog('navigation.menuOpen', {
             fromState: {
@@ -81,7 +79,106 @@
           }
         }
       },
-      action      : {
+      excursion : {
+        contextMenu  : function() { return new EventLog('excursion.contextMenu')},
+        created      : function(excursion) {
+          return new EventLog('excursion.created', {
+            excursion: {
+              id     : excursion.serverId,
+              addedAt: excursion.addedAt
+            }
+          });
+        },
+        archived     : function(excursion) {
+          return new EventLog('excursion.archived', {
+            excursion: {
+              id     : excursion.serverId,
+              addedAt: excursion.addedAt
+            }
+          });
+        },
+        restored     : function(excursion) {
+          return new EventLog('excursion.restored', {
+            excursion: {
+              id        : excursion.serverId,
+              addedAt   : excursion.addedAt,
+              archivedAt: excursion.archivedAt,
+            }
+          });
+        },
+        deleted      : function(excursion) {
+          return new EventLog('excursion.deleted', {
+            excursion: {
+              id        : excursion.serverId,
+              addedAt   : excursion.addedAt,
+              archivedAt: excursion.archivedAt,
+            }
+          });
+        },
+        reinitialized: function(excursion) {
+          return new EventLog('excursion.reinitialized', {
+            excursion: {
+              id        : excursion.serverId,
+              addedAt   : excursion.addedAt,
+              startedAt : excursion.startedAt,
+              finishedAt: excursion.finishedAt
+            }
+          });
+        },
+        flaggedAsNew    : function(excursion) {
+          return new EventLog('excursion.flaggedAsNew', {
+            excursion: {
+              id     : excursion.serverId,
+              addedAt: excursion.addedAt
+            }
+          });
+        },
+        unflaggedAsNew  : function(excursion) {
+          return new EventLog('excursion.unflaggedAsNew', {
+            excursion: {
+              id     : excursion.serverId,
+              addedAt: excursion.addedAt
+            }
+          });
+        },
+        started      : function(excursion) {
+          return new EventLog('excursion.started', {
+            excursion: {
+              id     : excursion.serverId,
+              addedAt: excursion.addedAt
+            }
+          });
+        },
+        paused       : function(excursion) {
+          return new EventLog('excursion.paused', {
+            excursion: {
+              id       : excursion.serverId,
+              addedAt  : excursion.addedAt,
+              startedAt: excursion.startedAt,
+            }
+          });
+        },
+        resumed      : function(excursion) {
+          return new EventLog('excursion.resumed', {
+            excursion: {
+              id       : excursion.serverId,
+              addedAt  : excursion.addedAt,
+              startedAt: excursion.startedAt,
+              pausedAt : excursion.pausedAt,
+            }
+          });
+        },
+        finished     : function(excursion) {
+          return new EventLog('excursion.finished', {
+            excursion: {
+              id       : excursion.serverId,
+              addedAt  : excursion.addedAt,
+              startedAt: excursion.startedAt,
+            }
+          });
+        },
+      },
+      action    : {
         scanQr         : {
           new      : function(excursion) {
             return new EventLog('actions.scanQr.new', {
@@ -120,105 +217,6 @@
             hidden: function() { return new EventLog('action.excursionsList.archives.hidden'); }
           }
         },
-        excursion      : {
-          contextMenu  : function() { return new EventLog('action.excursion.contextMenu')},
-          created      : function(excursion) {
-            return new EventLog('action.excursion.created', {
-              excursion: {
-                id     : excursion.serverId,
-                addedAt: excursion.addedAt
-              }
-            });
-          },
-          archived     : function(excursion) {
-            return new EventLog('action.excursion.archived', {
-              excursion: {
-                id     : excursion.serverId,
-                addedAt: excursion.addedAt
-              }
-            });
-          },
-          restored     : function(excursion) {
-            return new EventLog('action.excursion.restored', {
-              excursion: {
-                id        : excursion.serverId,
-                addedAt   : excursion.addedAt,
-                archivedAt: excursion.archivedAt,
-              }
-            });
-          },
-          deleted      : function(excursion) {
-            return new EventLog('action.excursion.deleted', {
-              excursion: {
-                id        : excursion.serverId,
-                addedAt   : excursion.addedAt,
-                archivedAt: excursion.archivedAt,
-              }
-            });
-          },
-          reinitialized: function(excursion) {
-            return new EventLog('action.excursion.reinitialized', {
-              excursion: {
-                id        : excursion.serverId,
-                addedAt   : excursion.addedAt,
-                startedAt : excursion.startedAt,
-                finishedAt: excursion.finishedAt
-              }
-            });
-          },
-          flagAsNew    : function(excursion) {
-            return new EventLog('action.excursion.flagAsNew', {
-              excursion: {
-                id     : excursion.serverId,
-                addedAt: excursion.addedAt
-              }
-            });
-          },
-          unflagAsNew  : function(excursion) {
-            return new EventLog('action.excursion.unflagAsNew', {
-              excursion: {
-                id     : excursion.serverId,
-                addedAt: excursion.addedAt
-              }
-            });
-          },
-          started      : function(excursion) {
-            return new EventLog('action.excursion.started', {
-              excursion: {
-                id     : excursion.serverId,
-                addedAt: excursion.addedAt
-              }
-            });
-          },
-          paused       : function(excursion) {
-            return new EventLog('action.excursion.paused', {
-              excursion: {
-                id       : excursion.serverId,
-                addedAt  : excursion.addedAt,
-                startedAt: excursion.startedAt,
-              }
-            });
-          },
-          resumed      : function(excursion) {
-            return new EventLog('action.excursion.resumed', {
-              excursion: {
-                id       : excursion.serverId,
-                addedAt  : excursion.addedAt,
-                startedAt: excursion.startedAt,
-                pausedAt : excursion.pausedAt,
-              }
-            });
-          },
-          finished     : function(excursion) {
-            return new EventLog('action.excursion.finished', {
-              excursion: {
-                id       : excursion.serverId,
-                addedAt  : excursion.addedAt,
-                startedAt: excursion.startedAt,
-              }
-            });
-          },
-        },
         positionWatcher: {
           activated  : function() { return new EventLog('action.positionWatcher.activated'); },
           deactivated: function() { return new EventLog('action.positionWatcher.deactivated'); }
@@ -232,8 +230,8 @@
           },
           changed: function(excursionId, selectedFilters) {
             return new EventLog('action.filters.changed', {
-              excursionId   : excursionId,
-              newFilters: selectedFilters
+              excursionId: excursionId,
+              newFilters : selectedFilters
             });
           }
         },

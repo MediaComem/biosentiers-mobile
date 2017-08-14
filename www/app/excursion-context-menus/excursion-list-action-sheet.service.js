@@ -127,7 +127,7 @@
         opt.buttons.push({text: excursion.isNew ? setNotNewText : setNewText});
         if (excursion.isNew) {
           opt.actions.push(function(excursion) {
-            ActivityTracker(EventLogFactory.action.excursion.unflagAsNew(excursion));
+            ActivityTracker(EventLogFactory.excursion.unflaggedAsNew(excursion));
             DbExcursions.setNotNew(excursion);
           });
         } else {

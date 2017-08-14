@@ -215,7 +215,7 @@
      */
     function onLocationChanged(lat, lon, alt, acc) {
       AppActions.execute('trackActivity', {
-        eventObject: EventLogFactory.localization('ar', Excursion.serverId, {
+        eventObject: EventLogFactory.location('ar', Excursion.serverId, {
           latitude : lat,
           longitude: lon,
           altitude : alt,

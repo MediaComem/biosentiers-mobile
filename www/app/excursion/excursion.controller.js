@@ -114,7 +114,7 @@
      * Opens the contextual menu for the excursion list page
      */
     function openExcursionMenu($event) {
-      ActivityTracker(EventLogFactory.action.excursion.contextMenu());
+      ActivityTracker(EventLogFactory.excursion.contextMenu());
       excursion.excursionMenu.show($event);
     }
 
@@ -228,7 +228,7 @@
      */
     function positionUpdate(position) {
       $log.info(TAG + 'getCurrentPosition', position);
-      ActivityTracker(EventLogFactory.localization('excursionCard', excursion.data.serverId, position.coords));
+      ActivityTracker(EventLogFactory.location('excursionCard', excursion.data.serverId, position.coords));
       excursion.mapConfig.setUserLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude
@@ -257,7 +257,7 @@
      * Loads and launches the AR World with the excursion's data, then changes the status of this excursion from "pending" to "ongoing".
      */
     function startExcursion() {
-      ActivityTracker(EventLogFactory.action.excursion.started(excursion.data));
+      ActivityTracker(EventLogFactory.excursion.started(excursion.data));
       return $q.when()
         .then(launchAr)
         .then(_.partial(DbExcursions.setOngoingStatus, excursion.data))
@@ -268,7 +268,7 @@
      * Executes the startExcursion function, then logs the fact in the ActivityTracker that the excursion has been resumed.
      */
     function resumeExcursion() {
-      ActivityTracker(EventLogFactory.action.excursion.resumed(excursion.data));
+      ActivityTracker(EventLogFactory.excursion.resumed(excursion.data));
       return $q.when()
         .then(launchAr)
         .catch(handleError);
@@ -278,7 +278,7 @@
      * Actually launch the AR view.
      */
     function launchAr() {
-      ActivityTracker(EventLogFactory.lifecycle.ar.launched());
+      ActivityTracker(EventLogFactory.ar.launched());
       return $q.when()
         .then(Ionicitude.launchAR)
         .then(loadWorldExcursion)

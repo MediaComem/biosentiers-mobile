@@ -24,7 +24,7 @@
       InstallationSecret.getValue();
 
       // Log the fact that the app is being started
-      ActivityTracker(EventLogFactory.lifecycle.app.started());
+      ActivityTracker(EventLogFactory.app.started());
 
       // Log an event about the current device's network connection state.
       $cordovaNetwork.isOnline() ? ActivityTracker(EventLogFactory.network.online($cordovaNetwork.getNetwork())) : ActivityTracker(EventLogFactory.network.offline());
@@ -44,7 +44,7 @@
     ////////////////////
 
     function appOnPause() {
-      ActivityTracker(EventLogFactory.lifecycle.app.paused());
+      ActivityTracker(EventLogFactory.app.paused());
       // Stops the ActivityTracker after 5 minutes of app being in background.
       pauseTimeout = $timeout(function() {
         ActivityTracker.stop();
@@ -55,7 +55,7 @@
       // If a 'resume' happens less than 5 minutes after a 'pause', cancel stopping the ActivityTracker
       pauseTimeout && $timeout.cancel(pauseTimeout) && (pauseTimeout = null);
       ActivityTracker.start();
-      ActivityTracker(EventLogFactory.lifecycle.app.resumed());
+      ActivityTracker(EventLogFactory.app.resumed());
     }
 
     /**
