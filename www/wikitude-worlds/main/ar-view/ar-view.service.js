@@ -242,6 +242,7 @@
         $log.log(TAG + "distance to user ", dist);
         DebugLog.add('POI clicked - ' + arPoi.id);
         DebugLog.add('POI distance to user - ' + dist + 'm');
+        AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.ar.poi.clicked(Excursion.serverId, arPoi.id, dist)});
         // if (1 === 1) {
         if (dist <= arPoi.minActiveDistance) {
           DebugLog.add('POI showing the details');
@@ -256,12 +257,17 @@
     }
 
     function onEnterActionRange() {
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.ar.end.reached(Excursion.serverId)});
       if (!hasReachEndOnce) {
         EndPopup.automatic().then(function(validated) {
           $log.log(TAG + "promptEndOfExcursion - prompt result", validated);
           if (validated) {
-            AppActions.execute('finishExcursion', {qrId: Excursion.qrId});
+            AppActions.execute('finishExcursion', {
+              qrId       : Excursion.qrId,
+              eventObject: EventLogFactory.action.ar.end.prompt(Excursion.serverId, validated)
+            });
           } else {
+            AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.ar.end.prompt(Excursion.serverId, validated)});
             hasReachEndOnce = true;
             activateManualEndingSubject.onNext();
             $log.log(TAG + 'Pas de fin du sentier');

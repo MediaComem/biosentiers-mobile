@@ -80,8 +80,8 @@
         }
       },
       excursion : {
-        contextMenu  : function() { return new EventLog('excursion.contextMenu')},
-        created      : function(excursion) {
+        contextMenu   : function() { return new EventLog('excursion.contextMenu')},
+        created       : function(excursion) {
           return new EventLog('excursion.created', {
             excursion: {
               id     : excursion.serverId,
@@ -89,7 +89,7 @@
             }
           });
         },
-        archived     : function(excursion) {
+        archived      : function(excursion) {
           return new EventLog('excursion.archived', {
             excursion: {
               id     : excursion.serverId,
@@ -97,7 +97,7 @@
             }
           });
         },
-        restored     : function(excursion) {
+        restored      : function(excursion) {
           return new EventLog('excursion.restored', {
             excursion: {
               id        : excursion.serverId,
@@ -106,7 +106,7 @@
             }
           });
         },
-        deleted      : function(excursion) {
+        deleted       : function(excursion) {
           return new EventLog('excursion.deleted', {
             excursion: {
               id        : excursion.serverId,
@@ -115,7 +115,7 @@
             }
           });
         },
-        reinitialized: function(excursion) {
+        reinitialized : function(excursion) {
           return new EventLog('excursion.reinitialized', {
             excursion: {
               id        : excursion.serverId,
@@ -125,7 +125,7 @@
             }
           });
         },
-        flaggedAsNew    : function(excursion) {
+        flaggedAsNew  : function(excursion) {
           return new EventLog('excursion.flaggedAsNew', {
             excursion: {
               id     : excursion.serverId,
@@ -133,7 +133,7 @@
             }
           });
         },
-        unflaggedAsNew  : function(excursion) {
+        unflaggedAsNew: function(excursion) {
           return new EventLog('excursion.unflaggedAsNew', {
             excursion: {
               id     : excursion.serverId,
@@ -141,7 +141,7 @@
             }
           });
         },
-        started      : function(excursion) {
+        started       : function(excursion) {
           return new EventLog('excursion.started', {
             excursion: {
               id     : excursion.serverId,
@@ -149,7 +149,7 @@
             }
           });
         },
-        paused       : function(excursion) {
+        paused        : function(excursion) {
           return new EventLog('excursion.paused', {
             excursion: {
               id       : excursion.serverId,
@@ -158,7 +158,7 @@
             }
           });
         },
-        resumed      : function(excursion) {
+        resumed       : function(excursion) {
           return new EventLog('excursion.resumed', {
             excursion: {
               id       : excursion.serverId,
@@ -168,7 +168,7 @@
             }
           });
         },
-        finished     : function(excursion) {
+        finished      : function(excursion) {
           return new EventLog('excursion.finished', {
             excursion: {
               id       : excursion.serverId,
@@ -245,29 +245,37 @@
         },
         ar             : {
           poi: {
-            clicked: function() {
-
+            clicked: function(excursionId, poiId, distance) {
+              return new EventLog('action.ar.poi.clicked', {
+                excursionId: excursionId,
+                poiId      : poiId,
+                distance   : distance
+              });
             },
-            checked: function() {
-
+            checked: function(excursionId, poiId, speciesId) {
+              return new EventLog('action.ar.poi.checked', {
+                excursionId: excursionId,
+                poiId      : poiId,
+                speciesId  : speciesId
+              });
             },
-            closed : function() {
-
+            closed : function(excursionId, poiId, speciesId) {
+              return new EventLog('action.ar.poi.closed', {
+                excursionId: excursionId,
+                poiId      : poiId,
+                speciesId  : speciesId
+              });
             }
           },
           end: {
-            reached  : function() {
-
+            reached: function(excursionId) { return new EventLog('action.ar.end.reached', {excursionId: excursionId}); },
+            prompt : function(excursionId, result) {
+              return new EventLog('action.ar.end.prompt', {
+                excursionId: excursionId,
+                validated     : result
+              })
             },
-            validated: function() {
-
-            },
-            refused  : function() {
-
-            },
-            manual   : function() {
-
-            }
+            manual : function(excursionId) { return new EventLog('action.ar.end.manual', {excursionId: excursionId}); }
           }
         }
       }

@@ -7,11 +7,11 @@
     .module('poi-modal')
     .controller('PoiModalCtrl', PoiModalCtrlFn);
 
-  function PoiModalCtrlFn(ArView, Excursion, $log, Modals, SeenTracker, PoiCardService) {
+  function PoiModalCtrlFn(AppActions, ArView, EventLogFactory, Excursion, $log, Modals, SeenTracker, PoiCardService) {
     var TAG     = "[PoiModalCtrl] ",
         poiCtrl = this;
 
-    poiCtrl.remove = Modals.removeCurrent;
+    poiCtrl.remove = remove;
     poiCtrl.setPoiSeen = setPoiSeen;
     poiCtrl.checkBoxState = checkBoxState;
     poiCtrl.getImageSource = getImageSource;
@@ -32,6 +32,7 @@
     }
 
     function setPoiSeen() {
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.ar.poi.checked(Excursion.serverId, poiCtrl.poi.id, poiCtrl.content.id)});
       Modals.removeCurrent().then(function() {
         ArView.setPoiSeen(poiCtrl.poi);
       });
@@ -39,6 +40,11 @@
 
     function checkBoxState() {
       return poiCtrl.hasBeenSeen ? 'ion-android-checkbox-outline' : 'ion-android-checkbox-outline-blank';
+    }
+
+    function remove() {
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.ar.poi.closed(Excursion.serverId, poiCtrl.poi.id, poiCtrl.content.id)});
+      Modals.removeCurrent();
     }
   }
 })();

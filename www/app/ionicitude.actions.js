@@ -101,6 +101,7 @@
       }
 
       function finishExcursion(service, param) {
+        param.eventObject && ActivityTracker(param.eventObject);
         return $q.when({qrId: param.qrId})
           .then(DbExcursions.getOne)
           .then(DbExcursions.setFinishedStatus)
