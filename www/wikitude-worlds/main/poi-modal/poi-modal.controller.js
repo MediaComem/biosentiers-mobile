@@ -18,11 +18,12 @@
 
     Excursion.currentPoiChangeObs.subscribe(function(data) {
       $log.log(TAG + 'currentPoiChangeObs', data);
+      PoiCardService.setup(poiCtrl, data.details);
       poiCtrl.poi = data.poi;
       poiCtrl.hasBeenSeen = SeenTracker.hasBeenSeen(poiCtrl.poi);
       poiCtrl.commonNameLanguages = Object.keys(poiCtrl.poi.properties.commonName);
       $log.log(TAG + 'poiCtrl.commonNameLanguages', poiCtrl.commonNameLanguages);
-      PoiCardService.setup(poiCtrl, data.details);
+      poiCtrl.includeSrc = '../../utils/poi-card/poi-card-' + data.details.theme + '.html';
     });
 
     ////////////////////

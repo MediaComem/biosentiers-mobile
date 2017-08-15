@@ -13,6 +13,6 @@
 		<h2 class="title">{{::poiCtrl.content.theme | themes}}</h2>
 	</ion-header-bar>
 	<ion-content>
-		<div ng-include="'../../utils/poi-card/poi-card.html'"></div>
+		<div ng-include="poiCtrl.includeSrc"></div>
 	</ion-content>
 </ion-modal-view>

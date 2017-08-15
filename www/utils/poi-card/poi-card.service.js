@@ -9,7 +9,8 @@
 
   function PoiCardProviderFn() {
 
-    var imgBaseUrl;
+    var TAG = "[PoiCardService] ",
+        imgBaseUrl;
 
     this.setImgBaseUrl = setImgBaseUrl;
 
@@ -40,10 +41,10 @@
 
     function getImageSourceFactory(ctrl) {
       var funcs = {
-        bird: getImageSourceBird,
+        bird     : getImageSourceBird,
         butterfly: getImageSourceButterfly,
-        flower: getImageSourceFlora,
-        tree: getImageSourceFlora
+        flower   : getImageSourceFlora,
+        tree     : getImageSourceFlora
       };
 
       return funcs[ctrl.content.theme];
@@ -90,9 +91,9 @@
     function classFromTheme(theme) {
       var classes = {
         bird     : 'positive',
-        flower   : 'energized',
-        butterfly: 'balanced',
-        tree     : 'assertive'
+        butterfly: 'energized',
+        tree     : 'balanced',
+        flower   : 'assertive'
       };
       return classes[theme];
     }

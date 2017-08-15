@@ -9,7 +9,7 @@
 	<ion-content class="has-subheader">
 		<div class="padding">
 			<ion-list class="poi-seen-list">
-				<ion-item ng-repeat="seenPoi in excursionSeen.seenPois"
+				<ion-item ng-repeat="seenPoi in excursionSeen.seenPois track by seenPoi.poiId"
 				          ui-sref="app.excursion.seenlist.poi({theme: seenPoi.poiData.properties.theme, specieId: seenPoi.poiData.properties.speciesId})"
 				          class="item-icon-left item-icon-right">
 					<i class="icon">

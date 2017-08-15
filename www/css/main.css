@@ -47,6 +47,9 @@
     margin-right: auto;
     box-shadow: 0 0 2px 0 black; }
 
+.poi-card .firstLetterUp::first-letter {
+  text-transform: uppercase; }
+
 #login {
   display: flex;
   flex-direction: column;

@@ -3,6 +3,6 @@
 		<h2 class="title title-left">{{::poiCtrl.content.commonName.fr}}</h2>
 	</ion-subheader-bar>
 	<ion-content class="has-header has-subheader">
-		<ng-include src="'./utils/poi-card/poi-card.html'"></ng-include>
+		<div ng-include="poiCtrl.includeSrc"></div>
 	</ion-content>
 </ion-view>
