@@ -25,7 +25,7 @@
     Excursion.excursionChangeObs.subscribe(ArView.updateAr);
     UserLocation.spacedObs.subscribe(ArView.updateAr);
     Filters.filtersChangeObs.subscribe(function(selected) {
-      _.debounce(AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.filters.changed(Excursion.serverId, selected)}), 1000);
+      AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.filters.changed(Excursion.serverId, selected)});
       ArView.updateAr();
     });
 
