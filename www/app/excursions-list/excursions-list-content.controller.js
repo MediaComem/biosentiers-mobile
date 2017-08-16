@@ -22,7 +22,7 @@
     tab.showExcursionActions = ExcursionListActionSheet;
 
     RefreshObs.subscribe(function() {
-      DbExcursions.getAll(excursionFilter).then(setData);
+      DbExcursions.fetchAll(excursionFilter).then(setData);
     });
 
     ////////////////////

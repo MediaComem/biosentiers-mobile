@@ -9,17 +9,18 @@
     .run(ionicitude);
 
   function ionicitude(ActivityTracker,
-                      EventLogFactory,
-                      DbBio,
                       $cordovaDeviceOrientation,
-                      $ionicPlatform,
-                      Ionicitude,
                       $cordovaToast,
-                      $log,
+                      DbBio,
                       DbExcursions,
+                      DbSeenPois,
+                      EventLogFactory,
+                      Ionicitude,
+                      $ionicPlatform,
+                      $log,
                       PoiContent,
                       $q,
-                      DbSeenPois,
+                      SeenPoi,
                       WorldActions) {
 
     var TAG = "[App:Run:IonicitudeAction] ",
@@ -91,19 +92,19 @@
         service.close();
         ActivityTracker(EventLogFactory.ar.quitted());
         // Set the excursion as paused
-        DbExcursions.getOne({qrId: param.qrId}).then(DbExcursions.setPausedDate);
+        DbExcursions.fetchOne(param.qrId).then(DbExcursions.setPausedDate);
         DbBio.save();
       }
 
       function addSeenPoi(service, param) {
         $log.log(TAG + 'adding seen poi', param);
-        $log.log(TAG + 'addSeenPoi', DbSeenPois.addOne(param.qrId, param.serverId, param.participantId, param.poiId, param.poiData));
+        $log.log(TAG + 'addSeenPoi', DbSeenPois.addOne(new SeenPoi(param.qrId, param.serverId, param.participantId, param.poiId, param.poiData)));
       }
 
       function finishExcursion(service, param) {
         param.eventObject && ActivityTracker(param.eventObject);
-        return $q.when({qrId: param.qrId})
-          .then(DbExcursions.getOne)
+        return $q.when(param.qrId)
+          .then(DbExcursions.fetchOne)
           .then(DbExcursions.setFinishedStatus)
           .then(_.partial(close, service))
           .catch(function(error) {

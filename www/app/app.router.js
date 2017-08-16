@@ -192,7 +192,7 @@
         resolve: {
           excursionData: function(DbExcursions, $stateParams, $log) {
             $log.log(TAG + 'app.excursion state:', $stateParams);
-            return DbExcursions.getOne({qrId: $stateParams.qrId});
+            return DbExcursions.fetchOne($stateParams.qrId);
           }
         }
       })
@@ -208,7 +208,7 @@
       })
 
       .state('app.excursion.seenlist.poi', {
-        url  : '/:theme/:specieId',
+        url  : '/:theme/:speciesId',
         views: {
           'menuContent@app': {
             templateUrl: 'app/excursion-seen-poi/excursion-seen-poi.html',
@@ -227,7 +227,7 @@
         },
         resolve: {
           speciesData: function(Species, $stateParams) {
-            return Species.getOne($stateParams.specieId);
+            return Species.fetchOne($stateParams.specieId);
           }
         }
       })

@@ -7,29 +7,27 @@
     .module('app')
     .controller('ExcursionSeenCtrl', ExcursionSeenCtrl);
 
-  function ExcursionSeenCtrl(ActivityTracker, EventLogFactory, excursionData, DbSeenPois, $log, $scope) {
+  function ExcursionSeenCtrl(ActivityTracker, EventLogFactory, excursionData, DbSeenSpecies, $log, $scope, $state) {
     var TAG           = "[ExcursionSeenCtrl] ",
         excursionSeen = this;
     excursionSeen.excursion = excursionData;
-    excursionSeen.getIconPathForTheme = getIconPathForTheme;
+    excursionSeen.goToSpeciesCard = goToSpeciesCard;
 
     $scope.$on('$ionicView.enter', function() {
       ActivityTracker(EventLogFactory.navigation.excursion.seenPois.list(excursionData));
     });
 
-    DbSeenPois
-      .getAll(excursionSeen.excursion.qrId)
+    DbSeenSpecies.fetchAll({qrId: excursionSeen.excursion.qrId})
       .then(function(data) {
-        $log.log(TAG + 'seenPois', data);
-        excursionSeen.seenPois = data;
+        $log.log(TAG + 'seen species', data);
+        excursionSeen.seenSpecies = data;
       });
 
     ////////////////////
 
-    function getIconPathForTheme(theme) {
-      var path = './wikitude-worlds/main/assets/icons/' + theme + '.png';
-      $log.log(TAG + 'getIconPathForTheme:path', path);
-      return path;
+    function goToSpeciesCard(seenSpecies) {
+      ActivityTracker(EventLogFactory.navigation.excursion.seenPois.card(seenSpecies.speciesId, excursionSeen.excursion));
+      $state.go('app.excursion.seenlist.poi', {theme: seenSpecies.theme, speciesId: seenSpecies.speciesId})
     }
   }
 })();

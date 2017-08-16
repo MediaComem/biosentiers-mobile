@@ -8,7 +8,7 @@
     .module('app')
     .controller('ExcursionCtrl', ExcursionCtrl);
 
-  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, EventLogFactory, Ionicitude, $ionicPopover, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, rx, $scope, $state, $timeout, WorldActions) {
+  function ExcursionCtrl(ActivityTracker, $cordovaGeolocation, $cordovaToast, EventLogFactory, Ionicitude, $ionicPopover, leafletData, $log, ExcursionMapConfig, DbExcursions, excursionData, PoiGeo, $q, DbSeenPois, DbSeenSpecies, rx, $scope, $state, $timeout, WorldActions) {
     var TAG = "[ExcursionCtrl] ";
 
     $scope.$on('$ionicView.beforeEnter', function(event, viewData) {
@@ -58,12 +58,12 @@
       excursion.map = map;
     }).catch(handleError);
 
-    DbSeenPois.countFor(excursion.data.qrId).then(function(res) {
-      excursion.nbSeenPoi = res;
+    DbSeenSpecies.countFor(excursion.data.qrId).then(function(res) {
+      excursion.nbSeenSpecies = res;
     }).catch(handleError);
 
-    DbSeenPois.seenPoiObs.subscribe(function(data) {
-      if (excursion.data.qrId === data.qrId) excursion.nbSeenPoi = data.nbSeen;
+    DbSeenSpecies.seenSpeciesObs.subscribe(function(data) {
+      if (excursion.data.qrId === data.qrId) excursion.nbSeenSpecies = data.nbSeen;
     });
 
     RefreshData.subscribe(function(newData) {
@@ -310,7 +310,7 @@
 
       var promises = {
         pois    : PoiGeo.getFilteredPoints(excursion.data.zones, excursion.data.themes),
-        seenPois: DbSeenPois.getAll(excursion.data.qrId)
+        seenPois: DbSeenPois.fetchAll(excursion.data.qrId)
       };
 
       return $q.all(promises).then(function(results) {
@@ -335,7 +335,7 @@
      * Redirect the user to the list of seen elements, if he/she has effectively seen at least one element.
      */
     function goToSeenList() {
-      excursion.nbSeenPoi > 0 && $state.go('app.excursion.seenlist', {excursionId: excursion.data.qrId});
+      excursion.nbSeenSpecies > 0 && $state.go('app.excursion.seenlist', {excursionId: excursion.data.qrId});
     }
 
     function isArchived() {

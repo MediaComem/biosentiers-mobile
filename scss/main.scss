@@ -149,9 +149,22 @@ progress {
   }
 }
 
-.poi-seen-list img {
-  height: 50%;
-  position: absolute;
+.poi-seen-list {
+  img {
+    height: 50%;
+    position: absolute;
+  }
+
+  h3 {
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .nb-seen {
+    color: #aaa;
+    display: block;
+    font-size: 14px;
+  }
 }
 
 #numver {

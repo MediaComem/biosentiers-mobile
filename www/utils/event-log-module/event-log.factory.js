@@ -75,7 +75,14 @@
                 }
               });
             },
-            card: function(specieId) { return new EventLog('navigation.excursion.seenPois.card', {specieId: specieId}); }
+            card: function(speciesId, {serverId, status}) {
+              return new EventLog('navigation.excursion.seenPois.card', {
+                excursion: {
+                  id: serverId,
+                  state: status
+                },
+                speciesId: speciesId});
+            }
           }
         }
       },
@@ -272,7 +279,7 @@
             prompt : function(excursionId, result) {
               return new EventLog('action.ar.end.prompt', {
                 excursionId: excursionId,
-                validated     : result
+                validated  : result
               })
             },
             manual : function(excursionId) { return new EventLog('action.ar.end.manual', {excursionId: excursionId}); }

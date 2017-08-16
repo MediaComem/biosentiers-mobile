@@ -7,21 +7,18 @@
     .module('app')
     .controller('ExcursionSeenPoiCtrl', ExcursionSeenPoiCtrlFn);
 
-  function ExcursionSeenPoiCtrlFn(ActivityTracker, EventLogFactory, PoiCardService, PoiContent, $log, $scope, $stateParams) {
+  function ExcursionSeenPoiCtrlFn(PoiCardService, PoiContent, $log, $stateParams) {
     var TAG     = "[ExcursionSeenPoiCtrl] ",
         poiCtrl = this;
 
-    $scope.$on('$ionicView.enter', function() {
-      ActivityTracker(EventLogFactory.navigation.excursion.seenPois.card($stateParams.specieId));
-    });
-
+    $log.log(TAG + "state params", $stateParams);
 
     poiCtrl.getTitle = function() {
       $log.log(TAG + 'content', poiCtrl.content);
       return _.get(poiCtrl, 'content.commonName.fr');
     };
 
-    PoiContent.getPoiData($stateParams.specieId, $stateParams.theme)
+    PoiContent.getPoiData($stateParams.speciesId, $stateParams.theme)
       .then(function(data) {
         PoiCardService.setup(poiCtrl, data);
         $log.log(TAG + "updated controller", poiCtrl);

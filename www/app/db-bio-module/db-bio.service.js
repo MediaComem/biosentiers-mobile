@@ -8,11 +8,11 @@
     .service('DbBio', DbBioService);
 
   function DbBioService($ionicPlatform, $log, Loki, $q) {
-    var TAG     = "[DbBio] ",
+    var TAG      = "[DbBio] ",
         deferred,
         db,
         prevSave = null,
-        service = {
+        service  = {
           getCollection: getCollection,
           reset        : reset,
           save         : save
@@ -83,14 +83,21 @@
 
     // TODO : Supprimer en prod
     function reset() {
-      return start().then(function() {
-        db.removeCollection('excursions');
-        db.removeCollection('seen-pois');
-        $log.log(TAG + 'reset', db);
-        save().then(function() {
-          db = null;
-        });
-      })
+      return start()
+        .then(function() {
+          $log.log(TAG + "Removing the excursion collection");
+          return db.removeCollection('excursions');
+        })
+        .then(function() {
+          $log.log(TAG + "Removing the seen-pois collection");
+          return db.removeCollection('seen-pois');
+        })
+        .then(function() {
+          $log.log(TAG + "Removing the seen-species collection");
+          return db.removeCollection('seen-species');
+        })
+        .then(save)
+        .then(function() { deferred = null; })
     }
   }
 })();

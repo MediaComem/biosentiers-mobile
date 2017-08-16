@@ -92,9 +92,10 @@
 				<!--</div>-->
 			<!--</div>-->
 			<div class="list list-inset">
-				<a class="item item-icon-right" ng-class="{'disabled': excursion.nbSeenPoi === 0}"
-				   ng-click="excursion.goToSeenList()" ng-disabled="excursion.nbSeenPoi === 0">
-					{{excursion.nbSeenPoi || 'Aucune'}} {{excursion.nbSeenPoi > 0 ? 'E' : 'e'}}spèce{{excursion.nbSeenPoi > 0 ? 's' : ''}} vue{{excursion.nbSeenPoi > 0 ? 's' : ''}}
+				<a class="item item-icon-right" ng-class="{'disabled': excursion.nbSeenSpecies === 0}"
+				   ng-click="excursion.goToSeenList()" ng-disabled="excursion.nbSeenSpecies === 0">
+					{{excursion.nbSeenSpecies || 'Aucune'}} {{excursion.nbSeenSpecies > 0 ? 'E' :
+					'e'}}spèce{{excursion.nbSeenSpecies > 1 ? 's' : ''}} vue{{excursion.nbSeenSpecies > 1 ? 's' : ''}}
 					<i class="icon ion-chevron-right"></i>
 				</a>
 			</div>

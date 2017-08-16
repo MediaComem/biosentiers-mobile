@@ -58,7 +58,7 @@
         auth.excursion = ExcursionClass.fromQrCodeData(QR.getExcursionData(rawData));
         $log.info(TAG + 'handleData:decoded data', auth.excursion);
         // We fetch all excursions with their server id (and not their qr id), because we want to see if the scanned excursion already exist in the database
-        DbExcursions.getAll({serverId: auth.excursion.serverId})
+        DbExcursions.fetchAll({serverId: auth.excursion.serverId})
           .then(function(excursions) {
             $log.debug(TAG + "excursions with same serverId", excursions);
             if (excursions.length === 0) {

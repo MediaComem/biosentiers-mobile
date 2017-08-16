@@ -1,21 +1,21 @@
 <ion-view title="{{excursionSeen.excursion.name}}">
 	<ion-subheader-bar class="bar bar-subheader bar-royal lighter">
 		<h2 class="title title-left">
-			{{excursionSeen.seenPois.length || 'Aucune'}} {{excursionSeen.seenPois.length > 0 ? 'E' : 'e'}}spèce{{excursionSeen.seenPois.length > 0 ? 's' : ''}} vue{{excursionSeen.seenPois.length > 0 ? 's' : ''}}
+			{{excursionSeen.seenSpecies.length || 'Aucune'}} {{excursionSeen.seenSpecies.length > 0 ? 'E' : 'e'}}spèce{{excursionSeen.seenSpecies.length > 0 ? 's' : ''}} vue{{excursionSeen.seenSpecies.length > 0 ? 's' : ''}}
 		</h2>
 		<!--<button class="button button-icon icon ion-funnel"></button>-->
 	</ion-subheader-bar>
 	<ion-content class="has-subheader">
 		<div class="padding">
 			<ion-list class="poi-seen-list">
-				<ion-item ng-repeat="seenPoi in excursionSeen.seenPois track by seenPoi.poiId"
-				          ui-sref="app.excursion.seenlist.poi({theme: seenPoi.poiData.properties.theme, specieId: seenPoi.poiData.properties.speciesId})"
+				<ion-item ng-repeat="seenSpecies in excursionSeen.seenSpecies track by seenSpecies.speciesId"
+				          ng-click="excursionSeen.goToSpeciesCard(seenSpecies)"
 				          class="item-icon-left item-icon-right">
-					<i class="icon">
-						<img class="poi-seen-icon" ng-src="{{excursionSeen.getIconPathForTheme(seenPoi.poiData.properties.theme)}}" alt="">
-					</i>
-					{{seenPoi.poiData.properties.commonName.fr}}
-					<span class="item-note">Vu le {{seenPoi.seenAt | date:'dd.MM.yyyy'}} à {{seenPoi.seenAt | date:'HH:mm:ss'}}</span>
+					<span class="icon">
+						<img class="poi-seen-icon" ng-src="{{'./wikitude-worlds/main/assets/icons/' + seenSpecies.theme + '.png'}}" alt="">
+					</span>
+					<h3>{{seenSpecies.commonName.fr}}</h3>
+					<span class="nb-seen">Vue {{seenSpecies.nbSeen}} fois</span>
 					<i class="icon ion-chevron-right"></i>
 				</ion-item>
 			</ion-list>

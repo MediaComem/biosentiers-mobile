@@ -7,30 +7,28 @@
     .module('db-bio-module')
     .factory('DbSeenPois', DbSeenPoisService);
 
-  function DbSeenPoisService(DbBio, $log, $q, rx) {
+  function DbSeenPoisService(DbBio, DbSeenSpecies, SeenSpecies, $log) {
 
-    var TAG = "[DbSeenPois] ",
-        collName       = 'seen-pois',
-        seenPoiSubject = new rx.ReplaySubject(1),
-        service        = {
-          getAll      : getAll,
+    var TAG       = "[DbSeenPois] ",
+        COLL_NAME = 'seen-pois',
+        service   = {
+          fetchAll    : fetchAll,
           countFor    : countFor,
           addOne      : addOne,
-          removeAllFor: removeAllFor,
-          seenPoiObs  : seenPoiSubject.asObservable()
+          removeAllFor: removeAllFor
         };
 
     return service;
 
-    ////////////////////
+    /* ----- Public Functions ----- */
 
     /**
      * Tries to get all the POIs that have been seen for a particuler excursion.
      * @param qrId The qrId of the Excursion for which we want to get all the seen POIs.
      * @return {Promise} A promise of an Array containing the POIs that have been seen for the specified Excursion
      */
-    function getAll(qrId) {
-      return DbBio.getCollection(collName)
+    function fetchAll(qrId) {
+      return getCollection()
         .then(function(coll) {
           var res = coll.find({qrId: qrId});
           $log.log(TAG + 'getAll:result', res);
@@ -44,31 +42,31 @@
      * @param qrId
      */
     function countFor(qrId) {
-      return DbBio.getCollection(collName)
+      return getCollection()
         .then(function(coll) { return coll.count({qrId: qrId}); })
         .catch(handleError);
     }
 
     /**
      * Adds a new seen poi to the collection, that matches the given parameter.
-     * @param qrId The qrId of the excursion
-     * @param serverId The serverId of the excursion in which the poi has been seen
-     * @param participantId The id of the excursion's participan
-     * @param poiId The ID of the POI that have been seen.
-     * @param poiData The GeoJSON object of the seen POI.
+     * @param {SeenPoi} seenPoi - The SeenPoi to add to the database.
      */
-    function addOne(qrId, serverId, participantId, poiId, poiData) {
-      return DbBio.getCollection(collName)
-        .then(function(coll) {
-          var res = coll.insertOne(new Seen(qrId, serverId, participantId, poiId, poiData));
-          if ('undefined' === typeof res) throw new Error("DbSeenPois:addOne: An error occured while trying to save that the POI n°" + poiId + " had been seen in the excursion n°" + qrId);
-          return countFor(qrId);
+    function addOne(seenPoi) {
+      return getCollection()
+        .then(function(coll) { return coll.insert(seenPoi); })
+        .then(function(res) {
+          return DbSeenSpecies.fetchOne(res.qrId, res.poiData.properties.speciesId);
         })
-        .then(function(count) {
-          seenPoiSubject.onNext({qrId: qrId, nbSeen: count});
+        .then(function(species) {
+          if (!species) {
+            return DbSeenSpecies.addOne(SeenSpecies.fromSeenPoi(seenPoi))
+          } else {
+            species.nbSeen += 1;
+            return DbSeenSpecies.updateOne(species);
+          }
         })
-        .then(DbBio.save)
-        .catch(handleError);
+        .catch(handleError)
+        .finally(DbBio.save);
     }
 
     /**
@@ -76,55 +74,53 @@
      * @param qrId
      */
     function removeAllFor(qrId) {
-      return DbBio.getCollection(collName)
-        .then(function(coll) {
-          $log.debug(TAG + 'removeAllFor:collection before removing:', qrId, angular.copy(coll));
-          var res = coll.removeWhere({qrId: qrId});
-          $log.debug(TAG + 'removeAllFor:collection after removing:', angular.copy(coll));
-          return res;
-        })
-        .catch(handleError);
+      return getCollection()
+        .then(function(coll) { return coll.removeWhere({qrId: qrId}); })
+        .catch(handleError)
+        .finally(DbBio.save)
     }
 
+    /* ----- Private Functions ----- */
+
     // TODO : supprimer en prod
-    function populate(coll, excursionId) {
-      var poiData = {
-        geometry  : {
-          coordinates: [
-            6.64853712883608,
-            46.7817862925931,
-            431.8
-          ],
-          type       : "Point"
-        },
-        properties: {
-          commonName : {
-            de: "Thunbergs Berberitze",
-            fr: "Epine-vinette de Thunberg",
-            it: "Crespino di Thunberg",
-            la: "Berberis thunbergii"
-          },
-          createdAt  : "20170402112523",
-          id_poi      : 166,
-          speciesId   : 122,
-          zoneId     : 1,
-          ownerName  : "Alain Jotterand",
-          periodEnd  : 5,
-          periodStart: 5,
-          theme  : "tree"
-        },
-        type      : "Feature"
-      };
-      coll.insert([
-        new Seen(excursionId, 5007, poiData),
-        new Seen(excursionId, 5010, poiData),
-        new Seen(excursionId, 5291, poiData),
-        new Seen(excursionId, 5391, poiData),
-        new Seen(excursionId, 5018, poiData),
-        new Seen(excursionId, 5347, poiData)
-      ]);
-      DbBio.save();
-    }
+    // function populate(coll, excursionId) {
+    //   var poiData = {
+    //     geometry  : {
+    //       coordinates: [
+    //         6.64853712883608,
+    //         46.7817862925931,
+    //         431.8
+    //       ],
+    //       type       : "Point"
+    //     },
+    //     properties: {
+    //       commonName : {
+    //         de: "Thunbergs Berberitze",
+    //         fr: "Epine-vinette de Thunberg",
+    //         it: "Crespino di Thunberg",
+    //         la: "Berberis thunbergii"
+    //       },
+    //       createdAt  : "20170402112523",
+    //       id_poi      : 166,
+    //       speciesId   : 122,
+    //       zoneId     : 1,
+    //       ownerName  : "Alain Jotterand",
+    //       periodEnd  : 5,
+    //       periodStart: 5,
+    //       theme  : "tree"
+    //     },
+    //     type      : "Feature"
+    //   };
+    //   coll.insert([
+    //     new Seen(excursionId, 5007, poiData),
+    //     new Seen(excursionId, 5010, poiData),
+    //     new Seen(excursionId, 5291, poiData),
+    //     new Seen(excursionId, 5391, poiData),
+    //     new Seen(excursionId, 5018, poiData),
+    //     new Seen(excursionId, 5347, poiData)
+    //   ]);
+    //   DbBio.save();
+    // }
 
     /**
      * Creates a new Seen object, that represents a POI seen in an Excursion
@@ -152,7 +148,15 @@
      */
     function handleError(error) {
       $log.error(TAG + "handleError", error);
-      return $q.reject(error);
+      throw error;
+    }
+
+    /**
+     * Gets the seen-pois collection from the database.
+     * @return {Promise} - The promise of a collection
+     */
+    function getCollection() {
+      return DbBio.getCollection(COLL_NAME);
     }
   }
 })();

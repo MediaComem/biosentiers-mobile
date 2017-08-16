@@ -12,19 +12,18 @@
     var TAG                  = "[DbExursions] ",
         COLL_NAME            = 'excursions',
         COLL_OPTIONS         = {
-          unique: ['id']
+          unique: ['qrId']
         },
         archivedSubject      = new rx.ReplaySubject(1),
         removedSubject       = new rx.ReplaySubject(1),
         restoredSubject      = new rx.ReplaySubject(1),
         reinitializedSubject = new rx.ReplaySubject(1),
         service              = {
-          getAll           : getAll,
-          getOne           : getOne,
+          fetchAll         : fetchAll,
+          fetchOne         : fetchOne,
           countAll         : countAll,
           getStats         : getStats,
           createOne        : createOne,
-          updateOne        : updateOne,
           archiveOne       : archiveOne,
           removeOne        : removeOne,
           reinitializeOne  : reinitializeOne,
@@ -49,7 +48,7 @@
      * @param {Object} criterias An option object respecting the MongoDB syntax that will be used to filter the excursions.
      * @return {Promise} A promise of an array of Excursions
      */
-    function getAll(criterias) {
+    function fetchAll(criterias) {
       criterias = angular.copy(criterias);
       // If the Excursions are set to not show the Archived one, add the corresponding filter to find only excursions that have no archivedAt value.
       if (ExcursionsSettings.withArchive.value === false) {
@@ -63,13 +62,13 @@
     }
 
     /**
-     * Retrieve one excursion, based on the given criteria object.
-     * @param criteria A MongoDB criteria object to search for one Excursion.
-     * @return {Promise} A promise of a single Excursion object.
+     * Fetchs the excursion matching the given qrId, if such an excursion exists.
+     * @param {String} qrId - The qrId of the excursion to fetch
+     * @return {Promise} - A promise of a single Excursion object.
      */
-    function getOne(criteria) {
+    function fetchOne(qrId) {
       return getCollection()
-        .then(function(coll) { return coll.findOne(criteria); })
+        .then(function(coll) { return coll.findOne({qrId: qrId}); })
         .catch(handleError);
     }
 
@@ -368,7 +367,7 @@
      */
     function handleError(error) {
       $log.error(TAG + "handleError", error);
-      return $q.reject(error);
+      throw error;
     }
 
     /**
@@ -394,8 +393,9 @@
     }
 
     /**
-     * TODO: Comment this function
-     * @return {*|Collection}
+     * Gets the excursion collection from the database.
+     * If the database doesn't exist yet, it will be created with the COLL_OPTIONS, and then returned.
+     * @return {Promise} - The promise of a collection
      */
     function getCollection() {
       return DbBio.getCollection(COLL_NAME, COLL_OPTIONS);

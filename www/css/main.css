@@ -173,6 +173,15 @@ progress {
   height: 50%;
   position: absolute; }
 
+.poi-seen-list h3 {
+  margin-bottom: 0;
+  font-size: 16px; }
+
+.poi-seen-list .nb-seen {
+  color: #aaa;
+  display: block;
+  font-size: 14px; }
+
 #numver {
   font-size: 0.8em;
   color: #ef6c7c;
