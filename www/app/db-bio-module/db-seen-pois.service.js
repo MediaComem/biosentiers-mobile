@@ -4,7 +4,7 @@
 (function() {
   'use strict';
   angular
-    .module('db-seen-pois-module')
+    .module('db-bio-module')
     .factory('DbSeenPois', DbSeenPoisService);
 
   function DbSeenPoisService(DbBio, $log, $q, rx) {

@@ -9,7 +9,7 @@
 (function() {
   'use strict';
   angular
-    .module('db-excursions-module')
+    .module('db-bio-module')
     .service('ExcursionClass', ExcursionClass);
 
   function ExcursionClass() {

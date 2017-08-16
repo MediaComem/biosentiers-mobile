@@ -3,5 +3,5 @@
  */
 (function() {
   'use strict';
-  angular.module('db-bio-module', []);
+  angular.module('db-bio-module', ['rx']);
 })();

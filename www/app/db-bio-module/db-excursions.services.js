@@ -5,7 +5,7 @@
 (function() {
   'use strict';
   angular
-    .module('db-excursions-module')
+    .module('db-bio-module')
     .factory('DbExcursions', DbExcursions);
 
   function DbExcursions(ActivityTracker, EventLogFactory, ExcursionClass, ExcursionsSettings, DbBio, DbSeenPois, $ionicPopup, $cordovaToast, $log, $q, rx) {
