@@ -141,7 +141,7 @@
      */
     function loadCurrentPoi(poi) {
 
-      var params  = {specieId: poi.properties.speciesId, theme: poi.properties.theme},
+      var params  = {speciesId: poi.properties.speciesId, theme: poi.properties.theme, qrId: getQrId()},
           options = {return: true};
 
       AppActions.execute('loadPoiDetails', params, options).then(function(details) {

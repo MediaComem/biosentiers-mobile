@@ -204,6 +204,22 @@ option.placeholder {
   margin-left: auto;
   margin-right: auto; }
 
+.poi-modal .seen-notice {
+  background-color: black;
+  color: white;
+  text-align: right;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-size: 12px; }
+  .poi-modal .seen-notice.positive {
+    background-color: #2888e7; }
+  .poi-modal .seen-notice.energized {
+    background-color: #ff8019; }
+  .poi-modal .seen-notice.balanced {
+    background-color: #2fac51; }
+  .poi-modal .seen-notice.assertive {
+    background-color: #eb3e52; }
+
 .poi-card .img-wrapper {
   height: 30vh;
   overflow: hidden;

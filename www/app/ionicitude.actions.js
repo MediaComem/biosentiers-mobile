@@ -14,6 +14,7 @@
                       DbBio,
                       DbExcursions,
                       DbSeenPois,
+                      DbSeenSpecies,
                       EventLogFactory,
                       Ionicitude,
                       $ionicPlatform,
@@ -68,7 +69,13 @@
       }
 
       function loadPoiDetails(service, param) {
-        return PoiContent.getPoiData(param.specieId, param.theme);
+        return $q.all({
+          poiData: PoiContent.getPoiData(param.speciesId, param.theme),
+          speciesSeen: DbSeenSpecies.fetchOne(param.qrId, param.speciesId)
+        }).then(function(res) {
+          res.poiData.speciesSeen = res.speciesSeen ? res.speciesSeen.nbSeen : 0;
+          return res.poiData;
+        })
       }
 
       function toast(service, param) {
