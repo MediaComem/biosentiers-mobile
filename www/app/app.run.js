@@ -11,7 +11,7 @@
 
     $ionicPlatform.ready(function() {
       // TODO: Remove in production
-      LogUploader.stop();
+      // LogUploader.stop();
 
       ionicInitialize();
       if ($ionicPlatform.is('android')) grantAndroidPermissions();

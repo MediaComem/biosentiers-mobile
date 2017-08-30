@@ -108,7 +108,14 @@
       return _.isObject(poi.properties) && _.includes(selected.themes, poi.properties.theme);
     }
 
+    /**
+     * Check if the given poi should be considered off season or not.
+     * This always return false when the poi has a 'tree' theme (trees are always visible)
+     * @param {Object} poi - A GeoJSON object representing the poi to be tested.
+     * @return {Boolean} - 'true' if the poi is off season, 'false' if not.
+     */
     function isOffSeason(poi) {
+      if (poi.properties.theme = 'tree') return false;
       var currentMonth = new Date().getMonth() + 1;
       return poi.properties.periodStart > currentMonth || poi.properties.periodEnd < currentMonth;
     }
