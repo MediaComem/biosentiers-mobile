@@ -1,6 +1,6 @@
 {
     "name": "biosentiers",
-    "version": "0.9.0",
+    "version": "2.0.0",
     "description": "BioSentiers: An Ionic project",
     "dependencies": {
         "angular-jwt": "^0.1.9",
