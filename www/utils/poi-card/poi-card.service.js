@@ -1,7 +1,7 @@
 /**
  * Created by Mathias Oberson on 17.05.2017.
  */
-(function() {
+(function () {
   'use strict';
   angular
     .module('poi-card-module')
@@ -10,13 +10,13 @@
   function PoiCardProviderFn() {
 
     var TAG = "[PoiCardService] ",
-        imgBaseUrl;
+      imgBaseUrl;
 
     this.setImgBaseUrl = setImgBaseUrl;
 
-    this.$get = function() {
+    this.$get = function () {
       return {
-        setup: function(ctrl, content) {
+        setup: function (ctrl, content) {
           ctrl.content = content;
           ctrl.selectedLanguage = 'fr';
           ctrl.classFromTheme = classFromTheme;
@@ -41,10 +41,10 @@
 
     function getImageSourceFactory(ctrl) {
       var funcs = {
-        bird     : getImageSourceBird,
+        bird: getImageSourceBird,
         butterfly: getImageSourceButterfly,
-        flower   : getImageSourceFlora,
-        tree     : getImageSourceFlora
+        flower: getImageSourceFlora,
+        tree: getImageSourceFlora
       };
 
       return funcs[ctrl.content.theme];
@@ -72,28 +72,30 @@
 
     function openInBrowserFactory(ctrl) {
       var url = ctrl.content.website;
-      if (typeof AR === 'undefined') {
-        return function openInBrowser() {
-          var pattern = /http(s)*:\/\/.*/;
-          if (!pattern.test(url)) {
-            url = 'http://' + url;
-          }
-          window.open(url, '_system');
-          return false;
-        };
-      } else {
-        return function openInBrowser() {
-          AR.context.openInBrowser(url, true);
-        };
+      if (url === null) {
+        if (typeof AR === 'undefined') {
+          return function openInBrowser() {
+            var pattern = /http(s)*:\/\/.*/;
+            if (!pattern.test(url)) {
+              url = 'http://' + url;
+            }
+            window.open(url, '_system');
+            return false;
+          };
+        } else {
+          return function openInBrowser() {
+            AR.context.openInBrowser(url, true);
+          };
+        }
       }
     }
 
     function classFromTheme(theme) {
       var classes = {
-        bird     : 'positive',
+        bird: 'positive',
         butterfly: 'energized',
-        tree     : 'balanced',
-        flower   : 'assertive'
+        tree: 'balanced',
+        flower: 'assertive'
       };
       return classes[theme];
     }

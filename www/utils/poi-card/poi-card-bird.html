@@ -51,7 +51,7 @@
 				<p class="firstLetterUp">{{::poiCtrl.content.comment}}</p>
 			</div>
 		</div>
-		<div class="list card">
+		<div class="list card" ng-if="::poiCtrl.content.website">
 			<a class="item item-icon-right positive" ng-click="poiCtrl.openInBrowser()">Plus sur le Web<i
 					class="icon ion-share"></i></a>
 		</div>

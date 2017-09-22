@@ -115,7 +115,7 @@
      * @return {Boolean} - 'true' if the poi is off season, 'false' if not.
      */
     function isOffSeason(poi) {
-      if (poi.properties.theme = 'tree') return false;
+      if (poi.properties.theme === 'tree') return false;
       var currentMonth = new Date().getMonth() + 1;
       return poi.properties.periodStart > currentMonth || poi.properties.periodEnd < currentMonth;
     }
