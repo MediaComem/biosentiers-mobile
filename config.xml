@@ -93,4 +93,5 @@
     <plugin name="cordova-plugin-device" spec="^1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-device-orientation" spec="^1.0.7" />
+    <plugin name="cordova-plugin-file" spec="^4.3.3" />
 </widget>
