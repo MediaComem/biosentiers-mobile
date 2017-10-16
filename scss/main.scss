@@ -1,0 +1,316 @@
+@import "color-theme";
+@import "../scss-ar/poi-card";
+
+#login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  button {
+    width: 60vw;
+    &:not(:last-of-type) {
+      margin-bottom: 20px;
+    }
+
+    .icon {
+      float: right;
+    }
+  }
+}
+
+#logo {
+  height: 60vw;
+  margin-bottom: 10vw;
+}
+
+.leaflet-container {
+  height: 30vh;
+}
+
+.leaflet-control-container {
+  display: none;
+}
+
+progress {
+  margin: 0;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: 5px;
+}
+
+.themes {
+  .badge:not(:last-of-type) {
+    margin-right: 5px;
+  }
+}
+
+.excursion-map-container {
+  position: relative;
+  .position-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 2;
+  }
+  .white-dropdown {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: grey;
+    z-index: 1;
+    opacity: 0.5;
+  }
+  .fab-actions {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    .main {
+      z-index: 2;
+      border: none;
+      font-size: 2em;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+      -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+      box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+    }
+    .mini {
+      z-index: 2;
+      border: none;
+      font-size: 2em;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+      -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+      box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+    }
+  }
+}
+
+.item {
+  .badge.excursion-status {
+    position: initial;
+    display: inline-block;
+    border-radius: 3px;
+  }
+  .bio-badge-pending {
+    background-color: transparent;
+    border: 1px solid $calm;
+    color: $calm;
+  }
+  .bio-badge-ongoing {
+    background-color: transparent;
+    border: 1px solid $energized;
+    color: $energized;
+  }
+  .bio-badge-finished {
+    background-color: transparent;
+    border: 1px solid $assertive;
+    color: $assertive;
+  }
+}
+
+#ar-action {
+  i {
+    margin-right: 5px;
+  }
+}
+
+#no-excursion {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  color: $positive-light;
+  opacity: 0.5;
+  i.ion-leaf {
+    opacity: 0.2;
+    font-size: 6em;
+    margin-bottom: 50px;
+  }
+}
+
+.excursions-list {
+  ion-item:last-of-type {
+    margin-bottom: 10px;
+  }
+}
+
+.poi-seen-list {
+  img {
+    height: 50%;
+    position: absolute;
+  }
+
+  h3 {
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .nb-seen {
+    color: #aaa;
+    display: block;
+    font-size: 14px;
+  }
+}
+
+#numver {
+  font-size: 0.8em;
+  color: $assertive-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 16px;
+}
+
+.popover.active {
+  opacity: 1;
+}
+
+#excursions-menu {
+  height: 58px;
+}
+
+.excursions-list {
+
+  .list.card {
+    margin-top: 0;
+    margin-bottom: 10px;
+
+    > .item:first-child {
+      padding-bottom: 10px;
+      padding-top: 10px
+    }
+  }
+
+  .item.item-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .action-buttons {
+      justify-content: flex-end;
+
+      a.button {
+        color: initial;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+.list.card {
+
+  &.archived, &.new {
+    //border: 1px solid;
+
+    &::before {
+      color: white;
+      padding: 0 10px;
+      position: absolute;
+      font-size: 10px;
+      z-index: 3;
+      top: 2px;
+      right: 2px;
+      border-bottom-left-radius: 2px;
+      border-top-right-radius: 2px;
+      line-height: 22px;
+      height: 20px;
+    }
+  }
+
+  &.new {
+
+    &::before {
+      content: "Nouvelle";
+      background-color: $positive;
+    }
+  }
+
+  &.archived {
+
+    &::before {
+      opacity: 0.54;
+      content: "Archivée";
+      background-color: $energized;
+    }
+
+    .item {
+      > * {
+        opacity: 0.38;
+      }
+
+      &:not(.activated) {
+        //background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      h2 > i {
+        margin-right: 5px;
+        opacity: 0.38;
+      }
+    }
+  }
+}
+
+#excursion-details {
+  .item.disabled {
+    opacity: 0.54;
+
+    .icon {
+      visibility: hidden;
+    }
+  }
+
+  .excursion-map-container + .list {
+    margin-bottom: 0;
+  }
+
+  .button-bar > .button {
+    padding: initial;
+  }
+}
+
+#excursion-details-menu {
+  .item:hover, .item:active {
+    background-color: #e8e8e8;
+  }
+}
+
+.participant {
+  display: inline-block;
+  color: blueviolet;
+  padding: 0 3px;
+  border-radius: 3px;
+  border: 1px solid blueviolet;
+
+  & + .participant {
+    margin-left: 5px;
+  }
+}
+
+@keyframes popover-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
