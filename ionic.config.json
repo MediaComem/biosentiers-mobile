@@ -1,14 +1,15 @@
 {
   "name": "BioSentiers",
   "app_id": "com.biosentiers.app",
-  "gulpStartupTasks": [
-    "sass",
-    "watch"
-  ],
+  "type": "ionic1",
+  "integrations": {
+    "cordova": {},
+    "gulp": {}
+  },
   "watchPatterns": [
+    "scss/**/*",
     "www/**/*",
     "!www/lib/**/*",
-    "scss/**/*"
-  ],
-  "type": "ionic1"
+    "!www/**/*.map"
+  ]
 }
