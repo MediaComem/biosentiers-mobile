@@ -1,0 +1,48 @@
+.bigmap-modal {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  .position-badge-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+  }
+
+  .bigmap-container {
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    .leaflet-container {
+      height: 100%;
+      width: 100%;
+    }
+    .leaflet-control-container {
+      display: none;
+    }
+  }
+
+  .buttons {
+    margin: auto;
+  }
+
+  .red {
+    border-radius: 120px;
+    opacity: .75;
+    background-color: #FF0000;
+  }
+
+  .blue {
+    border-radius: 120px;
+    opacity: .75;
+    background-color: #0000FF;
+  }
+
+  .fabs{
+    z-index: 1;
+    background-color: $assertive;
+  }
+}
