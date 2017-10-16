@@ -45,14 +45,14 @@
       "cordova-plugin-device-orientation": {},
       "cordova-plugin-file": {},
       "cordova-plugin-geolocation": {
-        "GEOLOCATION_USAGE_DESCRIPTION": " "
+        "GEOLOCATION_USAGE_DESCRIPTION": "Display points of interest at the correct location in the augmented reality view"
       },
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-x-toast": {},
       "cordova.plugins.diagnostic": {},
       "phonegap-plugin-barcodescanner": {
-        "CAMERA_USAGE_DESCRIPTION": " "
+        "CAMERA_USAGE_DESCRIPTION": "Scan QR codes"
       },
       "com.wikitude.phonegap.WikitudePlugin": {}
     },
