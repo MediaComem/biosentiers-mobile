@@ -1,0 +1,15 @@
+{
+  "name": "angular-turf-module",
+  "main": "./angular-turf-module.js",
+  "homepage": "https://github.com/tazaf/angular-turf-module",
+  "_release": "64a2efe33c",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "64a2efe33c1cf3aaf77467b4675096603f8c0a67"
+  },
+  "_source": "git://github.com/tazaf/angular-turf-module.git",
+  "_target": "*",
+  "_originalSource": "tazaf/angular-turf-module",
+  "_direct": true
+}

@@ -1,6 +1,6 @@
 {
-  "name": "biosentiers",
-  "app_id": "",
+  "name": "BioSentiers",
+  "app_id": "com.biosentiers.app",
   "type": "ionic1",
   "integrations": {
     "cordova": {},

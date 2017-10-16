@@ -1,0 +1,50 @@
+<div class="poi-card">
+	<div class="img-wrapper">
+		<img ng-src="{{poiCtrl.getImageSource()}}" alt="photo" class="poi-photo">
+	</div>
+	<div class="poi-card-content">
+		<div class="list card">
+			<div class="item item-button-right">
+				Nom Commun<span style="float: right">{{poiCtrl.content.commonName.fr}}</span>
+				<button class="button button-positive button-small button-clear" ng-click="poiCtrl.updateCommomName()">
+					<img id="flag-icon" ng-src="{{poiCtrl.flagUrl}}" alt="{{poiCtrl.selectedLanguage}}">
+				</button>
+			</div>
+			<div class="item">Nom Scientifique<span style="float: right">{{::poiCtrl.content.scientificName}}</span></div>
+			<div class="item" ng-if="::poiCtrl.content.taxonomy.reign">Règne<span style="float: right">{{::poiCtrl.content.taxonomy.reign}}</span></div>
+			<div class="item" ng-if="::poiCtrl.content.taxonomy.division">Division<span style="float: right">{{::poiCtrl.content.taxonomy.division}}</span></div>
+			<div class="item" ng-if="::poiCtrl.content.taxonomy.class">Classe<span style="float: right">{{::poiCtrl.content.taxonomy.class}}</span></div>
+			<div class="item" ng-if="::poiCtrl.content.taxonomy.family">Famille<span style="float: right">{{::poiCtrl.content.taxonomy.family}}</span></div>
+			<div class="item" ng-if="::poiCtrl.content.wingspan">Envergure<span style="float: right">{{::poiCtrl.content.wingspan}} cm</span></div>
+			<div class="item">Visible<span style="float: right">de {{::poiCtrl.content.periodStart | periodToMonth}} à {{::poiCtrl.content.periodEnd | periodToMonth}}</span></div>
+			<div class="item item-body" ng-if="poiCtrl.content.characteristics">
+				<h2>Caractéristiques</h2>
+				<div ng-if="poiCtrl.content.characteristics.physical">
+					<div ng-if="poiCtrl.content.characteristics.physical.adult">
+						<h3>Physiques - adulte</h3>
+						<p class="firstLetterUp">{{::poiCtrl.content.characteristics.physical.adult}}</p>
+					</div>
+					<div ng-if="poiCtrl.content.characteristics.physical.child">
+						<h3>Physiques - chenille</h3>
+						<p class="firstLetterUp">{{::poiCtrl.content.characteristics.physical.child}}</p>
+					</div>
+				</div>
+				<div ng-if="poiCtrl.content.characteristics.habitat">
+					<h3>De l'habitat</h3>
+					<p class="firstLetterUp">{{::poiCtrl.content.characteristics.habitat}}</p>
+				</div>
+			</div>
+			<div class="item item-body" ng-if="poiCtrl.content.comment">
+				<h2>Commentaire</h2>
+				<p class="firstLetterUp">{{::poiCtrl.content.comment}}</p>
+			</div>
+		</div>
+		<div class="list card" ng-if="::poiCtrl.content.website">
+			<a class="item item-icon-right positive" ng-click="poiCtrl.openInBrowser()">Plus sur le Web<i
+					class="icon ion-share"></i></a>
+		</div>
+		<!--<div class="credit text-right padding {{::poiCtrl.classFromTheme(poiCtrl.content.theme)}}">-->
+			<!--Information fournie par {{::poiCtrl.content.ownerName}}.-->
+		<!--</div>-->
+	</div>
+</div>

@@ -1,0 +1,12 @@
+<ion-view view-title="Flore">
+  <ion-content on-swipe-right="goBack()" on-swipe-left="goForward()">
+    <ion-list>
+      <ion-item ng-repeat="species in ctrl.encyclopedia | orderBy " href="#/app/encyclopedia/{{species[0].properties.speciesId}}">
+
+        <h2>{{species[0].properties.commonName}}</h2>
+        <p>Habitat: {{species[0].properties.characteristics.habitat}}</p>
+
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

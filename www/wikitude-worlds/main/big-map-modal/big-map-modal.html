@@ -1,0 +1,24 @@
+<ion-modal-view class="bigmap-modal" ng-controller="BigMapCtrl as bigmap">
+	<ion-header-bar class="bar bar-header bar-royal">
+		<!--<button class="button back-button button-icon" ng-click="bigmap.remove()">-->
+			<!--<i class="icon ion-android-arrow-back"></i>-->
+		<!--</button>-->
+		<h1 class="title">Carte des environs</h1>
+		<button class="button button-clear button-primary" ng-click="bigmap.remove()">Fermer</button>
+	</ion-header-bar>
+	
+	<ion-content class="has-header">
+		<div class="position-badge-wrapper">
+			<position-badge show-label="never" state="bigmap.positionState"></position-badge>
+		</div>
+		<div class="fabs">
+			<button ng-click="bigmap.fitOnPath()"><i class="icon ion-android-expand"></i></button>
+			<button ng-click="bigmap.centerOnUser()" ng-disabled="!bigmap.userIsFound"><i class="icon ion-android-locate"></i></button>
+		</div>
+		<div class="bigmap-container">
+			<leaflet id="bigmap" tiles="minimap.config.tiles" markers="bigmap.config.markers" lf-center="bigmap.config.center"
+			         layers="bigmap.config.layers" geojson="minimap.config.geojson"
+			         geojson-nested="true"></leaflet>
+		</div>
+	</ion-content>
+</ion-modal-view>

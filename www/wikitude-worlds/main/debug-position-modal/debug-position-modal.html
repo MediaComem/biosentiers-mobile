@@ -1,0 +1,34 @@
+<ion-modal-view ng-controller="DebugCtrl as debug">
+  <ion-header-bar class="bar bar-header bar-royal">
+    <h1 class="title">Dev Options</h1>
+    <button class="button button-clear button-primary" ng-click="debug.remove()">Fermer</button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list card">
+      <div class="item item-divider">
+        Position prédéfinies
+      </div>
+      <a class="item" href="#" ng-click="debug.gare()">Gare</a>
+      <a class="item" href="#" ng-click="debug.office()">Office de Tourisme</a>
+      <a class="item" href="#" ng-click="debug.heig()">HEIG-VD, St-Roch</a>
+      <a class="item" href="#" ng-click="debug.plage()">Plage d'Yverdon</a>
+      <a class="item" href="#" ng-click="debug.cheseaux()">HEIG-VD, Cheseaux</a>
+      <a class="item" href="#" ng-click="debug.champPittet()">Fin du sentier</a>
+    </div>
+    <div class="list card">
+      <div class="item item-divider">
+        Position personnalisée
+      </div>
+      <label class="item item-input">
+        <input type="text" placeholder="Latitude" ng-model="debug.position.lat">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Longitude" ng-model="debug.position.lon">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Altitude" ng-model="debug.position.alt">
+      </label>
+      <button class="button button-block button-assertive" ng-click="debug.custom()">Définir</button>
+    </div>
+  </ion-content>
+</ion-modal-view>

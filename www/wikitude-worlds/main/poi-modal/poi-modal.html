@@ -1,0 +1,21 @@
+<ion-modal-view ng-controller="PoiModalCtrl as poiCtrl" class="poi-modal">
+	<ion-header-bar class="bar bar-header bar-royal">
+		<button class="button back-button button-icon" ng-class="{'disabled': !poiCtrl.poi}" ng-click="poiCtrl.remove()">
+			<i class="icon ion-android-arrow-back"></i>
+		</button>
+		<h1 class="title">{{::poiCtrl.content.commonName.fr}}</h1>
+		<button class="button button-balanced" ng-click="poiCtrl.setPoiSeen()" ng-disabled="poiCtrl.hasBeenSeen">
+			<i class="icon {{poiCtrl.checkBoxState()}}"></i>
+			Repéré
+		</button>
+	</ion-header-bar>
+	<ion-header-bar class="bar bar-subheader bar-{{::poiCtrl.classFromTheme(poiCtrl.content.theme)}}">
+		<h2 class="title">{{::poiCtrl.content.theme | themes}}</h2>
+	</ion-header-bar>
+	<ion-content>
+		<div class="seen-notice padding-horizontal {{::poiCtrl.classFromTheme(poiCtrl.content.theme)}}" ng-if="poiCtrl.content.speciesSeen > 0">
+			Espèce déjà repérée à <strong>{{poiCtrl.content.speciesSeen}}</strong> autre{{poiCtrl.content.speciesSeen > 1 ? 's' : ''}} endroit{{poiCtrl.content.speciesSeen > 1 ? 's' : ''}}.
+		</div>
+		<div ng-include="poiCtrl.includeSrc"></div>
+	</ion-content>
+</ion-modal-view>

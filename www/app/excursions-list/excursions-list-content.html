@@ -1,0 +1,31 @@
+<ion-view view-title="Mes Sorties">
+	<ion-nav-buttons side="secondary">
+		<button class="button" ng-click="list.openExcursionsMenu($event)">
+			<i class="icon ion-android-more-vertical"></i>
+		</button>
+	</ion-nav-buttons>
+	<ion-content class="padding" on-swipe-right="list.nextTab()" on-swipe-left="list.previousTab()">
+		<div ng-if="!tab.loading && tab.data.length >= 1" class="excursions-list">
+			<div class="list card" ng-repeat="excursion in tab.data" ng-class="{'archived': excursion.archivedAt !== null, 'new': excursion.isNew}">
+				<a class="item" href="#/app/excursions-list/{{excursion.qrId}}">
+					<h2><i class="icon ion-android-archive" ng-if="excursion.archivedAt !== null"></i>{{ ::excursion.name }}</h2>
+					<p>{{ ::excursion.date | date : 'dd.MM.yyyy' }}</p>
+				</a>
+				<div class="item item-body">
+					<div><i class="icon ion-person"></i> {{excursion.participant.name}}</div>
+					<span class="bio-badge-{{excursion.status}} badge excursion-status">{{excursion.status | status}}</span>
+					<div class="action-buttons">
+						<button class="button button-clear button-small" ng-click="tab.showExcursionActions(excursion)">
+							<i class="icon ion-chevron-down"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-if="!tab.loading && tab.data.length == 0" id="no-excursion">
+			<i class="icon ion-leaf"></i>
+			<span>Aucune sortie correspondante.</span>
+		</div>
+		<p ng-if="tab.loading">Chargement</p>
+	</ion-content>
+</ion-view>

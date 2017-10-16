@@ -1,8 +1,18 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
+.screenrc
+
 node_modules/
+npm-debug.log
 platforms/
 plugins/
 resources/android
 resources/ios
+
+www/css/ionic.app.css
+www/css/ionic.app.min.css
+
+# The data can be reconstructed with the 'update-data' gulp task
+www/data
+www/data.bak

@@ -1,0 +1,24 @@
+<ion-view title="{{excursionSeen.excursion.name}}">
+	<ion-subheader-bar class="bar bar-subheader bar-royal lighter">
+		<h2 class="title title-left">
+			{{excursionSeen.seenSpecies.length || 'Aucune'}} {{excursionSeen.seenSpecies.length > 0 ? 'E' : 'e'}}spèce{{excursionSeen.seenSpecies.length > 0 ? 's' : ''}} vue{{excursionSeen.seenSpecies.length > 0 ? 's' : ''}}
+		</h2>
+		<!--<button class="button button-icon icon ion-funnel"></button>-->
+	</ion-subheader-bar>
+	<ion-content class="has-subheader">
+		<div class="padding">
+			<ion-list class="poi-seen-list">
+				<ion-item ng-repeat="seenSpecies in excursionSeen.seenSpecies track by seenSpecies.speciesId"
+				          ng-click="excursionSeen.goToSpeciesCard(seenSpecies)"
+				          class="item-icon-left item-icon-right">
+					<span class="icon">
+						<img class="poi-seen-icon" ng-src="{{'./wikitude-worlds/main/assets/icons/' + seenSpecies.theme + '.png'}}" alt="">
+					</span>
+					<h3>{{seenSpecies.commonName.fr}}</h3>
+					<span class="nb-seen">Vue {{seenSpecies.nbSeen}} fois</span>
+					<i class="icon ion-chevron-right"></i>
+				</ion-item>
+			</ion-list>
+		</div>
+	</ion-content>
+</ion-view>

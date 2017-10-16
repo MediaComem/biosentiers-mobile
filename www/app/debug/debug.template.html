@@ -1,0 +1,25 @@
+<ion-view title="Debug">
+	<ion-content class="container">
+		<ul class="list">
+			<li class="item" ng-click="debug.resetDb()">
+				Réinitialiser la base de données
+			</li>
+			<li class="item item-divider">ActivityTracker</li>
+			<li class="item" ng-click="debug.newLine()">
+				Nouvelle ligne dans fichier courant
+			</li>
+			<li class="item" ng-click="debug.hundredLines()">
+				Nouveau fichier de plus de 100 logs
+			</li>
+			<li class="item" ng-click="debug.upload()">
+				Upload des fichiers de logs en attente
+			</li>
+			<li class="item" ng-click="debug.readCurrentLog()">
+				Consulter le contenu du log courant
+			</li>
+			<li class="item" ng-click="debug.resetLogFolder()">
+				Supprimer le dossier ActivityTracker
+			</li>
+		</ul>
+	</ion-content>
+</ion-view>

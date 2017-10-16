@@ -1,0 +1,44 @@
+<ion-side-menus enable-menu-with-back-views="true">
+  <ion-side-menu side="left" expose-aside-when="large">
+    <ion-header-bar class="bar-royal lighter">
+      <h1 class="title">BioSentiers</h1>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+        <ion-item menu-close ui-sref="login">
+          Login/Scan QR
+        </ion-item>
+        <!-- <ion-item menu-close ui-sref="app.account">
+          Mon compte
+        </ion-item> -->
+        <ion-item menu-close ui-sref="app.excursions-list">
+          Mes Sorties
+        </ion-item>
+        <!-- <ion-item menu-close ui-sref="app.encyclopedia">
+          Encyclopédie
+        </ion-item> -->
+        <!-- <ion-item menu-close ui-sref="app.settings">
+          Paramètres
+        </ion-item> -->
+        <ion-item menu-close ui-sref="app.debug" ng-show="menu.showDebug">
+          Debug
+        </ion-item>
+      </ion-list>
+      <ion-footer-bar id="numver" ng-click="menu.manageDebugLog()">
+        v2.0.1
+      </ion-footer-bar>
+    </ion-content>
+  </ion-side-menu>
+  
+  <ion-side-menu-content edge-drag-threshold="50">
+    <ion-nav-bar class="bar-header bar-royal">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+</ion-side-menus>

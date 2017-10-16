@@ -1,0 +1,12 @@
+<div class="existing-excursion">
+	<p>
+		Cette sortie existe <strong>{{ auth.existingExcursions.length }} fois</strong> sur cet appareil, avec le{{auth.existingExcursions.length > 1 ? 's' : ''}} participant{{auth.existingExcursions.length > 1 ? 's' : ''}} :
+	</p>
+	<p>
+		<span class="participant" ng-repeat="excursion in auth.existingExcursions">{{ excursion.participant.name }}</span>
+	</p>
+	<p>
+		Ajouter une nouvelle fois cette sortie, avec le participant <span class="participant">{{auth.excursion.participant.name}}</span>
+		?
+	</p>
+</div>
