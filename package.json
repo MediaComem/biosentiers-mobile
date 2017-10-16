@@ -11,12 +11,25 @@
     "postinstall": "./node_modules/.bin/install-ionicitude"
   },
   "devDependencies": {
+    "@turf/helpers": "^5.0.0",
+    "bower": "^1.8.2",
     "gulp": "^3.5.6",
-    "gulp-clean-css": "^3.7.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-inject": "^4.3.0",
+    "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.0",
-    "gulp-sass": "^3.1.0"
+    "gulp-sass": "^3.1.0",
+    "gulp-sort": "^2.0.0",
+    "gulp-util": "^3.0.8",
+    "gulp-watch": "^4.3.11",
+    "lodash": "^4.17.4",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "shelljs": "^0.7.8",
+    "stable": "^0.1.6"
   },
   "dependencies": {
+    "angular-jwt": "^0.1.9",
     "com.wikitude.phonegap.wikitudeplugin": "^7.1.0",
     "cordova-android": "^6.3.0",
     "cordova-ios": "^4.5.2",
@@ -33,6 +46,8 @@
     "cordova-plugin-x-toast": "^2.6.0",
     "cordova.plugins.diagnostic": "^3.7.1",
     "ionic-plugin-keyboard": "^2.2.1",
+    "ionicitude": "^1.0.4",
+    "loki-cordova-fs-adapter": "^1.0.2",
     "phonegap-plugin-barcodescanner": "^6.0.8"
   },
   "cordova": {
