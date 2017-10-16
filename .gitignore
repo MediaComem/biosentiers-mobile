@@ -5,7 +5,8 @@
 
 node_modules/
 npm-debug.log
-platforms/
+platforms/*
+!platforms/platforms.json
 plugins/
 resources/android
 resources/ios
