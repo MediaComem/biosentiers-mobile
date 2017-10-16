@@ -48,8 +48,7 @@
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicitude": "^1.0.4",
     "loki-cordova-fs-adapter": "^1.0.2",
-    "phonegap-plugin-barcodescanner": "^6.0.8",
-    "com.wikitude.phonegap.WikitudePlugin": "~7.1.0"
+    "phonegap-plugin-barcodescanner": "^6.0.8"
   },
   "cordova": {
     "plugins": {
