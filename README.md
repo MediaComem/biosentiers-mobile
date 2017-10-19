@@ -25,17 +25,20 @@
 
 * Clone the repository.
 * Install tools:
-  * `npm install -g ionic ios-deploy gulp-cli`
-* Install dependencies:
+  * `npm install -g ionic gulp-cli`
+  * Also run `npm install -g ios-deploy` to be able to deploy to an iPhone from a Mac
+* Initial setup:
   * `cd /path/to/project`
   * `npm install`
-* **Important**: several directories like `plugins` or `resources/android` are ignored. You must execute the following commands after a `git clone` to generate or download the missing files:
-  * `ionic cordova resources`
-  * `ionic cordova prepare`
+  * `ionic cordova resources` (to re-generate icons and the splash screen in all sizes, which are not committed to the repository)
+  * `ionic cordova prepare` (to re-download cordova plugins, which are not committed either)
+  * `git diff` (unnecessary changes will probably have been made by the installation of the wikitude plugin)
+  * `git checkout .` to remove these changes
+  * `npm install` (yes, again; for some reason `ionic cordova prepare` clears installed modules, but they are required for `ionic cordova resources`)
+  * `gulp compile`
 * Add the Wikitude plugin's license key:
-  * Change `this._sdkKey` in `/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js`.
-  * Change `this._sdkKey` in `/platforms/android/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` for Android.
-  * Change `this._sdkKey` in `/platforms/ios/platform_www/plugins/com.wikitude.phonegab.WikitudePlugin/www/WikitudePlugin.js` for iOS.
+  * Save the license key in a `wikitude.key` file at the root of the repository
+  * Run `node scripts/install-wikitude-key.js`
 
 ## Downloading the data
 
