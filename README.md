@@ -21,11 +21,15 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Requirements
+
+* [Node.js][node] 8+
+
 ## Installation
 
 * Clone the repository.
 * Install tools:
-  * `npm install -g ionic gulp-cli`
+  * `npm install -g cordova ionic gulp-cli`
   * Also run `npm install -g ios-deploy` to be able to deploy to an iPhone from a Mac
 * Initial setup:
   * `cd /path/to/project`
@@ -50,7 +54,7 @@ This task will create the `data` directory and all its files.
 
 ## Development
 
-[Gulp](http://gulpjs.com) tasks are provided to make your life easier.
+[Gulp][gulp] tasks are provided to make your life easier.
 
 The default task, launched by typing `glup` in a terminal in the project's directory, executes most useful development tasks in one go.
 It runs the `compile`, `inject` and `watch` tasks that are described below.
@@ -272,6 +276,8 @@ This project is meant to be used on Android and iOS devices; those are the Ionic
 
 **Important:** Android version 5.0.0 or higher is required for the Wikitude plugin to work.
 
-[turf]:https://turfjs.org
+[gulp]: http://gulpjs.com
+[node]: https://nodejs.org/en/
+[turf]: https://turfjs.org
 [turf-doc]: http://turfjs.org/docs
 [tbt]: https://turfjs-builder.herokuapp.com/
