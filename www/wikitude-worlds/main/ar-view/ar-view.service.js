@@ -169,7 +169,8 @@
       $log.log(TAG + 'arHardwareStates', options);
       if (options.hasOwnProperty('camera')) {
         $log.log(TAG + 'arHardwareStates:' + (options.camera ? 'activating' : 'deactivating') + ' the camera.');
-        AR.hardware.camera.enabled = !!options.camera;
+        // FIXME: there seems to be a Wikitude bug which causes the app to freeze when exiting the ar view after using this
+        //AR.hardware.camera.enabled = !!options.camera;
       }
       if (options.hasOwnProperty('sensors')) {
         $log.log(TAG + 'arHardwareStates:' + (options.sensors ? 'activating' : 'deactivating') + ' the sensors.');
