@@ -127,7 +127,7 @@
        * @param {EventLog} param.eventObject - An object representing the event to pass to the ActivityTracker service.
        */
       function trackActivity(service, param) {
-        ActivityTracker(param.eventObject);
+        return ActivityTracker(param.eventObject);
       }
 
       ////////////////////
