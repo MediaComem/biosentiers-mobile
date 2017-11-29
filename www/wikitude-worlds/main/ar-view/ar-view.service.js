@@ -243,18 +243,19 @@
         $log.log(TAG + "distance to user ", dist);
         DebugLog.add('POI clicked - ' + arPoi.id);
         DebugLog.add('POI distance to user - ' + dist + 'm');
-        AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.ar.poi.clicked(Excursion.serverId, arPoi.id, dist)}, {return: true})
-          .then(function(){
-            // if (1 === 1) {
-            if (dist <= arPoi.minActiveDistance) {
-              DebugLog.add('POI showing the details');
-              Excursion.loadCurrentPoi(arPoi.poi);
-              // if (!arPoi.hasBeenSeen) setPoiSeen();
-            } else {
-              DebugLog.add('POI is too far away');
+          // if (1 === 1) {
+          if (dist <= arPoi.minActiveDistance) {
+            DebugLog.add('POI showing the details');
+            AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.ar.poi.opened(Excursion.serverId, arPoi.id)}, {return: true})
+              .then(function() { Excursion.loadCurrentPoi(arPoi.poi); });              
+            // if (!arPoi.hasBeenSeen) setPoiSeen();
+          } else {
+            DebugLog.add('POI is too far away');
+            AppActions.execute('trackActivity', {eventObject: EventLogFactory.action.ar.poi.clicked(Excursion.serverId, arPoi.id, dist)}, {return: true})
+            .then(function() {
               AppActions.execute('toast', {message: "Rapprochez-vous encore de " + Math.ceil(dist - arPoi.minActiveDistance) + "m."});
-            }
-          });
+            });
+          }
         return true; // Stop propagating the click event
       };
     }

@@ -259,6 +259,12 @@
                 distance   : distance
               });
             },
+            opened: function(excursionId, poiId) {
+              return new EventLog('action.ar.poi.opened', {
+                excursionId: excursionId,
+                poiId      : poiId
+              });
+            },
             checked: function(excursionId, poiId, speciesId) {
               return new EventLog('action.ar.poi.checked', {
                 excursionId: excursionId,
