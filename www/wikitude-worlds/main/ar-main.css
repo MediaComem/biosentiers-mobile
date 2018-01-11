@@ -141,8 +141,9 @@ option.placeholder {
     opacity: .75;
     background-color: #0000FF; }
   .bigmap-modal .fabs {
-    z-index: 1;
-    background-color: #ed5567; }
+    z-index: 1; }
+    .bigmap-modal .fabs button {
+      background-color: #ed5567; }
 
 #poi-filters .poi-theme img {
   position: absolute;

@@ -103,4 +103,5 @@
     <plugin name="cordova.plugins.diagnostic" spec="~3.2.2" />
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
     <plugin name="phonegap-plugin-barcodescanner" spec="^6.0.5" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
 </widget>

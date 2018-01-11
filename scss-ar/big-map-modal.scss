@@ -43,6 +43,9 @@
 
   .fabs{
     z-index: 1;
-    background-color: $assertive;
+
+    button {
+      background-color: $assertive;
+    }
   }
 }
